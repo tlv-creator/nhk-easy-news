@@ -115,6 +115,70 @@
       "project": "(merged from keep-list)",
       "reason": "✅ AI 讲解客户端 v1.6（对拍基准）",
       "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "f3rpiqeouy6c0",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A1（1-14话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 1-14 话没声音"
+    },
+    {
+      "domain": "5wxizdpb9tyq8",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A2（15-28话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 15-28 话没声音"
+    },
+    {
+      "domain": "bjyzdgmd6px91",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A3（29-42话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 29-42 话没声音"
+    },
+    {
+      "domain": "clqvqp5j1qrqu",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A4（43-56话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 43-56 话没声音"
+    },
+    {
+      "domain": "vi57vb0da33qp",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A5（57-70话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 57-70 话没声音"
+    },
+    {
+      "domain": "4535p9s0wnpzs",
+      "project": "audio",
+      "reason": "若草 音声 节点1（分段）",
+      "written_in": "hub 的 wakakusa 项目 CDN_MAP",
+      "frozen": true,
+      "note": "🔴 删了 = 若草部分集数没声音"
+    },
+    {
+      "domain": "lem5lvwy41rn9",
+      "project": "audio",
+      "reason": "若草 音声 节点2（分段）",
+      "written_in": "hub 的 wakakusa 项目 CDN_MAP",
+      "frozen": true,
+      "note": "🔴 删了 = 若草部分集数没声音"
+    },
+    {
+      "domain": "wn1nwme4cg1hh",
+      "project": "audio",
+      "reason": "若草 音声 节点3（分段）",
+      "written_in": "hub 的 wakakusa 项目 CDN_MAP",
+      "frozen": true,
+      "note": "🔴 删了 = 若草部分集数没声音"
     }
   ],
   "how_to_check_before_deleting": {
