@@ -1,0 +1,35 @@
+{
+  "updated": "2026-10-23",
+  "why": "2026-10-23 一轮清理删了 15 个站，其中 2 个删错了：① 9chr6us9mlatt —— 它在 NHK App 的 classes.dex 里是写死的兜底域名；② lnh1i27d4m3vn —— 它是多読絵本 Tadoku 的正式站，而这个地址就写在记忆里。⇒ 本清单是「删站前必须先看」的地方。",
+  "rules": [
+    "① 出现在某个 APK 的 classes.dex 里的域 ⇒ 活依赖，不能删（grep 源码找不到，只能解包搜）",
+    "② 记忆/文档里写着「某站是 X 的正式站」的 ⇒ 不能删",
+    "③ 引导页或对话里发出去的链接 ⇒ 不能删（用户手里拿着那一份）",
+    "④ 独立 App 的站 ⇒ 不能删（hub 不替代那些 App）",
+    "⑤ 删站顺序永远是：部署替代站 → 验 → 更新引导页 → 才删旧的"
+  ],
+  "tooling": {
+    "check_dead_refs": "python3 scripts/check_dead_refs.py --dead <域...> --apk <apk...>  （代码/文档层 + dex 层）",
+    "check_guide_links": "python3 scripts/check_guide_links.py  （扫引导页每个链接，404 就 FAIL）",
+    "eink_gate": "python3 scripts/check_eink_css.py <html> <css...>  （必须 html+css 一起传）"
+  },
+  "protected": {
+    "9chr6us9mlatt": "🔴 NHK App dex 里写死的兜底站 —— **已于 2026-10-23 被误删**（现在 404）⇒ NHK App 的兜底安全网没了，主地址 GitHub Pages 还活 ⇒ 已通报 NHK 会话改 APK。**别再重建也别再当活站依赖**",
+    "lnh1i27d4m3vn": "🔴 多読絵本 Tadoku 的旧正式站 —— **已误删**，已重建为 x7b1kbbaa0kh0。**旧地址不要再当正式站引用**",
+    "x7b1kbbaa0kh0": "✅ 多読絵本 Tadoku 现在的正式站（…/tadoku/，5 路径实测 200）",
+    "xwi3hf93nlt4p": "✅ 部署包站（hub 引导页指着它：ai-proxy-code.zip / ai-proxy-rollback.zip）",
+    "8mbic178h1f8s": "✅ hub v1.15（hub 引导页指着它：APK zip / 网页版）",
+    "9qcq9q73zm4ql": "✅ hub v1.6 —— **留作最保险的回退**（签名没变，出事可覆盖装回去）",
+    "w2jcdkvrprc4d": "✅ NHK やさしいことばニュース v1.23",
+    "d6yolwjruhqm2": "✅ Japanese with Shun v1.2（引导页 shun.html 指着它）",
+    "zyksozpp1p7i0": "✅ 多読絵本 音频 CDN（hub 的 tadoku 用它）",
+    "da4lxn2phccck": "✅ Shun 音频源 v2（hub 的 shun 用它）",
+    "9kgu879p4dhy2": "✅ ドラえもん2002 音声ソース（hub 的 dora 用它）",
+    "3vpcud2aabhor": "✅ 小马宝莉 音频站（hub 的 pony 用它）",
+    "ftu81k0abzbpn": "✅ APK 工具 v8.5",
+    "wcdo5rd2b9n8t": "✅ 墨水屏描边闸门 v4.4",
+    "dcjk8zanl3e4r": "✅ AI 讲解客户端 v1.6（对拍基准）",
+    "d7x7onv4ip0y8": "✅ ドラえもん 独立 App 离线版 —— 独立 App 的站，用户手机里可能还在用",
+    "awcv20k80ydfb": "✅ やさしい日本語 简明日语精读 —— 同上，独立 App 的站"
+  }
+}
