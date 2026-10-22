@@ -1,7 +1,7 @@
 {
   "_readme": "🔴🔴 云盘站点「不可删除」清单（2026-10-23 起生效）",
   "_why": "mcode 每次部署都换随机域名，站点很容易在清理时被误删。但有些站是**别的 APK 编译进去的兜底依赖**，删了用户的 App 就会白屏。本清单是所有 agent 清理站点前必须查的。",
-  "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删。【新增】给做 App 的人：兜底站必须**单独部署 + 域名冻结**（永不 redeploy）—— 因为 mcode 域名每发一版就换一个，把兜底指向当前内容站 = 兜底迟早变死链。",
+  "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删。🔴 **frozen:true = 这个站永不 redeploy** —— redeploy 会换随机域名，而 APK / cdn 表 / 引导页里已经写死了它 ⇒ 域名一换，用户的 App 就白屏或没声音。⇒ **要更新它的内容，只能新建一个站 + 改所有引用方 + 改完再删旧的**。",
   "_owner": "NHK / hub / Shun 等各项目 agent 共用",
   "updated": "2026-10-23",
   "protected_sites": [
@@ -37,12 +37,92 @@
       "project": "shun",
       "reason": "Shun 的**音频源站**（引导页 audio 字段指向它）",
       "note": "删了 = Shun 没声音"
+    },
+    {
+      "domain": "lnh1i27d4m3vn",
+      "project": "(merged from keep-list)",
+      "reason": "🔴 多読絵本 Tadoku 的旧正式站 —— **已误删**，已重建为 x7b1kbbaa0kh0。**旧地址不要再当正式站引用**",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "x7b1kbbaa0kh0",
+      "project": "(merged from keep-list)",
+      "reason": "✅ 多読絵本 Tadoku 现在的正式站（…/tadoku/，5 路径实测 200）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "xwi3hf93nlt4p",
+      "project": "(merged from keep-list)",
+      "reason": "✅ 部署包站（hub 引导页指着它：ai-proxy-code.zip / ai-proxy-rollback.zip）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "8mbic178h1f8s",
+      "project": "(merged from keep-list)",
+      "reason": "✅ hub v1.15（hub 引导页指着它：APK zip / 网页版）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "9qcq9q73zm4ql",
+      "project": "(merged from keep-list)",
+      "reason": "✅ hub v1.6 —— **留作最保险的回退**（签名没变，出事可覆盖装回去）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "w2jcdkvrprc4d",
+      "project": "(merged from keep-list)",
+      "reason": "✅ NHK やさしいことばニュース v1.23",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "d6yolwjruhqm2",
+      "project": "(merged from keep-list)",
+      "reason": "✅ Japanese with Shun v1.2（引导页 shun.html 指着它）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "zyksozpp1p7i0",
+      "project": "(merged from keep-list)",
+      "reason": "✅ 多読絵本 音频 CDN（hub 的 tadoku 用它）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "9kgu879p4dhy2",
+      "project": "(merged from keep-list)",
+      "reason": "✅ ドラえもん2002 音声ソース（hub 的 dora 用它）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "3vpcud2aabhor",
+      "project": "(merged from keep-list)",
+      "reason": "✅ 小马宝莉 音频站（hub 的 pony 用它）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "ftu81k0abzbpn",
+      "project": "(merged from keep-list)",
+      "reason": "✅ APK 工具 v8.5",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "wcdo5rd2b9n8t",
+      "project": "(merged from keep-list)",
+      "reason": "✅ 墨水屏描边闸门 v4.4",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "dcjk8zanl3e4r",
+      "project": "(merged from keep-list)",
+      "reason": "✅ AI 讲解客户端 v1.6（对拍基准）",
+      "written_in": "keep-list.json（已合并）"
     }
   ],
   "how_to_check_before_deleting": {
     "step1": "拉本清单（本文件）",
     "step2": "扫所有现役 APK 的 classes.dex，找写死的 mcode 域名：python3 -c \"import zipfile,re;print(sorted(set(m.decode() for m in re.findall(rb'[a-z0-9]{4,}\\.space\\.mcode\\.cn', zipfile.ZipFile('x.apk').read('classes.dex')))))\"",
-    "step3": "两者都命中 → 不删。删完必须 curl 验 404 + 确认没有现役包引用它"
+    "step3": "两者都命中 → 不删。删完必须 curl 验 404 + 确认没有现役包引用它",
+    "step0": "🔴 **先看本文件里 frozen:true 的** —— 这些是「域名写死在别人 APK / 音频表 / 引导页里」的，删了会让用户的 App 白屏或某个项目没声音。",
+    "step4": "🔴 **同一个域名可能在「测试 fixture」和「产品 dex」里都出现** —— 前者是假的、后者是真的。**「在测试里当假的用」≠「在产品里也是假的」。**"
   },
   "fallback_pattern": {
     "_why": "所有「引导壳型」App（页面从线上加载、APK 里写死一个兜底站）都要遵守",
@@ -54,5 +134,13 @@
       "⑤ 把该站登记进本清单（role=fallback, frozen=true）"
     ],
     "example": "NHK: 引导页 tlv-creator.github.io/nhk-easy-news/ → 兜底站 vkwwuh9wgkzo0（冻结）"
-  }
+  },
+  "_rules_from_keep_list": [
+    "① 出现在某个 APK 的 classes.dex 里的域 ⇒ 活依赖，不能删（grep 源码找不到，只能解包搜）",
+    "② 记忆/文档里写着「某站是 X 的正式站」的 ⇒ 不能删",
+    "③ 引导页或对话里发出去的链接 ⇒ 不能删（用户手里拿着那一份）",
+    "④ 独立 App 的站 ⇒ 不能删（hub 不替代那些 App）",
+    "⑤ 删站顺序永远是：部署替代站 → 验 → 更新引导页 → 才删旧的"
+  ],
+  "_single_source": "🔴 **本文件是唯一权威的「不可删站清单」** —— 旧的 keep-list.json 已并入并删除。**不要在别处再维护第二份**（两个会话两份实现 = 下次分叉）。"
 }
