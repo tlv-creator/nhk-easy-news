@@ -11,11 +11,61 @@
   · 清单里只写**事实**（域名/项目/为什么不能删/写在哪个文件里）
   · **「现在还活着吗」一律现查** —— 状态不写进清单（会过期，骗人）
   · status == "DELETED" 的条目是「已误删但要记住」→ 期望它死，不算异常
+    （「已删」是**永久事实** —— 它不会活回来 ⇒ 适合写进清单；
+      而「现在还活着吗」会过期 ⇒ 只能现查。两者不矛盾。）
   · 有活着的域死了 → exit 1（清理前必须先处理）
-"""
-import json, sys, ssl, time, urllib.request, urllib.error, concurrent.futures, argparse
 
-LIST = "https://tlv-creator.github.io/nhk-easy-news/protected-sites.json"
+🔴 清单本身从**源端**读（仓库 API → raw），**不是从 Pages 读**（2026-10-23 pony 提醒）：
+  「我看到的旧内容」有两种可能 —— ① 真被覆盖了 ② 渲染端还没刷新。
+  ⇒ 拿渲染端当真相 = 拿到旧清单 → 把已经标了 DELETED 的域报成「活的但坏了」（假红灯）。
+  ⇒ 源端拿不到才退回 Pages，并**明确说**用的是渲染端。
+"""
+import argparse, concurrent.futures, json, os, ssl, sys, time
+import urllib.request, urllib.error
+
+REPO = os.environ.get("LISTEN_REPO", "tlv-creator/nhk-easy-news")
+LIST_API = os.environ.get("LISTEN_LIST_API",
+                           "https://api.github.com/repos/%s/contents/protected-sites.json" % REPO)
+LIST_RAW = os.environ.get("LISTEN_LIST_RAW",
+                           "https://raw.githubusercontent.com/%s/main/protected-sites.json" % REPO)
+LIST_PAGES = os.environ.get("LISTEN_LIST_PAGES",
+                             "https://tlv-creator.github.io/nhk-easy-news/protected-sites.json")
+
+
+def _get(url, timeout=20, headers=None):
+    req = urllib.request.Request(url, headers=headers or {})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.read()
+
+
+def fetch_list():
+    """读清单 → (data, source_label)
+    顺序：**源端**（Contents API → raw）→ 渲染端（Pages，最后兜底并明确说）"""
+    token = os.environ.get("GH_TOKEN", "")
+    try:
+        raw = _get(LIST_API, headers={"Accept": "application/vnd.github+json",
+                                      "Authorization": "token " + token} if token else {})
+        j = json.loads(raw.decode("utf-8"))
+        if isinstance(j, dict) and j.get("content"):
+            import base64
+            j = json.loads(base64.b64decode(j["content"]).decode("utf-8"))
+        if isinstance(j, dict) and "protected_sites" in j:
+            return j, "源端(contents-api)"
+    except Exception:
+        pass
+    try:
+        j = json.loads(_get(LIST_RAW).decode("utf-8"))
+        if isinstance(j, dict) and "protected_sites" in j:
+            return j, "源端(raw)"
+    except Exception:
+        pass
+    try:
+        j = json.loads(_get(LIST_PAGES).decode("utf-8"))
+        if isinstance(j, dict) and "protected_sites" in j:
+            return j, "⚠️ 渲染端(Pages，可能慢一拍)"
+    except Exception as e:
+        raise RuntimeError("拉不到受保护清单（源端和渲染端都试过了）：%s" % e)
+    raise RuntimeError("拉到的清单里没有 protected_sites 字段")
 
 
 def head(domain, timeout=8):
@@ -45,16 +95,16 @@ def main():
     ap.add_argument("--timeout", type=int, default=8)
     args = ap.parse_args()
 
-    src = args.local or LIST
     if args.local:
-        data = json.load(open(src, encoding="utf-8"))
+        data = json.load(open(args.local, encoding="utf-8"))
+        src = "本地文件(%s)" % args.local
     else:
         try:
-            with urllib.request.urlopen(src, timeout=20) as r:
-                data = json.loads(r.read().decode("utf-8"))
-        except Exception as e:
-            print("❌ 拉不到受保护清单：%s\n   ⇒ **不许放行删除操作**（清单拉不到 = 保护失效）" % e)
+            data, src = fetch_list()
+        except RuntimeError as e:
+            print("❌ %s\n   ⇒ **不许放行删除操作**（清单拉不到 = 保护失效）" % e)
             return 2
+    print("清单来源：%s" % src)
 
     entries = data.get("protected_sites", [])
     todo = []
@@ -81,7 +131,8 @@ def main():
     dead = []
     if args.json:
         print(json.dumps([{"domain": d, "project": e.get("project"), "code": c,
-                           "url": u} for d, e, m, c, u in results], ensure_ascii=False, indent=1))
+                           "url": u, "source": src} for d, e, m, c, u in results],
+                         ensure_ascii=False, indent=1))
     else:
         for d, e, mode, c, u in results:
             if mode == "check":
