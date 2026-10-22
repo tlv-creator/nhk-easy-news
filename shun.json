@@ -1,9 +1,9 @@
 {
- "ver": 12,
- "verName": "1.1",
- "site": "https://whtf4628ag0d0.space.mcode.cn/",
- "audio": "https://da4lxn2phccck.space.mcode.cn/media/",
- "apk": "https://whtf4628ag0d0.space.mcode.cn/shun.apk",
- "updated": "2026-10-22T13:53:58Z",
- "note": "v2.1 · 墨水屏检查器升级（跨文件变量 / !important / 多主题）"
+ "ver": 13,
+ "verName": "1.2",
+ "site": "https://o5xyhhdtz5bju.space.mcode.cn/",
+ "audio": "https://o5xyhhdtz5bju.space.mcode.cn/media/",
+ "apk": "https://o5xyhhdtz5bju.space.mcode.cn/shun.apk",
+ "updated": "2026-10-22T16:04:05Z",
+ "note": "v1.2 · 后台播放真修好(前台服务) · 播放按钮不横跳 · API等级闸门接入"
 }
