@@ -62,8 +62,10 @@
     {
       "domain": "8mbic178h1f8s",
       "project": "(merged from keep-list)",
-      "reason": "✅ hub v1.15（hub 引导页指着它：APK zip / 网页版）",
-      "written_in": "keep-list.json（已合并）"
+      "reason": "hub v1.15 的站 —— **已被 v1.16（qk9rwmigiydy4）取代并删除**",
+      "written_in": "keep-list.json（已合并）",
+      "status": "DELETED",
+      "note": "🔴 引导页现在指向 `qk9rwmigiydy4`（v1.16）。这个旧地址不要再当现役站引用。"
     },
     {
       "domain": "9qcq9q73zm4ql",
