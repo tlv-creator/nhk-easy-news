@@ -47,7 +47,17 @@ COMMENT_RE = re.compile(r'^\s*(//|\*|<!--|#)')
 
 
 def scan_texts(dead):
-    hits = {}
+    """扫代码/文档/记忆层 —— **🔴 必须分两类**（pony 2026-10-23 指出同一个 bug 的另一半）
+
+    ① **代码/文档层**（`/workspace/scripts`、`/workspace/guide` …）
+       ⇒ 命中 = **活依赖**（真在用）⇒ **必须 exit 1**
+    ② **记忆/历史层**（`/workspace/.mavis` = 历史对话 + 工具输出）
+       ⇒ 命中 = **只是「提过一次」** ⇒ **不该拦**（exit 0，但要提示）
+    ⇒ 混在一起判 = 「历史对话里提过就拦住删」= 假红灯；
+       反过来「代码里在用也放过」= 假绿灯。**两边都得能区分。**
+    """
+    code_hits = {}      # 代码/文档层 ⇒ 活依赖
+    mem_hits = {}       # 记忆/历史层 ⇒ 只是提过
     files = set()
     for r in SCAN_ROOTS:
         if not os.path.isdir(r):
@@ -75,10 +85,12 @@ def scan_texts(dead):
             s = open(f, encoding='utf-8', errors='replace').read()
         except Exception:
             continue
+        # 🔴 分类：**记忆/历史层**单独算（`/workspace/.mavis` = 历史对话与工具输出）
+        is_mem = ('/.mavis/' in f) or f.endswith('/MEMORY.md')
         for d in dead:
             if d in s:
-                hits.setdefault(d, []).append(f)
-    return hits
+                (mem_hits if is_mem else code_hits).setdefault(d, []).append(f)
+    return code_hits, mem_hits
 
 
 def scan_dex(apk, dead):
@@ -90,18 +102,28 @@ def scan_dex(apk, dead):
     ⇒ 只扫 dex 会把 hub 判成「零依赖」⇒ **删掉它依赖的站它照样白屏** ✅
     """
     out = {}
+    skipped = []
     try:
         z = zipfile.ZipFile(apk)
         names = z.namelist()
         blob = []
         if 'classes.dex' in names:
             blob.append(z.read('classes.dex').decode('latin-1'))
+        # 🔴🔴 **assets 层不限后缀，全扫**（pony 2026-10-23）
+        #   理由：白名单（*.js|html|json|txt|css）是「已知够了」的**乐观假设** ——
+        #   万一依赖写在 .dat / .bin / 别的后缀里，就会漏
+        #   ⇒ **宁可多扫**（APK 里的文本文件不多，成本可忽略）
         for n in names:
-            if n.startswith('assets/') and n.endswith(('.js', '.html', '.json', '.txt', '.css')):
-                try:
-                    blob.append(z.read(n).decode('utf-8', 'replace'))
-                except Exception:
-                    pass
+            if not n.startswith('assets/') or n.endswith('/'):
+                continue
+            try:
+                info = z.getinfo(n)
+                if info.file_size > 2 * 1024 * 1024:      # 单文件 >2MB 跳过（图片/大资源）
+                    skipped.append('%s (%d B)' % (n, info.file_size))
+                    continue
+                blob.append(z.read(n).decode('utf-8', 'replace'))
+            except Exception:
+                pass
         alltext = '\n'.join(blob)
     except Exception as e:
         return {'__err__': ['%s: %s' % (apk, e)]}
@@ -109,6 +131,9 @@ def scan_dex(apk, dead):
         if d in alltext:
             out.setdefault(d, []).append(apk)
     allm = sorted(set(re.findall(r'[a-z0-9]{4,}\.space\.mcode\.cn', alltext)))
+    if skipped:
+        # 🔴 跳过的必须**说出来**（静默跳过 = 假装扫过了 = 假绿灯）
+        print('      ⚠️ 跳过 %d 个 >2MB 的 assets 条目（未扫描）：%s' % (len(skipped), ', '.join(skipped[:3])))
     return out, allm
 
 
@@ -163,17 +188,29 @@ def main():
             return 1
         print('  ✅ %d 个待查域都不在清单里' % len(dead))
 
-    print('=== ① 代码/文档/记忆层（扫 %s）===' % a.root)
-    hits = scan_texts(dead)
-    for d, fs in sorted(hits.items()):
+    print('=== ① 代码/文档层（活依赖）===')
+    code_hits, mem_hits = scan_texts(dead)
+    for d, fs in sorted(code_hits.items()):
         print('  🔴 %s → %d 处' % (d, len(fs)))
         for f in fs[:5]:
             print('       %s' % f.replace(a.root + '/', ''))
-    if not hits:
+    if not code_hits:
         print('  ✅ 零命中')
 
+    print('\n=== ② 记忆/历史层（只是「提过一次」，不作为拦截依据）===')
+    for d, fs in sorted(mem_hits.items()):
+        print('  ⚠️  %s → %d 处（历史对话/记忆里提过）' % (d, len(fs)))
+        for f in fs[:3]:
+            print('       %s' % f.replace(a.root + '/', ''))
+    if not mem_hits:
+        print('  ✅ 零命中')
+
+    # 🔴🔴 **dex/assets 命中 = 活依赖 ⇒ 必须 exit 1**
+    #   （pony 2026-10-23 实测抓到的真 bug：原来只打印「🔴 指向待删站」然后 exit 0
+    #    ⇒ **判到了却没挡住** —— 违反「判据不满足 → 宁可报错，也不要悄悄用错的」）
+    dex_blocked = False
     if a.apk:
-        print('\n=== ③ APK dex 层 ===')
+        print('\n=== ③ APK 层（dex + assets）===')
         for apk in a.apk:
             r = scan_dex(apk, dead)
             if isinstance(r, dict) and '__err__' in r:
@@ -181,21 +218,34 @@ def main():
                 continue
             hit, allm = r
             print('  --- %s' % apk)
-            print('      dex 里的 mcode 域: %s' % (', '.join(allm) or '(无)'))
+            print('      APK 里的 mcode 域: %s' % (', '.join(allm) or '(无)'))
             if hit:
+                dex_blocked = True
                 for d, aps in hit.items():
-                    print('      🔴 指向待删站: %s' % d)
+                    print('      🔴 指向待删站: %s  ⇒ **不能删**（编译进去了）' % d)
             else:
                 print('      ✅ 不指向任何待删站')
 
     print('\n=== 判据 ===')
-    if hits or a.apk:
-        print('  ⚠️  有命中 —— **逐条判断是不是活引用**')
-        print('     · 只在注释/历史对话里出现 → 无害（但会让人紧张）')
-        print('     · 在 dex 里 → 🔴 **活依赖，不能删**')
-        print('     · 在引导页/链接里 → 🔴 **活依赖，不能删**')
-    else:
-        print('  ✅ 全层零命中')
+    # 🔴🔴 **判据必须分层**（pony 2026-10-23 抓到同一个 bug 的两半）
+    #   ① APK（dex/assets）命中 → **活依赖** ⇒ exit 1
+    #   ② 代码/文档层命中        → **活依赖** ⇒ exit 1
+    #   ③ 仅记忆/历史层命中      → 只是「提过一次」⇒ **不该拦** ⇒ exit 0（但要提示）
+    if dex_blocked:
+        print('  🔴 APK（dex/assets）里命中 ⇒ **活依赖，不能删**')
+        return 1
+    if code_hits:
+        print('  🔴 代码/文档层命中 ⇒ **活依赖，不能删**')
+        print('     · 在引导页/links.js/源码里 → 🔴 **不能删**')
+        return 1
+    if mem_hits:
+        print('  ⚠️  仅记忆/历史层有命中（历史对话里提过）⇒ **不作为拦截依据**')
+        print('     · 若确认要删，请同步更新清单与历史记录')
+        return 0
+    if a.apk:
+        print('  ✅ 全层零命中（APK 也不指向任何待查域）')
+        return 0
+    print('  ✅ 全层零命中')
     return 0
 
 
