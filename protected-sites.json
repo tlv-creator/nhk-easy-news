@@ -57,7 +57,10 @@
       "domain": "xwi3hf93nlt4p",
       "project": "(merged from keep-list)",
       "reason": "✅ 部署包站（hub 引导页指着它：ai-proxy-code.zip / ai-proxy-rollback.zip）",
-      "written_in": "keep-list.json（已合并）"
+      "written_in": "keep-list.json（已合并）",
+      "frozen": true,
+      "status": "alive",
+      "note": "🔴 域名冻结：**永不 redeploy**（引导页指着它 ⇒ 换域名 = 死链）。要发新版本就**新建站 + 改引导页 + 再删旧的**。"
     },
     {
       "domain": "8mbic178h1f8s",
