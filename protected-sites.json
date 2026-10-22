@@ -44,7 +44,8 @@
       "domain": "lnh1i27d4m3vn",
       "project": "(merged from keep-list)",
       "reason": "🔴 多読絵本 Tadoku 的旧正式站 —— **已误删**，已重建为 x7b1kbbaa0kh0。**旧地址不要再当正式站引用**",
-      "written_in": "keep-list.json（已合并）"
+      "written_in": "keep-list.json（已合并）",
+      "status": "DELETED"
     },
     {
       "domain": "x7b1kbbaa0kh0",
@@ -204,8 +205,10 @@
       "reason": "每日听力记录的**国内加速镜像**（canonical 已在 GitHub Pages：…/listening/，清站扫不到）",
       "written_in": "仓库 listening/version.json 的 mirror 字段",
       "frozen": false,
-      "status": "mirror（可重建）",
-      "note": "🟢 canonical = https://tlv-creator.github.io/nhk-easy-news/listening/（永久）。这个 mcode 镜像**删了可重建**，但重建会换域名 ⇒ 重建后要改 listening/version.json 的 mirror 字段。"
+      "note": "🟢 canonical = https://tlv-creator.github.io/nhk-easy-news/listening/（永久）。这个 mcode 镜像**删了可重建**，但重建会换域名 ⇒ 重建后要改 listening/version.json 的 mirror 字段。",
+      "role": "mirror",
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/listening/",
+      "action_if_rebuilt": "python3 tools/update_listen_mirror.py <新域名>"
     },
     {
       "domain": "rqud34vh5k65y",
