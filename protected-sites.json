@@ -1,0 +1,49 @@
+{
+  "_readme": "🔴🔴 云盘站点「不可删除」清单（2026-10-23 起生效）",
+  "_why": "mcode 每次部署都换随机域名，站点很容易在清理时被误删。但有些站是**别的 APK 编译进去的兜底依赖**，删了用户的 App 就会白屏。本清单是所有 agent 清理站点前必须查的。",
+  "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删",
+  "_owner": "NHK / hub / Shun 等各项目 agent 共用",
+  "updated": "2026-10-23",
+
+  "protected_sites": [
+    {
+      "domain": "vkwwuh9wgkzo0",
+      "project": "nhk",
+      "reason": "NHK App 的**兜底站**（编译进 classes.dex）—— 引导页读不到时 App 就落它",
+      "written_in": "NHK APK classes.dex（Config.SITE_URL）",
+      "frozen": true,
+      "note": "🔴 域名冻结：这个站**永不 redeploy**（redeploy 会换域名 → APK 里的写死值就死了）。它的内容会旧，但只在主引导页挂时用。"
+    },
+    {
+      "domain": "9chr6us9mlatt",
+      "project": "nhk",
+      "reason": "曾是 NHK App 的兜底站 —— **已于 2026-10-23 被误删（404）**",
+      "status": "DELETED",
+      "note": "教训来源：它同时出现在测试 fixture 和真实 APK 的 dex 里，清理者只看到「测试里的假域名」→ 误判成可删。"
+    },
+    {
+      "domain": "d7x7onv4ip0y8",
+      "project": "dora",
+      "reason": "哆啦A梦**独立版**的站 —— 用户手机里的 App 可能还在用它",
+      "note": "不是 hub 的子站，是独立交付物"
+    },
+    {
+      "domain": "awcv20k80ydfb",
+      "project": "ama",
+      "reason": "やさしい日本語**独立版**的站 —— 用户手机里的 App 可能还在用它",
+      "note": "不是 hub 的子站，是独立交付物"
+    },
+    {
+      "domain": "da4lxn2phccck",
+      "project": "shun",
+      "reason": "Shun 的**音频源站**（引导页 audio 字段指向它）",
+      "note": "删了 = Shun 没声音"
+    }
+  ],
+
+  "how_to_check_before_deleting": {
+    "step1": "拉本清单（本文件）",
+    "step2": "扫所有现役 APK 的 classes.dex，找写死的 mcode 域名：python3 -c \"import zipfile,re;print(sorted(set(m.decode() for m in re.findall(rb'[a-z0-9]{4,}\\.space\\.mcode\\.cn', zipfile.ZipFile('x.apk').read('classes.dex')))))\"",
+    "step3": "两者都命中 → 不删。删完必须 curl 验 404 + 确认没有现役包引用它"
+  }
+}
