@@ -21,7 +21,17 @@ import time
 from playwright.sync_api import sync_playwright
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PATCH = os.path.join(HERE, 'audio-robust.js')
+# 🔴 **要能在两种位置找到补丁**（自检常常被拿去做异地副本跑）
+#   ① 同目录（本地开发）  ② 同级 scripts/（GitHub 仓库里两个文件同放 scripts/）
+CANDIDATES = [
+    os.path.join(HERE, 'audio-robust.js'),
+    os.path.join(HERE, 'scripts', 'audio-robust.js'),
+    os.path.join(os.path.dirname(HERE), 'audio-robust.js'),
+]
+PATCH = next((c for c in CANDIDATES if os.path.exists(c)), None)
+if not PATCH:
+    print('🔴 找不到 audio-robust.js（试过：%s）' % ' / '.join(CANDIDATES))
+    sys.exit(2)
 ROOT = os.path.dirname(HERE)          # /workspace/output
 PASS, FAIL = [], []
 
