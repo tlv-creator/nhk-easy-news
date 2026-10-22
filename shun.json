@@ -1,9 +1,9 @@
 {
- "ver": 17,
- "verName": "1.2",
- "site": "https://d6yolwjruhqm2.space.mcode.cn",
+ "ver": 18,
+ "verName": "1.2.1",
+ "site": "https://rqud34vh5k65y.space.mcode.cn",
  "audio": "https://da4lxn2phccck.space.mcode.cn/media/",
- "apk": "https://d6yolwjruhqm2.space.mcode.cn/shun.apk",
- "updated": "2026-10-22T17:09:37Z",
- "note": "v1.2 · 后台播放真修好 · 当前句不变色 · 播放按钮不横跳 · API等级闸门 v7.1 · 墨水屏闸门 v4.4"
+ "apk": "https://rqud34vh5k65y.space.mcode.cn/shun.apk",
+ "updated": "2026-10-22T19:32:34Z",
+ "note": "v1.2.1 · 音频 CDN 瞬时 503 自动重试 + 看门狗兜底（不再假故障报给用户）· 回归 7 套 244 断言"
 }
