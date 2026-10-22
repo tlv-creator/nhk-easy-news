@@ -188,6 +188,13 @@
       "frozen": true,
       "status": "alive",
       "note": "🔴 域名冻结：这个站**永不 redeploy**（redeploy = 换域名 = 用户的 App 静音）。删了 = あま 全 12 集没声音。"
+    },
+    {
+      "domain": "hoibadfkj8ena",
+      "project": "nhk",
+      "reason": "现役内容站（引导页当前指向）",
+      "written_in": "引导页 site 字段",
+      "note": "🔴 **现役内容站（NHK v16）** —— 会随发版变，**以引导页 version.json 的 site 为准**"
     }
   ],
   "how_to_check_before_deleting": {
