@@ -66,6 +66,54 @@ def main():
         return 1
     print('  ✅ 必需链接齐全：%s' % ' '.join(REQUIRED))
 
+    # 🔴🔴🔴 **引导页指向的站，必须是清单里 frozen 的**（元层交叉验证）
+    #   「今晚做的每一个保护，最后都要落到一个**别人也会去的地方**才算数」
+    #   ⇒ 清单是权威的「能不能动」；引导页是权威的「现在用哪个」
+    #   ⇒ 两边必须一致：引导页指着的站，**如果没被清单冻结**，
+    #      就等于有人绕过了保护 —— 改个引导页就能让一个没保护的站上线
+    #   ⇒ 「查不到就不能放行」：清单拉不到 ⇒ 拒绝
+    # 🔴 **GitHub Pages 会缓存旧版** ⇒ 同一 URL 连续几轮可能是不同版本
+    #   （我今天在这上面栽过：清单前两轮是旧的、第三轮才是新的）
+    #   ⇒ 「清单看起来不对」≠「清单真的不对」⇒ **拉多次取最新** ✅
+    import json as _json
+    import time as _t
+    _pl = None
+    _err = None
+    for _try in range(5):
+        try:
+            _req = urllib.request.Request(
+                'https://tlv-creator.github.io/nhk-easy-news/protected-sites.json?nc=%d'
+                % int(_t.time() * 1000),
+                headers={'User-Agent': 'mavis-link-check', 'Cache-Control': 'no-cache'})
+            with urllib.request.urlopen(_req, timeout=25) as _r:
+                _cand = _json.loads(_r.read().decode('utf-8'))
+            if _pl is None or len(_cand.get('protected_sites', [])) >= len(_pl.get('protected_sites', [])):
+                _pl = _cand
+        except Exception as e:
+            _err = e
+        _t.sleep(2)
+    if _pl is None:
+        print('\n❌ 拉不到保护清单（%s）⇒ **不放行**（查不到就不能放行）' % _err)
+        return 1
+    _frozen = set()
+    for _s in _pl.get('protected_sites', []):
+        if (_s.get('status') or '').strip().upper() == 'DELETED':
+            continue
+        if _s.get('frozen') or _s.get('role') == 'content' or _s.get('frozen') is True:
+            _frozen.add((_s.get('domain') or '').strip())
+    _hosts = set()
+    for _l in links:
+        m = re.match(r'https?://([a-z0-9]+)\.space\.mcode\.cn', _l)
+        if m:
+            _hosts.add(m.group(1))      # 🔴 清单里存的是**裸域**（不带 .space.mcode.cn）
+    _unprot = sorted(h for h in _hosts if h not in _frozen)
+    if _unprot:
+        print('\n❌ 引导页指向了**清单里没有冻结**的站：%s' % ' '.join(_unprot))
+        print('   ⇒ **不放行**（改引导页就能绕过保护）')
+        return 1
+    print('  ✅ 引导页指向的 %d 个站都在清单冻结名单里：%s'
+          % (len(_hosts), ' '.join(sorted(_hosts))))
+
     print('=== 扫 %s（%d 个链接）===' % (src, len(links)))
     bad = []
     for l in links:
