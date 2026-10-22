@@ -1,8 +1,8 @@
 {
-  "ver": 11,
-  "verName": "1.11",
-  "site": "https://17bqkquwardcq.space.mcode.cn/",
-  "apk": "https://17bqkquwardcq.space.mcode.cn/NHK.apk",
-  "note": "新增 2026-10-22 一期（4 篇易懂版+慢速音声+注音+逐词拆解）；补回 data/vocab.js / lexicon.js / NHK.apk",
+  "ver": 12,
+  "verName": "1.12",
+  "site": "https://jf6u6zibzao37.space.mcode.cn/",
+  "apk": "https://jf6u6zibzao37.space.mcode.cn/NHK.apk",
+  "note": "新增 2026-10-22 一期（4 篇：PHP弱点/台風30号/秋田氾濫警報/富士山スキー場）易懂版+慢速音声+注音+逐词拆解；补回 vocab/lexicon/APK",
   "updated": "2026-10-22"
 }
