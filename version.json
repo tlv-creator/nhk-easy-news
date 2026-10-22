@@ -1,8 +1,8 @@
 {
   "ver": 12,
   "verName": "1.12",
-  "site": "https://hw8db77el9q1b.space.mcode.cn/",
-  "apk": "https://hw8db77el9q1b.space.mcode.cn/NHK.apk",
-  "note": "墨水屏闸门 v4.3（二维判据 亮度×宽度）→ 深绿主题下 2px 深色框改 1px",
+  "site": "https://uicb7ib4i0361.space.mcode.cn/",
+  "apk": "https://uicb7ib4i0361.space.mcode.cn/NHK.apk",
+  "note": "墨水屏闸门 v4.4（深色级阈值 0.25→0.15）→ 按钮框恢复 2px，边界更清楚",
   "updated": "2026-10-23"
 }
