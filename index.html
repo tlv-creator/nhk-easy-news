@@ -1,40 +1,43 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Japanese with Shun · 日中精读</title>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NHK やさしいことばニュース · 更新引导</title>
 <style>
-body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;max-width:640px;margin:0 auto;padding:28px 18px;line-height:1.75;color:#1a1a1a;background:#fff}
-h1{font-size:23px;margin:0 0 4px}
-.sub{color:#555;font-size:15px;margin:0 0 20px}
-.box{background:#f5f5f5;border:1px solid #ddd;border-radius:10px;padding:14px 16px;margin:14px 0;font-size:14.5px}
-.box b{font-size:16px}
-a{color:#0b57d0}
-code{background:#eee;padding:1px 5px;border-radius:3px;font-size:13.5px}
+body{font-family:system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;max-width:560px;margin:0 auto;padding:28px 18px;line-height:1.75;color:#222;background:#fff}
+h1{font-size:19px;margin-bottom:4px}
+.sub{color:#666;font-size:13px;margin-bottom:20px}
+.box{border:1px solid #e0e0e0;border-radius:12px;padding:16px;margin:14px 0}
+.row{display:flex;justify-content:space-between;gap:12px;font-size:15px;padding:5px 0}
+.row b{font-weight:600}
+code{background:#f4f4f4;padding:3px 7px;border-radius:5px;font-size:13px;word-break:break-all}
+a.btn{display:inline-block;margin-top:6px;padding:12px 20px;background:#2f6f4f;color:#fff;border-radius:10px;text-decoration:none;font-size:16px}
+a.dl{display:inline-block;margin-top:10px;padding:11px 18px;background:#fff;color:#2f6f4f;border:1px solid #2f6f4f;border-radius:10px;text-decoration:none;font-size:15px}
+.note{font-size:13px;color:#666;margin-top:24px;padding-top:14px;border-top:1px solid #eee}
 </style></head><body>
-<h1>🎙 Japanese with Shun</h1>
-<p class="sub">日中对照精读 · 引导页（地址永久不变）</p>
+<h1>📺 NHK やさしいことばニュース · 日中对照精读</h1>
+<div class="sub">每日自动更新 · 引导页（App 启动时读这里的 version.json）</div>
 <div class="box">
-<b>当前内容站</b><br>
-<a id="s" href="#">读取中…</a>
+  <div class="row"><span>当前版本</span><b id="v">-</b></div>
+  <div class="row"><span>内容站</span><b id="site" style="font-size:13px"></b></div>
+  <div class="row"><span>更新日期</span><b id="up">-</b></div>
+  <div class="row"><span>说明</span><b id="note" style="font-size:13px"></b></div>
+  <a class="btn" id="go" href="#">打开学习站</a>
+  <a class="dl" id="apk" href="#">下载新版 APK</a>
 </div>
-<div class="box">
-<b>APK 下载</b><br>
-<a id="a" href="#">读取中…</a>
-</div>
-<div class="box" style="font-size:13.5px;color:#555">
-版本 <code id="v">-</code> · 更新于 <code id="t">-</code><br>
-<span id="n"></span>
+<div class="note">
+  你的 App 每次打开会来这个页面读一下「内容站在哪」，所以域名换了也不用你操心 ——
+  收藏、生词本、观看进度都会自动搬过去。<br>
+  如果 App 提示「發現新版本」，点一下就能下载安装（覆盖安装，不丢数据）。
 </div>
 <script>
-fetch('version.json',{cache:'no-store'})
- .then(r=>r.json()).then(j=>{
-   document.getElementById('s').href=j.site||'#';
-   document.getElementById('s').textContent=j.site||'（未配置）';
-   document.getElementById('a').href=j.apk||'#';
-   document.getElementById('a').textContent=j.apk||'（未配置）';
-   document.getElementById('v').textContent=(j.ver||'-')+' / '+(j.verName||'-');
-   document.getElementById('t').textContent=(j.updated||'-').replace('T',' ').slice(0,16);
-   document.getElementById('n').textContent=j.note||'';
- }).catch(e=>{document.getElementById('s').textContent='读取失败：'+e;});
+fetch('version.json',{cache:'no-store'}).then(r=>r.json()).then(j=>{
+  document.getElementById('v').textContent='v'+j.ver+'（'+j.verName+'）';
+  document.getElementById('site').textContent=j.site;
+  document.getElementById('up').textContent=j.updated||'-';
+  document.getElementById('note').textContent=j.note||'';
+  document.getElementById('go').href=j.site;
+  var a=document.getElementById('apk');
+  if(j.apk){a.href=j.apk;}else{a.style.display='none';}
+}).catch(()=>{document.getElementById('v').textContent='配置读取中…';});
 </script>
 </body></html>
