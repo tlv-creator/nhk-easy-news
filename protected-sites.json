@@ -195,6 +195,15 @@
       "reason": "现役内容站（引导页当前指向）",
       "written_in": "引导页 site 字段",
       "note": "🔴 **现役内容站（NHK v16）** —— 会随发版变，**以引导页 version.json 的 site 为准**"
+    },
+    {
+      "domain": "irk7ibwekq8se",
+      "project": "listening（每日听力记录）",
+      "reason": "每日听力记录的**国内加速镜像**（canonical 已在 GitHub Pages：…/listening/，清站扫不到）",
+      "written_in": "仓库 listening/version.json 的 mirror 字段",
+      "frozen": false,
+      "status": "mirror（可重建）",
+      "note": "🟢 canonical = https://tlv-creator.github.io/nhk-easy-news/listening/（永久）。这个 mcode 镜像**删了可重建**，但重建会换域名 ⇒ 重建后要改 listening/version.json 的 mirror 字段。"
     }
   ],
   "how_to_check_before_deleting": {
