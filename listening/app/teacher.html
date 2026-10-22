@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>每日听力记录 · 教师看板</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f5fd0'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E5%90%AC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/app.css">
+<style>
+  /* 教师端：墨水屏 + 老花眼 → 基础字号更大 */
+  html { --fs: 19px; }
+  .tstats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin: 12px 0; }
+  .tstat { background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); padding: 12px 10px; text-align: center; }
+  .tstat .n { font-size: 1.9rem; font-weight: 800; line-height: 1.15; font-variant-numeric: tabular-nums; }
+  .tstat .k { font-size: .82rem; color: var(--ink2); margin-top: 2px; }
+  html.hc .tstat { border-color: #000; }
+  .toolrow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+  .toolrow button { min-height: 46px; }
+  .muted { color: var(--ink2); font-size: .88rem; }
+  .nowrap { white-space: nowrap; }
+  .wrap.wide { padding-bottom: 80px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>每日听力记录 · 教师看板</h1>
+  <div class="who" id="who"></div>
+</header>
+
+<div class="wrap wide">
+
+  <div id="demoBanner" class="banner" hidden>演示模式：下面全是假数据，不连数据库。真实环境请打开不带 ?demo=1 的链接。</div>
+
+  <!-- ============ 登录 ============ -->
+  <section id="viewLogin">
+    <div class="card" style="max-width:460px">
+      <h2>教师登录</h2>
+      <label class="f" for="tid">工号</label>
+      <input type="text" id="tid" inputmode="numeric" autocomplete="off" placeholder="工号">
+      <label class="f" for="tpwd">密码</label>
+      <input type="password" id="tpwd" autocomplete="current-password" placeholder="密码">
+      <div class="msg" id="loginMsg"></div>
+      <button class="big" id="btnLogin">进　入</button>
+    </div>
+  </section>
+
+  <!-- ============ 看板 ============ -->
+  <section id="viewDash" hidden>
+
+    <div class="tstats" id="tstats"></div>
+
+    <div class="card">
+      <div class="toolrow" id="rangeBar">
+        <button class="ghost" data-days="0">今天</button>
+        <button class="ghost" data-days="6">近7天</button>
+        <button class="ghost" data-days="29">近30天</button>
+        <button class="ghost" data-days="-1">全部</button>
+      </div>
+      <div class="toolrow">
+        <label class="nowrap">起 <input type="date" id="fFrom"></label>
+        <label class="nowrap">止 <input type="date" id="fTo"></label>
+        <select id="fClass"><option value="">全部班级</option></select>
+        <input type="text" id="fSearch" placeholder="搜学号 / 姓名" style="min-width:150px">
+      </div>
+      <div class="msg" id="dashMsg"></div>
+    </div>
+
+    <div class="tabs">
+      <button id="tabDetail" class="on">明细记录</button>
+      <button id="tabSum">每人汇总</button>
+      <button id="tabZero" class="ghost">未记录名单</button>
+    </div>
+
+    <div id="paneDetail">
+      <div class="toolrow">
+        <button class="ghost" id="btnCsvLog">导出明细 CSV</button>
+        <span class="muted" id="detailCount"></span>
+      </div>
+      <div class="tablewrap"><table id="tblLog">
+        <thead><tr>
+          <th>学号</th><th>姓名</th><th>班级</th><th>日期</th><th>时间</th>
+          <th>时长</th><th>内容</th><th>类别</th><th></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+
+    <div id="paneSum" hidden>
+      <div class="toolrow">
+        <button class="ghost" id="btnCsvSum">导出汇总 CSV</button>
+        <span class="muted" id="sumCount"></span>
+      </div>
+      <div class="tablewrap"><table id="tblSum">
+        <thead><tr>
+          <th>学号</th><th>姓名</th><th>班级</th><th>条数</th><th>天数</th>
+          <th>累计分钟</th><th>平均</th><th>最近一次</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+
+    <div id="paneZero" hidden>
+      <div class="tablewrap"><table id="tblZero">
+        <thead><tr><th>学号</th><th>姓名</th><th>班级</th><th>累计分钟</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </div>
+
+    <div class="toolrow" style="margin-top:18px">
+      <button class="danger" id="btnClear">清空全部记录</button>
+      <button class="ghost" id="btnLogout">退出登录</button>
+    </div>
+  </section>
+</div>
+
+<div class="zoombar" id="zoomBar">
+  <button id="btnAa" class="ghost" title="字号与显示">Aa</button>
+  <div id="zoomPanel" hidden>
+    <button id="btnHc" class="ghost" title="高对比（黑白屏用）">高对比</button>
+    <button id="btnZoomOut" class="ghost">A－</button>
+    <input type="range" id="zoom" min="90" max="170" step="5" value="100">
+    <button id="btnZoomIn" class="ghost">A＋</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/api.js"></script>
+<script src="js/teacher.js"></script>
+</body>
+</html>
