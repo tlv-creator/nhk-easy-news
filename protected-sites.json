@@ -192,10 +192,11 @@
   ],
   "how_to_check_before_deleting": {
     "step1": "拉本清单（本文件）",
-    "step2": "扫所有现役 APK 的 classes.dex，找写死的 mcode 域名：python3 -c \"import zipfile,re;print(sorted(set(m.decode() for m in re.findall(rb'[a-z0-9]{4,}\\.space\\.mcode\\.cn', zipfile.ZipFile('x.apk').read('classes.dex')))))\"",
+    "step2": "🔴 **dex 和 assets 都要扫**（两个都要！）：\n   ① dex（原生 App 写死的地址）：python3 -c \"import zipfile,re,sys;print(sorted(set(m.decode() for m in re.findall(rb'[a-z0-9]{4,}\\.space\\.mcode\\.cn', zipfile.ZipFile(sys.argv[1]).read('classes.dex')))))\" x.apk\n   ② assets（🔴 WebView 型 App 的「编译进去的依赖」在这里 —— NHK/Shun/**hub**/多読絵本 都是）:\n      unzip -o -q x.apk -d ex && grep -rhoaE '[a-z0-9]{4,}\\.space\\.mcode\\.cn' ex/ | sort | uniq -c\n   ⚠️ **只扫 dex 会把 hub 判成「零依赖」** —— 实测 hub v1.15 的 13 个域**全在 assets 里，dex 里一个都没有**。",
     "step3": "两者都命中 → 不删。删完必须 curl 验 404 + 确认没有现役包引用它",
     "step0": "🔴 **先看本文件里 frozen:true 的** —— 这些是「域名写死在别人 APK / 音频表 / 引导页里」的，删了会让用户的 App 白屏或某个项目没声音。",
-    "step4": "🔴 **同一个域名可能在「测试 fixture」和「产品 dex」里都出现** —— 前者是假的、后者是真的。**「在测试里当假的用」≠「在产品里也是假的」。**"
+    "step4": "🔴 **同一个域名可能在「测试 fixture」和「产品 dex」里都出现** —— 前者是假的、后者是真的。**「在测试里当假的用」≠「在产品里也是假的」。**",
+    "step5": "🔴 **现役内容站**：按上面的 `_how_to_resolve` 解析引导页 → 当前指向的站**一律不删**（它每次发版都换域名 ⇒ 不在清单里，但现在是活的）。"
   },
   "fallback_pattern": {
     "_why": "所有「引导壳型」App（页面从线上加载、APK 里写死一个兜底站）都要遵守",
@@ -215,5 +216,13 @@
     "④ 独立 App 的站 ⇒ 不能删（hub 不替代那些 App）",
     "⑤ 删站顺序永远是：部署替代站 → 验 → 更新引导页 → 才删旧的"
   ],
-  "_single_source": "🔴 **本文件是唯一权威的「不可删站清单」** —— 旧的 keep-list.json 已并入并删除。**不要在别处再维护第二份**（两个会话两份实现 = 下次分叉）。"
+  "_single_source": "🔴 **本文件是唯一权威的「不可删站清单」** —— 旧的 keep-list.json 已并入并删除。**不要在别处再维护第二份**（两个会话两份实现 = 下次分叉）。",
+  "_rule_current_site": "🔴 **现役内容站不在本清单里** —— 它每次部署都换域名，没法静态列 ⇒ **清理时必须先解析引导页，绝不能删引导页当前指向的站**。",
+  "_how_to_resolve": {
+    "hub": "curl -s https://tlv-creator.github.io/nhk-easy-news/hub.html | grep -oE '[a-z0-9]{10,}\\.space\\.mcode\\.cn' | sort -u",
+    "shun": "curl -s https://tlv-creator.github.io/nhk-easy-news/shun.json | python3 -c 'import json,sys;print(json.load(sys.stdin)[\"site\"])'",
+    "nhk": "curl -s https://tlv-creator.github.io/nhk-easy-news/version.json | python3 -c 'import json,sys;print(json.load(sys.stdin)[\"site\"])'",
+    "note": "hub 的引导页是 HTML（不是 JSON）⇒ 用 grep 抽域；shun/nhk 是 JSON ⇒ 读 site 字段"
+  },
+  "_permanent_anchor": "🔴🔴 **`tlv-creator/nhk-easy-news` 这个 GitHub 仓库 = 所有项目的「永久锚点」** —— 它不是 mcode 站，mcode 清理碰不到它，**但它一旦没了，所有项目的 App 全哑**（引导页 404 → App 白屏）。⇒ **永不删这个仓库 / 永不删里面的 hub.html / version.json / shun.json / protected-sites.json**。"
 }
