@@ -1,8 +1,8 @@
 {
-  "ver": 11,
-  "verName": "1.11",
-  "site": "https://9chr6us9mlatt.space.mcode.cn/",
-  "apk": "https://9chr6us9mlatt.space.mcode.cn/NHK.apk",
-  "note": "AI 结构剖析渲染修复：等号行/主句谓语块/小节标题",
+  "ver": 12,
+  "verName": "1.12",
+  "site": "https://e6qlywff1xbey.space.mcode.cn/",
+  "apk": "https://e6qlywff1xbey.space.mcode.cn/NHK.apk",
+  "note": "修「引导页读不到→兜底地址失效」：APK 兜底写死当前站",
   "updated": "2026-10-22"
 }
