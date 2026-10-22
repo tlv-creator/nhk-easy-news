@@ -1,8 +1,8 @@
 {
-  "ver": 13,
+  "ver": 14,
   "verName": "1.4",
-  "site": "https://6pzh2iql9noem.space.mcode.cn/",
-  "apk": "https://6pzh2iql9noem.space.mcode.cn/NHK.apk",
-  "note": "40期 · 修复：APK兜底站（原为占位符，引导页读不到会白屏）",
+  "site": "https://w2jcdkvrprc4d.space.mcode.cn/",
+  "apk": "https://w2jcdkvrprc4d.space.mcode.cn/NHK.apk",
+  "note": "40期 · 修复：App 内拦截平台统计上报（隐私+流量）",
   "updated": "2026-10-23"
 }
