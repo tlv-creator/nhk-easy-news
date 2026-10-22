@@ -179,6 +179,15 @@
       "written_in": "hub 的 wakakusa 项目 CDN_MAP",
       "frozen": true,
       "note": "🔴 删了 = 若草部分集数没声音"
+    },
+    {
+      "domain": "tcw0ti0k7p0hd",
+      "project": "ama",
+      "reason": "あま（アニメあぱん）日配音频站 —— hub 的 ama 项目音频全靠它",
+      "written_in": "hub 的 web/ama/app.js（AMA_AUDIO_BASE_DEFAULT）+ web/hub-shim.js（AMA_BASE / BUILTIN.ama.root）+ web/links.js",
+      "frozen": true,
+      "status": "alive",
+      "note": "🔴 域名冻结：这个站**永不 redeploy**（redeploy = 换域名 = 用户的 App 静音）。删了 = あま 全 12 集没声音。"
     }
   ],
   "how_to_check_before_deleting": {
