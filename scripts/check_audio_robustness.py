@@ -141,6 +141,15 @@ def main():
             print('  ⚠️  %-9s 取不到源码（跳过）' % name)
             continue
         e, r, w, leg_web, leg_native = check_text(blob)
+        # 🔴🔴🔴 **第三种实现路径：共享补丁**（hub pony 2026-10-23 抓出我的假阳性）
+        #   实现可以住在**共享文件**里（`shell/audio-robust.js`）⇒ 只在
+        #   `<project>/app.js` + `index.html` 里找特征**根本看不见** ❌
+        #   ⇒ 若 index.html 引了共享补丁 ⇒ **①②③ 全算有**（并标注「由共享补丁提供」）
+        shared = bool(re.search(r'<script[^>]+src=["\'][^"\']*audio-robust\.js', blob))
+        if shared:
+            e = r = True
+            leg_web = True
+            w = True
         rows.append((name, e, r, w))
         lack = []
         if not e: lack.append('①error监听')
@@ -151,9 +160,10 @@ def main():
         mark = lambda b: '✅' if b else '❌'
         # 🔴 **网页腿 / 原生腿 分开标** —— 「有原生腿但没网页腿」= 用户在网页/App 里听到的是网页腿
         legs = '腿:网页%s/原生%s' % (mark(leg_web), mark(leg_native))
-        print('  %-9s ①%s ②%s ③%s  %-18s %s' % (
+        tag = '（由共享补丁提供）' if shared else ''
+        print('  %-9s ①%s ②%s ③%s  %-18s %s%s' % (
             name, mark(e), mark(r), mark(w), legs,
-            ('🔴 缺 ' + ' '.join(lack)) if lack else '✅ 三问齐'))
+            ('🔴 缺 ' + ' '.join(lack)) if lack else '✅ 三问齐', tag))
 
     print()
     if missing:
@@ -161,6 +171,7 @@ def main():
         for n, l in missing:
             print('  🔴 %-9s 缺 %s' % (n, ' '.join(l)))
         print('\n  ⇒ 优先修「完全静默」（① 都没有）—— 那是用户最无感的失败。')
+        print('  ⇒ 注：标「由共享补丁提供」的项目 = 三问由 shell/audio-robust.js 统一提供。')
         print('  ⇒ 修法：① 加 error 监听 ② 失败后重试（最多 2 次，第 2 次带 cache-buster）')
         print('     ③ 加看门狗（3~4 秒内 readyState < 1 ⇒ 判定失败）')
         print('  ⇒ 参考实现：restore-tadoku/tadoku/app.js + test_audio_retry.py（4/4 + 反向验证成立）')
