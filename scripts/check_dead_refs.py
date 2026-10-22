@@ -42,6 +42,12 @@ SCAN_ROOTS = [
     '/workspace/deploy-site',
 ]
 TEXT_EXT = ('.md', '.py', '.js', '.json', '.txt', '.sh', '.html')
+# 🔴🔴 **编译产物不扫**（实测踩到）：
+#   `scripts/__pycache__/check_dead_refs.cpython-311.pyc` 里**二进制**存着源文件里的字符串
+#   ⇒ 剥不掉注释（注释也进了 .pyc）⇒ 扫到它 = **假红灯**
+#   ⇒ 而且 .pyc 是**构建产物**，不是「有人在用的依赖」⇒ 不该参与判据
+SKIP_DIRS = {'__pycache__', 'node_modules', '.git', '.mavis', 'work', 'output'}
+SKIP_EXT = ('.pyc', '.pyo', '.so', '.o', '.a', '.class', '.jar', '.apk', '.zip', '.dex')
 # 注释里出现的域名（无害，但「看起来像引用」→ 让人紧张）
 COMMENT_RE = re.compile(r'^\s*(//|\*|<!--|#)')
 
@@ -63,8 +69,10 @@ def scan_texts(dead):
         if not os.path.isdir(r):
             continue
         for dp, dn, fn in os.walk(r):
+            # 🔴 跳过编译产物目录
+            dn[:] = [d for d in dn if d not in SKIP_DIRS]
             for f in fn:
-                if f.endswith(TEXT_EXT):
+                if f.endswith(TEXT_EXT) and not f.endswith(SKIP_EXT):
                     files.add(os.path.join(dp, f))
     for p in glob.glob('/workspace/**/MEMORY.md', recursive=True):
         files.add(p)
@@ -82,7 +90,12 @@ def scan_texts(dead):
         if os.path.realpath(f) == me:
             continue
         try:
-            s = open(f, encoding='utf-8', errors='replace').read()
+            # 🔴🔴 **代码层也要剥注释**（与 APK 层判据一致 —— 同一个概念，两个层）
+            #   不剥的后果：本扫描器**自己的注释里**写着示例域名（如 `u8tpuxfku1xoi`）
+            #   ⇒ 跑异地副本时会把自己报成「代码层活依赖」= **假红灯**
+            #   🔴 而且这说明「本地跑通」可能是**巧合** —— 排除自己用的是 `__file__`，
+            #      跑仓库版时排除的是 /tmp 那份，/workspace 这份反而被扫到
+            s = strip_comments(open(f, encoding='utf-8', errors='replace').read())
         except Exception:
             continue
         # 🔴 分类：**记忆/历史层**单独算（`/workspace/.mavis` = 历史对话与工具输出）
@@ -108,6 +121,10 @@ def strip_comments(text):
     text = re.sub(r'/\*.*?\*/', lambda m: re.sub(r'[^\n]', ' ', m.group(0)), text, flags=re.S)
     text = re.sub(r'<!--.*?-->', lambda m: re.sub(r'[^\n]', ' ', m.group(0)), text, flags=re.S)
     text = re.sub(r'(?m)^[ \t]*//[^\n]*', lambda m: re.sub(r'[^\n]', ' ', m.group(0)), text)
+    # 🔴🔴 **必须覆盖 Python/shell 的 `#` 行注释** —— 漏了它就会漏掉
+    #    本扫描器自己注释里的示例域名（实测：异地副本跑时自己被报成「代码层活依赖」）
+    #    ⚠️ 只认**行首**的 `#` ⇒ URL 里的 `#fragment` 不会被误伤 ✅
+    text = re.sub(r'(?m)^[ \t]*#[^\n]*', lambda m: re.sub(r'[^\n]', ' ', m.group(0)), text)
     return text
 
 
