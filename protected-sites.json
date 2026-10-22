@@ -206,6 +206,13 @@
       "frozen": false,
       "status": "mirror（可重建）",
       "note": "🟢 canonical = https://tlv-creator.github.io/nhk-easy-news/listening/（永久）。这个 mcode 镜像**删了可重建**，但重建会换域名 ⇒ 重建后要改 listening/version.json 的 mirror 字段。"
+    },
+    {
+      "domain": "rqud34vh5k65y",
+      "project": "shun",
+      "reason": "Shun v1.2.1 现役内容站（引导页 shun.json 与 shun.html 都指着它）",
+      "role": "content",
+      "note": "🔴 **每次发版都会换域名** ⇒ 这条要跟着更新（谁发版谁改自己那一条）。解析命令见 _how_to_resolve.shun。"
     }
   ],
   "how_to_check_before_deleting": {
