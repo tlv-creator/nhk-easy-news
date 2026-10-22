@@ -1,8 +1,8 @@
 {
   "_readme": "🔴🔴 云盘站点「不可删除」清单（2026-10-23 起生效）",
   "_why": "mcode 每次部署都换随机域名，站点很容易在清理时被误删。但有些站是**别的 APK 编译进去的兜底依赖**，删了用户的 App 就会白屏。本清单是所有 agent 清理站点前必须查的。",
-  "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删。【新增】给做 App 的人：兜底站必须**单独部署 + 域名冻结**（永不 redeploy）—— 因为 mcode 域名每发一版就换一个，把兜底指向当前内容站 = 兜底迟早变死链。",
-  "_owner": "NHK / hub / Shun 等各项目 agent 共用",
+  "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删。🔴 **frozen:true = 这个站永不 redeploy** —— redeploy 会换随机域名，而 APK / cdn 表 / 引导页里已经写死了它 ⇒ 域名一换，用户的 App 就白屏或没声音。⇒ **要更新它的内容，只能新建一个站 + 改所有引用方 + 改完再删旧的**。",
+  "_owner": "NHK / hub / Shun / Tadoku / tools 各 agent 共用（谁在用谁可以往里加，但**删之前必须查**）",
   "updated": "2026-10-23",
   "protected_sites": [
     {
@@ -37,12 +37,182 @@
       "project": "shun",
       "reason": "Shun 的**音频源站**（引导页 audio 字段指向它）",
       "note": "删了 = Shun 没声音"
+    },
+    {
+      "domain": "xwi3hf93nlt4p",
+      "project": "hub",
+      "reason": "部署包站（audio-config 部署包 + 回滚包）",
+      "written_in": "hub 永久引导页 hub.html 里「下载部署包」链接指向它",
+      "frozen": true,
+      "note": "🔴 引导页指着它 —— 删了引导页就死链（用户没法部署 audio-config 了）"
+    },
+    {
+      "domain": "8mbic178h1f8s",
+      "project": "hub",
+      "reason": "hub v1.15 APK 下载站（当前在用）",
+      "written_in": "hub 永久引导页 hub.html 里「下载 APK」链接指向它",
+      "frozen": true,
+      "note": "🔴 引导页指着它 + 是用户现在装的版本；**发新版后要改引导页再删旧的**"
+    },
+    {
+      "domain": "9qcq9q73zm4ql",
+      "project": "hub",
+      "reason": "hub v1.6 回退保险站",
+      "written_in": "无前台服务 → 无 5 秒红线 → 最保险的闪退回退版本",
+      "frozen": true,
+      "note": "🔴 用户万一新版本崩了，v1.6 是最后能装的版本"
+    },
+    {
+      "domain": "x7b1kbbaa0kh0",
+      "project": "tadoku",
+      "reason": "多読絵本 精读（2026-10-23 重建）",
+      "written_in": "Tadoku 的网页版交付物（/tadoku/ 路径）",
+      "frozen": true,
+      "note": "🔴 2026-10-23 误删过原站 lnh1i27d4m3vn，重建后地址变了 —— 旧的已 404"
+    },
+    {
+      "domain": "ftu81k0abzbpn",
+      "project": "tools",
+      "reason": "APK 静态检查器 v8.5（当前在用）",
+      "written_in": "各项目 build 的 API 等级闸门引用",
+      "frozen": true,
+      "note": "🔴 工具站，改闸门流程时要用"
+    },
+    {
+      "domain": "wcdo5rd2b9n8t",
+      "project": "tools",
+      "reason": "墨水屏描边闸门 v4.4（当前在用）",
+      "written_in": "各项目 build 的墨水屏闸门引用",
+      "frozen": true,
+      "note": "🔴 工具站，改闸门流程时要用"
+    },
+    {
+      "domain": "dcjk8zanl3e4r",
+      "project": "tools",
+      "reason": "AI 讲解客户端 v1.6（当前在用）",
+      "written_in": "四个 App 的「问 AI」按钮加载它",
+      "frozen": true,
+      "note": "🔴 删了 = 所有 App 的 AI 讲解挂"
+    },
+    {
+      "domain": "zyksozpp1p7i0",
+      "project": "audio",
+      "reason": "多読絵本 音頻CDN",
+      "written_in": "hub 的 tadoku 项目 AUDIO_BASE 指向它",
+      "frozen": true,
+      "note": "🔴 删了 = 多読絵本没声音"
+    },
+    {
+      "domain": "9kgu879p4dhy2",
+      "project": "audio",
+      "reason": "ドラえもん2002 音声ソース",
+      "written_in": "hub 的 dora 项目 AUDIO_BASE 指向它",
+      "frozen": true,
+      "note": "🔴 删了 = 哆啦A梦没声音"
+    },
+    {
+      "domain": "3vpcud2aabhor",
+      "project": "audio",
+      "reason": "マイリトルポニー 音声（12集）",
+      "written_in": "hub 的 pony 项目 AUDIO_BASE 指向它",
+      "frozen": true,
+      "note": "🔴 删了 = 小马宝莉没声音"
+    },
+    {
+      "domain": "tcw0ti0k7p0hd",
+      "project": "audio",
+      "reason": "あま精读 v3 音声",
+      "written_in": "hub 的 ama 项目 AUDIO_BASE 指向它",
+      "frozen": true,
+      "note": "🔴 删了 = あま没声音"
+    },
+    {
+      "domain": "f3rpiqeouy6c0",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A1（1-14话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 1-14 话没声音"
+    },
+    {
+      "domain": "5wxizdpb9tyq8",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A2（15-28话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 15-28 话没声音"
+    },
+    {
+      "domain": "bjyzdgmd6px91",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A3（29-42话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 29-42 话没声音"
+    },
+    {
+      "domain": "clqvqp5j1qrqu",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A4（43-56话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 43-56 话没声音"
+    },
+    {
+      "domain": "vi57vb0da33qp",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A5（57-70话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 57-70 话没声音"
+    },
+    {
+      "domain": "4535p9s0wnpzs",
+      "project": "audio",
+      "reason": "若草 音声 节点1（分段）",
+      "written_in": "hub 的 wakakusa 项目 CDN_MAP",
+      "frozen": true,
+      "note": "🔴 删了 = 若草部分集数没声音"
+    },
+    {
+      "domain": "lem5lvwy41rn9",
+      "project": "audio",
+      "reason": "若草 音声 节点2（分段）",
+      "written_in": "hub 的 wakakusa 项目 CDN_MAP",
+      "frozen": true,
+      "note": "🔴 删了 = 若草部分集数没声音"
+    },
+    {
+      "domain": "wn1nwme4cg1hh",
+      "project": "audio",
+      "reason": "若草 音声 节点3（分段）",
+      "written_in": "hub 的 wakakusa 项目 CDN_MAP",
+      "frozen": true,
+      "note": "🔴 删了 = 若草部分集数没声音"
+    },
+    {
+      "domain": "w2jcdkvrprc4d",
+      "project": "nhk",
+      "reason": "NHK やさしいことばニュース v1.23（当前在用）",
+      "written_in": "NHK 引导页 version.json 指向它",
+      "frozen": true,
+      "note": "🔴 内容站，发新版后要改引导页再删旧的"
+    },
+    {
+      "domain": "d6yolwjruhqm2",
+      "project": "shun",
+      "reason": "Japanese with Shun v1.2（当前在用）",
+      "written_in": "Shun 引导页 shun.json 指向它",
+      "frozen": true,
+      "note": "🔴 内容站，发新版后要改引导页再删旧的"
     }
   ],
   "how_to_check_before_deleting": {
     "step1": "拉本清单（本文件）",
     "step2": "扫所有现役 APK 的 classes.dex，找写死的 mcode 域名：python3 -c \"import zipfile,re;print(sorted(set(m.decode() for m in re.findall(rb'[a-z0-9]{4,}\\.space\\.mcode\\.cn', zipfile.ZipFile('x.apk').read('classes.dex')))))\"",
-    "step3": "两者都命中 → 不删。删完必须 curl 验 404 + 确认没有现役包引用它"
+    "step3": "两者都命中 → 不删。删完必须 curl 验 404 + 确认没有现役包引用它",
+    "step0": "🔴 **先看本文件里 frozen:true 的** —— 这些是「域名写死在别人 APK / 音频表 / 引导页里」的，删了会让用户的 App 白屏或某个项目没声音。",
+    "step4": "🔴 **同一个域名可能在「测试 fixture」和「产品 dex」里都出现** —— 前者是假的、后者是真的。**「在测试里当假的用」≠「在产品里也是假的」。**"
   },
   "fallback_pattern": {
     "_why": "所有「引导壳型」App（页面从线上加载、APK 里写死一个兜底站）都要遵守",
