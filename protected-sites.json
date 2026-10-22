@@ -1,10 +1,9 @@
 {
   "_readme": "🔴🔴 云盘站点「不可删除」清单（2026-10-23 起生效）",
   "_why": "mcode 每次部署都换随机域名，站点很容易在清理时被误删。但有些站是**别的 APK 编译进去的兜底依赖**，删了用户的 App 就会白屏。本清单是所有 agent 清理站点前必须查的。",
-  "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删",
+  "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删。【新增】给做 App 的人：兜底站必须**单独部署 + 域名冻结**（永不 redeploy）—— 因为 mcode 域名每发一版就换一个，把兜底指向当前内容站 = 兜底迟早变死链。",
   "_owner": "NHK / hub / Shun 等各项目 agent 共用",
   "updated": "2026-10-23",
-
   "protected_sites": [
     {
       "domain": "vkwwuh9wgkzo0",
@@ -40,10 +39,20 @@
       "note": "删了 = Shun 没声音"
     }
   ],
-
   "how_to_check_before_deleting": {
     "step1": "拉本清单（本文件）",
     "step2": "扫所有现役 APK 的 classes.dex，找写死的 mcode 域名：python3 -c \"import zipfile,re;print(sorted(set(m.decode() for m in re.findall(rb'[a-z0-9]{4,}\\.space\\.mcode\\.cn', zipfile.ZipFile('x.apk').read('classes.dex')))))\"",
     "step3": "两者都命中 → 不删。删完必须 curl 验 404 + 确认没有现役包引用它"
+  },
+  "fallback_pattern": {
+    "_why": "所有「引导壳型」App（页面从线上加载、APK 里写死一个兜底站）都要遵守",
+    "rules": [
+      "① 单独部署一个**专用兜底站**，内容 = 当前最新的完整站",
+      "② 该站的域名**定下后永不 redeploy**（redeploy 会换域名 → APK 里写死的值就死了）",
+      "③ APK 的 Config.SITE_URL 写死**这个**站（不是当前内容站）",
+      "④ 真正的内容更新走**引导页**（GitHub Pages，永久地址）→ App 启动时读它 → 自动跟到最新站",
+      "⑤ 把该站登记进本清单（role=fallback, frozen=true）"
+    ],
+    "example": "NHK: 引导页 tlv-creator.github.io/nhk-easy-news/ → 兜底站 vkwwuh9wgkzo0（冻结）"
   }
 }
