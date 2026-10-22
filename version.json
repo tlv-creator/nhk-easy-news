@@ -1,8 +1,8 @@
 {
   "ver": 12,
   "verName": "1.12",
-  "site": "https://jf6u6zibzao37.space.mcode.cn/",
-  "apk": "https://jf6u6zibzao37.space.mcode.cn/NHK.apk",
-  "note": "新增 2026-10-22 一期（4 篇：PHP弱点/台風30号/秋田氾濫警報/富士山スキー場）易懂版+慢速音声+注音+逐词拆解；补回 vocab/lexicon/APK",
+  "site": "https://9vjb4ba1ex7tm.space.mcode.cn/",
+  "apk": "https://9vjb4ba1ex7tm.space.mcode.cn/NHK.apk",
+  "note": "原速音声响度归一化（电视音轨电平偏低 → 对齐慢速音声）",
   "updated": "2026-10-22"
 }
