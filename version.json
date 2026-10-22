@@ -1,8 +1,8 @@
 {
-  "ver": 12,
-  "verName": "1.12",
-  "site": "https://uicb7ib4i0361.space.mcode.cn/",
-  "apk": "https://uicb7ib4i0361.space.mcode.cn/NHK.apk",
-  "note": "墨水屏闸门 v4.4（深色级阈值 0.15）→ 按钮框恢复 2px",
+  "ver": 13,
+  "verName": "1.4",
+  "site": "https://yctqdbdj36g5j.space.mcode.cn/",
+  "apk": "https://yctqdbdj36g5j.space.mcode.cn/NHK.apk",
+  "note": "40期 · 修复：APK兜底站（原为占位符，引导页读不到会白屏）",
   "updated": "2026-10-23"
 }
