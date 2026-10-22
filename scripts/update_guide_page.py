@@ -32,6 +32,7 @@ API = 'https://api.github.com/repos/%s/%s/contents/%s' % (OWNER, REPO, PATH)
 HERE = os.path.dirname(os.path.abspath(__file__))
 TPL = os.path.join(os.path.dirname(HERE), 'guide', 'hub.html')
 GUIDE_URL = 'https://tlv-creator.github.io/nhk-easy-news/hub.html'
+PROTECTED_JSON = 'https://tlv-creator.github.io/nhk-easy-news/protected-sites.json'
 
 
 def api(method, url, token, payload=None):
@@ -155,6 +156,27 @@ def main():
         if not os.path.exists(TPL):
             raise SystemExit('❌ 线上拉不到，且找不到本地模板 %s' % TPL)
         html = open(TPL, encoding='utf-8').read()
+        # 🔴🔴🔴 **兜底模板必须被校验，否则拒绝写入**（hub pony 2026-10-23 给的更硬的解法）
+        #   「兜底不是『有个差不多的就行』，是『万一出事时的最后一道正确』」
+        #   ⇒ 兜底过期 = **最坏情况下把世界带回旧版**（引导页指回已删的站 = 直接 404）
+        #   ⇒ 侥幸没中不算防线（pony 自己那份模板就因为上次跑脚本被「顺带」刷新了）
+        try:
+            import urllib.request as _u
+            _req = _u.Request(PROTECTED_JSON, headers={'User-Agent': 'mavis-guide-guard'})
+            with _u.urlopen(_req, timeout=25) as _r:
+                _pl = json.loads(_r.read().decode('utf-8'))
+        except Exception as _e:
+            # 🔴 **校验清单本身拉不到 ⇒ 也要拒绝**（「查不到就不能放行」= exit 2 的延伸）
+            raise SystemExit('❌ 线上拉不到，且**保护清单也拉不到**（%s）\n'
+                             '   ⇒ 不许用未校验的兜底模板写入（查不到就不能放行）' % _e)
+        _dead = [s2.get('domain') for s2 in _pl.get('protected_sites', [])
+                 if (s2.get('status') or '').strip().upper() == 'DELETED' and s2.get('domain')]
+        _bad = [d for d in _dead if d in html]
+        if _bad:
+            raise SystemExit('❌ 本地兜底模板里含有**已删站**：%s\n'
+                             '   ⇒ 拒绝写入：兜底过期会把世界带回旧版（引导页指回死链）\n'
+                             '   ⇒ 请先把 %s 刷新到最新再跑' % (' '.join(_bad), TPL))
+        print('  ✅ 兜底模板已校验：不含任何已删站（检查了 %d 个 DELETED 域）' % len(_dead))
 
     site_b, dep_b = bare(a.site), bare(a.deploy)
 
