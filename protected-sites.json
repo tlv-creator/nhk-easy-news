@@ -242,5 +242,6 @@
     "nhk": "curl -s https://tlv-creator.github.io/nhk-easy-news/version.json | python3 -c 'import json,sys;print(json.load(sys.stdin)[\"site\"])'",
     "note": "hub 的引导页是 HTML（不是 JSON）⇒ 用 grep 抽域；shun/nhk 是 JSON ⇒ 读 site 字段"
   },
-  "_permanent_anchor": "🔴🔴 **`tlv-creator/nhk-easy-news` 这个 GitHub 仓库 = 所有项目的「永久锚点」** —— 它不是 mcode 站，mcode 清理碰不到它，**但它一旦没了，所有项目的 App 全哑**（引导页 404 → App 白屏）。⇒ **永不删这个仓库 / 永不删里面的 hub.html / version.json / shun.json / protected-sites.json**。"
+  "_permanent_anchor": "🔴🔴 **`tlv-creator/nhk-easy-news` 这个 GitHub 仓库 = 所有项目的「永久锚点」** —— 它不是 mcode 站，mcode 清理碰不到它，**但它一旦没了，所有项目的 App 全哑**（引导页 404 → App 白屏）。⇒ **永不删这个仓库 / 永不删里面的 hub.html / version.json / shun.json / protected-sites.json**。",
+  "_rule_delete_list": "🔴 **「待删清单」必须是删之前现取的** —— 快照只能当「候选」，不能当「待删」。\n  **理由（活例子）**：某个站 22:00 部署，6 小时后被清站扫掉 ⇒ **不是 bug，是设计缺陷**。\n  ⇒ 扫描器的输入应该是**现取的候选**，且**每个域在删之前要再验一次「还活着吗」**（现查，不是快照）。"
 }
