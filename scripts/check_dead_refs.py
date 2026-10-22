@@ -189,11 +189,24 @@ def load_protected():
         print('     （拉取失败：%s）' % e)
         return None
     out = {}
+    deleted = []
     for s in d.get('protected_sites', []):
         dom = (s.get('domain') or '').strip()
-        if dom:
-            out[dom] = s
-    print('     清单已载入：%d 条' % len(out))
+        if not dom:
+            continue
+        # 🔴🔴🔴 **已删的条目只是「历史记录」，不该再拦删**（hub pony 2026-10-23 抓出）
+        #   `status: "DELETED"` 是**永久事实**（它死了）—— 但「死了」恰恰意味着
+        #   「不需要保护」⇒ 否则清单会把自己的历史条目变成**永久黑名单**，
+        #   **每删一个站就多一条**（当晚已积累 2 条：9chr6us9mlatt / lnh1i27d4m3vn）
+        if (s.get('status') or '').strip().upper() == 'DELETED':
+            deleted.append(dom)
+            continue
+        out[dom] = s
+    print('     清单已载入：%d 条生效' % len(out))
+    if deleted:
+        # 🔴 **排除必须显式打印**（静默排除 = 又一个看不见的地方）
+        print('     ⚠️ 另有 %d 条已标 DELETED（历史记录，不参与保护）：%s'
+              % (len(deleted), ' '.join(deleted)))
     return out
 
 
@@ -215,6 +228,16 @@ def main():
         if prot is None:
             print('  🔴 拉不到永久清单 ⇒ **不放行**（不许「拉不到就当没事」）')
             return 2
+        # 🔴 如果要删的域在清单里但已标 DELETED ⇒ 明确告诉对方「它已经不受保护」
+        #    （别让人以为还被保护着）
+        try:
+            _pj = json.loads(urllib.request.urlopen(PROTECTED_URL, timeout=25).read().decode('utf-8'))
+        except Exception:
+            _pj = {}
+        for s in _pj.get('protected_sites', []):
+            dom = (s.get('domain') or '').strip()
+            if dom in dead and (s.get('status') or '').strip().upper() == 'DELETED':
+                print('  ℹ️ %s 在清单里但已标 DELETED ⇒ 不受保护（可删）' % dom)
         blocked = [(d, prot[d]) for d in dead if d in prot]
         if blocked:
             for d, h in blocked:
