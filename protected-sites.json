@@ -36,7 +36,9 @@
       "domain": "da4lxn2phccck",
       "project": "shun",
       "reason": "Shun 的**音频源站**（引导页 audio 字段指向它）",
-      "note": "删了 = Shun 没声音"
+      "note": "🔴 **域名写死在 Shun APK 的 assets/app.js（AUDIO_BASE）+ 引导页 shun.json 的 audio 字段** ⇒ **redeploy 就换域名 ⇒ APK 里的写死值立刻死** ⇒ 永久冻结。内容要更新只能新建站 + 改所有引用方 + 改完再删旧的。删了 = Shun 网页版没声音 + 新集播不了。",
+      "role": "audio-source",
+      "frozen": true
     },
     {
       "domain": "lnh1i27d4m3vn",
