@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>学生登录 · 每日听力记录</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f5fd0'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E5%90%AC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <h1>每日听力记录</h1>
+  <div class="who" id="who"></div>
+</header>
+
+<div class="wrap">
+
+  <div id="demoBanner" class="banner" hidden>演示模式：数据只存在本机浏览器，不会交到老师那里。真实环境请打开不带 ?demo=1 的链接。</div>
+
+  <!-- ============ 登录 ============ -->
+  <section id="viewLogin">
+    <div class="card">
+      <h2>学生登录</h2>
+      <p style="color:var(--ink2);margin:0 0 4px;">请按名册填写学号和姓名，两者都对才能进入。</p>
+      <label class="f" for="sid">学号</label>
+      <input type="text" id="sid" inputmode="numeric" autocomplete="off" placeholder="请输入名册上的学号">
+      <label class="f" for="sname">姓名</label>
+      <input type="text" id="sname" autocomplete="off" placeholder="请填名册上的姓名">
+      <div class="msg" id="loginMsg"></div>
+      <button class="big" id="btnLogin">进　入</button>
+    </div>
+  </section>
+
+  <!-- ============ 主页 ============ -->
+  <section id="viewHome" hidden>
+    <div class="stats">
+      <div class="stat"><div class="n" id="stToday">0</div><div class="k">今天(分钟)</div></div>
+      <div class="stat"><div class="n" id="stWeek">0</div><div class="k">近7天(分钟)</div></div>
+      <div class="stat"><div class="n" id="stTotal">0</div><div class="k">累计(分钟)</div></div>
+    </div>
+
+    <button class="big" id="btnAdd">＋ 记一笔</button>
+
+    <div class="card">
+      <h2>我的记录 <span id="logCount" style="font-weight:400;color:var(--ink2)"></span></h2>
+      <div id="myLogs"></div>
+    </div>
+
+    <button class="link" id="btnLogout">退出登录</button>
+  </section>
+</div>
+
+<!-- ============ 记一笔 ============ -->
+<div class="sheet-mask" id="addMask" hidden>
+  <div class="sheet">
+    <h2>记一笔听力</h2>
+    <p style="color:var(--ink2);margin:0 0 6px;font-size:.88rem;">时间、内容、时长——填完就交上去了。</p>
+
+    <label class="f" for="fDate">日期</label>
+    <input type="date" id="fDate">
+
+    <label class="f" for="fTime">时间</label>
+    <input type="time" id="fTime">
+
+    <label class="f" for="fContent">听了什么 <span class="hint">必填</span></label>
+    <textarea id="fContent" placeholder="例：BBC 6 Minute English - Ep. 123 / 雅思剑 17 Test 2 Section 3"></textarea>
+
+    <label class="f" for="fMinutes">时长（分钟） <span class="hint">必填</span></label>
+    <input type="number" id="fMinutes" inputmode="numeric" min="1" max="600" step="1" placeholder="例：20">
+    <div class="chips" id="minChips"></div>
+
+    <label class="f">类别 <span class="hint">可不选</span></label>
+    <div class="chips" id="catChips"></div>
+
+    <label class="f" for="fNote">备注 <span class="hint">可不填</span></label>
+    <input type="text" id="fNote" placeholder="例：错题在第 3 段">
+
+    <div class="msg" id="addMsg"></div>
+    <div class="actions">
+      <button class="ghost" id="btnCancel">取消</button>
+      <button id="btnSave">提交</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/api.js"></script>
+<script src="js/student.js"></script>
+</body>
+</html>
