@@ -93,6 +93,24 @@ def scan_texts(dead):
     return code_hits, mem_hits
 
 
+def strip_comments(text):
+    """🔴 剥掉注释 —— **注释里出现的域不是依赖**（pony 2026-10-23 实测抓到）
+
+    🔴🔴 **同一个概念，两个层，判据必须一致**：
+      代码层我分了「memory / code」，**但 APK 层没分** ⇒
+      `assets/shell/shell.css` 第 4 行的注释
+      `/* 模板来源：魔卡少女樱 v2.10（https://u8tpuxfku1xoi.space.mcode.cn） */`
+      被判成「活依赖」⇒ **假红灯**（那个域早就 404，它只是「来源说明」）
+
+    ⇒ 做法抄墨水屏闸门那招：**等长剥注释**（换行保留、其余换空格）⇒ **行号/偏移不变**
+    ⚠️ **行注释只认「行首的 //」** —— `https://` 里的 `//` **不能剥** ❌
+    """
+    text = re.sub(r'/\*.*?\*/', lambda m: re.sub(r'[^\n]', ' ', m.group(0)), text, flags=re.S)
+    text = re.sub(r'<!--.*?-->', lambda m: re.sub(r'[^\n]', ' ', m.group(0)), text, flags=re.S)
+    text = re.sub(r'(?m)^[ \t]*//[^\n]*', lambda m: re.sub(r'[^\n]', ' ', m.group(0)), text)
+    return text
+
+
 def scan_dex(apk, dead):
     """③ APK 里写死的域名 —— **dex 和 assets 都要扫**（pony 2026-10-23 指出）
 
@@ -100,6 +118,9 @@ def scan_dex(apk, dead):
     「编译进去的依赖」在 **`assets/*.js` / `assets/*.html`** 里 ——
     **hub 的 13 个域全在 assets 里，dex 里一个都没有** ❌
     ⇒ 只扫 dex 会把 hub 判成「零依赖」⇒ **删掉它依赖的站它照样白屏** ✅
+
+    🔴 **assets 层要剥注释**（注释里的域不是依赖）⇒ 见 `strip_comments`
+    （**dex 不剥** —— 字节码里没有注释概念）
     """
     out = {}
     skipped = []
@@ -121,7 +142,8 @@ def scan_dex(apk, dead):
                 if info.file_size > 2 * 1024 * 1024:      # 单文件 >2MB 跳过（图片/大资源）
                     skipped.append('%s (%d B)' % (n, info.file_size))
                     continue
-                blob.append(z.read(n).decode('utf-8', 'replace'))
+                # 🔴 assets 层要剥注释（注释里的域不是依赖 —— 见 strip_comments）
+                blob.append(strip_comments(z.read(n).decode('utf-8', 'replace')))
             except Exception:
                 pass
         alltext = '\n'.join(blob)
