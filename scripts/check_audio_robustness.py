@@ -51,12 +51,24 @@ RE_RETRY = [
     re.compile(r"\btries\b", re.I),
     re.compile(r"\battempt", re.I),
 ]
-# ③ 看门狗（判据落在 readyState 上 —— 那正是 watchdog 的特征）
-# 🔴🔴 **第一版判据太松**：只找 `readyState` ⇒ **`document.readyState === 'loading'`
-#    也会命中**（每个项目都有这句！）⇒ 5 个项目全被判「有看门狗」= **假绿灯**
-# ⇒ 修两条：① 排除 `document.readyState`（那是 DOM 就绪，不是音频就绪）
-#            ② 要求同一窗口（±250 字符）里有 `setTimeout`（watchdog 必然配定时器）
-RE_WATCH = re.compile(r"(?<!document)\.readyState")
+# ③ 看门狗 —— 🔴🔴🔴 **必须分「网页腿」和「原生腿」**（hub pony 2026-10-23 抓出我的假阴性）
+#
+#   **ama 的看门狗有两条腿**：
+#     · **原生腿**：`playerState()` 轮询 + 8 秒超时 → fallback 到网页 `<audio>`
+#     · **网页腿**：`<audio>` 的 `readyState` + 定时器
+#   ⇒ 我第一版只认「readyState + 定时器」⇒ **ama 被判成「无看门狗」= 假阴性** ❌
+#   ⇒ **一个概念有几条实现路径，判据就得有几条**（同「同一个概念两个层判据不一致」那一族）✅
+#
+#   🔴 **第一版判据太松**（另一个方向）：只找 `readyState` ⇒ **`document.readyState === 'loading'`
+#      也会命中**（每个项目都有这句！）⇒ 5 个项目全被判「有看门狗」= **假绿灯** ❌
+#
+#   ⇒ 现在的判据：
+#     **网页腿** = 非 `document.` 的 `readyState` + 同窗口有定时器
+#     **原生腿** = `playerState` + 同窗口有定时器（轮询/超时分支）
+#     **任一成立即算「有看门狗」** ⇒ 但**必须分别报出来**，因为缺哪条腿就是哪个洞
+RE_WATCH_WEB = re.compile(r"(?<!document)\.readyState")
+RE_WATCH_NATIVE = re.compile(r"playerState")
+RE_TIMER = re.compile(r"setTimeout|setInterval")
 WATCH_WINDOW = 250
 
 TARGETS = [
@@ -82,20 +94,24 @@ def fetch(root, path):
         return f.read()
 
 
-def has_watchdog(text):
-    """看门狗 = 「非 document 的 readyState」+ 同窗口里有 setTimeout"""
-    for m in RE_WATCH.finditer(text):
-        a = max(0, m.start() - WATCH_WINDOW)
-        b = min(len(text), m.end() + WATCH_WINDOW)
-        if 'setTimeout' in text[a:b]:
-            return True
-    return False
+def _near_timer(text, m):
+    a = max(0, m.start() - WATCH_WINDOW)
+    b = min(len(text), m.end() + WATCH_WINDOW)
+    return bool(RE_TIMER.search(text[a:b]))
+
+
+def watchdog_legs(text):
+    """返回 (网页腿, 原生腿) 两个 bool —— 🔴 必须分开报，缺哪条腿就是哪个洞"""
+    web = any(_near_timer(text, m) for m in RE_WATCH_WEB.finditer(text))
+    native = any(_near_timer(text, m) for m in RE_WATCH_NATIVE.finditer(text))
+    return web, native
 
 
 def check_text(text):
+    web, native = watchdog_legs(text)
     return (any(r.search(text) for r in RE_ERR),
             any(r.search(text) for r in RE_RETRY),
-            has_watchdog(text))
+            web or native, web, native)
 
 
 def main():
@@ -124,7 +140,7 @@ def main():
         if not got:
             print('  ⚠️  %-9s 取不到源码（跳过）' % name)
             continue
-        e, r, w = check_text(blob)
+        e, r, w, leg_web, leg_native = check_text(blob)
         rows.append((name, e, r, w))
         lack = []
         if not e: lack.append('①error监听')
@@ -133,8 +149,10 @@ def main():
         if lack:
             missing.append((name, lack))
         mark = lambda b: '✅' if b else '❌'
-        print('  %-9s ①%s ②%s ③%s   %s' % (
-            name, mark(e), mark(r), mark(w),
+        # 🔴 **网页腿 / 原生腿 分开标** —— 「有原生腿但没网页腿」= 用户在网页/App 里听到的是网页腿
+        legs = '腿:网页%s/原生%s' % (mark(leg_web), mark(leg_native))
+        print('  %-9s ①%s ②%s ③%s  %-18s %s' % (
+            name, mark(e), mark(r), mark(w), legs,
             ('🔴 缺 ' + ' '.join(lack)) if lack else '✅ 三问齐'))
 
     print()
