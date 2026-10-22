@@ -1,0 +1,233 @@
+/* =====================================================================
+   每日听力记录站 · 共用样式
+   - 学生端：手机优先，大点按
+   - 教师端：墨水屏 + 老花眼 → 大字号、高对比开关、少图标
+   ===================================================================== */
+
+:root {
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --ink: #16181d;
+  --ink2: #545a66;
+  --line: #dcdfe5;
+  --accent: #1f5fd0;
+  --accent-ink: #ffffff;
+  --ok: #16794c;
+  --warn: #9a5b00;
+  --danger: #b3261e;
+  --hl: #fff3b0;
+  --radius: 12px;
+  --fs: 17px;
+}
+
+html.hc {
+  --bg: #ffffff;
+  --card: #ffffff;
+  --ink: #000000;
+  --ink2: #000000;
+  --line: #000000;
+  --accent: #000000;
+  --accent-ink: #ffffff;
+  --ok: #000000;
+  --warn: #000000;
+  --danger: #000000;
+  --hl: #ffe600;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html { font-size: var(--fs); }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* 平台注入的悬浮球会压住右下角按钮 */
+#minimax-floating-ball { display: none !important; }
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 14px 40px; }
+.wrap.wide { max-width: 1180px; }
+
+/* ---------------- 顶栏 ---------------- */
+.topbar {
+  position: sticky; top: 0; z-index: 30;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.topbar h1 { font-size: 1.05rem; margin: 0; font-weight: 700; }
+.topbar .who { margin-left: auto; font-size: .85rem; color: var(--ink2); text-align: right; }
+.topbar .who b { color: var(--ink); }
+
+/* ---------------- 卡片 ---------------- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin: 12px 0;
+}
+.card h2 { font-size: 1rem; margin: 0 0 10px; }
+
+.banner {
+  background: var(--hl);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin: 12px 0;
+  font-size: .88rem;
+  font-weight: 600;
+}
+.banner.err { background: #ffe9e7; border-color: var(--danger); color: #7a1c16; }
+html.hc .banner.err { background: #fff; }
+
+/* ---------------- 表单 ---------------- */
+label.f { display: block; margin: 12px 0 0; font-weight: 600; font-size: .95rem; }
+label.f .hint { font-weight: 400; color: var(--ink2); font-size: .85em; margin-left: 6px; }
+
+input[type=text], input[type=password], input[type=number], input[type=date], input[type=time], select, textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 12px;
+  min-height: 52px;
+}
+html.hc input, html.hc select, html.hc textarea { border-color: #000; }
+input:focus, select:focus, textarea:focus { outline: 3px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+textarea { min-height: 90px; resize: vertical; }
+
+button {
+  font: inherit; font-weight: 600;
+  border-radius: 10px;
+  border: 2px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 12px 18px;
+  min-height: 52px;
+  cursor: pointer;
+}
+button.ghost { background: var(--card); color: var(--ink); border-color: var(--line); }
+button.ghost:hover { border-color: var(--ink2); }
+button:disabled { opacity: .55; cursor: not-allowed; }
+button.big { width: 100%; font-size: 1.1rem; }
+button.link { background: none; border: none; color: var(--ink2); padding: 6px 4px; min-height: 0; text-decoration: underline; }
+button.danger { background: var(--card); color: var(--danger); border-color: var(--danger); }
+html.hc button.danger { color: #000; }
+
+.row { display: flex; gap: 10px; }
+.row > * { flex: 1; }
+.actions { display: flex; gap: 10px; margin-top: 14px; }
+.actions > * { flex: 1; }
+
+/* 快捷时长 */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.chip {
+  border: 2px solid var(--line); background: var(--card); color: var(--ink);
+  border-radius: 999px; padding: 9px 15px; font: inherit; font-weight: 600; min-height: 46px;
+}
+.chip.on { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+html.hc .chip.on { background: #000; color: #fff; }
+
+/* ---------------- 统计 ---------------- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+.stat {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 10px 8px; text-align: center;
+}
+.stat .n { font-size: 1.5rem; font-weight: 800; line-height: 1.2; }
+.stat .k { font-size: .78rem; color: var(--ink2); }
+
+/* ---------------- 记录行 ---------------- */
+.log {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
+}
+.log:last-child { border-bottom: none; }
+.log .min {
+  flex: 0 0 auto; min-width: 62px; text-align: center;
+  background: var(--hl); border: 1px solid var(--ink); border-radius: 10px; padding: 4px 6px;
+  font-weight: 800; font-size: .95rem;
+}
+html.hc .log .min { background: #fff; }
+.log .body { flex: 1; min-width: 0; }
+.log .t { font-weight: 700; }
+.log .c { color: var(--ink2); font-size: .88rem; word-break: break-word; }
+.log .x { flex: 0 0 auto; }
+
+.empty { text-align: center; color: var(--ink2); padding: 26px 10px; }
+
+/* ---------------- 底部弹层 ---------------- */
+.sheet-mask {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0,0,0,.45);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.sheet-mask[hidden] { display: none; }
+.sheet {
+  background: var(--card);
+  width: 100%; max-width: 640px;
+  max-height: 92vh; overflow: auto;
+  border-radius: 16px 16px 0 0;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+}
+.sheet h2 { margin: 0 0 4px; font-size: 1.05rem; }
+.sheet .close { position: sticky; top: 0; }
+
+/* ---------------- 表格（教师端） ---------------- */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { padding: 10px 10px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { background: var(--bg); font-weight: 700; position: sticky; top: 0; z-index: 1; }
+html.hc th { background: #fff; border-bottom: 2px solid #000; }
+tbody tr:nth-child(even) { background: rgba(0,0,0,.035); }
+html.hc tbody tr:nth-child(even) { background: #fff; }
+td.wrapcell { white-space: normal; min-width: 200px; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.today { background: var(--hl); }
+html.hc tr.today { background: #ffe600; }
+
+.tabs { display: flex; gap: 6px; margin: 12px 0; flex-wrap: wrap; }
+.tabs button { background: var(--card); color: var(--ink); border-color: var(--line); }
+.tabs button.on { background: var(--ink); color: var(--card); border-color: var(--ink); }
+html.hc .tabs button.on { background: #000; color: #fff; }
+
+.filterbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.filterbar select, .filterbar input { min-height: 46px; width: auto; min-width: 140px; flex: 0 1 auto; }
+
+.zoombar {
+  position: fixed; right: 10px; bottom: 10px; z-index: 40;
+  background: var(--card); border: 2px solid var(--ink); border-radius: 12px;
+  padding: 8px 10px; display: flex; gap: 8px; align-items: center;
+  box-shadow: 0 2px 0 rgba(0,0,0,.2);
+}
+.zoombar #zoomPanel { display: flex; gap: 8px; align-items: center; }
+.zoombar #zoomPanel[hidden] { display: none; }
+.zoombar input[type=range] { width: 110px; }
+.zoombar button { min-height: 40px; padding: 6px 10px; }
+
+.msg { min-height: 24px; margin: 8px 0; font-size: .9rem; }
+.msg.err { color: var(--danger); font-weight: 600; }
+.msg.ok { color: var(--ok); font-weight: 600; }
+html.hc .msg.err, html.hc .msg.ok { color: #000; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%);
+  background: var(--ink); color: var(--bg);
+  padding: 12px 18px; border-radius: 10px; z-index: 60;
+  font-weight: 600; max-width: 90vw; text-align: center;
+}
+.toast[hidden] { display: none; }
+
+@media (max-width: 420px) {
+  .stats { grid-template-columns: repeat(3, 1fr); }
+  .stat .n { font-size: 1.25rem; }
+}
