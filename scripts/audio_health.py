@@ -48,8 +48,43 @@ def _run(cmd):
         return ""
 
 
-def probe(path):
-    """返回 {peak_db, flat_ratio, peak_count, samples, mean_db, lufs}"""
+def over_pct(path):
+    """🔴 **超满刻度样本占比**（|x| > 1.0 的样本比例）
+
+    🔴 为什么要有这一维（2026-10-23 NHK 实测）：
+      **有损编码器会把「波形削平」抹掉**（Shun 实测：硬削平 wav 66.7% → AAC 32k 后 0.00075%）
+      ⇒ 「平顶占比」在真实有损链路里基本是空的。
+      但 NHK 的源流坏帧**不是**削平，是**零散的、幅度荒谬的垃圾样本**：
+      峰值 +2.8 ~ +76.9 dBFS，而平顶占比 = 0.000%
+      ⇒ **只有「超满刻度样本占比」抓得住它**（NHK 侧实测 0.004% ~ 0.12%）。
+    """
+    try:
+        import numpy as np
+    except Exception:
+        return None
+    # 🔴🔴 **必须用原生声道布局**（2026-10-23 NHK 实测踩到）：
+    #   `-ac 1` 的单声道下混是**另一个信号** ⇒ 峰值与用户实际听到的**差 3 dB**
+    #   （实测同一文件：下混 -1.48 dBFS，逐声道 -4.48 dBFS）
+    #   ⇒ 用户设备播的是**立体声原文件** ⇒ 判据必须落在**原生逐声道**上。
+    p = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", path,
+                        "-f", "f32le", "-ar", "48000", "-"],
+                       stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=600)
+    d = p.stdout
+    n = len(d) // 4
+    if n == 0:
+        return None
+    a = np.frombuffer(d[:n * 4], dtype=np.float32)
+    if len(a) % 2 == 0:
+        ch = a.reshape(-1, 2)          # 立体声：逐声道取最大
+        m = np.abs(ch).max(axis=1)
+        over = (np.abs(ch) > 1.0)
+        return 100.0 * float(over.sum()) / over.size
+    a = np.abs(a)
+    return 100.0 * float((a > 1.0).sum()) / len(a)
+
+
+def probe(path, deep=False):
+    """返回 {peak_db, flat_ratio, peak_count, samples, mean_db, lufs, over_pct}"""
     out = {}
 
     # ── ① 全量 astats（必须全量：否则 Peak count / Number of samples 不打印）──
@@ -79,6 +114,7 @@ def probe(path):
     if not m3:
         m3 = re.search(r'"input_i"\s*:\s*(-?[\d.]+)', txt3)
     out["lufs"] = float(m3.group(1)) if m3 else None
+    out["over_pct"] = over_pct(path) if deep else None
     return out
 
 
@@ -152,7 +188,8 @@ def selftest():
     return fails
 
 
-def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
+def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False,
+              deep=False, max_over_pct=None):
     files = []
     for root, _dirs, names in os.walk(d):
         for n in sorted(names):
@@ -170,8 +207,9 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
     rows = []
     bad = []          # 削平（真正的削波）⇒ 硬失败
     over = []         # 过冲（解码器重建超出 0 dBFS）⇒ **默认只警告**
+    junk = []         # 🔴 垃圾样本（超满刻度占比超限）⇒ 源里有坏帧 ⇒ 硬失败
     for f in files:
-        p = probe(f)
+        p = probe(f, deep=deep)
         fr = p.get("flat_ratio")
         pk = p.get("peak_db")
         # 🔴🔴 两条独立维度（2026-10-23 修）：**过冲 ≠ 削波**
@@ -180,7 +218,11 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
         #        ⇒ 与削平混在一起报，会把「0.002% 样本过冲」的文件误判成爆音（假警报）
         flat = (fr is not None and fr > FLAT_RATIO_LIMIT)
         overshoot = (pk is not None and pk > PEAK_LIMIT_DB)
-        rows.append((os.path.basename(f), pk, fr, p.get("lufs"), flat, overshoot))
+        op = p.get("over_pct")
+        is_junk = (op is not None and max_over_pct is not None and op > max_over_pct)
+        rows.append((os.path.basename(f), pk, fr, p.get("lufs"), flat, overshoot, op, is_junk))
+        if is_junk:
+            junk.append(f)
         if flat:
             bad.append(f)
         if overshoot:
@@ -222,6 +264,10 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
         reason, rc = "flat", 1
         if not quiet:
             print("  ❌ 有削平文件（波形被削成方波 ⇒ 听着会爆）")
+    elif junk:
+        reason, rc = "junk", 1
+        if not quiet:
+            print("  ❌ 有垃圾样本文件（超满刻度占比 > %.3f%% ⇒ 源里有坏帧）" % max_over_pct)
     elif over and strict_overshoot:
         reason, rc = "overshoot", 1
         if not quiet:
@@ -232,8 +278,11 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
     RESULT.setdefault("dirs", []).append({
         "dir": d,
         "files": [{"file": r[0], "peak_db": r[1], "flat_ratio": r[2], "lufs": r[3],
-                   "flat": r[4], "overshoot": r[5]} for r in rows],
+                   "flat": r[4], "overshoot": r[5],
+                   "over_pct": (r[6] if len(r) > 6 else None),
+                   "junk": (r[7] if len(r) > 7 else False)} for r in rows],
         "flat_bad": [os.path.basename(x) for x in bad],
+        "junk_bad": [os.path.basename(x) for x in junk],
         "overshoot": [os.path.basename(x) for x in over],
         "lufs_spread": round(spread, 2) if lufs_vals else None,
         "reason": reason,          # 🔴 为什么失败（调用方不用去猜）
@@ -248,6 +297,10 @@ def main():
     ap.add_argument("--check", action="append", default=[])
     ap.add_argument("--max-lufs-spread", type=float, default=None)
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--deep", action="store_true",
+                    help="额外解码一遍算「超满刻度样本占比」（抓源里的坏帧）")
+    ap.add_argument("--max-over-pct", type=float, default=None,
+                    help="超满刻度样本占比上限（%%），超了判 junk（源里有坏帧）")
     ap.add_argument("--strict-overshoot", action="store_true",
                     help="把「过冲」也算失败（默认只警告：过冲≠削波）")
     a = ap.parse_args()
@@ -260,7 +313,8 @@ def main():
     if a.check:
         rc = 0
         for d in a.check:
-            r = check_dir(d, a.max_lufs_spread, a.strict_overshoot, quiet=a.json)
+            r = check_dir(d, a.max_lufs_spread, a.strict_overshoot, quiet=a.json,
+                          deep=a.deep, max_over_pct=a.max_over_pct)
             if r == 1:
                 rc = 1
             elif r == 2:
