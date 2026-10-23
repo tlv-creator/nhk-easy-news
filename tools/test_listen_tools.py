@@ -110,12 +110,29 @@ class Handler(BaseHTTPRequestHandler):
             if not f:
                 return self._send(404, b"nope", "text/plain")
             return self._send(200, f["text"].encode(), "text/plain")
+        if p.startswith("/probe/"):
+            dom = p.split("/probe/",1)[1].strip("/")
+            if dom.startswith("nosuchhead"):
+                return self._send(404, b"nope", "text/plain")
+            return self._send(200, b"<html>ok</html>", "text/html")
         if p.startswith("/pages/"):
             t = REPO.rendered.get(p[len("/pages/"):])
             if t is None:
                 return self._send(404, b"nope", "text/plain")
             return self._send(200, t.encode(), "text/html")
         return self._send(404, {"message": "Not Found"})
+
+    def do_HEAD(self):
+        REPO.hits += 1
+        p = self.path
+        if p.startswith("/probe/"):
+            dom = p.split("/probe/",1)[1].strip("/")
+            if dom.startswith("blockedhead"):
+                self.send_response(403); self.send_header("Content-Length","0"); self.end_headers(); return
+            if dom.startswith("nosuchhead"):
+                self.send_response(404); self.send_header("Content-Length","0"); self.end_headers(); return
+            self.send_response(200); self.send_header("Content-Length","0"); self.end_headers(); return
+        self.send_response(200); self.send_header("Content-Length","0"); self.end_headers()
 
     def do_PUT(self):
         REPO.hits += 1
@@ -143,6 +160,7 @@ def run(script, args, port, extra_env=None):
         "LISTEN_LIST_API": "http://127.0.0.1:%d/repos/o/r/contents/protected-sites.json" % port,
         "LISTEN_LIST_RAW": "http://127.0.0.1:%d/raw/protected-sites.json" % port,
         "LISTEN_LIST_PAGES": "http://127.0.0.1:%d/pages/protected-sites.json" % port,
+        "LISTEN_PROBE_BASE": "http://127.0.0.1:%d/probe/%s/" % (port, "%s"),
         "GH_TOKEN": "fake-token-for-test",
     })
     if extra_env:
@@ -394,6 +412,30 @@ def t10_show_必须打印JSON():
         check("每日听力记录" in out, "打印的是 version.json 内容（不是帮助文本）")
         check("源端" in out, "说明了是从源端读的")
         check("用法：" not in out, "没有打印帮助文本")
+    finally:
+        srv.shutdown()
+
+
+@test
+def t11_HEAD被挡_必须GET复验():
+    """🔴 **HEAD 不准**：中间层会把并发 HEAD 打成 403/501（实测 NHK 内容站被误报成死站）
+    ⇒ HEAD 不是 200/404 时必须用 GET 复验 ⇒ 活的要报活，死的才报死"""
+    srv, port = start_server()
+    try:
+        REPO.files.clear(); REPO.rendered.clear(); REPO.hooks.clear()
+        REPO.set("protected-sites.json", json.dumps({"protected_sites": [
+            {"domain": "blockedheadaaa", "project": "head-403 但 GET 200"},
+            {"domain": "nosuchheadaaa", "project": "真的 404"},
+        ]}, ensure_ascii=False))
+        code, out = run(ALIVE, [], port)
+        print("   ---- 输出 ----")
+        for ln in out.splitlines():
+            if "head" in ln or "404" in ln or "活" in ln: print("     " + ln)
+        check("blockedheadaaa" in out and "🔴" not in out.split("blockedheadaaa")[1].split(chr(10))[0],
+              "HEAD 403 但 GET 200 的域 → **报活着**（不能报死）")
+        check("nosuchheadaaa" in out and "🔴" in out.split("nosuchheadaaa")[1].split(chr(10))[0],
+              "GET 也 404 的域 → 报死（判据没被放宽）")
+        check(code == 1, "有死域时退出码 = 1（实际 %d）" % code)
     finally:
         srv.shutdown()
 
