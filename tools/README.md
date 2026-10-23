@@ -27,6 +27,9 @@ python3 tools/check_sites_alive.py --local x.json
   - ⚖️ 但 `status: "DELETED"` **可以写**：它是**永久事实**（删掉的站不会活回来），
     和「现在还活着吗」这种会过期的东西不是一回事 ⇒ **不矛盾**
 - 🔴 网络错误（URLError）**不等于**站点死了 → 重试一次，仍失败只报「网络错误」不报死
+- 🔴 **HEAD 不准**：中间层会把并发 HEAD 打成 403/429/501（实测：NHK 内容站被误报成死站，
+  而 GET 和浏览器都是 200）⇒ **HEAD 不是 200/404 时一律用 GET 复验**；
+  「被挡/限流」单独提示，**不算死站**（判据没被放宽：GET 也 404 照报死）
 - **清单从源端读**（Contents API → raw → 才退到 Pages 并明确标注）⇒ 不会拿到还没刷新的旧清单
 - 清单拉不到 → **exit 2**（**不许放行删除操作**：闸门找不到东西必须 FAIL）
 
@@ -52,7 +55,7 @@ python3 tools/update_listen_mirror.py https://新域名.space.mcode.cn --no-rend
 python3 tools/test_listen_tools.py
 ```
 
-自带 mock 仓库（不碰真 GitHub），10 个用例：
+自带 mock 仓库（不碰真 GitHub），11 个用例：
 
 | 用例 | 撞什么 |
 |---|---|
@@ -66,6 +69,7 @@ python3 tools/test_listen_tools.py
 | 清单 1 | 清单**优先读源端**（渲染端给旧清单时也要用源端那份） |
 | 清单 2 | 清单拉不到 ⇒ exit 2（不许放行） |
 | 参数 | `--show` 不能走成「打印帮助」 |
+| HEAD 判据 | **HEAD 403 但 GET 200 ⇒ 必须报活**；GET 也 404 才报死 |
 
 🔴 `fixtures/old_update_listen_mirror.py` = **旧版工具的字节级副本**，
 只用于上面两条**对拍**用例（仅改了两行端点常量指向 mock，被测逻辑一字未动）。
