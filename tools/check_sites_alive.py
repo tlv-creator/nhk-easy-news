@@ -68,24 +68,46 @@ def fetch_list():
     raise RuntimeError("拉到的清单里没有 protected_sites 字段")
 
 
-def head(domain, timeout=8):
-    url = "https://%s.space.mcode.cn/" % domain
+def _req(url, method, timeout):
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
-    # 🔴 网络抖动（URLError）≠ 站点死了 → 重试一次再下结论
-    last = (0, url)
-    for attempt in range(2):
-        req = urllib.request.Request(url, method="HEAD")
-        try:
-            with urllib.request.urlopen(req, timeout=timeout, context=ctx) as r:
-                return r.status, url
-        except urllib.error.HTTPError as e:
-            return e.code, url
-        except Exception as e:
-            last = (0, "%s (%s)" % (url, type(e).__name__))
-            time.sleep(1.5)
-    return last
+    req = urllib.request.Request(url, method=method)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout, context=ctx) as r:
+            return r.status
+    except urllib.error.HTTPError as e:
+        return e.code
+    except Exception:
+        return 0
+
+
+def head(domain, timeout=8):
+    """→ (code, kind)  kind: alive / dead / blocked / neterr
+    🔴 **HEAD 不准**：并发压测时中间层会回 403/429/501（实测：NHK 内容站被并发 HEAD 打成 403，
+       GET 和浏览器都是 200）⇒ **只要 HEAD 不是 200/404，必须用 GET 复验**。
+    ⇒ 「403/429/501」= 被挡/限流，**不是站死了**。"""
+    # 🔴 端点可覆盖（为了能拿 mock 做自检 —— 「HEAD 不准」这条必须能测）
+    url = (os.environ.get("LISTEN_PROBE_BASE") or "https://%s.space.mcode.cn/") % domain
+    code = _req(url, "HEAD", timeout)
+    if code == 200:
+        return 200, "alive", url
+    # 一律用 GET 复验（HEAD 被中间层改写/限流的概率很高）
+    g = _req(url, "GET", timeout)
+    if g == 200:
+        return 200, "alive", url
+    if g in (404, 410):
+        return g, "dead", url
+    if g == 0:
+        # 网络错误 ≠ 站点死 → 再试一次
+        time.sleep(1.5)
+        g = _req(url, "GET", timeout)
+        if g == 200:
+            return 200, "alive", url
+        if g in (404, 410):
+            return g, "dead", url
+        return 0, "neterr", url
+    return g, "blocked", url
 
 
 def main():
@@ -124,26 +146,29 @@ def main():
         results = []
         for fut in concurrent.futures.as_completed(futs):
             d, e, mode = futs[fut]
-            code, url = fut.result()
-            results.append((d, e, mode, code, url))
+            code, kind, url = fut.result()
+            results.append((d, e, mode, code, kind, url))
 
     results.sort(key=lambda r: (r[2] == "check", r[0]))
     dead = []
     if args.json:
-        print(json.dumps([{"domain": d, "project": e.get("project"), "code": c,
-                           "url": u, "source": src} for d, e, m, c, u in results],
+        print(json.dumps([{"domain": d, "project": e.get("project"), "code": c, "kind": k,
+                           "url": u, "source": src} for d, e, m, c, k, u in results],
                          ensure_ascii=False, indent=1))
     else:
-        for d, e, mode, c, u in results:
+        for d, e, mode, c, k, u in results:
             if mode == "check":
-                if c == 200:
+                if k == "alive":
                     print("  %-18s %-22s ✅ 200" % (d, (e.get("project") or "")[:22]))
-                elif c == 0:
-                    # 网络错误（不是 404）→ 不算死，单独提示，避免误报
-                    print("  %-18s %-22s ⚠️  网络错误（不是站点死）%s" % (d, (e.get("project") or "")[:22], u))
-                else:
+                elif k == "dead":
                     print("  %-18s %-22s 🔴 %s  %s" % (d, (e.get("project") or "")[:22], c, u))
                     dead.append(d)
+                elif k == "neterr":
+                    print("  %-18s %-22s ⚠️  网络错误（不是站点死）%s" % (d, (e.get("project") or "")[:22], u))
+                else:
+                    # 被中间层挡/限流（403/429/501）⇒ **不算死**，但要让人看见
+                    print("  %-18s %-22s ⚠️  被挡/限流 %s（不是站点死，需人工看）%s"
+                          % (d, (e.get("project") or "")[:22], c, u))
             else:
                 print("  %-18s %-22s %s" % (d, (e.get("project") or "")[:22], "⚪ 已标记 DELETED（期望它死）"))
 
