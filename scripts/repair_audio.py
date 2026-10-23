@@ -68,15 +68,19 @@ def encode(v, out, bitrate="96k"):
         raise SystemExit("❌ 编码失败：%s" % p.stderr.decode()[:200])
 
 
-def encode_with_headroom(v, out, bitrate="96k", start_db=-3.0, tries=4):
+def encode_with_headroom(v, out, bitrate="96k", target_db=-1.5, tries=4):
     """给**编码器的重建过冲**留余量。
 
     🔴 实测：把峰值 -0.01 dBFS 的 PCM 编码成 96k AAC，落盘真峰值变成 **+1.75 dBFS**
        ⇒ 编码器的过冲能到 +1.8 dB ⇒ 必须先降增益再编码。
     ⇒ 迭代：编码 → 量落盘峰值 → 不合格就再降 → 最多 tries 次。
     """
-    peak = max(abs(x) for x in v) or 1.0
-    g_db = start_db
+    # 🔴 头room 要**算**，不能拍：
+    #    目标 = 落盘峰值 ≈ target_db（给编码器过冲留余量）
+    #    起始增益 = target_db - 当前 PCM 峰值
+    pk = max(abs(x) for x in v) or 1.0
+    pk_db = 20.0 * math.log10(pk) if pk > 0 else -999.0
+    g_db = target_db - pk_db
     for i in range(tries):
         g = 10.0 ** (g_db / 20.0)
         vv = [x * g for x in v]
@@ -90,19 +94,58 @@ def encode_with_headroom(v, out, bitrate="96k", start_db=-3.0, tries=4):
     return g_db, s
 
 
+try:
+    import numpy as _np
+except Exception:
+    _np = None
+
+
 def stats(v):
-    pk = max(abs(x) for x in v)
-    over = 100.0 * sum(1 for x in v if abs(x) > CLIP_LIMIT) / len(v)
-    speech = sum(1 for x in v if abs(x) > 0.01) / len(v)
+    """峰值 / 超限占比 / 有效语音占比
+
+    🔴 用 numpy：纯 Python 在 800 万样本上 max(abs(x)) 要 ~10 秒，
+       40 期跑下来光这一项就 10 分钟（实测）。
+    """
+    if _np is not None:
+        a = _np.asarray(v, dtype=_np.float32)
+        pk = float(_np.abs(a).max())
+        over = 100.0 * float((_np.abs(a) > CLIP_LIMIT).sum()) / len(a)
+        speech = float((_np.abs(a) > 0.01).sum()) / len(a)
+    else:
+        pk = max(abs(x) for x in v)
+        over = 100.0 * sum(1 for x in v if abs(x) > CLIP_LIMIT) / len(v)
+        speech = sum(1 for x in v if abs(x) > 0.01) / len(v)
     return {"peak": pk, "peak_db": 20 * math.log10(pk) if pk > 0 else -999.0,
             "over_pct": over, "speech_pct": speech * 100.0, "n": len(v)}
 
 
 def clusters(v):
     """返回 [(a, b)] 爆裂簇（已合并 <5ms 间隔）"""
-    out = []
-    i = 0
     n = len(v)
+    out = []
+    if _np is not None:
+        a = _np.abs(_np.asarray(v, dtype=_np.float32))
+        over = _np.flatnonzero(a > CLIP_LIMIT)
+        if len(over) == 0:
+            return out
+        start = prev = int(over[0])
+        for idx in over[1:]:
+            i = int(idx)
+            if i - prev <= 1:
+                prev = i
+                continue
+            # 收尾当前簇
+            if start and (start - out[-1][1] <= GAP_TOL if out else False):
+                out[-1] = (out[-1][0], prev + 1)
+            else:
+                out.append((start, prev + 1))
+            start = prev = i
+        if out and start - out[-1][1] <= GAP_TOL:
+            out[-1] = (out[-1][0], prev + 1)
+        else:
+            out.append((start, prev + 1))
+        return out
+    i = 0
     while i < n:
         if abs(v[i]) > CLIP_LIMIT:
             j = i
@@ -159,6 +202,8 @@ def verify(v_before, out_path, s1):
     bad = []
     if s1["peak_db"] > 0.05:
         bad.append("真峰值仍 > 0.05 dBFS")
+    if s1["peak_db"] < -3.0:
+        bad.append("峰值降太多（%.2f dBFS）⇒ 整期被压哑了" % s1["peak_db"])
     if s1["over_pct"] > 0.05:
         bad.append("超满刻度样本仍 > 0.05%")
     if abs(s1["n"] - s0["n"]) / float(s0["n"]) > 0.01:
