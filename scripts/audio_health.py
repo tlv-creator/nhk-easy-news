@@ -160,7 +160,11 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
                 files.append(os.path.join(root, n))
     files.sort()
     if not files:
-        print("❌ 目录里没有音频文件：%s" % d)
+        if not quiet:
+            print("❌ 目录里没有音频文件：%s" % d)
+        RESULT.setdefault("dirs", []).append(
+            {"dir": d, "files": [], "flat_bad": [], "overshoot": [],
+             "lufs_spread": None, "reason": "no_files", "rc": 2})
         return 2
 
     rows = []
@@ -204,20 +208,27 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
         print("  LUFS：%.1f ~ %.1f，极差 %.2f LU" %
               (min(lufs_vals), max(lufs_vals), spread) if lufs_vals else "  LUFS: 无数据")
 
+    # 🔴🔴 **判定与写 JSON 必须解耦**：原来 RESULT 只在「全过」时才写
+    #   ⇒ 一旦判失败就**提前 return** ⇒ JSON 里**什么都没有**
+    #   ⇒ 调用方（闸门）恰好在最该拦的那种文件上**读不到任何数据** ⇒ 变成瞎子（假绿灯！）
+    #   （2026-10-23 由 Shun 的闸门自检抓出来：平顶 66.7% 的文件 → JSON {"rc":1} → 闸门放行）
+    reason = "ok"
+    rc = 0
     if max_lufs_spread is not None and spread > max_lufs_spread:
+        reason, rc = "lufs_spread", 1
         if not quiet:
             print("  ❌ LUFS 极差 %.2f > 允许的 %.2f" % (spread, max_lufs_spread))
-        return 1
-    if bad:
+    elif bad:
+        reason, rc = "flat", 1
         if not quiet:
             print("  ❌ 有削平文件（波形被削成方波 ⇒ 听着会爆）")
-        return 1
-    if over and strict_overshoot:
+    elif over and strict_overshoot:
+        reason, rc = "overshoot", 1
         if not quiet:
             print("  ❌ 有过冲文件（--strict-overshoot）")
-        return 1
-    if not quiet:
+    elif not quiet:
         print("  ✅ 全部通过")
+
     RESULT.setdefault("dirs", []).append({
         "dir": d,
         "files": [{"file": r[0], "peak_db": r[1], "flat_ratio": r[2], "lufs": r[3],
@@ -225,8 +236,10 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
         "flat_bad": [os.path.basename(x) for x in bad],
         "overshoot": [os.path.basename(x) for x in over],
         "lufs_spread": round(spread, 2) if lufs_vals else None,
+        "reason": reason,          # 🔴 为什么失败（调用方不用去猜）
+        "rc": rc,
     })
-    return 0
+    return rc
 
 
 def main():
