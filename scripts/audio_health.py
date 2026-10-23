@@ -184,7 +184,8 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
 
     if not quiet:
         print("== %s（%d 个文件）==" % (d, len(rows)))
-    print("  %-34s %10s %10s %9s" % ("文件", "峰值dB", "平顶%", "LUFS"))
+    if not quiet:
+        print("  %-34s %10s %10s %9s" % ("文件", "峰值dB", "平顶%", "LUFS"))
     if not quiet:
         for name, pk, fr, lu, _f, _o in rows:
             print("  %-34s %10s %10s %9s" % (
