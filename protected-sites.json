@@ -233,6 +233,24 @@
    "frozen": true,
    "status": "alive",
    "note": "🔴 域名冻结：**永不 redeploy**（redeploy = 换域名 = 引导页死链）。发新版要「新建站 + 改引导页 + 再删旧的」。上一版 8mbic178h1f8s（v1.15）暂留（peer 还在拿它做参考）。"
+  },
+  {
+   "domain": "iujsgx3ci73dp",
+   "project": "词汇学习站 Unit1+2+3（正式版 v3）",
+   "role": "student-facing-site",
+   "reason": "🔴 **老师的单词记录站（正式版 v3）** —— 学生每天在上面记录单词。域名已经写进**发给学生/贴在班群里的链接** ⇒ 删了 = 老师和 157 名学生手里的链接当场死。",
+   "written_in": "老师发出去的链接 + 云盘站名「词汇学习站 Unit1+2+3（正式版 v3）」",
+   "frozen": true,
+   "note": "🔴 frozen=true = **永不删 + 永不 redeploy**（redeploy = 换随机域名 ⇒ 学生的链接同样死）。✅ **数据在共享 Supabase 项目 lszwcmvcvbraqtrtgon 里 ⇒ 站删了数据也不会丢**，但链接会死。⚠️ 本站不依赖任何别的 mcode 站（已扫页面引用）。要更新内容：新建站 + 改所有引用方 + 改完再删旧的。"
+  },
+  {
+   "domain": "zp67qm11jonui",
+   "project": "词汇学习站 VocabLog（正式版·零凭据）",
+   "role": "student-facing-site",
+   "reason": "🔴 **老师的单词记录站（VocabLog 正式版·零凭据）** —— 与 iujsgx3ci73dp 同属英语线词汇站，同样是学生天天用的正式站。",
+   "written_in": "云盘站名「词汇学习站 VocabLog（正式版·零凭据）」",
+   "frozen": true,
+   "note": "🔴 frozen=true = **永不删 + 永不 redeploy**。老师明确要求：**单词记录的网店不能删**。⚠️ 两个词汇站都活着、都可能是老师发给学生的那个 ⇒ 一并保护，别只保一个。"
   }
  ],
  "how_to_check_before_deleting": {
