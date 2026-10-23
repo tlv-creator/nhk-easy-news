@@ -291,6 +291,18 @@ def selftest():
         # 安全默认：**不加 --deep 时这一维不参与判定**（不能因为没算就误报）
         ck("对照组 D：不加 --deep 时超满刻度占比为 None（默认不判）",
            probe(clean).get("over_pct") is None, probe(clean).get("over_pct"))
+        # 🔴 **输出形状守卫**：JSON 里每个文件条目必须含全部键
+        #   （「加一列只改了一处」那个 bug 的通用护栏：形状变了 ⇒ 自检当场红）
+        #   🔴 **要验的是 check_dir 的 rows（JSON 里的文件条目），不是 probe() 的返回**
+        #      （两处是**不同结构** ⇒ 拿错一个去断言 ⇒ 断言本身是错的）
+        _need = ("file", "peak_db", "flat_ratio", "lufs", "flat", "overshoot",
+                 "over_pct", "over_pct_mild", "junk")
+        RESULT.clear()
+        check_dir(td, quiet=True, deep=True, max_over_pct=0.05)
+        _files = RESULT.get("dirs", [{}])[0].get("files", [])
+        _miss = [k for k in _need for f in _files if k not in f]
+        ck("输出形状：check_dir 的每个文件条目含全部键",
+           bool(_files) and not _miss, _miss or ("文件数 %d" % len(_files)))
         # 🔴🔴 **口径守卫**：正常的有损编码内容（满幅正弦 → mp3 → AAC）
         #   在「|x|>1.0」口径下有 **0.94%**（= 阈值的 19 倍 ⇒ 恒红）
         #   ⇒ 口径必须是 1.2（实测 0.027%）⇒ 这条守住「别退回 1.0」
@@ -350,7 +362,15 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False,
         overshoot = (pk is not None and pk > PEAK_LIMIT_DB)
         op = p.get("over_pct")
         is_junk = (op is not None and max_over_pct is not None and op > max_over_pct)
-        rows.append((os.path.basename(f), pk, fr, p.get("lufs"), flat, overshoot, op, is_junk))
+        # 🔴🔴🔴 **用 dict，不用元组**（2026-10-23 NHK 踩到并修的 bug 类）：
+        #   元组 ⇒ 「加一列」时**每一处访问都要改** ⇒ 漏一处就崩
+        #   （真的崩过：JSON 那处是防御式下标，打印那处是元组解包 ⇒ 崩的是不防御的那个）
+        #   dict ⇒ 加字段**不会炸任何一处**，漏改的地方直接是 KeyError 而非错位取值
+        rows.append({
+            "file": os.path.basename(f), "peak_db": pk, "flat_ratio": fr,
+            "lufs": p.get("lufs"), "flat": flat, "overshoot": overshoot,
+            "over_pct": op, "over_pct_mild": p.get("over_pct_mild"), "junk": is_junk,
+        })
         if is_junk:
             junk.append(f)
         if flat:
@@ -369,14 +389,13 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False,
         #   ⇒ **加一列就崩**（我加 over_pct 时把共享工具弄崩了 ⇒ Shun 也被坑）
         #   ⇒ 同一个数据结构，两处用不同访问方式 ⇒ 崩的是不防御的那个
         for r in rows:
-            name, pk, fr, lu = r[0], r[1], r[2], r[3]
             print("  %-34s %10s %10s %9s" % (
-                name[:34],
-                "%.3f" % pk if pk is not None else "-",
-                "%.3f" % fr if fr is not None else "-",
-                "%.1f" % lu if lu is not None else "-"))
+                r["file"][:34],
+                "%.3f" % r["peak_db"] if r["peak_db"] is not None else "-",
+                "%.3f" % r["flat_ratio"] if r["flat_ratio"] is not None else "-",
+                "%.1f" % r["lufs"] if r["lufs"] is not None else "-"))
 
-    lufs_vals = [r[3] for r in rows if r[3] is not None]
+    lufs_vals = [r["lufs"] for r in rows if r["lufs"] is not None]
     spread = (max(lufs_vals) - min(lufs_vals)) if len(lufs_vals) > 1 else 0.0
     if not quiet:
         print("\n  🔴 削平文件（真削波，必须重做）：%d 个 %s" % (len(bad), bad if bad else ""))
@@ -413,12 +432,7 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False,
 
     RESULT.setdefault("dirs", []).append({
         "dir": d,
-        "files": [{"file": r[0], "peak_db": r[1], "flat_ratio": r[2], "lufs": r[3],
-                   "flat": r[4], "overshoot": r[5],
-                   "over_pct": (r[6] if len(r) > 6 else None),
-                   "over_clip": over_clip if deep else None,
-                   "over_pct_mild": (p.get("over_pct_mild") if deep else None),
-                   "junk": (r[7] if len(r) > 7 else False)} for r in rows],
+        "files": [dict(r, over_clip=(over_clip if deep else None)) for r in rows],
         "flat_bad": [os.path.basename(x) for x in bad],
         "junk_bad": [os.path.basename(x) for x in junk],
         "overshoot": [os.path.basename(x) for x in over],
