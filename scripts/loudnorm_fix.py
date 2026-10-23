@@ -56,7 +56,7 @@ def probe_volume(path):
     """
     try:
         p = subprocess.run(
-            ["ffmpeg", "-hide_banner", "-i", path, "-af", "volumedetect",
+            ["ffmpeg", "-nostdin", "-hide_banner", "-i", path, "-af", "volumedetect",
              "-f", "null", "/dev/null"],
             capture_output=True, text=True, timeout=600)
         err = p.stderr
@@ -65,7 +65,7 @@ def probe_volume(path):
         peak = None
         try:
             p2 = subprocess.run(
-                ["ffmpeg", "-nostats", "-hide_banner", "-i", path,
+                ["ffmpeg", "-nostdin", "-nostats", "-hide_banner", "-i", path,
                  "-af", "astats=measure_overall=Peak_level:measure_perchannel=none",
                  "-f", "null", "/dev/null"],
                 capture_output=True, text=True, timeout=600)
@@ -88,7 +88,7 @@ def loudnorm_two_pass(src, dst, target_mean, tp=-1.5):
     """loudnorm 两遍法：先测量，再线性应用。"""
     # ---- 第一遍：测量 ----
     p = subprocess.run(
-        ["ffmpeg", "-hide_banner", "-i", src, "-af",
+        ["ffmpeg", "-nostdin", "-hide_banner", "-i", src, "-af",
          "loudnorm=I=%s:TP=%s:LRA=11:print_format=json" % (target_mean, tp),
          "-f", "null", "/dev/null"],
         capture_output=True, text=True, timeout=900)
@@ -106,7 +106,7 @@ def loudnorm_two_pass(src, dst, target_mean, tp=-1.5):
     af = ("loudnorm=I=%s:TP=%s:LRA=%s:measured_I=%s:measured_TP=%s:measured_LRA=%s:linear=true"
           % (target_mean, tp, lra, mi, mt, lra))
     r = subprocess.run(
-        ["ffmpeg", "-y", "-v", "error", "-i", src, "-af", af,
+        ["ffmpeg", "-nostdin", "-y", "-v", "error", "-i", src, "-af", af,
          "-c:a", "aac", "-b:a", "96k", "-ar", "48000", "-ac", "2",
          "-movflags", "+faststart", dst],
         capture_output=True, text=True, timeout=1800)
@@ -159,7 +159,7 @@ def process_one(fast_path, target_mean):
             af = "volume=%.2fdB" % gain
         try:
             r = subprocess.run(
-                ["ffmpeg", "-y", "-v", "error", "-i", src, "-af", af,
+                ["ffmpeg", "-nostdin", "-y", "-v", "error", "-i", src, "-af", af,
                  "-c:a", "aac", "-b:a", "96k", "-ar", "48000", "-ac", "2",
                  "-movflags", "+faststart", tmp],
                 capture_output=True, text=True, timeout=1800)
