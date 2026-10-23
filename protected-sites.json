@@ -302,8 +302,8 @@
    "domain": "bo8u69hdw58t4",
    "project": "shun",
    "reason": "Shun 内容站 v1.2.2（含 APK + 字幕/词库数据）",
-   "note": "🔴 2026-10-23 发 Ep278 后被 2aixd037sd8fk 取代（原 v1.2.2 站）；**待删**",
-   "status": "DELETED"
+   "note": "🔴 2026-10-23 发 Ep278 后被 2aixd037sd8fk 取代（原 v1.2.2 站）—— **站还活着，沙箱里没有删站工具，待人工删**",
+   "status": "SUPERSEDED"
   },
   {
    "domain": "tdbdoe02nfrz9",
@@ -338,19 +338,22 @@
    "domain": "w94oj2uij89x0",
    "project": "shun",
    "reason": "🔴 2026-10-23 发 Ep278 时的中间站（没有 APK），已被 2aixd037sd8fk 取代；**待删**",
-   "status": "DELETED"
+   "status": "SUPERSEDED",
+   "note": "🔴 2026-10-23 发 Ep278 时的中间站（没有 APK）—— **站还活着，待人工删**"
   },
   {
    "domain": "8k5kf3z052jyp",
    "project": "shun",
    "reason": "🔴 2026-10-23 发 Ep278 时的中间站（译文有误），已被 2aixd037sd8fk 取代；**待删**",
-   "status": "DELETED"
+   "status": "SUPERSEDED",
+   "note": "🔴 2026-10-23 发 Ep278 时的中间站（译文有误）—— **站还活着，待人工删**"
   },
   {
    "domain": "m3qv0xis7x0yq",
    "project": "shun",
    "reason": "🔴 2026-10-23 发 Ep278 时的中间站（数据没刷新），已被 2aixd037sd8fk 取代；**待删**",
-   "status": "DELETED"
+   "status": "SUPERSEDED",
+   "note": "🔴 2026-10-23 发 Ep278 时的中间站（数据没刷新）—— **站还活着，待人工删**"
   }
  ],
  "how_to_check_before_deleting": {
