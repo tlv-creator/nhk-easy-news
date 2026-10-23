@@ -33,6 +33,7 @@ import subprocess
 import sys
 import tempfile
 
+RESULT = {}
 FLAT_RATIO_LIMIT = 5.0      # 平顶占比阈值（%）
 PEAK_LIMIT_DB = 0.05        # 过冲阈值（dB）
 AUDIO_EXT = (".mp3", ".m4a", ".aac", ".wav", ".ogg", ".opus", ".mp4")
@@ -151,7 +152,7 @@ def selftest():
     return fails
 
 
-def check_dir(d, max_lufs_spread=None, strict_overshoot=False):
+def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False):
     files = []
     for root, _dirs, names in os.walk(d):
         for n in sorted(names):
@@ -181,33 +182,49 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False):
         if overshoot:
             over.append(f)
 
-    print("== %s（%d 个文件）==" % (d, len(rows)))
+    if not quiet:
+        print("== %s（%d 个文件）==" % (d, len(rows)))
     print("  %-34s %10s %10s %9s" % ("文件", "峰值dB", "平顶%", "LUFS"))
-    for name, pk, fr, lu, _f, _o in rows:
-        print("  %-34s %10s %10s %9s" % (
-            name[:34],
-            "%.3f" % pk if pk is not None else "-",
-            "%.3f" % fr if fr is not None else "-",
-            "%.1f" % lu if lu is not None else "-"))
+    if not quiet:
+        for name, pk, fr, lu, _f, _o in rows:
+            print("  %-34s %10s %10s %9s" % (
+                name[:34],
+                "%.3f" % pk if pk is not None else "-",
+                "%.3f" % fr if fr is not None else "-",
+                "%.1f" % lu if lu is not None else "-"))
 
     lufs_vals = [r[3] for r in rows if r[3] is not None]
     spread = (max(lufs_vals) - min(lufs_vals)) if len(lufs_vals) > 1 else 0.0
-    print("\n  🔴 削平文件（真削波，必须重做）：%d 个 %s" % (len(bad), bad if bad else ""))
-    print("  🟡 过冲文件（峰值>0dBFS，默认放行；要严加 --strict-overshoot）：%d 个 %s"
-          % (len(over), [os.path.basename(x) for x in over] if over else ""))
-    print("  LUFS：%.1f ~ %.1f，极差 %.2f LU" %
-          (min(lufs_vals), max(lufs_vals), spread) if lufs_vals else "  LUFS: 无数据")
+    if not quiet:
+        print("\n  🔴 削平文件（真削波，必须重做）：%d 个 %s" % (len(bad), bad if bad else ""))
+        print("  🟡 过冲文件（峰值>0dBFS，默认放行；要严加 --strict-overshoot）：%d 个 %s"
+              % (len(over), [os.path.basename(x) for x in over] if over else ""))
+    if not quiet:
+        print("  LUFS：%.1f ~ %.1f，极差 %.2f LU" %
+              (min(lufs_vals), max(lufs_vals), spread) if lufs_vals else "  LUFS: 无数据")
 
     if max_lufs_spread is not None and spread > max_lufs_spread:
-        print("  ❌ LUFS 极差 %.2f > 允许的 %.2f" % (spread, max_lufs_spread))
+        if not quiet:
+            print("  ❌ LUFS 极差 %.2f > 允许的 %.2f" % (spread, max_lufs_spread))
         return 1
     if bad:
-        print("  ❌ 有削平文件（波形被削成方波 ⇒ 听着会爆）")
+        if not quiet:
+            print("  ❌ 有削平文件（波形被削成方波 ⇒ 听着会爆）")
         return 1
     if over and strict_overshoot:
-        print("  ❌ 有过冲文件（--strict-overshoot）")
+        if not quiet:
+            print("  ❌ 有过冲文件（--strict-overshoot）")
         return 1
-    print("  ✅ 全部通过")
+    if not quiet:
+        print("  ✅ 全部通过")
+    RESULT.setdefault("dirs", []).append({
+        "dir": d,
+        "files": [{"file": r[0], "peak_db": r[1], "flat_ratio": r[2], "lufs": r[3],
+                   "flat": r[4], "overshoot": r[5]} for r in rows],
+        "flat_bad": [os.path.basename(x) for x in bad],
+        "overshoot": [os.path.basename(x) for x in over],
+        "lufs_spread": round(spread, 2) if lufs_vals else None,
+    })
     return 0
 
 
@@ -229,11 +246,15 @@ def main():
     if a.check:
         rc = 0
         for d in a.check:
-            r = check_dir(d, a.max_lufs_spread, a.strict_overshoot)
+            r = check_dir(d, a.max_lufs_spread, a.strict_overshoot, quiet=a.json)
             if r == 1:
                 rc = 1
             elif r == 2:
                 rc = 2
+        if a.json:
+            # 🔴 机器可读输出（闸门要用）—— 以前这个参数是**声明了没实现**的假参数
+            RESULT["rc"] = rc
+            print(json.dumps(RESULT, ensure_ascii=False, indent=1))
         return rc
 
     ap.print_help()
