@@ -222,7 +222,8 @@
    "project": "shun",
    "reason": "Shun v1.2.1 现役内容站（引导页 shun.json 与 shun.html 都指着它）",
    "role": "content",
-   "note": "🔴 **每次发版都会换域名** ⇒ 这条要跟着更新（谁发版谁改自己那一条）。解析命令见 _how_to_resolve.shun。"
+   "note": "🔴 2026-10-23 发 Ep278 之前就已经 404 了（不是本次误删）",
+   "status": "DELETED"
   },
   {
    "domain": "qk9rwmigiydy4",
