@@ -286,17 +286,19 @@
         });
 
         var classes = {}, today = 0, todayM = 0, active = {};
+        // 🔴 班级清单以**名册**为准：按 class_key 去重 + 「这个班多少人」
+        //    旧写法是「有多少条记录就建几个班」，0 条记录时会对 157 个学生各 push 一次
+        //    ⇒ 下拉里 157 项、5 个班重名、每个都显示 0 人（实测：老师端一眼就露馅）
+        roster.forEach(function (s) {
+          var c = classes[s.class_key] || (classes[s.class_key] = { key: s.class_key, name: s.class_name, count: 0 });
+          c.count++;
+        });
         logs.forEach(function (l) {
-          classes[l.class_key] = classes[l.class_key] || { key: l.class_key, name: l.class_name, count: 0 };
-          classes[l.class_key].count++;
+          if (!classes[l.class_key]) classes[l.class_key] = { key: l.class_key, name: l.class_name, count: 0 };
           active[l.student_id] = 1;
           if (l.date === todayStr()) { today++; todayM += l.minutes; }
         });
         var classList = Object.keys(classes).map(function (k) { return classes[k]; });
-        // 名册里没人交的班也要出现
-        roster.forEach(function (s) {
-          if (!classes[s.class_key]) classList.push({ key: s.class_key, name: s.class_name, count: 0 });
-        });
 
         var totalMin = logs.reduce(function (a, l) { return a + l.minutes; }, 0);
         return {
