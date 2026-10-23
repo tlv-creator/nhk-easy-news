@@ -363,7 +363,13 @@ def check_dir(d, max_lufs_spread=None, strict_overshoot=False, quiet=False,
     if not quiet:
         print("  %-34s %10s %10s %9s" % ("文件", "峰值dB", "平顶%", "LUFS"))
     if not quiet:
-        for name, pk, fr, lu, _f, _o in rows:
+        # 🔴🔴 **用下标取，不要用元组解包**（2026-10-23 修）：
+        #   下面那个 JSON 序列化用的是 `r[6] if len(r) > 6`（防御式），
+        #   这里原来也是解包 `for name, pk, fr, lu, _f, _o in rows`
+        #   ⇒ **加一列就崩**（我加 over_pct 时把共享工具弄崩了 ⇒ Shun 也被坑）
+        #   ⇒ 同一个数据结构，两处用不同访问方式 ⇒ 崩的是不防御的那个
+        for r in rows:
+            name, pk, fr, lu = r[0], r[1], r[2], r[3]
             print("  %-34s %10s %10s %9s" % (
                 name[:34],
                 "%.3f" % pk if pk is not None else "-",
