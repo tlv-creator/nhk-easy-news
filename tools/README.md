@@ -74,3 +74,17 @@ python3 tools/test_listen_tools.py
 🔴 `fixtures/old_update_listen_mirror.py` = **旧版工具的字节级副本**，
 只用于上面两条**对拍**用例（仅改了两行端点常量指向 mock，被测逻辑一字未动）。
 **它不是第二份可用实现，别直接拿去用。**
+
+## 4. `update_mirror.py` —— **一条命令改所有引用方**（换 mcode 域名用）
+
+```bash
+python3 tools/update_mirror.py --root <项目目录> --old <旧域名> --new <新域名>
+python3 tools/update_mirror.py --root . --old abc.space.mcode.cn --new xyz.space.mcode.cn --dry-run
+```
+
+- 换 mcode 站 = 换域名 ⇒ **所有引用方都得改**；「要记得改」是约定 = 迟早被忘 ⇒ 做成一条命令
+- 替换的是**精确的域名 token** ⇒ 页面上别的域一个字不动
+- **二进制 / 大文件跳过，但必须显式打印跳过了几个** —— 静默跳过 = 假装扫过了
+- 旧域**一个都没找到** ⇒ **exit 1**（多半是域名写错了，不能当成功）
+- **幂等**：再跑一次报「无变化」
+- 自检：`python3 tools/test_update_mirror.py`（17 条断言，含反向）
