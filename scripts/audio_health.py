@@ -89,11 +89,19 @@ def make_control_samples(tmpdir):
     """
     clip = os.path.join(tmpdir, "ctrl_clip.wav")
     clean = os.path.join(tmpdir, "ctrl_clean.wav")
+    over = os.path.join(tmpdir, "ctrl_overshoot.m4a")
     _run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
           "aevalsrc=2.0*sin(2*PI*440*t):d=2", "-c:a", "pcm_s16le", clip, "-y"])
     _run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
           "aevalsrc=0.9*sin(2*PI*440*t):d=2", "-c:a", "pcm_s16le", clean, "-y"])
-    return clip, clean
+    # 🔴 第三个对照样本：**过冲但没削平**（2026-10-23 加）
+    #   造法：0.99 振幅 → 有损编码 → **解码器重建后越过 0 dBFS**（实测 +5.4 dB）
+    #   但平顶占比 ≈ 0.001% ⇒ **不是**削波
+    #   ⇒ 证明「过冲」与「削平」是**两个独立维度**，不能混成一个判据
+    _run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-f", "lavfi", "-i",
+          "aevalsrc=0.99*sin(2*PI*440*t):s=44100:d=5", "-c:a", "aac", "-b:a", "64k",
+          "-ar", "44100", "-ac", "1", over, "-y"])
+    return clip, clean, over
 
 
 def selftest():
@@ -107,10 +115,14 @@ def selftest():
             fails.append(name)
 
     with tempfile.TemporaryDirectory() as td:
-        clip, clean = make_control_samples(td)
-        ck("对照组样本造出来了", os.path.exists(clip) and os.path.exists(clean))
+        clip, clean, over = make_control_samples(td)
+        ck("对照组样本造出来了",
+           os.path.exists(clip) and os.path.exists(clean) and os.path.exists(over))
         c = probe(clip)
         k = probe(clean)
+        o = probe(over)
+        print("  过冲样本：peak=%s dB  平顶占比=%s%%" %
+              (o.get("peak_db"), o.get("flat_ratio")))
         print("  削波样本：peak=%s dB  平顶占比=%s%%" %
               (c.get("peak_db"), c.get("flat_ratio")))
         print("  干净样本：peak=%s dB  平顶占比=%s%%" %
@@ -129,10 +141,17 @@ def selftest():
            (k.get("flat_ratio") or 999) < FLAT_RATIO_LIMIT, k.get("flat_ratio"))
         ck("对照组 B：干净样本峰值 < 0 dB",
            (k.get("peak_db") or 99) < 0, k.get("peak_db"))
+        # 🔴 对照组 C：**过冲 ≠ 削平**（两个独立维度）
+        ck("对照组 C：过冲样本峰值 > 0 dB（确实是过冲）",
+           (o.get("peak_db") or -99) > 0, o.get("peak_db"))
+        ck("对照组 C：过冲样本平顶占比 < 阈值（**不是**削平）",
+           (o.get("flat_ratio") or 999) < FLAT_RATIO_LIMIT, o.get("flat_ratio"))
+        ck("对照组 C：过冲样本**不该**被当成削平（否则就是假警报）",
+           not ((o.get("flat_ratio") or 0) > FLAT_RATIO_LIMIT), o.get("flat_ratio"))
     return fails
 
 
-def check_dir(d, max_lufs_spread=None):
+def check_dir(d, max_lufs_spread=None, strict_overshoot=False):
     files = []
     for root, _dirs, names in os.walk(d):
         for n in sorted(names):
@@ -144,20 +163,27 @@ def check_dir(d, max_lufs_spread=None):
         return 2
 
     rows = []
-    bad = []
+    bad = []          # 削平（真正的削波）⇒ 硬失败
+    over = []         # 过冲（解码器重建超出 0 dBFS）⇒ **默认只警告**
     for f in files:
         p = probe(f)
         fr = p.get("flat_ratio")
         pk = p.get("peak_db")
-        clipped = (fr is not None and fr > FLAT_RATIO_LIMIT) or \
-                  (pk is not None and pk > PEAK_LIMIT_DB)
-        rows.append((os.path.basename(f), pk, fr, p.get("lufs"), clipped))
-        if clipped:
+        # 🔴🔴 两条独立维度（2026-10-23 修）：**过冲 ≠ 削波**
+        #   削平：样本被钉在 ±1.0（平顶占比高）⇒ 波形削成方波 ⇒ 真正的「爆」⇒ 硬失败
+        #   过冲：解码器重建后**极少量**样本超过 0 dBFS ⇒ 听感是「偶尔极轻的咔」
+        #        ⇒ 与削平混在一起报，会把「0.002% 样本过冲」的文件误判成爆音（假警报）
+        flat = (fr is not None and fr > FLAT_RATIO_LIMIT)
+        overshoot = (pk is not None and pk > PEAK_LIMIT_DB)
+        rows.append((os.path.basename(f), pk, fr, p.get("lufs"), flat, overshoot))
+        if flat:
             bad.append(f)
+        if overshoot:
+            over.append(f)
 
     print("== %s（%d 个文件）==" % (d, len(rows)))
     print("  %-34s %10s %10s %9s" % ("文件", "峰值dB", "平顶%", "LUFS"))
-    for name, pk, fr, lu, _c in rows:
+    for name, pk, fr, lu, _f, _o in rows:
         print("  %-34s %10s %10s %9s" % (
             name[:34],
             "%.3f" % pk if pk is not None else "-",
@@ -166,7 +192,9 @@ def check_dir(d, max_lufs_spread=None):
 
     lufs_vals = [r[3] for r in rows if r[3] is not None]
     spread = (max(lufs_vals) - min(lufs_vals)) if len(lufs_vals) > 1 else 0.0
-    print("\n  削波文件：%d 个 %s" % (len(bad), bad if bad else ""))
+    print("\n  🔴 削平文件（真削波，必须重做）：%d 个 %s" % (len(bad), bad if bad else ""))
+    print("  🟡 过冲文件（峰值>0dBFS，默认放行；要严加 --strict-overshoot）：%d 个 %s"
+          % (len(over), [os.path.basename(x) for x in over] if over else ""))
     print("  LUFS：%.1f ~ %.1f，极差 %.2f LU" %
           (min(lufs_vals), max(lufs_vals), spread) if lufs_vals else "  LUFS: 无数据")
 
@@ -174,7 +202,10 @@ def check_dir(d, max_lufs_spread=None):
         print("  ❌ LUFS 极差 %.2f > 允许的 %.2f" % (spread, max_lufs_spread))
         return 1
     if bad:
-        print("  ❌ 有削波文件")
+        print("  ❌ 有削平文件（波形被削成方波 ⇒ 听着会爆）")
+        return 1
+    if over and strict_overshoot:
+        print("  ❌ 有过冲文件（--strict-overshoot）")
         return 1
     print("  ✅ 全部通过")
     return 0
@@ -186,6 +217,8 @@ def main():
     ap.add_argument("--check", action="append", default=[])
     ap.add_argument("--max-lufs-spread", type=float, default=None)
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--strict-overshoot", action="store_true",
+                    help="把「过冲」也算失败（默认只警告：过冲≠削波）")
     a = ap.parse_args()
 
     if a.selftest:
@@ -196,7 +229,7 @@ def main():
     if a.check:
         rc = 0
         for d in a.check:
-            r = check_dir(d, a.max_lufs_spread)
+            r = check_dir(d, a.max_lufs_spread, a.strict_overshoot)
             if r == 1:
                 rc = 1
             elif r == 2:
