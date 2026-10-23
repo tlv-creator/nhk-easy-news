@@ -50,7 +50,7 @@ UA = auth.UA
 # ── 真峰值：解码成原始样本算（比 astats 更硬，astats 也会被 clamp 影响）──
 def true_peak_db(path):
     p = subprocess.run(
-        ["ffmpeg", "-v", "error", "-i", path, "-f", "f32le", "-ac", "1", "-ar", "48000", "-"],
+        ["ffmpeg", "-nostdin", "-v", "error", "-i", path, "-f", "f32le", "-ac", "1", "-ar", "48000", "-"],
         stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=300)
     d = p.stdout
     n = len(d) // 4
@@ -82,7 +82,7 @@ def health(path):
 
 
 def download(m3u8, out_path):
-    cmd = ["ffmpeg", "-y", "-loglevel", "error",
+    cmd = ["ffmpeg", "-nostdin", "-y", "-loglevel", "error",
            "-headers", "Referer: https://news.web.nhk/\r\nUser-Agent: Mozilla/5.0\r\n",
            "-i", m3u8, "-c", "copy", "-bsf:a", "aac_adtstoasc", "-f", "mp4", out_path]
     try:
@@ -137,7 +137,7 @@ def transcode(ep_id):
         print("   （跳过转码：源或目标不存在）")
         return
     tmp = dst + ".new.m4a"
-    r = subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", src,
+    r = subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-i", src,
                         "-c:a", "aac", "-b:a", "64k", "-ar", "48000", "-ac", "2",
                         "-movflags", "+faststart", tmp],
                        capture_output=True, text=True, timeout=300)
