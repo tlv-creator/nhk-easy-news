@@ -251,6 +251,34 @@
    "written_in": "云盘站名「词汇学习站 VocabLog（正式版·零凭据）」",
    "frozen": true,
    "note": "🔴 frozen=true = **永不删 + 永不 redeploy**。老师明确要求：**单词记录的网店不能删**。⚠️ 两个词汇站都活着、都可能是老师发给学生的那个 ⇒ 一并保护，别只保一个。"
+  },
+  {
+   "domain": "px5o34nxmlw12",
+   "project": "词汇站 Unit2+3（旧镜像）",
+   "status": "DELETED",
+   "reason": "🔴 **已删除的旧版词汇站 mcode 镜像** —— 2026-10-21 删除，已被现役站取代。",
+   "note": "⚠️ **旧域勿再引用**（会 404）。**学生实际用的入口不是 mcode 域**，而是老师自己 CloudBase 上的那条（域名固定 = 不随 mcode 发版变）⇒ 删 mcode 镜像不打断学生链接。"
+  },
+  {
+   "domain": "vxsl7bgijgdhr",
+   "project": "词汇站 Unit2+3（加了自动记录的旧镜像）",
+   "status": "DELETED",
+   "reason": "🔴 **已删除的旧版词汇站 mcode 镜像** —— 2026-10-21 删除，已被现役站取代。",
+   "note": "⚠️ **旧域勿再引用**（会 404）。**学生实际用的入口不是 mcode 域**，而是老师自己 CloudBase 上的那条（域名固定 = 不随 mcode 发版变）⇒ 删 mcode 镜像不打断学生链接。"
+  },
+  {
+   "domain": "h9dmeuax02tfp",
+   "project": "词汇站 Unit1+2+3 v1（旧镜像）",
+   "status": "DELETED",
+   "reason": "🔴 **已删除的旧版词汇站 mcode 镜像** —— 2026-10-23 10:20 删除，已被 v3 取代（现役 = iujsgx3ci73dp）。",
+   "note": "⚠️ **旧域勿再引用**（会 404）。**学生实际用的入口不是 mcode 域**，而是老师自己 CloudBase 上的那条（域名固定 = 不随 mcode 发版变）⇒ 删 mcode 镜像不打断学生链接。"
+  },
+  {
+   "domain": "24g05vsqp9dh6",
+   "project": "词汇站 Unit1+2+3 v2（旧镜像）",
+   "status": "DELETED",
+   "reason": "🔴 **已删除的旧版词汇站 mcode 镜像** —— 2026-10-23 10:20 删除，已被 v3 取代（现役 = iujsgx3ci73dp）。",
+   "note": "⚠️ **旧域勿再引用**（会 404）。**学生实际用的入口不是 mcode 域**，而是老师自己 CloudBase 上的那条（域名固定 = 不随 mcode 发版变）⇒ 删 mcode 镜像不打断学生链接。"
   }
  ],
  "how_to_check_before_deleting": {
