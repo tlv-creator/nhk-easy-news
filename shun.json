@@ -1,9 +1,9 @@
 {
- "ver": 18,
- "verName": "1.2.1",
- "site": "https://rqud34vh5k65y.space.mcode.cn",
+ "ver": 19,
+ "verName": "1.2.2",
+ "site": "https://bo8u69hdw58t4.space.mcode.cn",
  "audio": "https://da4lxn2phccck.space.mcode.cn/media/",
- "apk": "https://rqud34vh5k65y.space.mcode.cn/shun.apk",
- "updated": "2026-10-22T19:32:34Z",
- "note": "v1.2.1 · 音频 CDN 瞬时 503 自动重试 + 看门狗兜底（不再假故障报给用户）· 回归 7 套 244 断言"
+ "apk": "https://bo8u69hdw58t4.space.mcode.cn/shun.apk",
+ "updated": "2026-10-23T03:19:05Z",
+ "note": "v1.2.2 · 修 App 内字幕与音频不同步（原生 pos 秒→毫秒）＋原生报错提示＋准备超时看门狗"
 }
