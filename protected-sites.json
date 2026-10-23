@@ -303,6 +303,21 @@
       "project": "shun",
       "reason": "Shun 内容站 v1.2.2（含 APK + 字幕/词库数据）",
       "note": "现役内容站：域名每次发版都换 ⇒ 以引导页 shun.json 的 site 字段为准；更新内容 = 新建站 + 改引导页 + 才删旧的"
+    },
+    {
+      "domain": "tdbdoe02nfrz9",
+      "project": "nhk",
+      "status": "DELETED",
+      "reason": "NHK 内容站 v1.25（已被 4r0zazix2auz0 取代）",
+      "note": "2026-10-23 已删（curl 404 验过）"
+    },
+    {
+      "domain": "4r0zazix2auz0",
+      "project": "nhk",
+      "role": "current_site",
+      "reason": "NHK 内容站 v1.26（字幕同步修好 + 原速音 96k 无削波 + 坏帧音频已修）",
+      "note": "现役内容站：域名每次发版都换 ⇒ 以引导页 version.json 的 site 字段为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
+      "frozen": false
     }
   ],
   "how_to_check_before_deleting": {
