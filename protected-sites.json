@@ -316,6 +316,15 @@
       "project": "nhk",
       "role": "current_site",
       "reason": "NHK 内容站 v1.26（字幕同步修好 + 原速音 96k 无削波 + 坏帧音频已修）",
+      "note": "2026-10-23 已被 v1.26 取代并删除（curl 404 验过）；现役内容站以引导页 version.json 的 site 字段为准",
+      "frozen": false,
+      "status": "DELETED"
+    },
+    {
+      "domain": "sn61770y6nxvr",
+      "project": "nhk",
+      "role": "current_site",
+      "reason": "NHK 内容站 v1.27（17 期坏帧已修 + 音频四维体检全过 0 削平 0 过冲 + 字幕同步修好）",
       "note": "现役内容站：域名每次发版都换 ⇒ 以引导页 version.json 的 site 字段为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
       "frozen": false
     }
