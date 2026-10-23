@@ -48,7 +48,7 @@ SILENT = 0.02              # |x| 低于这个算静音
 
 
 def decode_f32(path):
-    p = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-f", "f32le",
+    p = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-i", path, "-f", "f32le",
                         "-ac", "1", "-ar", str(SR), "-"],
                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=600)
     d = p.stdout
@@ -60,7 +60,7 @@ def decode_f32(path):
 
 def encode(v, out, bitrate="96k"):
     raw = struct.pack("<%df" % len(v), *v)
-    cmd = ["ffmpeg", "-y", "-v", "error", "-f", "f32le", "-ar", str(SR), "-ac", "1",
+    cmd = ["ffmpeg", "-nostdin", "-y", "-v", "error", "-f", "f32le", "-ar", str(SR), "-ac", "1",
            "-i", "-", "-c:a", "aac", "-b:a", bitrate, "-ar", "48000", "-ac", "2",
            "-movflags", "+faststart", out]
     p = subprocess.run(cmd, input=raw, capture_output=True, timeout=600)
