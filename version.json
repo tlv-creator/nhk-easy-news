@@ -1,9 +1,9 @@
 {
-  "ver": 22,
-  "verName": "1.7",
+  "ver": 23,
+  "verName": "1.8",
   "apkVer": 20,
-  "site": "https://blb9mns852mft.space.mcode.cn",
-  "apk": "https://blb9mns852mft.space.mcode.cn/NHK.apk",
-  "note": "44期 · v1.20 APK（apkVer=20）· 普通版新增「音字同步」开关：16 期支持跟音（電視播報稿）· 词典补回 · cdn 死链清零",
+  "site": "https://aaxnw4wets0kt.space.mcode.cn",
+  "apk": "https://aaxnw4wets0kt.space.mcode.cn/NHK.apk",
+  "note": "44期 · v1.20 APK（apkVer=20）· 普通版「音字同步」（16 期跟音）· 剥掉平台注入的悬浮球/统计脚本（源码剥 + 运行时兜底）· 词典补回 · cdn 死链清零",
   "updated": "2026-10-24"
 }
