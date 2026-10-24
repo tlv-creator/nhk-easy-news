@@ -28,6 +28,31 @@ sys.path.insert(0, HERE)
 import gen_gs  # noqa: E402
 
 
+_PUNCT = set("、。！？!?，,．.「」『』（）()【】〔〕…—・:：;；\"' ")
+
+
+def _core_blocks(frame):
+    out = []
+    for b in frame or []:
+        t = (b.get("s") or "").strip()
+        if not t:
+            continue
+        if all(ch in _PUNCT for ch in t):
+            continue
+        out.append(t)
+    return out
+
+
+def _mech_or_nonja(gs, ja):
+    """返回 (不合格?, 原因)。机械切 / 非日语行 ⇒ 不合格。"""
+    ja = ja or ""
+    if not any("\u3040" <= c <= "\u30ff" or "\u4e00" <= c <= "\u9fff" for c in ja):
+        return True, "非日语行（无假名/汉字）⇒ 不生成结构"
+    core = _core_blocks(gs.get("frame") or [])
+    if len(core) >= 2 and all(8 <= len(x) <= 12 for x in core):
+        return True, "机械切（块长全在 8~12 字：%s）" % ",".join(str(len(x)) for x in core)
+    return False, ""
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true", help="写回 web/data/eps/*.json")
@@ -64,6 +89,17 @@ def main():
                     continue
                 cache[key]["gs"] = None
                 cache[key]["err"] = "clean: " + str(reason2)
+                dropped += 1
+                changed = True
+                continue
+            # 🔴🔴 **额外判据**（2026-10-24 采纳主线反馈）：机械切 + 非日语行
+            #   ① 机械切：块长全在 8~12 字且块数 ≥2 ⇒ 那不是结构，是**断字**
+            #      ⚠️ 必须去掉**纯标点块**再算长度（句末「。」长度 1 ⇒ 不去掉就整条判据失灵）
+            #   ② 非日语行：没有假名的行（如英文 Patreon 广告）⇒ 不给结构（前端降级纯文本）
+            mech_bad, mech_why = _mech_or_nonja(gs, ja)
+            if mech_bad:
+                cache[key]["gs"] = None
+                cache[key]["err"] = "clean: " + mech_why
                 dropped += 1
                 changed = True
                 continue
