@@ -207,7 +207,9 @@ with sync_playwright() as p:
     errs = []
     pg.on("pageerror", lambda e: errs.append(str(e)))
     pg.on("console", lambda m: errs.append("c:" + m.text) if m.type == "error" else None)
-    pg.on("dialog", lambda d: d.accept())          # confirm() 一律确认
+    # 🔴 confirm() 一律确认；prompt() 必须**输入「清空」**（老师端的护栏：手打两个字才执行）
+    #    ⇒ 只 accept() 会确认成空字符串 ⇒ 护栏正确地取消操作 ⇒ 脚本会误报「清空失败」
+    pg.on("dialog", lambda d: d.accept("清空"))
 
     print("\n-- 学生端 --")
     goto(pg, BASE + "/student.html")
@@ -250,7 +252,7 @@ with sync_playwright() as p:
     print("   （清空全部前会恢复测试前快照：%d 行）" % len(SNAP))
     pg2 = br.new_page(viewport={"width": 1280, "height": 900})
     pg2.on("pageerror", lambda e: errs.append("T:" + str(e)))
-    pg2.on("dialog", lambda d: d.accept())
+    pg2.on("dialog", lambda d: d.accept("清空"))   # 🔴 同上：prompt 要输入「清空」
     goto(pg2, BASE + "/teacher.html")
     pg2.wait_for_selector("#tid", timeout=30000)
     pg2.fill("#tid", "2013"); pg2.fill("#tpwd", "781108")
