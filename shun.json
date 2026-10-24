@@ -1,9 +1,9 @@
 {
- "ver": 24,
- "verName": "1.2.3",
- "site": "https://0a5j2weef699t.space.mcode.cn",
+ "ver": 25,
+ "verName": "1.2.4",
+ "site": "https://3be4wt47jrt60.space.mcode.cn",
  "audio": "https://qtjgfga76bu4o.space.mcode.cn/media/",
- "apk": "https://0a5j2weef699t.space.mcode.cn/shun.apk",
- "updated": "2026-10-24T02:57:16Z",
- "note": "v1.2.3: sentence-structure breakdown + one-tap copy sentence + fixed line breaks (13 eps / 1154 sentences)"
+ "apk": "https://3be4wt47jrt60.space.mcode.cn/shun.apk",
+ "updated": "2026-10-24T03:35:44Z",
+ "note": "v1.2.4：音频备用地址链（主源挂了自动换源）+ 音频站存活性闸门 + 机械切清理"
 }
