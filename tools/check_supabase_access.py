@@ -1,31 +1,40 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""check_supabase_access.py v2 —— 三站 Supabase RLS **真实验收**（2026-10-24 重写）
+"""check_supabase_access_v3.py —— 补上 v2 漏掉的三件事（2026-10-24）
 
 =====================================================================
-【为什么重写：v1 有两个假绿，都是我自己复核后确认的】
-  ① **站→表的归属靠「扫本地文件路径」猜** ⇒ 听力记录站的三个路径写错了
-     （v1 写 `listening/js/app.js`，真实是 `listening/app/js/{api,student,teacher}.js`）
-     ⇒ 它**一行都没被扫到** ⇒ 报告里全是「来源: 词汇学习站」
-     ⇒ **听力站实际是坏的，脚本却报全绿** ❌
-  ② **只看 HTTP 码** ⇒ PostgREST 删不掉也返回 200/204 + 空数组
-     ⇒ 「删除功能静默失效」在 v1 里**看不见** ❌
+v2 已经全绿（57 条断言），但我复核输出时发现**三处「没验到」**：
 
-【v2 的做法】
-  · 需求**从线上 live 代码抽**（抓每个站的 index.html + 它引用的 js，递归一层）
-    ⇒ 站、页、js 路径对不对，脚本自己会发现；路径写错 ⇒ 当场报「没抓到代码」而不是默默跳过
-  · anon key **从站自己的 js 里现取**（publishable key 本来就是公开的，但不必落进仓库）
-  · 每个 (表, class_key) 跑**真实闭环**：写探针 → 回读确认行在 → 删 → 回读确认真的没了
-  · 一条**反向验证**：不在白名单的 class_key **必须写不进去** ⇒ 证明 policy 真的收窄了，
-    而不是 `using (true)`
-  · 探针行在 finally 里清理；vocab_states 用专属探针 key（**绝不覆盖真实班级的 state_val**）
+ ① **反向验证被跳过了** —— 脚本写的是
+      wrote_ok = any('写入被挡' not in f for f in FAILS)
+    ⇒ FAILS 为空时 any() 返回 **False** ⇒ **恰好在全绿的时候跳过**
+    ⇒ 这是「空集合恒假」的老坑（同族：`x or 99` 吃掉 0.0）
+    ⇒ 修法：用**正向写成功时置位的标志位**，不看 FAILS
 
-【退出码】0=全过 / 1=有断言失败（看输出里的 ❌ 列表）/ 脚本崩溃 ⇒ 留 Traceback
-  （跑批器用 scripts/strict_test_exit.py 区分「判据拦截」与「脚本崩了」）
+ ② **DELETE 一次都没验** —— v2 的 delete-path 提取靠正则
+      class_key=eq\.([A-Za-z0-9_]+)
+    ⇒ 而听力站真实代码是**字符串拼接**：
+      rest('vocab_history_logs?id=eq.' + Number(args.p_id) +
+           '&class_key=eq.' + CFG.LOG_KEY + '&student_id=eq.' + sid3, {method:'DELETE'})
+    ⇒ 正则一个都没匹配上 ⇒ 听力站三条删除路径被当成「该站没有删除路径」
+    ⇒ 而 **v1 坏得最狠的恰恰就是 DELETE**（只放行探针 ⇒ 老师点「删掉了」数据还在）
+    ⇒ 修法：**从 live code 里解析出真实 URL 形态**再照着打
+
+ ③ **upsert 只测了「第一次」** —— upsert = INSERT … ON CONFLICT DO UPDATE
+    ⇒ 第一次走 INSERT 分支，第二次才走 DO UPDATE 分支（v1 缺 UPDATE policy ⇒ 第二次报 42501）
+    ⇒ 修法：每张有 onConflict 的表都**写两次**
+
+【v3 新增的验收项】
+  T1 三条删除路径（学生删自己 / 老师删一条 / 老师清空全部）⇒ 写→删→**回读确认真的没了**
+  T2 反向验证（修复 v2 的空集合 bug）：非白名单 class_key 必须写不进去、读不到、删不掉
+  T3 upsert 第二次写（ON CONFLICT DO UPDATE 分支）
+  T4 **老师端看板必须读得到真实数据**（不是探针）⇒ 老师打开记录表不能是空的
+  T5 「清空全部」路径用**不伤真实数据**的方式验（见 T1-c 的说明）
+
+【退出码】0=全过 / 1=有断言失败
 =====================================================================
 """
 import json
-import os
 import re
 import sys
 import urllib.error
@@ -34,20 +43,18 @@ import urllib.request
 UA = 'Mozilla/5.0 (Linux; Android 13) Mobile'
 REST = 'https://lszwxcmvcvbraqtrtgon.supabase.co/rest/v1'
 
-# 站清单（域名来自 protected-sites.json；**不自动刷新**，避免拿到已删的站）
-STATIONS = [
-    ('词汇学习站 Unit1+2+3', 'https://iujsgx3ci73dp.space.mcode.cn/'),
-    ('每日听力记录站',       'https://irk7ibwekq8se.space.mcode.cn/'),
-    ('四级精读日报站',       'https://y8arnrff8t2hj.space.mcode.cn/'),
-    ('词汇学习站 VocabLog',  'https://zp67qm11jonui.space.mcode.cn/'),   # 走 CloudBase 网关，不碰 Supabase
-]
+LISTEN_SITE = 'https://irk7ibwekq8se.space.mcode.cn/'
+VOCAB_SITE = 'https://iujsgx3ci73dp.space.mcode.cn/'
+CET4_SITE = 'https://y8arnrff8t2hj.space.mcode.cn/'
 
-# 明显是演示/探针的 key，不算真实需求
-FAKE_KEY = re.compile(r'^(DEMO\d+|demo.*|__.*)$', re.I)
+PROBE_SID = '__rls_probe__'        # 探针 student_id
+PROBE_CK = 'LISTENPROBE'           # 探针 class_key（「清空全部」路径专用，不碰真实 LISTEN）
+NEG_CK = '__rls_neg_probe__'       # 反向验证用的非法 class_key
 
-# 探针
-PROBE_ID = '__rls_probe__'
-NEG_KEY = '__rls_neg_probe__'
+ANON_KEY = ''
+FAILS = []
+CHECKS = 0
+ANY_WRITE_OK = False                # 🔴 v2 的 bug 就是没用这个
 
 
 # ────────────────────────────────────────────── HTTP
@@ -87,317 +94,409 @@ def rows_of(raw):
         return []
 
 
-# ────────────────────────────────────────────── 抓线上代码
-def fetch_text(url):
+def count_of(raw):
+    """从 Content-Range 里取精确行数（没带 count=exact 时返回 None）"""
+    return None
+
+
+def get_text(url):
     st, _, raw = http('GET', url, headers={'Accept': 'text/html,*/*'})
     return raw if st == 200 else ''
 
 
-def station_code(root):
-    """抓一个站的 index.html（**内联代码也要**）+ 它引用的所有 js ⇒ 返回 (代码全文, 文件列表)
-
-    🔴 v2 第一版的坑：词汇学习站是**单文件内联**（全部 JS 在 index.html 里，没有外部 .js）
-       ⇒ 只抓外部 js 会「一个 js 都没抓到」⇒ 需求整站缺失（还差点被当成「没问题」）
-       ⇒ 现在**内联 HTML 与外部 js 一视同仁**地进代码语料。
-    """
-    idx = fetch_text(root)
-    if not idx:
-        return '', []
-    code_all = idx          # 内联代码
-    urls, seen = [], set()
-    for m in re.finditer(r'<script[^>]+src="([^"]+\.js[^"]*)"', idx):
-        u = m.group(1)
-        if u.startswith('http'):
-            u2 = u
-        else:
-            u2 = root.rstrip('/') + '/' + u.lstrip('/')
-        if u2 not in seen:
-            seen.add(u2)
-            urls.append(u2)
-    # 有些站是 index.html → student.html / teacher.html → 各自的 js
-    for m in re.finditer(r'<a[^>]+href="([^"]+\.html[^"]*)"', idx):
-        page = root.rstrip('/') + '/' + m.group(1).lstrip('/')
-        ptxt = fetch_text(page)
-        if not ptxt:
-            continue
-        code_all += '\n' + ptxt
-        for m2 in re.finditer(r'<script[^>]+src="([^"]+\.js[^"]*)"', ptxt):
-            u2 = root.rstrip('/') + '/' + m2.group(1).lstrip('/')
-            if u2 not in seen:
-                seen.add(u2)
-                urls.append(u2)
-    files = []
-    for u in urls:
-        t = fetch_text(u)
-        if t:
-            code_all += '\n' + t
-            files.append(u)
-    return code_all, files
-
-
-KNOWN_TABLES = ('vocab_history_logs', 'vocab_submissions', 'vocab_online_status', 'vocab_states')
-
-
-def extract_needs(code):
-    """从代码里抽：用了哪些表 / 哪些 class_key / 哪些走 delete
-
-    🔴 v2 第一版的坑：另外两个站用的是 `rest('vocab_history_logs?...')` / `fetchAllRows('vocab_...')`
-       这种**裸 REST URL**，不是 `from('vocab_history_logs')` ⇒ 只认 from() 会把表全漏掉
-       ⇒ 现在按「语料里出现过哪些 vocab_* 表」来认表。
-    """
-    tables = set()
-    for t in KNOWN_TABLES:
-        if t in code:
-            tables.add(t)
-    # class_key 的各种写法（全语料）
-    keys = set()
-    keys |= set(re.findall(r"class_key\s*[:=]\s*['\"]([A-Za-z0-9_]+)['\"]", code))
-    keys |= set(re.findall(r"class_key=eq\.([A-Za-z0-9_]+)", code))
-    keys |= set(re.findall(r"LOG_KEY\s*:\s*['\"]([A-Za-z0-9_]+)['\"]", code))
-    keys |= set(re.findall(r"classKey\s*:\s*['\"]([A-Za-z0-9_]+)['\"]", code))
-    keys |= set(re.findall(r"['\"]([A-Z][A-Z0-9_]{2,})['\"]\s*:\s*['\"]", code))
-    keys = {k for k in keys if not FAKE_KEY.match(k)}
-    # 🔴 代码里出现 `currentClassKey + '|u' + unit` 这种**拼接形态** ⇒ 该站会写出带后缀的 key
-    #    （词汇站就是 `stateKeyFor(unit)`）⇒ 白名单若用精确枚举，这些形态会被挡
-    #    ⇒ 验收脚本必须**把带后缀的形态也测一遍**，否则「枚举型白名单」能蒙混过关
-    suffixes = set(re.findall(r"\+\s*['\"]\|(\w+)['\"]\s*\+", code))
-    for suf in suffixes:
-        for k in list(keys):
-            for n in (1, 2):
-                keys.add('%s|%s%d' % (k, suf, n))
-    if suffixes:
-        print('     （检测到 key 拼接后缀 |%s ⇒ 额外测 %d 个变体）'
-              % ('/'.join(sorted(suffixes)), len(suffixes) * 2 * len(keys)))
-    # delete 路径里用到的 class_key（窗口取 URL 附近的）
-    del_keys = set()
-    for m in re.finditer(r"method:\s*['\"]DELETE['\"]|\.delete\(\)", code):
-        seg = code[max(0, m.start() - 700):m.start() + 300]
-        del_keys |= set(re.findall(r"class_key=eq\.([A-Za-z0-9_]+)", seg))
-        del_keys |= set(re.findall(r"LOG_KEY", seg))
-    del_keys = {k for k in del_keys if not FAKE_KEY.match(k)}
-    upsert = set(re.findall(r"from\(['\"](vocab_[a-z_]+)['\"]\)\.upsert", code))
-    return tables, keys, del_keys, upsert
-
-
-# ────────────────────────────────────────────── 表的探针行（列名全部来自线上代码）
-def probe_row(table, ck):
-    if table == 'vocab_history_logs':
-        return {'class_key': ck, 'class_name': '__rls_probe__', 'student_id': PROBE_ID,
-                'timestamp': '2026-10-24 12:00:00', 'duration_sec': 0, 'action': '__rls_probe__'}
-    if table == 'vocab_online_status':
-        return {'class_key': ck, 'class_name': '__rls_probe__', 'student_id': PROBE_ID,
-                'status_text': '__rls_probe__', 'login_time': '12:00:00'}
-    if table == 'vocab_submissions':
-        return {'student_id': PROBE_ID, 'submitted_exams': ['__rls_probe__']}
-    if table == 'vocab_states':
-        return {'class_key': PROBE_ID, 'state_val': '__rls_probe__'}
-    return {'class_key': ck, 'student_id': PROBE_ID}
-
-
-def read_filter(table, ck):
-    """用「站自己那套过滤条件」回读（这样才和真实用法一致）"""
-    if table == 'vocab_submissions':
-        return 'student_id=eq.' + PROBE_ID
-    if table == 'vocab_states':
-        return 'class_key=eq.' + PROBE_ID
-    return 'class_key=eq.%s&student_id=eq.%s' % (ck, PROBE_ID)
-
-
-def delete_filter(table, ck):
-    if table == 'vocab_submissions':
-        return 'student_id=eq.' + PROBE_ID
-    if table == 'vocab_states':
-        return 'class_key=eq.' + PROBE_ID
-    return 'class_key=eq.%s&student_id=eq.%s' % (ck, PROBE_ID)
-
-
-# ────────────────────────────────────────────── 主流程
-ANON_KEY = ''
-FAILS = []
-CHECKS = 0
+# ────────────────────────────────────────────── 判定
+def ok(what):
+    global CHECKS
+    CHECKS += 1
+    print('  ✅ %s' % what)
 
 
 def fail(what, detail):
+    global CHECKS
+    CHECKS += 1
     FAILS.append('%s —— %s' % (what, detail))
     print('  ❌ %s —— %s' % (what, detail))
 
 
-def ok(what):
-    print('  ✅ %s' % what)
+def log_row(class_key, sid=PROBE_SID):
+    return {'class_key': class_key, 'class_name': '__rls_probe__', 'student_id': sid,
+            'timestamp': '2026-10-24 12:00:00', 'duration_sec': 0, 'action': '__rls_probe__'}
 
 
-def cleanup():
-    """无论如何都清掉探针行"""
-    for table, f in [('vocab_history_logs', 'class_key=eq.%s' % PROBE_ID),
-                     ('vocab_online_status', 'class_key=eq.%s' % PROBE_ID),
-                     ('vocab_submissions', 'student_id=eq.' + PROBE_ID),
-                     ('vocab_states', 'class_key=eq.' + PROBE_ID)]:
-        rest('DELETE', '/%s?%s' % (table, f), prefer='return=representation')
+def online_row(class_key, sid=PROBE_SID):
+    return {'class_key': class_key, 'class_name': '__rls_probe__', 'student_id': sid,
+            'status_text': '__rls_probe__', 'login_time': '12:00:00'}
 
 
-def closed_loop(table, ck, need_read=True, need_write=True, need_delete=True):
-    """写 → 回读 → 删 → 回读。返回 (通过?, 细节)"""
-    global CHECKS
-    row = probe_row(table, ck)
-    # 🔴 先清掉同 key 的旧探针 ⇒ 脚本可重复跑，不会被 409 误判成红
-    rest('DELETE', '/%s?%s' % (table, delete_filter(table, ck)), prefer='return=representation')
-    st, _, raw = rest('POST', '/' + table, row, prefer='return=representation')
-    if st == 409:
-        st = 200      # 已存在（上一轮残留）⇒ 继续验读/删，不算红
+def insert_log(class_key, sid=PROBE_SID):
+    """插入探针行 ⇒ 返回 (成功?, 该行 id, 说明)"""
+    global ANY_WRITE_OK
+    rest('DELETE', '/vocab_history_logs?class_key=eq.%s&student_id=eq.%s' % (class_key, sid),
+         prefer='return=representation')
+    st, _, raw = rest('POST', '/vocab_history_logs', log_row(class_key, sid),
+                      prefer='return=representation')
     if st not in (200, 201):
-        return False, '写入被挡 http=%s %s' % (st, raw[:110])
-    CHECKS += 1
-    q = read_filter(table, ck)
-    st, _, raw = rest('GET', '/%s?select=*&%s' % (table, q), prefer='count=exact')
-    if st != 200:
-        return False, '回读失败 http=%s %s' % (st, raw[:110])
-    if not rows_of(raw):
-        return False, '写进去了但回读不到（写和读不是一个通道）'
-    CHECKS += 1
-    if not need_delete:
-        # 只验写入/读取 ⇒ 顺手删掉（这个站本来没有删除路径）
-        rest('DELETE', '/%s?%s' % (table, delete_filter(table, ck)), prefer='return=representation')
-        return True, '写✓ 读✓（该站没有删除路径，未验删）'
-    st, _, raw = rest('DELETE', '/%s?%s' % (table, delete_filter(table, ck)), prefer='return=representation')
-    if st not in (200, 204):
-        return False, '删除被挡 http=%s %s' % (st, raw[:110])
-    CHECKS += 1
-    st, _, raw = rest('GET', '/%s?select=*&%s' % (table, q), prefer='count=exact')
-    if rows_of(raw):
-        return False, '🔴 删不掉（PostgREST 也返回 200/204 ⇒ 只看返回码会假绿）'
-    CHECKS += 1
-    return True, '写✓ 回读到✓ 删✓ 回读确认已消失✓'
+        return False, None, '写入被挡 http=%s %s' % (st, raw[:100])
+    ANY_WRITE_OK = True
+    rows = rows_of(raw)
+    rid = rows[0].get('id') if rows else None
+    return True, rid, ''
 
 
+
+def as_list(v):
+    """列可能是 json（回读是**字符串**）也可能是 jsonb（回读是数组）⇒ 两种都认"""
+    if isinstance(v, list):
+        return v
+    if isinstance(v, str):
+        try:
+            x = json.loads(v)
+            return x if isinstance(x, list) else [x]
+        except Exception:
+            return []
+    return []
+
+
+def read_log(class_key, sid=PROBE_SID, extra=''):
+    q = 'class_key=eq.%s&student_id=eq.%s' % (class_key, sid)
+    if extra:
+        q += '&' + extra
+    st, _, raw = rest('GET', '/vocab_history_logs?select=*&%s' % q, prefer='count=exact')
+    return st, rows_of(raw), raw
+
+
+def del_log(query):
+    """DELETE 并返回 (http码, 返回体行数)"""
+    st, _, raw = rest('DELETE', '/vocab_history_logs?' + query, prefer='return=representation')
+    return st, rows_of(raw), raw
+
+
+# ────────────────────────────────────────────── 从 live code 解析删除路径
+def parse_listen_delete_paths():
+    """从听力站 live code 里解析出真实删除 URL 形态
+
+    ⇒ **不是猜的**：正则找 `rest('<table>?<query>', { method: 'DELETE' })`
+    ⇒ 然后把 `CFG.LOG_KEY` 之类的常量**解析成字面值**
+    ⇒ 返回 [(路径名, 表, query模板)]
+    """
+    code = ''
+    root = LISTEN_SITE
+    idx = get_text(root)
+    for page in ('student.html', 'teacher.html'):
+        t = get_text(root + page)
+        if not t:
+            continue
+        code += '\n' + t
+        for m in re.finditer(r'<script[^>]+src="([^"]+)"', t):
+            code += '\n' + get_text(root + m.group(1).lstrip('/'))
+    if not code:
+        return None, ''
+
+    # 常量表：CFG.LOG_KEY = 'LISTEN'  ⇒  {LOG_KEY: 'LISTEN'}
+    consts = {}
+    for m in re.finditer(r"(\w+)\s*:\s*'([A-Za-z0-9_]+)'", code):
+        consts.setdefault(m.group(1), m.group(2))
+
+    def split_plus(s):
+        """按顶层 '+' 切分（不切字符串字面量里的 '+'）"""
+        out, buf, i, inq = [], [], 0, False
+        while i < len(s):
+            c = s[i]
+            if c == "'":
+                inq = not inq
+                buf.append(c)
+            elif c == '+' and not inq:
+                out.append(''.join(buf))
+                buf = []
+            else:
+                buf.append(c)
+            i += 1
+        out.append(''.join(buf))
+        # ⚠️ 收尾时 region 常带一个「, 」（`rest(url, { method: … }` 的逗号）
+        #    ⇒ 不剥掉它，'CFG.LOG_KEY,' 就匹配不上常量正则 ⇒ 被当成未知表达式 ⇒ <VAL>
+        parts = []
+        for x in out:
+            x = x.strip()
+            if x and not x.startswith("'"):
+                x = x.rstrip(',').strip()
+            if x:
+                parts.append(x)
+        return parts
+
+    paths = []
+    # 🔴 v3 第一版解析器的坑：听力站的 URL 是**跨多个字符串拼接**的
+    #    rest('vocab_history_logs?id=eq.' + Number(args.p_id) +
+    #         '&class_key=eq.' + CFG.LOG_KEY + '&student_id=eq.' + sid3, { method: 'DELETE' })
+    #    ⇒ 「rest('...' 后面紧跟 ', {'」的正则**一条都匹配不上** ⇒ 解析器报「没路径」
+    #    ⇒ 修法：从 `rest(` 开始扫到 `method: 'DELETE'`，把中间的 '+' 表达式**逐段还原**
+    for m in re.finditer(r"\brest\s*\(", code):
+        start = m.end()
+        mth = code.find("method: 'DELETE'", start, start + 1200)
+        if mth < 0:
+            continue
+        opts = code.rfind('{', start, mth)
+        if opts < 0:
+            continue
+        region = code[start:opts]
+        url, last_key = '', ''
+        for part in split_plus(region):
+            lit = re.match(r"^'([^']*)'$", part)
+            if lit:
+                url += lit.group(1)
+                tail = re.search(r'([A-Za-z_]+)=', lit.group(1)[-40:])
+                last_key = tail.group(1) if tail else ''
+                continue
+            # 表达式：常量 → 字面值；变量 → 按它前面那个 key 给占位符
+            cm = re.match(r'^(?:CFG\.)?(\w+)$', part)
+            if cm and cm.group(1) in consts:
+                url += consts[cm.group(1)]
+                continue
+            if last_key == 'id':
+                url += '<ID>'
+            elif last_key == 'student_id':
+                url += '<SID>'
+            else:
+                url += '<VAL>'
+        tm = re.match(r'^(vocab_\w+)\?(.*)$', url)
+        if not tm:
+            continue
+        table, query = tm.group(1), tm.group(2)
+        paths.append((table, query, code[max(0, m.start() - 120):m.start() + 60]))
+    # 去重
+    uniq = []
+    seen = set()
+    for t, q, ctx in paths:
+        k = (t, q)
+        if k in seen:
+            continue
+        seen.add(k)
+        uniq.append((t, q, ctx))
+    return uniq, code
+
+
+# ────────────────────────────────────────────── 主流程
 def main():
     global ANON_KEY
-    print('=' * 70)
-    print('Supabase RLS 真实验收 v2   项目=lszwxcmvcvbraqtrtgon')
-    print('=' * 70)
+    print('=' * 74)
+    print('Supabase RLS 验收 v3 —— 补 DELETE / 反向验证 / upsert 第二次 / 老师端真实数据')
+    print('项目 = lszwxcmvcvbraqtrtgon')
+    print('=' * 74)
 
-    # ── 1) 扫线上代码，抽需求
-    print('\n━━ 1) 需求发现（从线上 live 代码抽，不是猜的）━━')
-    need = {}          # (table, ck) → {'read':bool,'write':bool,'delete':bool}
-    station_of = {}    # (table, ck) → set(站名)
-    for name, root in STATIONS:
-        code, files = station_code(root)
-        if not code:
-            print('  ⚠️  %s：没抓到任何 js（站可能改名/换结构了 ⇒ 需求缺失，**别当通过**）' % name)
-            continue
-        keym = re.search(r'sb_publishable_[A-Za-z0-9_]+', code)
-        if keym and not ANON_KEY:
-            ANON_KEY = keym.group(0)
-        if not keym:
-            print('  ℹ️  %s：代码里没有 Supabase key ⇒ 该站不走 Supabase（CloudBase 网关）⇒ 跳过' % name)
-            continue
-        tables, keys, del_keys, upsert = extract_needs(code)
-        tables = {t for t in tables if t.startswith('vocab_')}
-        keys = {k for k in keys if not FAKE_KEY.match(k)}
-        kind = '内联单文件站（js 全在 html 里）' if not files else '抓到 %d 个 js' % len(files)
-        print('  · %s（%s，用到表 %s）' % (name, kind, ','.join(sorted(tables)) or '—'))
-        for t in sorted(tables):
-            tks = sorted(keys) if t in ('vocab_history_logs', 'vocab_online_status') else ['(无 class_key 列)']
-            for ck in tks:
-                if t == 'vocab_states':
-                    continue        # 下面单独处理（不能拿真班级 key 写探针）
-                k = (t, ck)
-                need.setdefault(k, {'read': True, 'write': True, 'delete': ck in del_keys})
-                station_of.setdefault(k, set()).add(name)
-        for ck in del_keys:
-            k = ('vocab_history_logs', ck)
-            if k in need:
-                need[k]['delete'] = True
+    # ── 0) anon key
+    for site in (VOCAB_SITE, LISTEN_SITE, CET4_SITE):
+        code = get_text(site)
+        km = re.search(r'sb_publishable_[A-Za-z0-9_]+', code)
+        if km:
+            ANON_KEY = km.group(0)
+            break
     if not ANON_KEY:
-        ANON_KEY = os.environ.get('SUPABASE_ANON_KEY', '')
-    if not ANON_KEY:
-        print('\n❌ 拿不到 anon key（线上代码里没抽到，环境变量也没有）⇒ 无法验收')
+        print('❌ 拿不到 anon key ⇒ 无法验收')
         return 1
-    print('  anon key：从线上代码现取（不落仓库）✅')
+    print('  anon key：从线上代码现取 ✅')
 
-    if not need:
-        print('\n❌ 一条需求都没抽到 ⇒ 一定是扫描器坏了（不是「没问题」）')
+    # ── 1) 从 live code 解析听力站删除路径
+    print('\n━━ 1) 从听力站 live code 解析真实删除路径（不靠猜）━━')
+    paths, lcode = parse_listen_delete_paths()
+    if not paths:
+        print('❌ 一条删除路径都没解析到 ⇒ 解析器坏了（不是「没有删除路径」）')
         return 1
+    for t, q, ctx in paths:
+        print('  · %s ? %s' % (t, q))
 
-    # ── 2) 真实闭环
-    print('\n━━ 2) 真实闭环验收（写 → 回读 → 删 → 回读）━━')
-    try:
-        for (t, ck), req in sorted(need.items()):
-            label = '%s / %s' % (t, ck)
-            rest('DELETE', '/%s?%s' % (t, delete_filter(t, ck)), prefer='return=representation')
-            st, _, raw = rest('POST', '/' + t, probe_row(t, ck), prefer='return=representation')
-            if st == 409:
-                st = 200
-            if st not in (200, 201):
-                # 写都进不去 ⇒ 后续无从谈起，直接判失败
-                fail(label, '写入被挡 http=%s %s' % (st, raw[:110]))
-                continue
-            global CHECKS
-            CHECKS += 1
-            q = read_filter(t, ck)
-            st, _, raw = rest('GET', '/%s?select=*&%s' % (t, q), prefer='count=exact')
-            if st != 200 or not rows_of(raw):
-                fail(label, '写进去了但回读不到（http=%s）' % st)
-                continue
-            CHECKS += 1
-            if not req['delete']:
-                rest('DELETE', '/%s?%s' % (t, delete_filter(t, ck)), prefer='return=representation')
-                ok('%s  写✓ 回读到✓（该站没有删除路径，未验删）  ← %s'
-                   % (label, '/'.join(sorted(station_of.get((t, ck), [])))))
-                continue
-            st, _, raw = rest('DELETE', '/%s?%s' % (t, delete_filter(t, ck)), prefer='return=representation')
-            st2, _, raw2 = rest('GET', '/%s?select=*&%s' % (t, q), prefer='count=exact')
-            if rows_of(raw2):
-                fail(label, '🔴 删不掉（PostgREST 也返回 200/204 ⇒ 只看返回码会假绿）')
-            else:
-                CHECKS += 2
-                ok('%s  写✓ 回读到✓ 删✓ 回读确认已消失✓  ← %s'
-                   % (label, '/'.join(sorted(station_of.get((t, ck), [])))))
+    # ── 2) T1 三条删除路径
+    print('\n━━ 2) T1 三条删除路径（写 → 删 → 回读确认真的没了）━━')
+    # 真实 LISTEN 里有多少行（**不许把真实数据删掉**）
+    st, _, raw = rest('GET', '/vocab_history_logs?select=id&class_key=eq.LISTEN', prefer='count=exact')
+    real_listen = len(rows_of(raw))
+    print('  （LISTEN 现有 %d 行真实记录）' % real_listen)
 
-        # vocab_states：只读名册 + 用专属探针 key 验写（绝不覆盖真班级的 state_val）
-        print('\n━━ 2b) vocab_states（名册表；探针用专属 key，不碰真班级）━━')
-        st, _, raw = rest('GET', '/vocab_states?select=*&class_key=eq.__roster_v1', prefer='count=exact')
-        if st == 200 and rows_of(raw):
-            ok('名册可读（__roster_v1 读得到 %d 行）' % len(rows_of(raw)))
-            CHECKS += 1
+    # T1-a 学生删自己一条: ?id=eq.<id>&class_key=eq.LISTEN&student_id=eq.<sid>
+    good, rid, why = insert_log('LISTEN')
+    if not good:
+        fail('T1-a 前置（写探针行）', why)
+    else:
+        q = 'id=eq.%s&class_key=eq.LISTEN&student_id=eq.%s' % (rid, PROBE_SID)
+        st, body, raw = del_log(q)
+        st2, rows2, _ = read_log('LISTEN')
+        if rows2:
+            fail('T1-a 学生删自己一条', 'http=%s 但行还在 ⇒ 删不掉（只看返回码会假绿）' % st)
         else:
-            fail('vocab_states 名册读取', 'http=%s，读不到名册 ⇒ 三个站都会登不进' % st)
-        # 🔴 vocab_states 的 DELETE 被 RLS 挡（v1 SQL 注释里写过：是设计如此）⇒ **不测删**
-        #    否则会拿一条「本来就该挡」的删除判成红 ⇒ 假红
-        rest('DELETE', '/vocab_states?class_key=eq.%s' % PROBE_ID, prefer='return=representation')
-        st, _, raw = rest('POST', '/vocab_states', probe_row('vocab_states', PROBE_ID),
+            ok('T1-a 学生删自己一条（id+class_key+student_id）→ 删掉了，回读确认已消失')
+
+    # T1-b 老师删一条: ?id=eq.<id>&class_key=eq.LISTEN
+    good, rid, why = insert_log('LISTEN')
+    if not good:
+        fail('T1-b 前置（写探针行）', why)
+    else:
+        q = 'id=eq.%s&class_key=eq.LISTEN' % rid
+        st, body, raw = del_log(q)
+        st2, rows2, _ = read_log('LISTEN')
+        if rows2:
+            fail('T1-b 老师删一条', 'http=%s 但行还在 ⇒ 删不掉' % st)
+        else:
+            ok('T1-b 老师删一条（id+class_key）→ 删掉了，回读确认已消失')
+
+    # T1-c 老师清空全部: ?class_key=eq.LISTEN
+    #   ⚠️ 这一条会删掉 LISTEN 的**全部真实行** ⇒ 老师有真学生数据时不能直接打
+    #   ⇒ 做法：先在**别的、白名单同样放行的 key** 上打**完全同形态的 URL**（只有 class_key 过滤，
+    #      没有 id / student_id 过滤）⇒ 证明「按 class_key 一把清」这条路是通的，
+    #      同时**证明它不会误删别的 class_key 的行**
+    good, rid, why = insert_log(PROBE_CK)
+    ins2, rid2, why2 = insert_log('JR1')     # 另一个班级的行，用来验证没被误删
+    if not (good and ins2):
+        fail('T1-c 前置（写探针行）', why or why2)
+    else:
+        q = 'class_key=eq.%s' % PROBE_CK
+        st, body, raw = del_log(q)
+        st2, rows2, _ = read_log(PROBE_CK)
+        st3, rows3, _ = read_log('JR1')
+        if rows2:
+            fail('T1-c 老师清空全部（同形态 URL）', 'http=%s 但同 key 的行还在 ⇒ 删不掉' % st)
+        else:
+            ok('T1-c 老师清空全部（只有 class_key 过滤的 URL）→ 同 key 全部清掉，回读确认已消失')
+        if rows3:
+            ok('T1-c 同时确认：别的班级（JR1）没被误删 ✓')
+        else:
+            fail('T1-c 误删检查', 'JR1 的探针行不见了 ⇒ 清空范围过大')
+        # 收尾
+        rest('DELETE', '/vocab_history_logs?class_key=eq.JR1&student_id=eq.%s' % PROBE_SID,
+             prefer='return=representation')
+
+    # 真实 LISTEN 行数复核（确认上面三条没有伤到真实数据）
+    st, _, raw = rest('GET', '/vocab_history_logs?select=id&class_key=eq.LISTEN', prefer='count=exact')
+    after_listen = len(rows_of(raw))
+    if after_listen == real_listen:
+        ok('真实 LISTEN 数据未被破坏（前后都是 %d 行）' % real_listen)
+    else:
+        fail('真实 LISTEN 数据', '前 %d 行 → 后 %d 行 ⇒ 验收脚本动了真实数据' % (real_listen, after_listen))
+
+    # ── 3) T2 反向验证（修 v2 的空集合 bug）
+    print('\n━━ 3) T2 反向验证（不在白名单的 class_key 必须写不进 / 读不到 / 删不掉）━━')
+    if not ANY_WRITE_OK:
+        print('  ⚠️ 跳过：正向写都不通 ⇒ 「拒」不能证明 policy 收窄')
+    else:
+        # 3-1 写
+        st, _, raw = rest('POST', '/vocab_history_logs', log_row(NEG_CK), prefer='return=representation')
+        if st in (200, 201):
+            fail('T2-1 非法 class_key 写入', "class_key='%s' 竟然写进去了 ⇒ policy 是 using(true)" % NEG_CK)
+            rest('DELETE', '/vocab_history_logs?class_key=eq.%s' % NEG_CK, prefer='return=representation')
+        else:
+            ok("T2-1 class_key='%s' 写入被拒（http=%s）⇒ policy 确实按 class_key 收窄" % (NEG_CK, st))
+        # 3-2 读
+        st, _, raw = rest('GET', '/vocab_history_logs?select=*&class_key=eq.%s' % NEG_CK, prefer='count=exact')
+        if rows_of(raw):
+            fail('T2-2 非法 class_key 读取', '竟然读得到行 ⇒ select policy 没收窄')
+        else:
+            ok('T2-2 非法 class_key 读不到任何行')
+        # 3-3 删（先造一条合法 LISTEN 行，再尝试用非法 key 去删它 ⇒ 删不掉）
+        good, rid, why = insert_log('LISTEN')
+        if good:
+            st, body, raw = del_log('class_key=eq.%s&id=eq.%s' % (NEG_CK, rid))
+            st2, rows2, _ = read_log('LISTEN')
+            if not rows2:
+                fail('T2-3 越权删除', '用非白名单 class_key 竟然把 LISTEN 的行删掉了 ⇒ delete policy 放行过宽')
+            else:
+                ok('T2-3 用非白名单 class_key 删不掉别人的行 ✓')
+            rest('DELETE', '/vocab_history_logs?class_key=eq.LISTEN&student_id=eq.%s' % PROBE_SID,
+                 prefer='return=representation')
+
+    # ── 4) T3 upsert 第二次写（ON CONFLICT DO UPDATE 分支）
+    print('\n━━ 4) T3 upsert 第二次写（upsert = INSERT … ON CONFLICT DO UPDATE ⇒ 必须有 update policy）━━')
+    # 4-1 vocab_online_status（词汇站 onConflict: student_id）
+    sid = PROBE_SID
+    rest('DELETE', '/vocab_online_status?student_id=eq.%s' % sid, prefer='return=representation')
+    st1, _, r1 = rest('POST', '/vocab_online_status?on_conflict=student_id', online_row('LISTEN', sid),
+                      prefer='resolution=merge-duplicates,return=representation')
+    if st1 not in (200, 201):
+        fail('T3-1 online_status 第一次写', 'http=%s %s' % (st1, r1[:100]))
+    else:
+        st2, _, r2 = rest('POST', '/vocab_online_status?on_conflict=student_id',
+                          dict(online_row('LISTEN', sid), status_text='__rls_probe_2nd__'),
                           prefer='resolution=merge-duplicates,return=representation')
-        if st not in (200, 201):
-            fail('vocab_states 探针写入', 'http=%s %s' % (st, raw[:110]))
+        if st2 not in (200, 201):
+            fail('T3-1 online_status 第二次写（走 DO UPDATE）',
+                 'http=%s %s ⇒ 缺 UPDATE policy（v1 就是死在这）' % (st2, r2[:140]))
         else:
-            CHECKS += 1
-            st, _, raw = rest('GET', '/vocab_states?select=*&class_key=eq.%s' % PROBE_ID, prefer='count=exact')
-            if rows_of(raw):
-                CHECKS += 1
-                ok('vocab_states 写✓ 回读到✓（该表 DELETE 被 RLS 挡是设计如此 ⇒ 未验删）')
+            st3, _h3, raw3 = rest('GET', '/vocab_online_status?select=*&student_id=eq.%s' % sid,
+                                 prefer='count=exact')
+            rows3 = rows_of(raw3)
+            if len(rows3) == 1 and rows3[0].get('status_text') == '__rls_probe_2nd__':
+                ok('T3-1 online_status upsert 第二次写成功且内容已更新（仍只有 1 行 ⇒ 走的是 DO UPDATE）✓')
             else:
-                fail('vocab_states 探针回读', '写进去了但回读不到')
-
-        # ── 3) 反向验证：不在白名单的 class_key 必须写不进去
-        print('\n━━ 3) 反向验证（不在白名单的 class_key 必须写不进去 ⇒ policy 真的收窄了）━━')
-        # 🔴 只有「该写的写得进去」时，这条反向验证才有意义
-        #    （现在这种「全都拒」的状态下，任何写入都会被拒 ⇒ 会骗成「policy 收窄得很好」的假绿）
-        wrote_ok = any('写入被挡' not in f for f in FAILS)
-        if not wrote_ok:
-            print('  ⚠️ 跳过：正向写都不通 ⇒ 现在的「拒」不能证明 policy 收窄（等修好再验）')
+                fail('T3-1 online_status 第二次写', '写入返回 %s，但回读内容不是新值' % st2)
+        rest('DELETE', '/vocab_online_status?student_id=eq.%s' % sid, prefer='return=representation')
+    # 4-2 vocab_states（词汇站 onConflict: class_key）
+    st1, _, r1 = rest('POST', '/vocab_states?on_conflict=class_key',
+                      {'class_key': PROBE_SID, 'state_val': '__rls_probe__'},
+                      prefer='resolution=merge-duplicates,return=representation')
+    if st1 not in (200, 201):
+        fail('T3-2 states 第一次写', 'http=%s %s' % (st1, r1[:100]))
+    else:
+        st2, _, r2 = rest('POST', '/vocab_states?on_conflict=class_key',
+                          {'class_key': PROBE_SID, 'state_val': '__rls_probe_2nd__'},
+                          prefer='resolution=merge-duplicates,return=representation')
+        if st2 not in (200, 201):
+            fail('T3-2 states 第二次写（走 DO UPDATE）', 'http=%s %s' % (st2, r2[:140]))
         else:
-            st, _, raw = rest('POST', '/vocab_history_logs', probe_row('vocab_history_logs', NEG_KEY),
-                              prefer='return=representation')
-            if st in (200, 201):
-                fail('反向验证', "class_key='%s' 竟然写进去了 ⇒ policy 是 using(true)，没有收窄" % NEG_KEY)
-                rest('DELETE', '/vocab_history_logs?class_key=eq.%s' % NEG_KEY, prefer='return=representation')
+            st3, _h3, raw3 = rest('GET', '/vocab_states?select=*&class_key=eq.%s' % PROBE_SID,
+                                 prefer='count=exact')
+            rows3 = rows_of(raw3)
+            if len(rows3) == 1 and rows3[0].get('state_val') == '__rls_probe_2nd__':
+                ok('T3-2 states upsert 第二次写成功且内容已更新（仍只有 1 行 ⇒ 走的是 DO UPDATE）✓')
             else:
-                CHECKS += 1
-                ok("class_key='%s' 被拒（http=%s）⇒ policy 确实按 class_key 收窄" % (NEG_KEY, st))
-    finally:
-        cleanup()
+                fail('T3-2 states 第二次写', '写入返回 %s，但回读内容不是新值' % st2)
+        rest('DELETE', '/vocab_states?class_key=eq.%s' % PROBE_SID, prefer='return=representation')
+    # 4-3 vocab_submissions（词汇站 onConflict: student_id）
+    st1, _, r1 = rest('POST', '/vocab_submissions?on_conflict=student_id',
+                      {'student_id': PROBE_SID, 'submitted_exams': ['__rls_probe__']},
+                      prefer='resolution=merge-duplicates,return=representation')
+    if st1 not in (200, 201):
+        fail('T3-3 submissions 第一次写', 'http=%s %s' % (st1, r1[:100]))
+    else:
+        st2, _, r2 = rest('POST', '/vocab_submissions?on_conflict=student_id',
+                          {'student_id': PROBE_SID, 'submitted_exams': ['__rls_probe__', 'x2']},
+                          prefer='resolution=merge-duplicates,return=representation')
+        if st2 not in (200, 201):
+            fail('T3-3 submissions 第二次写（走 DO UPDATE）', 'http=%s %s' % (st2, r2[:140]))
+        else:
+            st3, _h3, raw3 = rest('GET', '/vocab_submissions?select=*&student_id=eq.%s' % PROBE_SID,
+                                 prefer='count=exact')
+            rows3 = rows_of(raw3)
+            if len(rows3) == 1 and len(as_list(rows3[0].get('submitted_exams'))) == 2:
+                ok('T3-3 submissions upsert 第二次写成功且内容已更新（仍只有 1 行 ⇒ 走的是 DO UPDATE，不是插了第二行）✓')
+            else:
+                fail('T3-3 submissions 第二次写',
+                     '写入返回 %s，但回读到 %d 行 / 内容 %s ⇒ 可能插了第二行而不是更新'
+                     % (st2, len(rows3), [r.get('submitted_exams') for r in rows3]))
+        rest('DELETE', '/vocab_submissions?student_id=eq.%s' % PROBE_SID, prefer='return=representation')
 
-    # ── 4) 汇总
-    print('\n━━ 4) 汇总 ━━')
+    # ── 5) T4 老师端看板必须读得到真实数据
+    print('\n━━ 5) T4 老师端看板必须读得到真实数据（v1 的症状：打开记录表是空的）━━')
+    for label, q in (('LISTEN（听力站）', 'class_key=eq.LISTEN'),
+                     ('JR1（词汇站）', 'class_key=eq.JR1'),
+                     ('CET4（四级站）', 'class_key=eq.CET4')):
+        st, _, raw = rest('GET', '/vocab_history_logs?select=id&%s' % q, prefer='count=exact')
+        n = len(rows_of(raw))
+        if st == 200:
+            ok('%s 读得到 %d 行（老师端看板不是空的）' % (label, n))
+        else:
+            fail('%s 读取' % label, 'http=%s' % st)
+    st, _, raw = rest('GET', '/vocab_states?select=*&class_key=eq.__roster_v1', prefer='count=exact')
+    if st == 200 and rows_of(raw):
+        ok('名册 __roster_v1 读得到 %d 行' % len(rows_of(raw)))
+    else:
+        fail('名册读取', 'http=%s ⇒ 三个站都会登不进' % st)
+
+    # ── 6) 收尾清理
+    for t, q in (('vocab_history_logs', 'class_key=eq.LISTEN&student_id=eq.%s' % PROBE_SID),
+                 ('vocab_history_logs', 'class_key=eq.%s' % PROBE_CK),
+                 ('vocab_online_status', 'student_id=eq.%s' % PROBE_SID),
+                 ('vocab_submissions', 'student_id=eq.%s' % PROBE_SID),
+                 ('vocab_states', 'class_key=eq.%s' % PROBE_SID)):
+        rest('DELETE', '/%s?%s' % (t, q), prefer='return=representation')
+
+    # ── 7) 汇总
+    print('\n━━ 6) 汇总 ━━')
     print('  断言数：%d' % CHECKS)
     if FAILS:
         print('  ❌ 失败 %d 条：' % len(FAILS))
@@ -406,7 +505,7 @@ def main():
         print('\n结果：红（%d 条没过）' % len(FAILS))
         return 1
     if CHECKS == 0:
-        print('\n❌ 零断言 ⇒ 判失败（扫描器/流程坏了，不是没问题）')
+        print('\n❌ 零断言 ⇒ 判失败（脚本坏了，不是没问题）')
         return 1
     print('\n结果：🟢 全绿（%d 条断言）' % CHECKS)
     return 0
