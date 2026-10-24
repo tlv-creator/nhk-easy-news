@@ -36,9 +36,10 @@
       "domain": "da4lxn2phccck",
       "project": "shun",
       "reason": "Shun **旧**音频源站（v2，只有 12 集）—— 仍写死在已发布 APK 里当兜底 ⇒ 永删不得",
-      "note": "🔴 2026-10-24 起，引导页的 audio 字段改指 qtjgfga76bu4o（v3，13 集全齐）。本域名**没有 ep13** ⇒ 新 App 的兜底不能指向它。本域名仍写死在**旧版 APK**（v1.2.2 及更早）的 assets/app.js 里 ⇒ 那些用户的 App 断网时靠它 ⇒ **永删不得**。",
+      "note": "🔴 2026-10-24：引导页的 audio 字段改指 qtjgfga76bu4o（v3，13 集全齐）。本域名仍写死在**旧版 APK**（v1.2.2 及更早）的 assets/app.js 里 ⇒ 那些用户的 App 断网时靠它 ⇒ **永删不得**。⚠️ 本站**没有 ep13**（2026-10-23 发 Ep278 时漏传）⇒ 只作**兜底**用（ep01~ep12）⇒ 已登记 missing_eps。",
       "role": "audio-source",
-      "frozen": true
+      "frozen": true,
+      "missing_eps": "[\"ep13\"]"
     },
     {
       "domain": "lnh1i27d4m3vn",
