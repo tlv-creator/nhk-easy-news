@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>词汇站 · 权限收紧（一键修复）</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#fff; --fg:#111; --muted:#555; --line:#d8dbe0;
+    --ok:#0a6b2d; --warn:#8a4b00; --bad:#a11212; --btn:#2f6df6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);
+    font:17px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    -webkit-text-size-adjust:100%}
+  .wrap{max-width:760px;margin:0 auto;padding:22px 16px 60px}
+  h1{font-size:26px;line-height:1.35;margin:0 0 6px}
+  h2{font-size:20px;margin:34px 0 10px;padding-top:16px;border-top:2px solid var(--line)}
+  h2:first-of-type{border-top:0;padding-top:0}
+  p{margin:10px 0}
+  .sub{color:var(--muted);font-size:15px;margin:0 0 18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;margin:16px 0}
+  .badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.02em}
+  .b-bad{background:#fde8e8;color:var(--bad)} .b-ok{background:#e3f6e9;color:var(--ok)}
+  .b-warn{background:#fdf0dc;color:var(--warn)}
+  ol,ul{margin:10px 0;padding-left:24px} li{margin:9px 0}
+  a{color:var(--btn)}
+  code{background:#eceef1;padding:1px 6px;border-radius:5px;font-size:14px;word-break:break-all}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:15px;margin:8px 0}
+  .kv b{font-weight:700;white-space:nowrap;color:var(--muted)}
+  button{font:inherit;font-weight:700;cursor:pointer;border:0;border-radius:10px;padding:14px 20px;background:var(--btn);color:#fff;width:100%}
+  button:active{transform:translateY(1px)}
+  button.ghost{background:#eceef1;color:var(--fg);border:1px solid var(--line);font-weight:600}
+  pre{background:#12161d;color:#dfe4ec;border-radius:12px;padding:16px;overflow:auto;font-size:13px;line-height:1.6;max-height:340px}
+  .note{background:#fdf7e8;border-left:4px solid #e0a12a;padding:12px 14px;border-radius:0 8px 8px 0;margin:14px 0;font-size:15px}
+  .done{background:#e3f6e9;border-left:4px solid var(--ok);padding:12px 14px;border-radius:0 8px 8px 0;margin:14px 0;font-size:15px}
+  .step-n{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
+    background:var(--btn);color:#fff;font-weight:800;font-size:16px;margin-right:10px;flex:none}
+  .srow{display:flex;align-items:flex-start;margin:14px 0}
+  .srow > div{flex:1;min-width:0}
+  .copybar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .copybar button{width:auto;flex:1 1 160px}
+  .foot{color:var(--muted);font-size:14px;margin-top:40px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>词汇学习站 · 权限收紧</h1>
+  <p class="sub">两件小事，大约 3 分钟。做完回我一句「好了」，剩下的全包在我身上。</p>
+
+  <div class="card">
+    <span class="badge b-bad">当前状态：数据库没开权限限制</span>
+    <p style="margin-top:12px">网页源码里那把公开的 key 现在能直接拉到<b>全班学习记录</b>（学号、班级、练习时长、答题明细）和 <b>122 条在线状态</b>，任何人都能读、都能写、都能删。</p>
+    <p>这不是「你放的东西重不重要」的问题 —— <b>已经敞着了</b>。下面两步就能关上。</p>
+    <div class="note">
+      <b>动手之前先放心一件事：</b>本次操作<b>只加权限规则，不动任何数据</b>。已有的 2,618 条记录原样保留，今天（10-24）已经全量备份过，出问题能回滚。
+    </div>
+  </div>
+
+  <h2>第 1 步 · 建一个「老师账号」（约 40 秒）</h2>
+  <p>只有老师端（看全班数据）需要它。学生端完全不受影响。</p>
+  <ol>
+    <li>打开 <a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com/dashboard</a>，进你的项目（URL 里是 <code>lszwxcmvcvbraqtrtgon</code> 那个）。</li>
+    <li>左边菜单 → <b>Authentication</b> → <b>Users</b> → <b>Add user</b> → <b>Create new user</b>。</li>
+    <li>填：<br>
+      <b>Email</b>：<span id="mailPh">你常用的邮箱</span><br>
+      <b>Password</b>：<span id="pwdPh">你记得住的密码</span><br>
+      ☑ 勾上 <b>Auto Confirm User</b>（不然还要去邮箱点确认）
+    </li>
+    <li>点 <b>Create user</b>。</li>
+  </ol>
+  <div class="note">📌 这个邮箱和密码，就是你以后在词汇站「教师/助教」入口登录用的。记牢它。</div>
+
+  <h2>第 2 步 · 把权限规则装上（约 1 分钟）</h2>
+  <ol>
+    <li>还是 Supabase 后台 → 左边菜单 → <b>SQL Editor</b> → <b>New query</b>。</li>
+    <li>点下面这个按钮，把全部内容复制到剪贴板：</li>
+  </ol>
+
+  <div class="copybar" style="margin:6px 0 12px">
+    <button id="copyBtn">📋 复制全部 SQL</button>
+    <button class="ghost" id="selBtn">选中全部（手动复制）</button>
+  </div>
+
+  <pre id="sqlBox">加载中…</pre>
+
+  <ol start="3">
+    <li>粘贴进 SQL Editor（Ctrl/Cmd + V）→ 点 <b>Run</b>（或 Ctrl/Cmd + Enter）。</li>
+    <li>应该看到一串 <code>CREATE POLICY</code> 成功信息，没有红色报错就对了。</li>
+  </ol>
+
+  <div class="note">
+    ⚠️ <b>顺序很重要：</b>先做第 1 步再建老师账号、再跑 SQL，然后<b>马上告诉我</b> ——
+    规则装上后，<b>旧版网页会暂时写不进数据</b>（学生提交会失败）。我这边已经准备好了新版网页，
+    你一句话我就换上去，学生那边就恢复正常了。
+  </div>
+
+  <h2>做完之后</h2>
+  <p>回我一句 <b>「好了」</b>，我会立刻接手：</p>
+  <ul>
+    <li>验证漏洞确实堵上了（匿名视角连读都读不到）</li>
+    <li>把新版网页推上去 —— <b>学生那条链接（<code>tlv-creator.github.io/nhk-easy-news/vocab/</code>）不变</b>，就是内容换新了</li>
+    <li>确认学生提交、老师查看全都正常</li>
+    <li>删掉这一页（它只是临时的）</li>
+  </ul>
+
+  <div class="card">
+    <div class="kv">
+      <b>项目 ref</b><span>lszwxcmvcvbraqtrtgon</span>
+      <b>要保护的数据</b><span>vocab_history_logs 2480 行 / vocab_online_status 122 行 / vocab_states 16 行 / vocab_submissions 0 行</span>
+      <b>备份</b><span>词汇站-全量备份-20261024.tar.gz（已交给你）</span>
+      <b>影响面</b><span>学生端无感；老师端多两个输入框（教师邮箱 + 密码）</span>
+    </div>
+  </div>
+
+  <p class="foot">
+    这一页是临时的，权限装好后就会删掉。里面不含任何密钥。<br>
+    有任何一步卡住了，直接截图给我，我远程帮你看。
+  </p>
+</div>
+
+<script>
+const SQL = `ALTER TABLE vocab_history_logs  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE vocab_submissions    ENABLE ROW LEVEL SECURITY;
+ALTER TABLE vocab_online_status  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE vocab_states         ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS p_anon_read_states     ON vocab_states;
+DROP POLICY IF EXISTS p_anon_insert_states    ON vocab_states;
+DROP POLICY IF EXISTS p_anon_update_states    ON vocab_states;
+DROP POLICY IF EXISTS p_anon_insert_logs      ON vocab_history_logs;
+DROP POLICY IF EXISTS p_anon_insert_online    ON vocab_online_status;
+DROP POLICY IF EXISTS p_anon_update_online    ON vocab_online_status;
+DROP POLICY IF EXISTS p_anon_delete_online    ON vocab_online_status;
+DROP POLICY IF EXISTS p_anon_insert_subs      ON vocab_submissions;
+DROP POLICY IF EXISTS p_anon_update_subs      ON vocab_submissions;
+DROP POLICY IF EXISTS p_teach_all_logs        ON vocab_history_logs;
+DROP POLICY IF EXISTS p_teach_all_subs        ON vocab_submissions;
+DROP POLICY IF EXISTS p_teach_all_online      ON vocab_online_status;
+DROP POLICY IF EXISTS p_teach_all_states      ON vocab_states;
+
+CREATE POLICY p_anon_read_states  ON vocab_states FOR SELECT TO anon USING (true);
+CREATE POLICY p_anon_insert_states ON vocab_states FOR INSERT TO anon WITH CHECK (true);
+CREATE POLICY p_anon_update_states ON vocab_states FOR UPDATE TO anon USING (true) WITH CHECK (true);
+
+CREATE POLICY p_anon_insert_logs   ON vocab_history_logs FOR INSERT TO anon
+  WITH CHECK (student_id = (current_setting('request.headers', true)::json->>'x-student-id'));
+CREATE POLICY p_anon_insert_online ON vocab_online_status FOR INSERT TO anon
+  WITH CHECK (student_id = (current_setting('request.headers', true)::json->>'x-student-id'));
+CREATE POLICY p_anon_update_online ON vocab_online_status FOR UPDATE TO anon
+  USING (student_id = (current_setting('request.headers', true)::json->>'x-student-id'))
+  WITH CHECK (student_id = (current_setting('request.headers', true)::json->>'x-student-id'));
+CREATE POLICY p_anon_delete_online ON vocab_online_status FOR DELETE TO anon
+  USING (student_id = (current_setting('request.headers', true)::json->>'x-student-id'));
+CREATE POLICY p_anon_insert_subs   ON vocab_submissions FOR INSERT TO anon
+  WITH CHECK (student_id = (current_setting('request.headers', true)::json->>'x-student-id'));
+CREATE POLICY p_anon_update_subs   ON vocab_submissions FOR UPDATE TO anon
+  USING (student_id = (current_setting('request.headers', true)::json->>'x-student-id'))
+  WITH CHECK (student_id = (current_setting('request.headers', true)::json->>'x-student-id'));
+
+CREATE POLICY p_teach_all_logs   ON vocab_history_logs  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY p_teach_all_subs   ON vocab_submissions    FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY p_teach_all_online ON vocab_online_status  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY p_teach_all_states ON vocab_states         FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+SELECT tablename, policyname, cmd FROM pg_policies WHERE schemaname='public' ORDER BY tablename, policyname;`;
+
+document.getElementById('sqlBox').textContent = SQL;
+
+const btn = document.getElementById('copyBtn');
+function flash(t){ btn.textContent = t; setTimeout(()=>btn.textContent='📋 复制全部 SQL', 2200); }
+btn.addEventListener('click', async () => {
+  try{
+    if (navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(SQL); flash('✅ 已复制，去 SQL Editor 粘贴'); return;
+    }
+  }catch(e){}
+  const ta=document.createElement('textarea');
+  ta.value=SQL; ta.style.position='fixed'; ta.style.top='-2000px';
+  document.body.appendChild(ta); ta.select();
+  let ok=false; try{ ok=document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+  flash(ok?'✅ 已复制，去 SQL Editor 粘贴':'❌ 复制失败，请点「选中全部」手动复制');
+});
+document.getElementById('selBtn').addEventListener('click', () => {
+  const r=document.createRange(); r.selectNodeContents(document.getElementById('sqlBox'));
+  const s=getSelection(); s.removeAllRanges(); s.addRange(r); flash('已选中，请按 Ctrl/Cmd+C');
+});
+</script>
+</body>
+</html>
