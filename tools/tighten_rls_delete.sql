@@ -121,6 +121,8 @@ create policy p_anon_delete_online on public.vocab_online_status
 -- ── 3) 清掉这轮排查可能留下的探针行（真数据不动）────────────────────
 delete from public.vocab_history_logs where student_id = '__rls_probe__';
 delete from public.vocab_online_status where student_id = '__rls_probe__';
+-- vocab_states 里前三轮排查留下的 3 行探针（真实 key 只有 CW3/JR1/WL_CW/XQ1 + __roster_v1 + __cet4_*）
+delete from public.vocab_states where class_key in ('__rls_probe__','ZZPROBE','PROBE_V1');
 
 commit;
 
@@ -155,5 +157,7 @@ select '④ 总条数 = ' || count(*) as x from public.vocab_history_logs;
 --
 -- ⑤ 探针行清干净了没有（应该都是 0）
 select '⑤ 残留探针 logs=' || (select count(*) from public.vocab_history_logs where student_id = '__rls_probe__')
-     || ' online=' || (select count(*) from public.vocab_online_status where student_id = '__rls_probe__') as x;
+     || ' online=' || (select count(*) from public.vocab_online_status where student_id = '__rls_probe__')
+     || ' states=' || (select count(*) from public.vocab_states
+                        where class_key in ('__rls_probe__','ZZPROBE','PROBE_V1')) as x;
 -- =====================================================================
