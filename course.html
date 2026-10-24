@@ -16,10 +16,22 @@ li{margin:.3em 0}
 </style></head><body>
 <h1>📖 Shun 播客日语精读课</h1>
 <p class="sub">15 课 · 句句出自播客真实台词 · 带原声跟读（这个地址永久不变）</p>
-<a class="btn" href="<!-- SITE -->https://i9nj0k4u9ys0r.space.mcode.cn<!-- /SITE -->">打开课程</a>
+<a class="btn" id="openCourse" href="https://i9nj0k4u9ys0r.space.mcode.cn">打开课程</a>
 <div class="box">
-<b>课程地址</b><br><a href="<!-- SITE -->https://i9nj0k4u9ys0r.space.mcode.cn<!-- /SITE -->"><!-- SITE -->https://i9nj0k4u9ys0r.space.mcode.cn<!-- /SITE --></a>
+<b>课程地址</b><br><a id="siteLink" href="https://i9nj0k4u9ys0r.space.mcode.cn">https://i9nj0k4u9ys0r.space.mcode.cn</a>
 </div>
+<!-- 站点指针：以后换站只改这一处，页面里的链接会自动跟着变 -->
+<span id="siteMarker" hidden><!-- SITE -->https://i9nj0k4u9ys0r.space.mcode.cn<!-- /SITE --></span>
+<script>
+(function () {
+  var m = document.documentElement.innerHTML.match(/<!-- SITE -->\s*([^<]*?)\s*<!-- \/SITE -->/);
+  if (!m) return;
+  var u = m[1].trim();
+  if (!/^https?:\/\//.test(u)) return;
+  var a = document.getElementById('openCourse'); if (a) a.href = u;
+  var b = document.getElementById('siteLink'); if (b) { b.href = u; b.textContent = u; }
+})();
+</script>
 <div class="box">
 <b>怎么学</b>
 <ol style="margin:.2em 0;padding-left:1.4em">
