@@ -270,10 +270,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
             border-radius: 10px;
             margin-top: 20px;
         }
+    /* 平台部署时注入的悬浮球，会挡住页面右下角 -> 藏掉 */
+    #minimax-floating-ball { display: none !important; }
     </style>
-
-/* eink-ok: 平台注入的悬浮球会压住界面元素 ⇒ 永久隐藏（万一以后又被注回来） */
-#minimax-floating-ball, .minimax-floating-ball, [id*="minimax-floating"] { display: none !important; }
 </head>
 <body>
 
@@ -294,7 +293,7 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
             </div>
             <div class="form-group">
                 <label>Student ID (请输入学号):</label>
-            <div style="font-size:12px;color:#64748b;margin:-2px 0 6px;">教师/助教测试账号：<b>2601</b>（班级随便选）</div>
+            <details style="margin:-2px 0 6px;font-size:12px;color:#64748b;"><summary style="cursor:pointer;">教师 / 教研自测入口</summary><div style="margin-top:4px;">测试号 <b>9999999999、2601</b>（班级随便选）—— 自测数据<b>不计入</b>班级统计</div><button type="button" style="font-size:12px;padding:4px 10px;margin-top:4px;border:1px solid #94a3b8;background:#fff;color:#334155;border-radius:4px;cursor:pointer;" onclick="document.getElementById('student-id').value='9999999999';handleStudentLogin();">用测试号进入</button></details>
                 <input type="text" id="student-id" placeholder="">
             </div>
             <button class="btn" onclick="handleStudentLogin()">Login</button>
@@ -314,14 +313,6 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
             <div class="form-group">
                 <label style="color: var(--teacher);">Instructor Username:</label>
                 <input type="text" id="teacher-user" placeholder="工号" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label style="color: var(--teacher);">Teacher Email (教师邮箱 · 用于读取学习记录):</label>
-                <input type="email" id="teacher-email" placeholder="teacher@example.com" autocomplete="username">
-            </div>
-            <div class="form-group">
-                <label style="color: var(--teacher);">Teacher Password (Supabase 账号密码):</label>
-                <input type="password" id="teacher-auth-pwd" placeholder="••••••" autocomplete="current-password">
             </div>
             <div class="form-group">
                 <label style="color: var(--teacher);">Instructor Password:</label>
@@ -577,10 +568,10 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
         : __dummySupabaseClient();
 
         const classValidIds = {
-        "JR1": ["2601", "26270133", "26270132", "26270131", "26270130", "26270128", "26270127", "26270126", "26270125", "26270124", "26270123", "26270122", "26270121", "26270120", "26270119", "26270118", "26270117", "26270116", "26270114", "26270113", "26270112", "26270111", "26270110", "26270109", "26270108", "26270107", "26270106", "26270105", "26270104", "26270103", "26270102", "26270101", "24270112"],
-        "CW3": ["2601", "26230346", "26230345", "26230344", "26230343", "26230342", "26230341", "26230340", "26230339", "26230337", "26230336", "26230335", "26230334", "26230333", "26230332", "26230331", "26230330", "26230329", "26230328", "26230327", "26230326", "26230325", "26230324", "26230323", "26230322", "26230321", "26230320", "26230319", "26230318", "26230317", "26230315", "26230314", "26230312", "26230311", "26230310", "26230309", "26230308", "26230306", "26230305", "26230304", "26230303", "26230302", "26230301"],
-        "WL_CW": ["2601", "26235116", "26235115", "26235114", "26235113", "26235112", "26235111", "26235110", "26235109", "26235108", "26235107", "26235106", "26235105", "26235104", "26235103", "26235102", "26235101", "26240118", "26240116", "26240114", "26240113", "26240112", "26240111", "26240110", "26240109", "26240108", "26240107", "26240106", "26240105", "26240104", "26240103", "26240102", "26240101", "26235129", "26235128", "26235127", "26235126", "26235125", "26235124", "26235123", "26235122", "26235121", "26235120", "26235119", "26235118", "26235117"],
-        "XQ1": ["2601", "26601140", "26601139", "26601138", "26601137", "26601136", "26601135", "26601134", "26601133", "26601132", "26601131", "26601130", "26601129", "26601128", "26601127", "26601126", "26601125", "26601124", "26601123", "26601122", "26601120", "26601119", "26601118", "26601117", "26601116", "26601115", "26601113", "26601112", "26601111", "26601110", "26601109", "26601108", "26601107", "26601106", "26601105", "26601104", "26601103", "26601102", "26601101"]
+        "JR1": ["2601", "9999999999", "26270133", "26270132", "26270131", "26270130", "26270128", "26270127", "26270126", "26270125", "26270124", "26270123", "26270122", "26270121", "26270120", "26270119", "26270118", "26270117", "26270116", "26270114", "26270113", "26270112", "26270111", "26270110", "26270109", "26270108", "26270107", "26270106", "26270105", "26270104", "26270103", "26270102", "26270101", "24270112"],
+        "CW3": ["2601", "9999999999", "26230346", "26230345", "26230344", "26230343", "26230342", "26230341", "26230340", "26230339", "26230337", "26230336", "26230335", "26230334", "26230333", "26230332", "26230331", "26230330", "26230329", "26230328", "26230327", "26230326", "26230325", "26230324", "26230323", "26230322", "26230321", "26230320", "26230319", "26230318", "26230317", "26230315", "26230314", "26230312", "26230311", "26230310", "26230309", "26230308", "26230306", "26230305", "26230304", "26230303", "26230302", "26230301"],
+        "WL_CW": ["2601", "9999999999", "26235116", "26235115", "26235114", "26235113", "26235112", "26235111", "26235110", "26235109", "26235108", "26235107", "26235106", "26235105", "26235104", "26235103", "26235102", "26235101", "26240118", "26240116", "26240114", "26240113", "26240112", "26240111", "26240110", "26240109", "26240108", "26240107", "26240106", "26240105", "26240104", "26240103", "26240102", "26240101", "26235129", "26235128", "26235127", "26235126", "26235125", "26235124", "26235123", "26235122", "26235121", "26235120", "26235119", "26235118", "26235117"],
+        "XQ1": ["2601", "9999999999", "26601140", "26601139", "26601138", "26601137", "26601136", "26601135", "26601134", "26601133", "26601132", "26601131", "26601130", "26601129", "26601128", "26601127", "26601126", "26601125", "26601124", "26601123", "26601122", "26601120", "26601119", "26601118", "26601117", "26601116", "26601115", "26601113", "26601112", "26601111", "26601110", "26601109", "26601108", "26601107", "26601106", "26601105", "26601104", "26601103", "26601102", "26601101"]
     };
     const studentClassIndex = {"2601": "JR1", "26270133": "JR1", "26270132": "JR1", "26270131": "JR1", "26270130": "JR1", "26270128": "JR1", "26270127": "JR1", "26270126": "JR1", "26270125": "JR1", "26270124": "JR1", "26270123": "JR1", "26270122": "JR1", "26270121": "JR1", "26270120": "JR1", "26270119": "JR1", "26270118": "JR1", "26270117": "JR1", "26270116": "JR1", "26270114": "JR1", "26270113": "JR1", "26270112": "JR1", "26270111": "JR1", "26270110": "JR1", "26270109": "JR1", "26270108": "JR1", "26270107": "JR1", "26270106": "JR1", "26270105": "JR1", "26270104": "JR1", "26270103": "JR1", "26270102": "JR1", "26270101": "JR1", "26230346": "CW3", "26230345": "CW3", "26230344": "CW3", "26230343": "CW3", "26230342": "CW3", "26230341": "CW3", "26230340": "CW3", "26230339": "CW3", "26230337": "CW3", "26230336": "CW3", "26230335": "CW3", "26230334": "CW3", "26230333": "CW3", "26230332": "CW3", "26230331": "CW3", "26230330": "CW3", "26230329": "CW3", "26230328": "CW3", "26230327": "CW3", "26230326": "CW3", "26230325": "CW3", "26230324": "CW3", "26230323": "CW3", "26230322": "CW3", "26230321": "CW3", "26230320": "CW3", "26230319": "CW3", "26230318": "CW3", "26230317": "CW3", "26230315": "CW3", "26230314": "CW3", "26230312": "CW3", "26230311": "CW3", "26230310": "CW3", "26230309": "CW3", "26230308": "CW3", "26230306": "CW3", "26230305": "CW3", "26230304": "CW3", "26230303": "CW3", "26230302": "CW3", "26230301": "CW3", "26235116": "WL_CW", "26235115": "WL_CW", "26235114": "WL_CW", "26235113": "WL_CW", "26235112": "WL_CW", "26235111": "WL_CW", "26235110": "WL_CW", "26235109": "WL_CW", "26235108": "WL_CW", "26235107": "WL_CW", "26235106": "WL_CW", "26235105": "WL_CW", "26235104": "WL_CW", "26235103": "WL_CW", "26235102": "WL_CW", "26235101": "WL_CW", "26240118": "WL_CW", "26240116": "WL_CW", "26240114": "WL_CW", "26240113": "WL_CW", "26240112": "WL_CW", "26240111": "WL_CW", "26240110": "WL_CW", "26240109": "WL_CW", "26240108": "WL_CW", "26240107": "WL_CW", "26240106": "WL_CW", "26240105": "WL_CW", "26240104": "WL_CW", "26240103": "WL_CW", "26240102": "WL_CW", "26240101": "WL_CW", "26235129": "WL_CW", "26235128": "WL_CW", "26235127": "WL_CW", "26235126": "WL_CW", "26235125": "WL_CW", "26235124": "WL_CW", "26235123": "WL_CW", "26235122": "WL_CW", "26235121": "WL_CW", "26235120": "WL_CW", "26235119": "WL_CW", "26235118": "WL_CW", "26235117": "WL_CW", "26601140": "XQ1", "26601139": "XQ1", "26601138": "XQ1", "26601137": "XQ1", "26601136": "XQ1", "26601135": "XQ1", "26601134": "XQ1", "26601133": "XQ1", "26601132": "XQ1", "26601131": "XQ1", "26601130": "XQ1", "26601129": "XQ1", "26601128": "XQ1", "26601127": "XQ1", "26601126": "XQ1", "26601125": "XQ1", "26601124": "XQ1", "26601123": "XQ1", "26601122": "XQ1", "26601120": "XQ1", "26601119": "XQ1", "26601118": "XQ1", "26601117": "XQ1", "26601116": "XQ1", "26601115": "XQ1", "26601113": "XQ1", "26601112": "XQ1", "26601111": "XQ1", "26601110": "XQ1", "26601109": "XQ1", "26601108": "XQ1", "26601107": "XQ1", "26601106": "XQ1", "26601105": "XQ1", "26601104": "XQ1", "26601103": "XQ1", "26601102": "XQ1", "26601101": "XQ1"};
 ;
@@ -748,6 +739,18 @@ function sha256Hex(str) {
     let currentClassKey = "";
     let currentClassName = "";
     let currentId = "";
+
+    /* ===== 测试号（老师自测用）· 唯一权威 ===== */
+    const TEST_ID_LIST = ['9999999999', '2601'];
+    function isTestId(sid) {
+        if (!sid) return false;
+        const s = String(sid).trim();
+        if (s.indexOf('__test__') === 0) return true;   /* 新格式 */
+        return TEST_ID_LIST.indexOf(s) >= 0;              /* 旧格式（存量数据，不用迁移） */
+    }
+    function testIdOf(sid) { return String(sid || '').replace(/^__test__/, ''); }
+    function displayIdOf(sid) { return isTestId(sid) ? (testIdOf(sid) + '（自测）') : String(sid || ''); }
+    
     let startTime = 0;
     let timerInterval = null;
     let teacherRefreshInterval = null;
@@ -838,34 +841,26 @@ function sha256Hex(str) {
         } catch (e) {}
     }
 
-    // 学生端「我交过哪些卷」改存 localStorage：
-    //   RLS 收紧后 anon 不允许读 vocab_submissions（避免任何匿名读取）。
-    //   这份数据只含「交了哪几个 quiz」，老师端读的是数据库里的最终记录，不受影响。
-    function _localSubsKey() { return 'vocab_subs_' + currentId; }
-    function _localSubs() {
-        try { return JSON.parse(localStorage.getItem(_localSubsKey()) || '[]'); }
-        catch (e) { return []; }
-    }
-    function _setLocalSubs(arr) {
-        try { localStorage.setItem(_localSubsKey(), JSON.stringify(arr)); } catch (e) {}
-    }
     async function hasSubmittedExam(examName) {
         if (!currentId) return false;
-        return _localSubs().includes(examName);
+        try {
+            const { data } = await supabaseClient.from('vocab_submissions').select('submitted_exams').eq('student_id', currentId).single();
+            if (data && data.submitted_exams) {
+                return data.submitted_exams.includes(examName);
+            }
+        } catch (e) {}
+        return false;
     }
 
     async function markExamAsSubmitted(examName) {
         if (!currentId) return;
-        let exams = _localSubs();
-        if (!exams.includes(examName)) {
-            exams.push(examName);
-            _setLocalSubs(exams);
-        }
-        // 只写不读：把本地全集 upsert 上去
         try {
-            await supabaseClient.from('vocab_submissions')
-                .setHeader('x-student-id', currentId)
-                .upsert({ student_id: currentId, submitted_exams: exams }, { onConflict: 'student_id' });
+            const { data } = await supabaseClient.from('vocab_submissions').select('submitted_exams').eq('student_id', currentId).single();
+            let exams = data && data.submitted_exams ? data.submitted_exams : [];
+            if (!exams.includes(examName)) {
+                exams.push(examName);
+                await supabaseClient.from('vocab_submissions').upsert({ student_id: currentId, submitted_exams: exams }, { onConflict: 'student_id' });
+            }
         } catch (e) {}
     }
 
@@ -879,10 +874,6 @@ function sha256Hex(str) {
         actionLogs: []
     };
 
-    async function teacherLogout() {
-        try { await supabaseClient.auth.signOut(); } catch (e) {}
-        if (teacherRefreshInterval) { clearInterval(teacherRefreshInterval); teacherRefreshInterval = null; }
-    }
     function togglePortal(role) {
         if (role === 'teacher') {
             document.getElementById('student-login-box').classList.add('hidden');
@@ -905,12 +896,8 @@ function sha256Hex(str) {
         };
 
         try {
-            await supabaseClient.from('vocab_history_logs')
-                .setHeader('x-student-id', currentId)
-                .insert([record]);
-            await supabaseClient.from('vocab_online_status')
-                .setHeader('x-student-id', currentId)
-                .upsert({
+            await supabaseClient.from('vocab_history_logs').insert([record]);
+            await supabaseClient.from('vocab_online_status').upsert({
                 class_key: currentClassKey,
                 class_name: currentClassName,
                 student_id: currentId,
@@ -929,13 +916,13 @@ function sha256Hex(str) {
         if (!classValidIds[clsKey].includes(sId)) {
             const belong = studentClassIndex[sId];
             const cn = classNameMap[belong] || '';
-            alert('❌ 该学号不在所选班级里！' + (belong ? ('\n这个学号属于「' + cn + '」，请切换班级。') : '') + '\n(测试可输入 ' + '2601' + ')');
+            alert('❌ 该学号不在所选班级里！' + (belong ? ('\n这个学号属于「' + cn + '」，请切换班级。') : '') + '\n(测试可输入 ' + '9999999999' + ')');
             return;
         }
 
         currentClassKey = clsKey;
         currentClassName = classNameMap[clsKey];
-        currentId = sId;
+        currentId = isTestId(sId) ? ("__test__" + sId) : sId;
 
         await logStudentActivity("🔓 登录系统/主菜单");
         try { await backfillUnit1LocalLogs(); } catch (e) { }
@@ -949,40 +936,10 @@ function sha256Hex(str) {
         const clsKey = document.getElementById('teacher-target-class').value;
         const user = document.getElementById('teacher-user').value.trim();
         const pwd = document.getElementById('teacher-pwd').value.trim();
-        const email = (document.getElementById('teacher-email') || {}).value || '';
-        const authPwd = (document.getElementById('teacher-auth-pwd') || {}).value || '';
         
-        // 工号+密码改为「可选的第二道锁」：填了就必须正确，不填就跳过。
-        // 真正的数据门是下面的 Supabase Auth（RLS 只放行 authenticated 角色）。
-        if (user || pwd) {
-            const vres = await verifyTeacher(user, pwd);
-            if (!vres.ok) {
-                alert(vres.error || '工号或密码不正确！');
-                return;
-            }
-        }
-        
-        // 🔴 必须用 Supabase Auth 登录：数据库已开 RLS，
-        //    只有拿到登录态 JWT（authenticated 角色）才能读取学生记录。
-        if (!email || !authPwd) {
-            alert('请填写教师邮箱和密码（用于读取学习记录）');
-            return;
-        }
-        try {
-            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                email: email.trim(),
-                password: authPwd
-            });
-            if (error) {
-                alert('❌ 教师登录失败：' + (error.message || error));
-                return;
-            }
-            if (!data || !data.session) {
-                alert('❌ 教师登录失败：未获取到会话');
-                return;
-            }
-        } catch (e) {
-            alert('❌ 教师登录异常：' + (e && e.message ? e.message : e));
+        const vres = await verifyTeacher(user, pwd);
+        if (!vres.ok) {
+            alert(vres.error || '工号或密码不正确！');
             return;
         }
         
@@ -1021,6 +978,7 @@ function sha256Hex(str) {
     }
 
     function parsePracticeLogs(logs, unitFilter) {
+        logs = (logs || []).filter(l => !isTestId(l.student_id));
         const map = {};
         logs.forEach(l => {
             const a = l.action || '';
@@ -1135,6 +1093,7 @@ function sha256Hex(str) {
             let csv = '词汇学习站 · 所有班级导出（第一/二/三课）\n';
             csv += '导出时间,' + new Date().toLocaleString() + '\n';
             csv += '说明,第一单元的旧数据原本只存在本机，需先用「导入 Unit 1 旧记录」补进来；本文件是补进来之后的汇总\n';
+        csv += '自测号,2601 / 9999999999 的记录属于老师自测，不计入任何统计（名单人数/活跃人数/时长/配对）\n';
             let g = { sec: 0, pairs: 0, clicks: 0, segs: 0, stu: new Set(), logs: 0 };
             for (const ck of keys) {
                 const cn = classNameMap[ck] || ck;
@@ -1149,13 +1108,13 @@ function sha256Hex(str) {
                 } catch (e) { }
                 // vocab_submissions 没有 class_key 列，用学号反查班级
                 const roster = classValidIds[ck] || [];
-                const ckSubs = subs.filter(s => roster.includes(s.student_id));
+                const ckSubs = subs.filter(s => roster.includes(s.student_id) && !isTestId(s.student_id));
                 const rows = parsePracticeLogs(logs, '').sort((a, b) => b.sec - a.sec);
                 let tsec = 0, tp = 0, tc = 0, ts = 0;
                 rows.forEach(r => { tsec += r.sec; tp += r.pairs; tc += r.clicks; ts += r.segs; });
                 csv += '\n===== ' + cn + '（' + ck + '）=====\n';
-                csv += '名单人数,' + roster.length + ',有记录人数,' + rows.length +
-                       ',日志总条数,' + logs.length + ',已交卷人数,' + ckSubs.length + '\n';
+                csv += '名单人数,' + roster.filter(x => !isTestId(x)).length + ',有记录人数,' + rows.length +
+                       ',日志总条数,' + logs.filter(l => !isTestId(l.student_id)).length + ',已交卷人数,' + ckSubs.length + '\n';
                 csv += '合计有效时长(秒),' + tsec + ',合计配对(对),' + tp +
                        ',合计点击,' + tc + ',合计练习段,' + ts + '\n';
                 csv += '\n【平时练习统计】\n';
@@ -1172,7 +1131,7 @@ function sha256Hex(str) {
                 });
                 g.sec += tsec; g.pairs += tp; g.clicks += tc; g.segs += ts;
                 rows.forEach(r => g.stu.add(r.sid));   // 去重：一个学号只算一次
-                g.logs += logs.length;
+                g.logs += logs.filter(l => !isTestId(l.student_id)).length;
             }
             csv += '\n\n===== 全校汇总 =====\n';
             csv += '班级数,' + keys.length + ',有记录人数(去重),' + g.stu.size +
@@ -1204,6 +1163,10 @@ function sha256Hex(str) {
             const sid = r.student_id || r.studentId;
             if (!sid) continue;
             const a = String(r.action || '');
+            // 只认「练习」日志。老站还往同一个数组里塞了「登录」「进入日常练习」
+            // 等行为日志，那些没有时长/配对，硬转成练习记录会造出一堆 0 值垃圾
+            // （还会虚增「练习段数」，让老师误以为学生练过）。
+            if (a.indexOf('【平时练习提交】') !== 0 && a.indexOf('【平时练习】') !== 0) continue;
             const mPage = a.match(/Page (\d+)/);
             const mSec = a.match(/耗时: (\d+)秒/) || a.match(/时长: (\d+)秒/);
             const mPair = a.match(/匹配成功: (\d+)对/) || a.match(/配对: (\d+)对/);
@@ -1277,6 +1240,11 @@ function sha256Hex(str) {
         try {
             const flag = 'unit1_backfilled_' + currentId;
             if (localStorage.getItem(flag)) return;
+            // 加锁：两个标签页同时打开会各跑一次 -> 重复上传
+            const lockKey = flag + '_lock';
+            const lock = parseInt(localStorage.getItem(lockKey) || '0', 10);
+            if (lock && (Date.now() - lock) < 60000) return;
+            localStorage.setItem(lockKey, String(Date.now()));
             const raw = localStorage.getItem('unit1_student_history_logs');
             if (!raw) { localStorage.setItem(flag, '0'); return; }
             const all = JSON.parse(raw) || [];
@@ -1284,12 +1252,10 @@ function sha256Hex(str) {
             if (!mine.length) { localStorage.setItem(flag, '0'); return; }
             const rows = unit1RowsFromLogs(mine, currentClassKey, currentClassName);
             for (let i = 0; i < rows.length; i += 200) {
-                await supabaseClient.from('vocab_history_logs')
-                    .setHeader('x-student-id', currentId)
-                    .insert(rows.slice(i, i + 200));
+                await supabaseClient.from('vocab_history_logs').insert(rows.slice(i, i + 200));
             }
-            localStorage.setItem(flag, String(mine.length));
-            console.log('[Unit1 补传] 已上传本机历史记录', mine.length, '条');
+            localStorage.setItem(flag, String(rows.length));
+            console.log('[Unit1 补传] 已上传本机历史练习记录', rows.length, '条');
         } catch (e) { console.warn('[Unit1 补传] 失败', e); }
     }
     
@@ -1377,10 +1343,10 @@ function sha256Hex(str) {
         if (!box.classList.contains('hidden')) {
             currentClassKey = document.getElementById('teacher-target-class').value;
             currentClassName = classNameMap[currentClassKey];
-            currentId = "2601 (教师预览)";
+            currentId = "__test__2601";
             startPlatformTracking();
             document.getElementById('bar-class-name').innerText = currentClassName;
-            document.getElementById('bar-id').innerText = currentId;
+            document.getElementById('bar-id').innerText = displayIdOf(currentId);
             
             document.getElementById('preview-inner-content').innerHTML = document.getElementById('main-section').innerHTML;
             selectSection('memory');
@@ -1391,7 +1357,7 @@ function sha256Hex(str) {
         startTime = Date.now();
         metrics.loginTime = new Date().toLocaleString();
         document.getElementById('bar-class-name').innerText = currentClassName;
-        document.getElementById('bar-id').innerText = currentId;
+        document.getElementById('bar-id').innerText = displayIdOf(currentId);
 
         timerInterval = setInterval(() => {
             metrics.totalDurationSec = Math.floor((Date.now() - startTime) / 1000);
@@ -2126,7 +2092,7 @@ function sha256Hex(str) {
         document.getElementById('score-workspace').classList.remove('hidden');
 
         document.getElementById('rep-class').innerText = currentClassName;
-        document.getElementById('rep-id').innerText = currentId;
+        document.getElementById('rep-id').innerText = displayIdOf(currentId);
         document.getElementById('rep-score').innerText = score;
         document.getElementById('rep-total').innerText = totalQ;
         document.getElementById('rep-percent').innerText = percent;
@@ -2140,133 +2106,5 @@ function sha256Hex(str) {
     }
 </script>
 
-
-
-<style>
-#minimax-floating-ball {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 10px 12px;
-  background: #222222;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  color: #F8F8F8;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  z-index: 9999;
-  transition: all 0.3s ease;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-#minimax-floating-ball:hover {
-  transform: translateY(-2px);
-  background: #383838;
-}
-.minimax-ball-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.minimax-logo-wave {
-  width: 20px;
-  height: 20px;
-  background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2256%22%20height%3D%2256%22%20viewBox%3D%220%200%2056%2056%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath%20d%3D%22M28.3348%207.91943C32.873%207.91949%2037.04%209.39135%2040.3124%2011.8472C40.5409%2012.0124%2040.7654%2012.1824%2040.9852%2012.3579C42.1524%2011.7112%2044.304%2010.9991%2046.5702%2012.6655C48.3992%2014.0113%2047.1291%2015.8086%2045.7957%2015.3159C45.0606%2015.0442%2044.1229%2014.5753%2043.3602%2014.6538C45.8851%2017.6085%2047.4032%2021.4033%2047.4032%2025.5415C47.4031%2029.2918%2046.153%2032.7573%2044.0399%2035.5737C43.9544%2035.689%2043.8675%2035.8033%2043.7791%2035.9165C43.7734%2035.9238%2043.7683%2035.9317%2043.7625%2035.939L44.1258%2036.2153L44.1229%2036.2163C46.3725%2037.9282%2046.7697%2041.0832%2045.0116%2043.272C43.2563%2045.4561%2040.0071%2045.8422%2037.7606%2044.1333L35.2606%2042.231C34.9961%2042.0299%2034.6857%2041.9712%2034.4002%2042.022C34.3457%2042.0362%2034.2909%2042.0502%2034.2362%2042.064C33.8268%2042.2022%2033.5038%2042.5721%2033.5038%2043.061C33.5067%2045.8275%2031.1993%2048.0717%2028.3514%2048.0806H28.326C25.4779%2048.0719%2023.1698%2045.8277%2023.1727%2043.061C23.1726%2042.5624%2022.8367%2042.1879%2022.4159%2042.0562C22.3774%2042.0464%2022.339%2042.0368%2022.3006%2042.0269C22.0086%2041.9683%2021.6878%2042.0237%2021.4159%2042.231L18.9159%2044.1333C16.6692%2045.8408%2013.4201%2045.4559%2011.6649%2043.27C9.90673%2041.0826%2010.3049%2037.9282%2012.5545%2036.2163L12.911%2035.9438C10.9449%2033.4341%209.67323%2030.4271%209.3602%2027.1636L9.34555%2026.9937C9.33836%2026.9108%209.33199%2026.8278%209.32602%2026.7446C9.32228%2026.6913%209.31852%2026.6379%209.31528%2026.5845C9.30641%2026.4417%209.30001%2026.2985%209.29477%2026.1548C9.29374%2026.1249%209.29272%2026.0949%209.29184%2026.0649C9.28644%2025.8911%209.28306%2025.7166%209.28305%2025.5415C9.28306%2021.4826%2010.7431%2017.7541%2013.1815%2014.8247C12.367%2014.3304%2011.1334%2014.9767%2010.2157%2015.3159C8.8822%2015.8087%207.58607%2013.9754%209.44223%2012.6655C12.3677%2010.6014%2014.5614%2011.8145%2015.4706%2012.5444C15.5911%2012.4448%2015.7134%2012.347%2015.8368%2012.2505C19.182%209.55277%2023.5528%207.91943%2028.3348%207.91943Z%22%20fill%3D%22%23EDEDED%22%20style%3D%22fill%3A%23EDEDED%3Bfill%3Acolor%28display-p3%200.9278%200.9278%200.9278%29%3Bfill-opacity%3A1%3B%22%2F%3E%0A%3C%2Fsvg%3E%0A");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-color: transparent;
-  border-radius: 0;
-}
-
-.minimax-ball-text {
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.minimax-close-icon {
-  margin-left: 8px;
-  font-size: 16px;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-}
-
-.minimax-close-icon:hover {
-  opacity: 1;
-}
-</style>
-
-    <span class="minimax-ball-text">Created by MiniMax Agent</span>
-  </div>
-  <div class="minimax-close-icon">×</div>
-</div>
-
-
-<script data-vocab-privacy="1">
-/* 平台统计拦截（三层保险的第三层）
-   1) 统计脚本本体已从本文件删除
-   2) 悬浮球 DOM + 初始化代码已删除，另有一层 CSS 永久隐藏
-   3) 这里再拦一次 sendBeacon / fetch / XHR —— 防止以后某次部署把注入带回来
-   域名用精确匹配 + 协议校验，避免「同后缀的伪造域名」被误伤。 */
-(function(){
-  var BLOCK_HOST = 'agent.minimax.cn';
-  function isBlocked(u){
-    try{
-      var s = String(u||'');
-      if (s.indexOf('//'+BLOCK_HOST) === -1) return false;
-      var m = s.match(/^https?:\/\/([^/?#]+)/i);
-      if (!m) return false;
-      var host = m[1].toLowerCase();
-      return host === BLOCK_HOST || host === 'www.'+BLOCK_HOST;
-    }catch(e){ return false; }
-  }
-  try{
-    if (window.sendBeacon){
-      var origBeacon = window.sendBeacon;
-      window.sendBeacon = function(url, data){
-        if (isBlocked(url)) return false;
-        return origBeacon.apply(this, arguments);
-      };
-    }
-  }catch(e){}
-  try{
-    var origFetch = window.fetch;
-    if (origFetch){
-      window.fetch = function(input, init){
-        var u = (input && typeof input === 'object') ? (input.url||'') : input;
-        if (isBlocked(u)){
-          return Promise.resolve(new Response('{}', {status:200, headers:{'Content-Type':'application/json'}}));
-        }
-        return origFetch.apply(this, arguments);
-      };
-    }
-  }catch(e){}
-  try{
-    var XHR = window.XMLHttpRequest;
-    if (XHR){
-      var origOpen = XHR.prototype.open;
-      XHR.prototype.open = function(method, url){
-        if (isBlocked(url)) { this.__blocked = true; }
-        return origOpen.apply(this, arguments);
-      };
-      var origSend = XHR.prototype.send;
-      XHR.prototype.send = function(){
-        if (this.__blocked) return;
-        return origSend.apply(this, arguments);
-      };
-    }
-  }catch(e){}
-})();
-</script>
 </body>
 </html>
