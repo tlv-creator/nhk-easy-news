@@ -269,6 +269,10 @@ print("=== 每日听力记录站 · 浏览器级闭环（%s）===" % BASE)
 # 🔴 快照必须取在**任何测试动作之前** ⇒ 它就是「测试前的真实状态」
 SNAP = snapshot(dump=True)
 FP_BEFORE = fingerprint(SNAP)
+# 🔴🔴 真班级的 **id 集合**：跑完必须**一字不差**
+#    （内容指纹会掩盖「删了又重插」——内容一样、id 变了 ⇒ 说明真数据被动过）
+#    ⇒ 协作方要求：不要靠 restore 把数据补回去来掩盖问题
+IDS_BEFORE = sorted(r.get("id") for r in SNAP)
 print("   测试前 LISTEN 状态：%d 行（指纹 %s）" % (len(SNAP), FP_BEFORE[:10]))
 print("-- 清理历史测试数据：清掉 %d 条" % cleanup())
 
@@ -453,6 +457,9 @@ ck("测试数据已删干净（真实记录不受影响）", not any(MARK in (r.
 # 🔴 必须用**同一个取数函数**比（db_rows 只 select 3 列，snapshot select 全部列
 #    ⇒ 两套列的指纹当然不同 ⇒ 那是我的判据写错，不是数据出问题）
 _final = snapshot()
+IDS_AFTER = sorted(r.get("id") for r in _final)
+ck("🔴🔴 真班级的 **id 集合一字未变**（没被删了又重插）", IDS_AFTER == IDS_BEFORE,
+   "跑前 %s → 跑后 %s" % (IDS_BEFORE, IDS_AFTER))
 ck("🔴 最终：LISTEN 与测试前**逐字一致**（行数+指纹）", len(_final) == len(SNAP) and fingerprint(_final) == FP_BEFORE,
    "测试前 %d 行/指纹 %s → 现在 %d 行/指纹 %s" % (len(SNAP), FP_BEFORE[:10], len(_final), fingerprint(_final)[:10]))
 real = [e for e in errs if "favicon" not in e.lower()]

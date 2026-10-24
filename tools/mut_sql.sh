@@ -34,6 +34,9 @@ elif mode == 'notoken':         # 去掉令牌条件
     s = "\n".join(l for l in s.split("\n") if 'x-row-token' not in l)
 elif mode == 'nostudent':       # 去掉学号条件
     s = "\n".join(l for l in s.split("\n") if "and student_id = nullif(current_setting" not in l)
+elif mode == 'plainhash':       # 把 sha256 比对换成**明文**比对（= 明文令牌落库的老做法）
+    s = s.replace("encode(sha256(convert_to(nullif(current_setting('request.headers', true)::json->>'x-row-token', ''), 'utf8')), 'hex')",
+                  "nullif(current_setting('request.headers', true)::json->>'x-row-token', '')")
 elif mode == 'loosetoken':      # 令牌正则放宽
     s = s.replace("~ '^[A-Za-z0-9]{16,64}$'", "~ '^.*$'")
 elif mode == 'nodrop':          # DO 块漏删旧的宽松 policy
@@ -85,3 +88,4 @@ run_mut "E DO 块少了 roles 过滤"        noroles     "p_teach_"
 run_mut "F 去掉令牌条件"                notoken     "只带学号"
 run_mut "G 去掉学号条件"                nostudent   "令牌对但学号错"
 run_mut "H 令牌正则放宽"                loosetoken  "通配符"
+run_mut "I sha256 比对改成明文比对"      plainhash   "带对令牌"

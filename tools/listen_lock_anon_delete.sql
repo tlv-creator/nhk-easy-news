@@ -86,10 +86,16 @@ create policy p_anon_delete_logs
         --    ⇒ 令牌先过白名单正则（只允许 16~64 位字母数字）⇒
         --       杜绝把 LIKE 通配符（% / _）塞进令牌来「匹配任意行」
         and nullif((current_setting('request.headers', true)::json->>'x-row-token'), '') ~ '^[A-Za-z0-9]{16,64}$'
+        -- 🔴🔴🔴 库里只存 **SHA-256(原始令牌)**，比对时算哈希
+        --    为什么不存明文：action 列对 anon **可读**（老师看板要读）⇒ 明文令牌人人可读
+        --    ⇒ 而名册也在 anon 可读的 vocab_states 里 ⇒ 任何学生都能拿到同学的学号 + 令牌
+        --    ⇒ 能把某个同学的记录逐条删光 ⇒ 那就不是真隔离
+        --    ⇒ 改成「库里只有摘要、原始令牌只留提交者本机」⇒ 读到 action 也反推不出原始令牌
+        --    （SHA-256 浏览器端 crypto.subtle、库端 PG 内置 sha256() ⇒ 零 DDL、不动表结构）
         -- 🔴🔴 下面这行**必须加括号**：PostgreSQL 里 `||` 与 `->>` **同优先级且左结合**
         --    ⇒ 不加括号会解析成 (('%#tk=' || text::json) ->> 'x-row-token') || '%'
         --    ⇒ 报「operator does not exist: text ->> unknown」（本地 PG 实测踩到）
-        and action like ('%#tk=' || (current_setting('request.headers', true)::json->>'x-row-token') || '%')
+        and action like ('%#tk=' || encode(sha256(convert_to(nullif(current_setting('request.headers', true)::json->>'x-row-token', ''), 'utf8')), 'hex') || '%')
       )
     );
 

@@ -262,8 +262,12 @@
         var note = String(args.p_note || '').trim();
         // 🔴 末尾挂「行令牌」：这是这条记录**唯一**的删除凭证
         //    （RLS 侧：只有带着同一枚令牌 + 同一个学号，才允许删这一行）
+        //    🔴🔴 库里只写 **SHA-256(原始令牌)**；原始令牌只留本机
+        //        （action 列 anon 可读 ⇒ 明文令牌会被同学读走 ⇒ 就能删他的记录）
+        var raw = randomToken();
+        return sha256Hex(raw).then(function (h) {
         var action = '【听力】' + (cat || '未分类') + ' | ' + content
-          + (note ? ' | 备注:' + note : '') + ' | #tk=' + randomToken();
+          + (note ? ' | 备注:' + note : '') + ' | #tk=' + h;
         return rest('vocab_history_logs', {
           method: 'POST', prefer: 'return=representation',
           body: {
@@ -275,7 +279,10 @@
             action: action
           }
         }).then(function (rows) {
-          return { ok: true, id: rows && rows[0] ? rows[0].id : null };
+          var id = rows && rows[0] ? rows[0].id : null;
+          if (id !== null && id !== undefined) tkSave(id, raw);   // 原始令牌只留本机
+          return { ok: true, id: id };
+        });
         });
       });
     }
@@ -308,11 +315,21 @@
         });
     }
 
-    /* ---- 删自己的一条 ---- */
+    /* ---- 清除本机删除凭证（界面入口用） ---- */
+  if (name === 'listen_clear_local_tokens') {
+    return Promise.resolve({ ok: true, cleared: tkClearAll() });
+  }
+
+  /* ---- 删自己的一条 ---- */
     if (name === 'listen_delete_log') {
       var sid3 = sidOf(args.p_token);
       if (!sid3) return Promise.resolve({ ok: false, msg: '登录已过期，请重新登录' });
-      var tk = String(args.p_tk || '');
+      // 🔴 令牌从**本机**取（库里只有哈希 ⇒ 取不到）⇒ 换设备就删不了 ⇒ 明说
+      // ⚠️ **不要**回退到 args.p_tk：那是库里那份**哈希**，不是原始令牌 ⇒ 回退等于送错凭证
+      var tk = tkGet(args.p_id);
+      if (!tk) return Promise.resolve({
+        ok: false, msg: '本机没有这条记录的删除凭证（换过设备或清了缓存）⇒ 请找老师帮你删'
+      });
       return rest('vocab_history_logs?id=eq.' + Number(args.p_id) +
         '&class_key=eq.' + CFG.LOG_KEY + '&student_id=eq.' + sid3,
         {
@@ -511,6 +528,47 @@
       note: note,
       tk: tk
     };
+  }
+
+  /* 🔴🔴 令牌**不明文落库**（2026-10-24 修正）
+     背景：action 列对 anon 是**可读**的（老师看板要读它）⇒ 明文令牌人人可读
+        ⇒ 而名册也在 anon 可读的 vocab_states 里（登录页要读）
+        ⇒ 任何学生都能拿到同学的学号 + 令牌 ⇒ 能把某个同学的全部记录删光
+     ⇒ 所以：库里只存 **SHA-256(原始令牌)**；原始令牌**只留本机**（localStorage）
+     ⇒ 删除时发原始令牌，RLS 侧算 sha256 后比对 ⇒ 读到 action 的人反推不出原始令牌
+     ⇒ 代价：学生换设备 / 清缓存后，删不了自己**以前**的记录（老师可代删）⇒ 界面上要说明 */
+  function sha256Hex(str) {
+    var c = global.crypto || global.msCrypto;
+    if (!c || !c.subtle || !c.subtle.digest) {
+      return Promise.reject(new Error('本浏览器不支持加密摘要，无法生成删除凭证'));
+    }
+    var enc = new TextEncoder();
+    return c.subtle.digest('SHA-256', enc.encode(String(str))).then(function (buf) {
+      var a = new Uint8Array(buf), s = '';
+      for (var i = 0; i < a.length; i++) s += ('0' + a[i].toString(16)).slice(-2);
+      return s;
+    });
+  }
+
+  /* 本机凭证存取：key = 行 id ⇒ 值 = 原始令牌 */
+  function tkKey(id) { return 'listen.tk.' + id; }
+  function tkSave(id, raw) {
+    try { localStorage.setItem(tkKey(id), raw); } catch (e) { /* 隐私模式等 */ }
+  }
+  function tkGet(id) {
+    try { return localStorage.getItem(tkKey(id)) || ''; } catch (e) { return ''; }
+  }
+  function tkClearAll() {
+    var n = 0;
+    try {
+      var ks = [];
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('listen.tk.') === 0) ks.push(k);
+      }
+      ks.forEach(function (k) { localStorage.removeItem(k); n++; });
+    } catch (e) { /* ignore */ }
+    return n;
   }
 
   /* 生成「行令牌」：这条记录的唯一删除凭证

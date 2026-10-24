@@ -86,9 +86,10 @@ create policy p_teach_all_online on public.vocab_online_status for all to authen
 create policy p_teach_del_logs on public.vocab_history_logs for delete to authenticated using (true);
 create policy p_teach_del_online on public.vocab_online_status for delete to authenticated using (true);
 insert into public.vocab_history_logs (class_key, class_name, student_id, timestamp, duration_sec, action) values
- ('LISTEN','26互联网金融1班','S001','2026/10/24 12:00:00',600,'A | #tk=aaaa1111bbbb2222cccc3333'),
- ('LISTEN','26互联网金融1班','S001','2026/10/24 13:00:00',300,'B | #tk=dddd1111eeee2222ffff3333'),
- ('LISTEN','26互联网金融2班','S002','2026/10/24 14:00:00',200,'C | #tk=9999aaaa8888bbbb7777cccc'),
+ -- 🔴 库里存的是 **sha256(原始令牌)**（前端也这么写）⇒ 这里在 SQL 里直接算
+ ('LISTEN','26互联网金融1班','S001','2026/10/24 12:00:00',600,'A | #tk=' || encode(sha256(convert_to('aaaa1111bbbb2222cccc3333','utf8')),'hex')),
+ ('LISTEN','26互联网金融1班','S001','2026/10/24 13:00:00',300,'B | #tk=' || encode(sha256(convert_to('dddd1111eeee2222ffff3333','utf8')),'hex')),
+ ('LISTEN','26互联网金融2班','S002','2026/10/24 14:00:00',200,'C | #tk=' || encode(sha256(convert_to('9999aaaa8888bbbb7777cccc','utf8')),'hex')),
  ('JR1','JR1班','S003','2026/10/24 10:00:00',100,'X'),
  ('JR1','JR1班','S004','2026/10/24 11:00:00',100,'Y'),
  ('CET4','四级','S005','2026/10/24 12:00:00',100,'Z'),

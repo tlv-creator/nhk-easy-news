@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#ffffff">
 <title>学生登录 · 每日听力记录</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f5fd0'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E5%90%AC%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/app.css?v=20261024b">
+<link rel="stylesheet" href="css/app.css?v=20261024c">
 </head>
 <body>
 
@@ -43,12 +43,33 @@
 
     <button class="big" id="btnAdd">＋ 记一笔</button>
 
+    <!-- 🔴 补交提示（2026-10-24 事故：10-22~10-24 的记录被系统误清空 ⇒ 老师决定走「学生重交」）
+         ⇒ 补完就可以撤掉这一块（老师那边有进度表，能看到谁交没交） -->
+    <div class="card" style="border:2px solid #b23a1e;background:#fff6f3">
+      <h2 style="margin-top:0">10月22日—24日的记录被系统误操作清空了，请补交一次</h2>
+      <p style="margin:0 0 10px;line-height:1.8">
+        这几天听过的，请重新提交一次 —— 把「日期」选到对应那天就行，内容照旧写。<br>
+        点下面的日期可以一键填好：
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="ghost" data-filldate="2026/10/22">10月22日</button>
+        <button class="ghost" data-filldate="2026/10/23">10月23日</button>
+        <button class="ghost" data-filldate="2026/10/24">10月24日</button>
+      </div>
+    </div>
+
     <div class="card">
       <h2>我的记录 <span id="logCount" style="font-weight:400;color:var(--ink2)"></span></h2>
+      <p style="margin:0 0 10px;font-size:.92rem;color:var(--ink2)">已提交的记录在这里；如果发现少了，请按上面的提示重新提交。</p>
       <div id="myLogs"></div>
     </div>
 
     <button class="link" id="btnLogout">退出登录</button>
+    <p style="margin:14px 0 0;font-size:.92rem;color:var(--ink2);line-height:1.7">
+      删除凭证只存在**这台设备**上（库里只存它的摘要，谁都读不到原始值）<br>
+      ⇒ 换设备或清了浏览器缓存，就删不了自己以前的记录了（可以请老师帮忙删）<br>
+      <button class="link" id="btnClearTk" style="margin-top:6px">清除本机删除凭证</button>
+    </p>
   </section>
 </div>
 
@@ -87,7 +108,7 @@
 
 <div class="toast" id="toast" hidden></div>
 
-<script src="js/api.js?v=20261024b"></script>
-<script src="js/student.js?v=20261024b"></script>
+<script src="js/api.js?v=20261024c"></script>
+<script src="js/student.js?v=20261024c"></script>
 </body>
 </html>

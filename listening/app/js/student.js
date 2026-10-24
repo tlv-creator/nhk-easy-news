@@ -29,6 +29,8 @@
 
   /* ---------------- 启动 ---------------- */
   function boot() {
+    initClearTk();
+    initQuickDates();
     if (LISTEN.isDemo()) $('demoBanner').hidden = false;
     var saved = null;
     try { saved = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) { saved = null; }
@@ -238,8 +240,8 @@
       x.textContent = '删除';
       x.addEventListener('click', function () {
         if (!confirm('删除这条记录？')) return;
-        // 🔴 p_tk = 这一行的令牌（RLS 靠它判「只能删自己那一条」）
-        LISTEN.rpc('listen_delete_log', { p_token: me.token, p_id: l.id, p_tk: l.tk })
+        // 🔴 令牌**只从本机取**（库里只有哈希 ⇒ 换设备就删不了 ⇒ 界面会明说）
+        LISTEN.rpc('listen_delete_log', { p_token: me.token, p_id: l.id })
           .then(function (r) {
             // 🔴 0 行 = **没删掉**（RLS 挡着）⇒ 不能显示「已删除」（那是假成功）
             if (!r || !r.ok) { toast((r && r.msg) || '没有真正删除这条记录，请稍后再试'); return; }
@@ -250,6 +252,42 @@
       row.appendChild(x);
 
       box.appendChild(row);
+    });
+  }
+
+  /* ---------------- 补交提示：快捷日期（2026-10-22~24 的记录被误清空 ⇒ 老师让同学重交） ---------------- */
+  function initQuickDates() {
+    var btns = document.querySelectorAll('[data-filldate]');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', function (e) {
+        var v = e.currentTarget.getAttribute('data-filldate');
+        var d = document.getElementById('fDate');
+        if (d) {
+          d.value = v;
+          // 提示一下已经填好了（日期框可能不在视口里）
+          try { d.scrollIntoView({ block: 'center' }); } catch (err) { }
+          try { d.focus(); } catch (err) { }
+        }
+        toast('日期已填成 ' + v + '，写完点「提交」');
+      });
+    }
+  }
+
+  /* ---------------- 清除本机删除凭证（凡往设备存东西必须配删除入口 + 二次确认） ---------------- */
+  function initClearTk() {
+    var b = document.getElementById('btnClearTk');
+    if (!b) return;
+    b.addEventListener('click', function () {
+      // 🔴 二次确认：要**手打「清除」**两个字 ⇒ 防止手滑把凭证清了导致以后删不了
+      var typed = prompt('清除本机的删除凭证后，本机上已提交的记录将无法再删除。\n\n请输入「清除」两个字确认：', '');
+      if (String(typed == null ? '' : typed).trim() !== '清除') {
+        toast('未输入「清除」，已取消'); return;
+      }
+      LISTEN.rpc('listen_clear_local_tokens', {}).then(function (r) {
+        if (!r || !r.ok) { toast((r && r.msg) || '清除失败'); return; }
+        toast('已清除本机 ' + (r.cleared || 0) + ' 条删除凭证');
+        refresh();
+      }).catch(function (e) { toast(e.message || '清除失败'); });
     });
   }
 
