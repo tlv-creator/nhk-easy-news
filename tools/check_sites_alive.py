@@ -149,7 +149,7 @@ def main():
     #   ⇒ 现在：**不认识的取值直接报错不放行**（宁可停下来问人，别默默按默认走）
     #   已知取值只有四个：
     #     DELETED    = 我们说它已经删了   ⇒ 期望它死   ⇒ 还活着 ⇒ 🔴 清单该更新
-    #     SUPERSEDED = 旧站被取代、可删   ⇒ **不判死活** ⇒ 墓碑（实测 8 条里 4 活 4 死）
+    #     SUPERSEDED = 旧站被取代、可删   ⇒ **不判死活** ⇒ 墓碑（实测 7 条里 3 活 4 死）
     #     ALIVE      = 显式写出来的「现役」⇒ 期望它活着（语义 ≡ 没有 status）
     #     （没有 status）= 现役          ⇒ 期望它活着
     KNOWN = {"": "check", "ALIVE": "check", "DELETED": "check_dead", "SUPERSEDED": "skip"}
