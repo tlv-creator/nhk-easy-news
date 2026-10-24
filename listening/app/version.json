@@ -1,10 +1,11 @@
 {
  "app": "每日听力记录",
- "mirror": "https://irk7ibwekq8se.space.mcode.cn",
+ "mirror": "https://ul366v9i8nx0s.space.mcode.cn",
  "permanent_entry": "https://tlv-creator.github.io/nhk-easy-news/listening/",
  "student": "https://tlv-creator.github.io/nhk-easy-news/listening/app/student.html",
  "teacher": "https://tlv-creator.github.io/nhk-easy-news/listening/app/teacher.html",
  "updated": "2026-10-24 15:14:12",
  "app_version": "20261024c-sha256",
- "note": "删除凭证改为「原始令牌只留本机 + 库里只存 SHA-256」；学生端加了 10/22-24 补交提示"
+ "note": "删除凭证改为「原始令牌只留本机 + 库里只存 SHA-256」；学生端加了 10/22-24 补交提示",
+ "mirror_note": "2026-10-24 第二次换镜像：上一版（xqrp2rqkvxqwf）是 sha256 令牌改造**之前**的前端 ⇒ 老师跑完收尾 SQL 后，走那一版的学生删不了自己的记录。旧域一律保留不删（frozen）。"
 }
