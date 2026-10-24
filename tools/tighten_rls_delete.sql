@@ -146,14 +146,23 @@ select '② ' || tablename || ' | ' || policyname || ' | cmd=' || cmd || ' | rol
    and ('authenticated' = any(roles) or 'service_role' = any(roles))
  order by tablename, cmd;
 --
--- ③ 四个班的条数（基线：JR1 746 / CW3 582 / WL_CW 280 / XQ1 839）
-select '③ ' || class_key || ' = ' || count(*) as x
-  from public.vocab_history_logs
- where class_key in ('JR1','CW3','WL_CW','XQ1','JR1|u1','JR1|u2','LISTEN','CET4')
- group by class_key order by class_key;
+-- ③ 逐班条数 vs 基线（基线 = 2026-10-24 快照）
+--   ⚠️ **数字会自己涨**（学生天天在练）⇒ 判据是「不许比基线少」，不是「必须等于基线」
+--   （写死"总数必须等于 N"是错判据：学生一练习就变少 ⇒ 老师会误以为数据丢了）
+with base(class_key, n) as (
+  values ('JR1',746),('CW3',582),('WL_CW',280),('XQ1',839),('LISTEN',0),('CET4',6),('JR1|u1',0),('JR1|u2',0)
+), cur as (
+  select class_key, count(*) n from public.vocab_history_logs group by class_key
+)
+select '③ ' || b.class_key || ' 现在=' || coalesce(c.n,0) || ' 基线=' || b.n
+       || case when coalesce(c.n,0) < b.n then '  ⛔ 少了！' else '  ✅' end as x
+  from base b left join cur c on c.class_key = b.class_key
+ order by b.class_key;
 --
--- ④ 总条数（基线：2454）
-select '④ 总条数 = ' || count(*) as x from public.vocab_history_logs;
+-- ④ 总条数：只判「没丢」，不判「等于」（基线 2453；之后学生练习会自然增长，看到比基线多是对的）
+select '④ 总数 ' || count(*) || ' / 基线 2453 → '
+       || case when count(*) >= 2453 then '✅ 没丢数据' else '⛔ 少了数据！' end as x
+  from public.vocab_history_logs;
 --
 -- ⑤ 探针行清干净了没有（应该都是 0）
 select '⑤ 残留探针 logs=' || (select count(*) from public.vocab_history_logs where student_id = '__rls_probe__')
