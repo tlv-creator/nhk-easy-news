@@ -51,6 +51,18 @@
   <div class="fine">📌 本次操作<b>只加权限规则，不动任何数据</b>。已有的 2,618 条记录原样保留；今天（10-24）已全量备份，出问题能回滚。</div>
 </div>
 
+
+<div class="card" style="border-left:4px solid var(--btn)">
+  <p class="optt" style="margin-top:0">👇 你现在就在 Supabase 后台（组织 Tianhua → Projects 页面）。照着这个点：</p>
+  <div class="kv" style="margin-top:8px">
+    <b>左侧第 1 个图标</b><span>📦 <b>三个盒子叠起来</b> = <b>SQL Editor</b>（要找 SQL 就点它）</span>
+    <b>左侧第 2 个图标</b><span>👥 <b>两个人</b> = <b>Authentication</b>（建老师账号 / 关注册 在这里）</span>
+    <b>左侧第 3 个图标</b><span>🧩 <b>四个方块</b> = Table Editor（看表数据，平时用不上）</span>
+    <b>最下面齿轮</b><span>⚙️ Settings</span>
+  </div>
+  <p style="margin-bottom:0">不确定哪个是 SQL Editor？<b>直接点下面那个大按钮</b>，它会把你带到正确的项目 + SQL Editor，并把 SQL 填好。</p>
+</div>
+
 <h2>第 1 步 · 建老师账号（40 秒）</h2>
 <p>只有老师端（看全班数据）需要它，学生端完全不受影响。</p>
 <div class="srow"><span class="n">1</span><div>
@@ -65,7 +77,7 @@
 
 <h2>第 2 步 · 关上「任何人可以注册」（20 秒）</h2>
 <div class="crit">
-  🔴 <b>这步千万别跳。</b>项目的「邮箱注册」现在是开着的 —— 规则装上后，<b>任何陌生人注册一个账号就能读走全班数据</b>（老师权限是给所有登录用户的）。必须先把这个口子堵上。
+  🔴 <b>这步千万别跳（我刚查过，后台接口明确返回 <code>disable_signup = False</code>，确实是开着的）。</b><br>规则装上后，<b>任何陌生人注册一个账号就能读走全班数据</b>（老师权限默认给所有登录用户）。必须先把这个口子堵上。
 </div>
 <div class="srow"><span class="n">1</span><div>
   左边菜单 → <b>Authentication</b> → <b>Sign In / Providers</b>（有的版本叫 <b>Providers</b>）。
@@ -80,7 +92,7 @@
 <h2>第 3 步 · 把权限规则装上（1 分钟）</h2>
 <p>左边菜单 → <b>SQL Editor</b> → <b>New query</b>，然后二选一：</p>
 
-<div class="opt pick">
+<div class="opt pick" style="font-size:17px">
   <p class="optt">推荐 · 直接运行（SQL 已填好）</p>
   <p style="margin:4px 0 10px">点下面按钮 → 浏览器会打开 Supabase 的 SQL Editor，SQL 已经填进去了 → 你只要点一下 <b>Run</b>。<br>
   <span style="color:var(--muted);font-size:14px">（万一打开后是空的，就用下面那个「手动复制」的办法，一样的。）</span></p>
@@ -123,7 +135,7 @@
   </div>
 </div>
 
-<p class="foot">这一页是临时的，装完权限就删。里面不含任何密钥。<br>哪一步卡住了直接截图给我，我帮你看。</p>
+<p class="foot">这一页是临时的，装完权限就删。里面不含任何密钥。<br>你后台里那个项目叫「t__lv@u.pacific.edu's Project」（region ap-northeast-2）—— <b>点上面的大按钮，如果打开的就是它，就对了</b>。<br>哪一步卡住了直接截图给我，我帮你看。</p>
 </div>
 
 <script>
