@@ -54,8 +54,19 @@ function readBody(req) {
 
 function start(port) {
   const server = http.createServer(async (req, res) => {
-    const u = new URL(req.url, 'http://localhost');
-    const path = u.pathname;
+    /* 🔴 不用 new URL()：mock 也要能在「全局 URL 被删掉」的沙箱模拟下工作
+       （判据 8 会真删 globalThis.URL ⇒ mock 自己用了 URL 就会先挂 ⇒ 假红） */
+    const _m = /^([^?#]*)(?:\?([^#]*))?/.exec(req.url || '/');
+    const path = _m ? _m[1] : '/';
+    const qsRaw = (_m && _m[2]) ? _m[2] : '';
+    const qs = {};
+    for (const kv of qsRaw.split('&')) {
+      if (!kv) continue;
+      const i = kv.indexOf('=');
+      const k = decodeURIComponent(i < 0 ? kv : kv.slice(0, i));
+      const v = decodeURIComponent(i < 0 ? '' : kv.slice(i + 1));
+      qs[k] = v;
+    }
     const body = await readBody(req);
     const send = (code, obj) => {
       res.writeHead(code, { 'Content-Type': 'application/json' });
@@ -82,7 +93,6 @@ function start(port) {
 
     /* ② 删除（模拟 return=representation：返回真被删掉的行） */
     if (path === '/rest/v1/vocab_history_logs' && req.method === 'DELETE') {
-      const qs = Object.fromEntries(u.searchParams.entries());
       const victims = applyFilters(qs);
       const ids = new Set(victims.map((r) => r.id));
       ROWS = ROWS.filter((r) => !ids.has(r.id));

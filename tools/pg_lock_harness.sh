@@ -19,9 +19,9 @@ if [ -z "$SQL_MAIN" ]; then
 fi
 SQL_BASE="$HERE/fix_history_logs_rls_short.sql"
 [ -f "$SQL_BASE" ] || SQL_BASE=/workspace/listen-log/build/repo_scan/sql/fix_history_logs_rls_short.sql
-PGROOT="${PGROOT:-/workspace/work/pgtest}"
+PGROOT="${PGROOT:-${LISTEN_PGROOT:-/workspace/work/pgtest}}"
 PGDATA="$PGROOT/data"
-PORT=55433
+PORT="${LISTEN_PGPORT:-55433}"
 PGBIN="$(ls -d /usr/lib/postgresql/*/bin 2>/dev/null | head -1)"
 TMPD="$PGROOT/t"
 
@@ -40,7 +40,16 @@ run_sql() {  # $1 = sql 文本；打印输出
 # 只要一个数字
 num() { run_sql "$1" | tr -d '[:space:]'; }
 
+# 🔴🔴 必须先**真的把上一轮的 postgres 弄死**再删目录：
+#    上一轮若中途 abort，postgres 还在跑 ⇒ 直接 rm -rf 它的数据目录 ⇒
+#    它会一边跑一边重建文件 ⇒ 下一轮 initdb 撞
+#    「changing ownership of postmaster.pid: No such file」⇒ **假红**（我今天被它骗了 3 次）
 as_pg "$PGBIN/pg_ctl -D $PGDATA -m immediate stop" >/dev/null 2>&1 || true
+if [ -f "$PGDATA/postmaster.pid" ]; then
+  _pid=$(head -1 "$PGDATA/postmaster.pid" 2>/dev/null | tr -dc '0-9')
+  [ -n "$_pid" ] && kill -9 "$_pid" >/dev/null 2>&1
+  for _i in $(seq 1 40); do kill -0 "$_pid" >/dev/null 2>&1 || break; sleep 0.25; done
+fi
 rm -rf "$PGROOT"; mkdir -p "$PGROOT" "$TMPD"; chown -R postgres:postgres "$PGROOT"
 as_pg "$PGBIN/initdb -D $PGDATA -U postgres --auth=trust" >/dev/null 2>&1 || { echo "❌ initdb 失败"; exit 1; }
 as_pg "$PGBIN/pg_ctl -D $PGDATA -o \"-p $PORT -k $PGROOT -c listen_addresses=''\" -l $PGROOT/pg.log -w start" >/dev/null 2>&1 \
@@ -68,14 +77,18 @@ alter table public.vocab_submissions enable row level security;
 alter table public.vocab_online_status enable row level security;
 -- 老师的 authenticated 侧：**两种形状都建**（真实库是 FOR ALL；另一种是万一哪天变成 FOR DELETE）
 --   ⇒ 收尾 SQL 必须**两种都不动**（只删对 anon 生效的）
+-- 🔴 旧版本留下的**宽松** anon DELETE policy（**故意用别的名字**）
+--    ⇒ 收尾 SQL 的 DO 块必须把**所有**对 anon 生效的 DELETE policy 都抓掉
+--    ⇒ 只按名字 drop 同名的那条是不够的（名字可以不一样）
+create policy p_anon_delete_logs_old on public.vocab_history_logs for delete to anon using (class_key ~ '^[A-Z][A-Z0-9_]*$');
 create policy p_teach_all_logs on public.vocab_history_logs for all to authenticated using (true) with check (true);
 create policy p_teach_all_online on public.vocab_online_status for all to authenticated using (true) with check (true);
 create policy p_teach_del_logs on public.vocab_history_logs for delete to authenticated using (true);
 create policy p_teach_del_online on public.vocab_online_status for delete to authenticated using (true);
 insert into public.vocab_history_logs (class_key, class_name, student_id, timestamp, duration_sec, action) values
- ('LISTEN','26互联网金融1班','S001','2026/10/24 12:00:00',600,'A'),
- ('LISTEN','26互联网金融1班','S001','2026/10/24 13:00:00',300,'B'),
- ('LISTEN','26互联网金融2班','S002','2026/10/24 14:00:00',200,'C'),
+ ('LISTEN','26互联网金融1班','S001','2026/10/24 12:00:00',600,'A | #tk=aaaa1111bbbb2222cccc3333'),
+ ('LISTEN','26互联网金融1班','S001','2026/10/24 13:00:00',300,'B | #tk=dddd1111eeee2222ffff3333'),
+ ('LISTEN','26互联网金融2班','S002','2026/10/24 14:00:00',200,'C | #tk=9999aaaa8888bbbb7777cccc'),
  ('JR1','JR1班','S003','2026/10/24 10:00:00',100,'X'),
  ('JR1','JR1班','S004','2026/10/24 11:00:00',100,'Y'),
  ('CET4','四级','S005','2026/10/24 12:00:00',100,'Z'),
@@ -119,8 +132,38 @@ echo "【判据 2】anon 带 x-student-id 头 ⇒ 只能删**自称是那个人*
 run_sql "set role anon;
 set request.headers = '{\"x-student-id\":\"S002\"}';
 delete from public.vocab_history_logs where class_key='LISTEN';" > /tmp/o2 2>&1
-v=$(num "$C_LISTEN"); [ "$v" = "2" ] && ck "带 S002 的头删 LISTEN：只掉了 S002 那 1 条（剩 2）" 1 || ck "带 S002 的头删 LISTEN：只掉 S002 那条" 0 "$v"
-v=$(num "$C_S001"); [ "$v" = "2" ] && ck "S001 的 2 条一条没动" 1 || ck "S001 的 2 条一条没动" 0 "$v"
+v=$(num "$C_LISTEN"); [ "$v" = "3" ] && ck "🔴 只带学号（没令牌）⇒ 一条都删不掉" 1 || ck "🔴 只带学号（没令牌）⇒ 一条都删不掉" 0 "$v"
+v=$(num "$C_S001"); [ "$v" = "2" ] && ck "🔴 只带学号 ⇒ S001 的 2 条也没动" 1 || ck "🔴 只带学号 ⇒ S001 的 2 条也没动" 0 "$v"
+
+echo
+echo "【判据 2b】带对学号 + **对令牌** ⇒ 只能删**那一行**"
+run_sql "set role anon;
+set request.headers = '{\"x-student-id\":\"S002\",\"x-row-token\":\"9999aaaa8888bbbb7777cccc\"}';
+delete from public.vocab_history_logs where class_key='LISTEN';" > /tmp/o2b 2>&1
+v=$(num "$C_LISTEN"); [ "$v" = "2" ] && ck "带对令牌 ⇒ 删掉 1 条（LISTEN 剩 2）" 1 || ck "带对令牌 ⇒ 删掉 1 条" 0 "$v"
+v=$(num "$C_S001"); [ "$v" = "2" ] && ck "带对令牌 ⇒ S001 的 2 条一条没动" 1 || ck "带对令牌 ⇒ S001 的 2 条一条没动" 0 "$v"
+
+echo
+echo "【判据 2b2】🔴 **令牌是对的、但学号报错了** ⇒ 一样删不掉（两个凭证必须**同时**对上）"
+run_sql "set role anon;
+set request.headers = '{\"x-student-id\":\"S002\",\"x-row-token\":\"aaaa1111bbbb2222cccc3333\"}';
+delete from public.vocab_history_logs where class_key='LISTEN';" > /tmp/o2b2 2>&1
+v=$(num "$C_LISTEN"); [ "$v" = "2" ] && ck "令牌对但学号错 ⇒ 删不掉（LISTEN 还是 2 条）" 1 || ck "令牌对但学号错 ⇒ 删不掉（LISTEN 还是 2 条）" 0 "$v"
+v=$(num "$C_S001"); [ "$v" = "2" ] && ck "令牌对但学号错 ⇒ S001 的 2 条一条没动" 1 || ck "令牌对但学号错 ⇒ S001 的 2 条一条没动" 0 "$v"
+
+echo
+echo "【判据 2c】🔴 **伪造别人的学号 + 猜不到令牌** ⇒ 删不掉（这就是第三方案的核心）"
+run_sql "set role anon;
+set request.headers = '{\"x-student-id\":\"S001\",\"x-row-token\":\"9999aaaa8888bbbb7777cccc\"}';
+delete from public.vocab_history_logs where class_key='LISTEN';" > /tmp/o2c 2>&1
+v=$(num "$C_LISTEN"); [ "$v" = "2" ] && ck "伪造别人的学号 + 别人的令牌 ⇒ 删不掉（学号和令牌必须同时对上）" 1 || ck "伪造别人的学号 + 别人的令牌 ⇒ 删不掉" 0 "$v"
+
+echo
+echo "【判据 2d】🔴 **令牌带 LIKE 通配符** ⇒ 不能拿来匹配任意行"
+run_sql "set role anon;
+set request.headers = '{\"x-student-id\":\"S001\",\"x-row-token\":\"%%%%\"}';
+delete from public.vocab_history_logs where class_key='LISTEN';" > /tmp/o2d 2>&1
+v=$(num "$C_LISTEN"); [ "$v" = "2" ] && ck "令牌是通配符 ⇒ 一条都删不掉（正则挡住了）" 1 || ck "令牌是通配符 ⇒ 一条都删不掉" 0 "$v"
 
 echo
 echo "【判据 3】anon 删别的班（JR1）⇒ 删不动"

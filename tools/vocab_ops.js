@@ -31,8 +31,12 @@ var SB_URL = (process.env.SB_URL || '').replace(/\/+$/, '');
 var SB_KEY = process.env.SB_SERVICE_ROLE || '';
 
 /* 服务端白名单：这个端点**只**服务每日听力记录站。
-   别的班（JR1/CW3/WL_CW/XQ1/CET4…）一律 400，不给任何入口。 */
-var ALLOWED_CLASS_KEYS = ['LISTEN'];
+   别的班（JR1/CW3/WL_CW/XQ1/CET4…）一律 400，不给任何入口。
+   🔴 LISTENPROBE = **验收用的探针班**（真产品里不存在这个班，学生端/老师端都看不见它）
+      ⇒ 加它是为了让验收脚本能**测真删能力而不碰真数据**
+      ⇒ （2026-10-24 的硬纪律：破坏性操作只许打探针 class_key，永远不许对真实 class_key 跑「清空全部」）
+      ⇒ 它不在任何真班级名单里 ⇒ 误清空的代价是 0 */
+var ALLOWED_CLASS_KEYS = ['LISTEN', 'LISTENPROBE'];
 
 var TIMEOUT_MS = 15000;
 
@@ -61,7 +65,17 @@ function err(statusCode, code, extra) {
   return json(statusCode, o);
 }
 
-/* Supabase REST 调用（自己拼 URL，不用 URL / URLSearchParams） */
+/* Supabase REST 调用（自己拼 URL，不用 URL / URLSearchParams）
+   🔴🔴 **不能用全局 fetch()** —— CloudBase 的 Node 沙箱（scf_bootstrap 起的那个 node）
+      是 Node 12/16 ⇒ **没有全局 fetch** ⇒ 每次调用都 ReferenceError: fetch is not defined
+      ⇒ 函数能起来（部署"成功"），但 /vocab-ops 一调就 500
+      ⇒ 证据：现役 ai-proxy 的 index.js 第 44-46 行用 require('https')，
+             第 255 行还专门写着「绝对不要用 new URL()：CloudBase 的 Node 沙箱里没有全局 URL」
+      ⇒ 同一个沙箱不会凭空多出 fetch。
+      ⇒ 改用 https.request（Node 12+ 通用）—— 契约与原来完全一致。 */
+var https = require('https');
+var http = require('http');
+
 function sbFetch(path, method, body, prefer) {
   var headers = {
     'apikey': SB_KEY,
@@ -70,29 +84,43 @@ function sbFetch(path, method, body, prefer) {
   };
   if (prefer) headers['Prefer'] = prefer;
 
-  var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-  var timer = ctrl ? setTimeout(function () { try { ctrl.abort(); } catch (e) { /* ignore */ } }, TIMEOUT_MS) : null;
+  var payload = (body === undefined || body === null) ? null : JSON.stringify(body);
+  if (payload !== null) headers['Content-Length'] = Buffer.byteLength(payload);
 
-  return fetch(SB_URL + path, {
-    method: method,
-    headers: headers,
-    body: (body === undefined || body === null) ? undefined : JSON.stringify(body),
-    signal: ctrl ? ctrl.signal : undefined
-  }).then(function (r) {
-    return r.text().then(function (t) {
-      if (timer) clearTimeout(timer);
-      if (!r.ok) {
-        var e = new Error('supabase_' + r.status);
-        e.status = r.status;
-        e.body = t;
-        throw e;
-      }
-      if (!t) return null;
-      try { return JSON.parse(t); } catch (e2) { return t; }
+  return new Promise(function (resolve, reject) {
+    /* 🔴 不用 new URL()：沙箱里没有全局 URL ⇒ 纯字符串解析 */
+    var um = /^(https?):\/\/([^/:?#]+)(?::(\d+))?([^?#]*)(\?[^#]*)?/.exec(SB_URL + path);
+    if (!um) return reject(new Error('bad_sb_url:' + SB_URL));
+
+    var opts = {
+      hostname: um[2],
+      port: um[3] ? parseInt(um[3], 10) : 443,
+      path: (um[4] || '/') + (um[5] || ''),
+      method: method || 'GET',
+      headers: headers,
+      timeout: TIMEOUT_MS
+    };
+
+    var req = (um[1] === 'http' ? http : https).request(opts, function (res) {
+      var buf = '';
+      res.setEncoding('utf8');
+      res.on('data', function (d) { buf += d; });
+      res.on('end', function () {
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          var e = new Error('supabase_' + res.statusCode);
+          e.status = res.statusCode;
+          e.body = buf;
+          return reject(e);
+        }
+        if (!buf) return resolve(null);
+        try { resolve(JSON.parse(buf)); } catch (e2) { resolve(buf); }
+      });
     });
-  }, function (e) {
-    if (timer) clearTimeout(timer);
-    throw e;
+
+    req.on('timeout', function () { req.destroy(new Error('timeout')); });
+    req.on('error', function (e) { reject(e); });
+    if (payload !== null) req.write(payload);
+    req.end();
   });
 }
 
@@ -105,6 +133,25 @@ function checkTeacher(teacherId, teacherHash) {
     .then(function (r) { return r === true; })
     .catch(function () { return false; });
 }
+
+/* ---------------- 连续失败限流（防暴力猜老师的 6 位口令）----------------
+   老师的口令是 6 位数字 ⇒ 没有限流的话，拿到 anon key 的人
+   可以拿这个端点当「口令验证预言机」穷举 ⇒ 加一道内存级限流。
+   ⚠️ 内存计数冷启动就重置 ⇒ 它是**减速带**不是墙 ⇒ 真要根治得给老师换强口令。 */
+var AUTH_FAILS = 0;
+var AUTH_BLOCKED_UNTIL = 0;
+var AUTH_FAIL_LIMIT = 20;          // 连续失败多少次后封锁
+var AUTH_BLOCK_MS = 10 * 60 * 1000; // 封锁 10 分钟
+
+function authBlocked() { return Date.now() < AUTH_BLOCKED_UNTIL; }
+function authFail() {
+  AUTH_FAILS += 1;
+  if (AUTH_FAILS >= AUTH_FAIL_LIMIT) {
+    AUTH_BLOCKED_UNTIL = Date.now() + AUTH_BLOCK_MS;
+    AUTH_FAILS = 0;
+  }
+}
+function authOk() { AUTH_FAILS = 0; }
 
 /* ---------------- 三个动作 ---------------- */
 
@@ -181,12 +228,29 @@ function pickBody(event) {
 /* ---------------- 主入口 ---------------- */
 
 function handleVocabOps(event) {
+  /* 🔴 契约统一：**永远返回 Promise**（有的分支返回普通对象、有的返回 Promise
+     ⇒ 调用方 await 一下就够，但混着写容易踩坑） */
+  try {
+    return Promise.resolve(handleVocabOpsInner(event));
+  } catch (e) {
+    try { console.warn('[vocab-ops]', (e && e.message) || e); } catch (e2) { /* ignore */ }
+    return Promise.resolve(err(500, 'server_error'));
+  }
+}
+
+function handleVocabOpsInner(event) {
   var path = pickPath(event);
   var method = pickMethod(event);
 
   if (method === 'OPTIONS') return json(200, { ok: true });
 
-  /* 路由：只有 /vocab-ops 走这里（防止误挂在 /ai 上把 AI 讲解打挂） */
+  if (method !== 'POST') {
+    return err(405, 'method_not_allowed', { detail: '只接受 POST' });
+  }
+
+  /* 路由：只有 /vocab-ops 走这里（防止误挂在 /ai 上把 AI 讲解打挂）
+     ⚠️ 但**不能只看 path**：网关可能把前缀剥掉（现役 /ai 进来时 event.path 可能是 '/'）
+     ⇒ 调用方（index.js）会用「body.action 是我约定的三个之一」一起判断 */
   if (path && path.indexOf('/vocab-ops') < 0) {
     return json(404, { ok: false, error: 'not_found' });
   }
@@ -210,8 +274,12 @@ function handleVocabOps(event) {
   }
 
   /* 🔴 先校验老师身份，**校验不过一行都不删** */
+  if (authBlocked()) {
+    return err(429, 'too_many_attempts', { detail: '连续失败太多次，请 10 分钟后再试' });
+  }
   return checkTeacher(body.teacher_id, body.teacher_hash).then(function (ok) {
-    if (!ok) return err(401, 'unauthorized');
+    if (!ok) { authFail(); return err(401, 'unauthorized'); }
+    authOk();
     if (action === 'delete_log') return doDeleteLog(body);
     return doClearClass(body);
   }).catch(function (e) {

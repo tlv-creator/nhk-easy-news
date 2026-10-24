@@ -26,6 +26,33 @@ const SEED = [
 let FAILS = [];
 let PASSES = 0;
 
+/* 🔴🔴 判据 8/9 会**删掉** globalThis.URL 和 globalThis.fetch（模拟 CloudBase 的 Node 12/16 沙箱）
+   ⇒ 连「留一份 fetch 引用」都不行：undici 的 fetch 内部要用全局 URL ⇒ 一删就炸
+   ⇒ 所以测试自己调 mock 探针接口也**不许用 fetch** ⇒ 用裸 http.request（纯字符串拼 URL） */
+const http = require('http');
+
+function httpJSON(path, method, bodyObj) {
+  return new Promise((resolve, reject) => {
+    const payload = bodyObj === undefined ? null : JSON.stringify(bodyObj);
+    const req = http.request({
+      host: '127.0.0.1', port: PORT, path: path, method: method || 'GET',
+      headers: payload ? { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } : {}
+    }, (res) => {
+      let b = '';
+      res.setEncoding('utf8');
+      res.on('data', (d) => { b += d; });
+      res.on('end', () => {
+        let j = null;
+        try { j = JSON.parse(b); } catch (e) { j = b; }
+        resolve(j);
+      });
+    });
+    req.on('error', reject);
+    if (payload) req.write(payload);
+    req.end();
+  });
+}
+
 function ck(name, cond, detail) {
   if (cond) { PASSES++; console.log('  ✅ ' + name); }
   else { FAILS.push(name); console.log('  ❌ ' + name + (detail ? ('  ← ' + detail) : '')); }
@@ -46,8 +73,8 @@ async function call(payload) {
 }
 
 async function rows() {
-  const r = await fetch(BASE + '/__probe__/count');
-  return (await r.json()).rows;
+  const j = await httpJSON('/__probe__/count', 'GET');
+  return (j && j.rows) || [];
 }
 
 function fp(rs) {
@@ -82,7 +109,7 @@ function fp(rs) {
   /* ---------- 1) ping 不碰数据 ---------- */
   console.log('\n【1】ping');
   {
-    await fetch(BASE + '/__probe__/reset', { method: 'POST', body: JSON.stringify(SEED) });
+    await httpJSON('/__probe__/reset', 'POST', SEED);
     const before = fp(await rows());
     const r = await call({ action: 'ping' });
     const after = fp(await rows());
@@ -93,7 +120,7 @@ function fp(rs) {
   /* ---------- 2) 未授权 ⇒ 401 且一行都没删（这是最重要的一条） ---------- */
   console.log('\n【2】未授权');
   {
-    await fetch(BASE + '/__probe__/reset', { method: 'POST', body: JSON.stringify(SEED) });
+    await httpJSON('/__probe__/reset', 'POST', SEED);
     const before = fp(await rows());
 
     const r1 = await call({ action: 'clear_class', teacher_id: GOOD_ID, teacher_hash: BAD_HASH, class_key: 'LISTEN' });
@@ -116,7 +143,7 @@ function fp(rs) {
   /* ---------- 3) 删一条：只删那一条，别的行不动 ---------- */
   console.log('\n【3】删一条（已授权）');
   {
-    await fetch(BASE + '/__probe__/reset', { method: 'POST', body: JSON.stringify(SEED) });
+    await httpJSON('/__probe__/reset', 'POST', SEED);
     const before = await rows();
     const target = before[1];
 
@@ -136,7 +163,7 @@ function fp(rs) {
   /* ---------- 4) 清空全部：只清 LISTEN，别的班一行不动 ---------- */
   console.log('\n【4】清空全部（已授权）');
   {
-    await fetch(BASE + '/__probe__/reset', { method: 'POST', body: JSON.stringify(SEED) });
+    await httpJSON('/__probe__/reset', 'POST', SEED);
     const before = await rows();
     const listenBefore = before.filter((x) => x.class_key === 'LISTEN').length;
     const othersBefore = before.filter((x) => x.class_key !== 'LISTEN');
@@ -154,7 +181,7 @@ function fp(rs) {
   /* ---------- 5) class_key 白名单：动不了别的班 ---------- */
   console.log('\n【5】class_key 白名单');
   {
-    await fetch(BASE + '/__probe__/reset', { method: 'POST', body: JSON.stringify(SEED) });
+    await httpJSON('/__probe__/reset', 'POST', SEED);
     const before = fp(await rows());
 
     const r1 = await call({ action: 'clear_class', teacher_id: GOOD_ID, teacher_hash: GOOD_HASH, class_key: 'JR1' });
@@ -172,10 +199,10 @@ function fp(rs) {
   /* ---------- 6) 路由：挂在 /ai 上不能误触发 ---------- */
   console.log('\n【6】路由保护');
   {
-    await fetch(BASE + '/__probe__/reset', { method: 'POST', body: JSON.stringify(SEED) });
+    await httpJSON('/__probe__/reset', 'POST', SEED);
     const before = fp(await rows());
     const ev = { path: '/ai', httpMethod: 'POST', body: JSON.stringify({ action: 'clear_class', teacher_id: GOOD_ID, teacher_hash: GOOD_HASH, class_key: 'LISTEN' }) };
-    const r = mod.handleVocabOps(ev);
+    const r = await mod.handleVocabOps(ev);
     ck('路径不是 /vocab-ops → 404，不执行', r.statusCode === 404, 'status=' + r.statusCode);
     ck('路径不是 /vocab-ops → 一行都没删', fp(await rows()) === before);
   }
@@ -183,9 +210,45 @@ function fp(rs) {
   /* ---------- 7) OPTIONS 预检 ---------- */
   console.log('\n【7】CORS 预检');
   {
-    const r = mod.handleVocabOps({ path: '/vocab-ops', httpMethod: 'OPTIONS', body: '' });
+    const r = await mod.handleVocabOps({ path: '/vocab-ops', httpMethod: 'OPTIONS', body: '' });
     ck('OPTIONS → 200', r.statusCode === 200, 'status=' + r.statusCode);
     ck('OPTIONS 带 CORS 头', !!(r.headers && r.headers['Access-Control-Allow-Origin']));
+    const r2 = await mod.handleVocabOps({ path: '/vocab-ops', httpMethod: 'GET', body: '' });
+    ck('GET → 405 method_not_allowed', r2.statusCode === 405, 'status=' + r2.statusCode);
+  }
+
+  console.log('\n【8】云函数沙箱没有全局 URL ⇒ 端点必须照跑');
+  {
+    // 🔴 判据用**行为**不用文本扫描（文本扫描会把自己的注释判成违规）
+    delete globalThis.URL;
+    ck('globalThis.URL 真的被删掉了（判据本身有效）', typeof URL === 'undefined', typeof URL);
+    const r = await mod.handleVocabOps({ path: '/vocab-ops', httpMethod: 'POST', body: JSON.stringify({ action: 'ping' }) });
+    const b = JSON.parse(r.body);
+    ck('没有全局 URL 也能跑（ping → 200）', r.statusCode === 200 && b.ok === true, r.statusCode + ' ' + r.body);
+  }
+
+  console.log('\n【9】🔴🔴 云函数沙箱**也没有全局 fetch** ⇒ 端点必须照跑（Node 12/16）');
+  {
+    // 🔴 这是真事故：原来那版 sbFetch 用全局 fetch()
+    //    ⇒ CloudBase 沙箱里一调就 500（部署"成功"但端点全挂）
+    await httpJSON('/__probe__/reset', 'POST', SEED);
+    delete globalThis.fetch;
+    ck('globalThis.fetch 真的被删掉了（判据本身有效）', typeof fetch === 'undefined', typeof fetch);
+    const r = await mod.handleVocabOps({ path: '/vocab-ops', httpMethod: 'POST', body: JSON.stringify({ action: 'ping' }) });
+    const b = JSON.parse(r.body);
+    ck('没有全局 fetch 也能跑（ping → 200）', r.statusCode === 200 && b.ok === true, r.statusCode + ' ' + r.body);
+    // 真删一次（要真的发 HTTP 请求 ⇒ 证明 https.request 那条路是通的）
+    // ⚠ id 要**现取**：mock 的 NEXT_ID 是自增的 ⇒ reset 之后的 id 不是 9000
+    const live = await rows();
+    const target = live.find((x) => x.class_key === 'LISTEN');
+    ck('mock 里有可删的 LISTEN 行（判据前提）', !!target, JSON.stringify(live.map((x) => x.id)));
+    const r2 = await mod.handleVocabOps({
+      path: '/vocab-ops', httpMethod: 'POST',
+      body: JSON.stringify({ action: 'delete_log', teacher_id: GOOD_ID, teacher_hash: GOOD_HASH, id: target.id, class_key: 'LISTEN' })
+    });
+    const b2 = JSON.parse(r2.body);
+    ck('没有全局 fetch 也能真删（deleted 计数对）', r2.statusCode === 200 && b2.ok === true && b2.deleted === 1,
+       r2.statusCode + ' ' + r2.body);
   }
 
   server.close();
