@@ -465,9 +465,11 @@
     {
       "domain": "0a5j2weef699t",
       "project": "shun",
-      "reason": "✅ Shun 现役内容站 v1.2.3（APK + 13 集字幕/词库 + 音频 media/）—— 引导页 shun.json 指着它",
+      "reason": "v1.2.3 的旧内容站，2026-10-24 v1.2.4 上线后取代（内容站地址运行时从引导页 shun.json 读，APK 内不含此域名 ⇒ 删除对用户零影响）",
       "role": "content",
-      "note": "🔴 内容站每发一版换随机域名 ⇒ 本条目**每发一版就要更新**（否则会变成指向死站的记录，比没有还糟）。APK 下载地址也在本站（shun.apk）；音频在独立音频站 qtjgfga76bu4o（frozen）。"
+      "note": "🔴 内容站每发一版换随机域名 ⇒ 本条目**每发一版就要更新**（否则会变成指向死站的记录，比没有还糟）。APK 下载地址也在本站（shun.apk）；音频在独立音频站 qtjgfga76bu4o（frozen）。",
+      "status": "DELETED",
+      "deleted_at": "2026-10-24"
     },
     {
       "domain": "3be4wt47jrt60",
