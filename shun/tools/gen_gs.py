@@ -467,14 +467,14 @@ def check(gs, ja):
             inner = ""
         if not isinstance(inner, str):
             return False, "blocks[%d].inner 不是字符串" % i
-        # inner 的成分校验：**允许在原句里**（不强求在块内）
-        #   理由：inner 是「块内骨架」，模型常把助词/连接成分一起写进来
-        #   （如块是「お金」，inner 写「【お金が】」—— 「が」在原句但不在块内）
-        #   ⇒ 真幻觉（原文里根本没有）仍会被抓到。
+        # inner 的成分校验：**软警告**（不拦人）
+        #   理由：inner 是「块内骨架」，是**示意性**的。模型习惯给名词加助词
+        #   （原句「AIを使って」⇒ inner 写「【AIが】」）⇒ 硬拦误伤率极高。
+        #   真正该拦的幻觉（frame/blocks/parts 的原文片段）已经由严格判据守着。
         for piece in GRP_RE.findall(inner):
             p = piece[1:-1].strip()
             if p and p not in ja:
-                return False, "blocks[%d].inner 成分不在原句: %r" % (i, p)
+                WARN.append("blocks[%d].inner 成分不在原句: %r" % (i, p))
         parts = b.get("parts")
         if not isinstance(parts, list):
             return False, "blocks[%d].parts 不是 list" % i
@@ -678,29 +678,50 @@ def gen_batch(jas, tries=2):
 
 
 def load_eps(ep):
-    p = os.path.join(WS, "web", "data", "eps", ep + ".json")
-    if not os.path.exists(p):
-        return None, p
-    with open(p, encoding="utf-8") as f:
-        return json.load(f), p
+    """读一集的行数据。返回 (rows, path)。
+
+    🔴 两种来源都要支持（周更 agent 与本地项目的产物格式不同）：
+        · web/data/eps/epNN.json    —— 已发布的集（本地/仓库版 web 目录）
+        · work/cues/epNN_cues.json  —— 周更新集（build_cues.py 的产物）
+      两者的行文本都在 row["t"]（cues 文件里是 cue["t"]）。
+    """
+    p_web = os.path.join(WS, "web", "data", "eps", ep + ".json")
+    p_cues = os.path.join(WS, "work", "cues", ep + "_cues.json")
+    for p in (p_web, p_cues):
+        if not os.path.exists(p):
+            continue
+        try:
+            with open(p, encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception:  # noqa: BLE001
+            continue
+        cues = d.get("cues")
+        if not cues:
+            continue
+        rows = []
+        for c in cues:
+            r = (c.get("rows") or [{}])[0]
+            t = r.get("t") or c.get("t") or ""
+            rows.append({"t": t})
+        if rows:
+            return rows, p
+    return None, p_web
 
 
 def _one_ep(ep, args, lock, stat):
-    data, path = load_eps(ep)
-    if data is None:
-        log("跳过 %s（没有 %s）" % (ep, path))
+    rows, path = load_eps(ep)
+    if rows is None:
+        log("跳过 %s（找不到 %s 或 work/cues/%s_cues.json）" % (ep, ep, ep))
         return
     cache_path = os.path.join(args.out, ep + ".json")
     cache = {}
     if os.path.exists(cache_path):
         with open(cache_path, encoding="utf-8") as f:
             cache = json.load(f)
-    cues = data["cues"]
-    n = len(cues) if args.limit <= 0 else min(len(cues), args.limit)
+    n = len(rows) if args.limit <= 0 else min(len(rows), args.limit)
     todo = []
     for i in range(n):
-        row = cues[i]["rows"][0]
-        ja = row["t"]
+        ja = rows[i]["t"]
         key = "%s:%d" % (ep, i)
         if key in cache and cache[key].get("gs"):
             stat["ok"] += 1
@@ -709,7 +730,7 @@ def _one_ep(ep, args, lock, stat):
     if not todo:
         log("%s: 全部已有，跳过" % ep)
     else:
-        log("%s: 待生成 %d 句" % (ep, len(todo)))
+        log("%s: 待生成 %d 句（来源 %s）" % (ep, len(todo), os.path.basename(path)))
         bs = max(1, args.batch)
         chunks = [todo[i:i + bs] for i in range(0, len(todo), bs)]
         done = 0
@@ -735,12 +756,34 @@ def _one_ep(ep, args, lock, stat):
                     json.dump(cache, f, ensure_ascii=False)
             log("  %s %d/%d  ok=%d fail=%d" % (ep, done, len(todo), stat["ok"], stat["fail"]))
     if args.apply:
-        for i, c in enumerate(data["cues"]):
-            key = "%s:%d" % (ep, i)
-            c["rows"][0]["gs"] = (cache.get(key) or {}).get("gs")
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
-        log("  已写回 %s" % path)
+        apply_gs(ep, path, cache, args)
+    return
+
+
+def apply_gs(ep, path, cache, args):
+    """把 gs 写回数据文件。
+
+    · 来源是 web/data/eps/epNN.json ⇒ 直接写回那一行
+    · 来源是 work/cues/epNN_cues.json ⇒ **不写**（那不是 App 数据，
+      真正的写入点是 build_ep_data.py 读 work/gs/epNN.json）
+    """
+    if not path.endswith(os.sep + "eps" + os.sep + ep + ".json") and \
+            os.sep + "eps" + os.sep not in path:
+        log("  %s 来源是 cues 文件 ⇒ 不写回（由 build_ep_data.py 读 work/gs/）" % ep)
+        return
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    n = 0
+    for i, c in enumerate(data.get("cues") or []):
+        key = "%s:%d" % (ep, i)
+        g = (cache.get(key) or {}).get("gs")
+        rows = c.get("rows") or []
+        if rows:
+            rows[0]["gs"] = g
+            n += 1 if g else 0
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, separators=(",", ":"))
+    log("  已写回 %s（%d 句带 gs）" % (path, n))
 
 
 def main():

@@ -85,6 +85,8 @@ def main():
     ap.add_argument("--audio", required=True)
     ap.add_argument("--kanji-table", default=None)
     ap.add_argument("--st", default=None, help="句型 id 映射（build_lexicon 的产物）")
+    ap.add_argument("--gs", default=None,
+                    help="句子结构详解（tools/gen_gs.py 的产物 work/gs/epNN.json）")
     args = ap.parse_args()
 
     tag = "ep%02d" % args.ep
@@ -97,6 +99,12 @@ def main():
     stmap = {}
     if args.st and os.path.exists(args.st):
         stmap = json.load(open(args.st)).get("st", {})
+    # 🔴 句子结构详解（gs）：由 tools/gen_gs.py 离线生成（MiniMax + 事实校验）
+    #    没有就整段为空（App 会自动不显示这一节）⇒ 不阻塞发版。
+    gsmap = {}
+    if args.gs and os.path.exists(args.gs):
+        gsmap = json.load(open(args.gs))
+        print("  gs 载入 %d 句（%s）" % (len(gsmap), args.gs), file=sys.stderr)
 
     out_cues = []
     blk_side = {}
@@ -116,6 +124,10 @@ def main():
             "st": stmap.get(str(i), ""),
             "blk": blocks,
         }
+        # 句子结构详解（gs）—— 有就带上
+        g = (gsmap.get("%s:%d" % (tag, i)) or {}).get("gs")
+        if g:
+            row["gs"] = g
         out_cues.append({"s": c["s"], "e": c["e"], "rows": [row]})
         blk_side["%s:%d" % (tag, i)] = blocks
 

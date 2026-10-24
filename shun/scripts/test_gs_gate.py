@@ -212,6 +212,14 @@ ok("strip（です）⇒ です", gen_gs.strip_brackets("（です）") == "で�
 ok("strip［条件］⇒ 条件", gen_gs.strip_brackets("［条件］") == "条件")
 ok("strip 无括号 ⇒ 原样", gen_gs.strip_brackets("接続") == "接続")
 
+print("\n=== inner 是示意性的 ⇒ 只软警告 ===")
+inner_bad = [dict(b) for b in BLOCKS]
+inner_bad[1] = dict(inner_bad[1], inner="【AIが】 [四角]")
+ok("inner 里原句没有的成分 ⇒ 软警告（不拦人）",
+   gen_gs.check(mk(blocks=inner_bad), JA)[0],
+   gen_gs.check(mk(blocks=inner_bad), JA)[1])
+ok("  软规则记了警告", any("inner" in w for w in gen_gs.WARN), str(gen_gs.WARN))
+
 print("\n%d 通过 / %d 失败" % (len(PASS), len(FAIL)))
 if FAIL:
     print("失败：")
