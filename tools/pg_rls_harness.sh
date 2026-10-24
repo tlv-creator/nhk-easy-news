@@ -89,7 +89,9 @@ set role anon;
 do $$
 declare c text; ok_cnt int := 0; bad text := '';
 begin
-  foreach c in array array['JR1','CW3','WL_CW','XQ1','LISTEN','CET4'] loop
+  foreach c in array array['JR1','CW3','WL_CW','XQ1','LISTEN','CET4',
+                           'JR1|u1','WL_CW|u2','XQ1|u3',      -- 🔴 词汇站第一/二课的真实形态
+                           'ZZ9'] loop                          -- 🔴 老师以后新增的班级
     begin
       insert into public.vocab_history_logs (class_key,class_name,student_id,timestamp,duration_sec,action)
       values (c,'探针','__probe__','t',0,'probe');
@@ -145,8 +147,13 @@ begin
   begin
     insert into public.vocab_history_logs (class_key,class_name,student_id,timestamp,duration_sec,action)
     values ('__rls_neg__','x','__probe__','t',0,'probe');
-    msg := msg || '❌ 白名单外竟然写进去了（policy 没收窄）; ';
-  exception when others then msg := msg || '✅ 白名单外被拒; '; end;
+    msg := msg || '❌ 下划线开头的竟然写进去了（policy 没收窄）; ';
+  exception when others then msg := msg || '✅ 下划线开头被拒; '; end;
+  begin
+    insert into public.vocab_history_logs (class_key,class_name,student_id,timestamp,duration_sec,action)
+    values ('lowercase','x','__probe__','t',0,'probe');
+    msg := msg || '❌ 小写 key 竟然写进去了; ';
+  exception when others then msg := msg || '✅ 小写 key 被拒; '; end;
   raise notice '%', msg;
 end $$;
 reset role;
