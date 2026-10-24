@@ -1,0 +1,359 @@
+{
+ "date": "2026-10-25",
+ "seq": 2,
+ "topic": "科技与人工智能",
+ "title": "宇树押注具身智能的三年之约",
+ "subtitle": "从人形机器人量产到具身智能时刻",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/24/WS6adc00c5e4b06d4aa05648f1.html",
+  "date": "2026-10-24"
+ },
+ "article": {
+  "en": "Unitree Robotics, a Chinese robot company, is spending more on manufacturing, AI models and computing power. Its founder, Wang Xingxing, believes that robots will be able to do real-world tasks far better within one to three years. Since May 2024, when the G1 humanoid robot appeared, the company has produced about 10,000 to 20,000 units.\n\nThe company calls this goal physical AI. In one test, a general AI model controlled a robot that painted a picture, changed colors and cleaned its brush without any special programs. Wang says a ChatGPT moment will come when a robot can handle about 80 percent of tasks in places it has never seen before. To go faster, Unitree plans to work with more than 200 partner companies and to hold an annual competition.\n\nChina is moving fast in this field. In the first half of 2026, China's output of humanoid robots reached more than 40,000 units, and the yearly total may pass 100,000. Professor Wang Tianmiao says market demand, talent, supply chains and data all matter. Still, he says homes will use robots later, because robots must be safe, cheap and easy to maintain.",
+  "zh": "中国机器人公司<b>宇树科技</b>正在加大对<b>制造业</b>、AI模型和<b>算力</b>的投入。创始人<b>王兴兴</b>认为，在一到三年内，机器人将能<b>更好地完成现实任务</b>。2024年5月G1<b>人形机器人</b>问世以来，公司已生产约一万至两万台。\n\n公司把这一目标称为<b>「物理AI」</b>。在一次测试中，一个<b>通用AI模型</b>操控机器人画了一幅画、换了颜色并清洗画笔，全程<b>无需专门编程</b>。王兴兴表示，当机器人能在80%的陌生环境中完成约80%的任务时，具身智能就会迎来自己的「ChatGPT时刻」。为加快进展，宇树计划与<b>两百多家合作伙伴</b>共事，并举办<b>年度竞赛</b>。\n\n中国在这一领域进展很快。工信部称，2026年上半年中国<b>人形机器人产量</b>超过<b>四万台</b>，全年<b>产量</b>可能突破十万台。北京航空航天大学教授王天苗认为，<b>市场需求</b>、人才、供应链和数据都很重要。不过他也指出，机器人<b>进入家庭</b>会更晚，因为机器人必须<b>安全、便宜且易于维护</b>。",
+  "words": 182
+ },
+ "vocab": [
+  {
+   "w": "manufacturing",
+   "pos": "n.",
+   "cn": "制造业；制造",
+   "ex": "The company is spending more on manufacturing.",
+   "note": "manufacture 的名词形式；也可作定语 manufacturing industry",
+   "cet4": "secondary"
+  },
+  {
+   "w": "computing",
+   "pos": "adj.",
+   "cn": "计算的",
+   "ex": "The firm is also buying more computing power.",
+   "note": "computing power 指「算力」，四级外刊高频",
+   "cet4": "secondary"
+  },
+  {
+   "w": "founder",
+   "pos": "n.",
+   "cn": "创始人",
+   "ex": "Its founder believes robots will improve fast.",
+   "note": "found（建立）+-er；founding founder 指「创始合伙人」",
+   "cet4": "core"
+  },
+  {
+   "w": "produce",
+   "pos": "v.",
+   "cn": "生产；制造",
+   "ex": "The company has produced about 20,000 units.",
+   "note": "produce 产量大；produce 常与数量搭配",
+   "cet4": "core"
+  },
+  {
+   "w": "model",
+   "pos": "n.",
+   "cn": "模型（尤指 AI 模型）",
+   "ex": "The company develops AI models for its own robots.",
+   "note": "AI model 是高频词；也可指「模式、模特」",
+   "cet4": "core"
+  },
+  {
+   "w": "physical",
+   "pos": "adj.",
+   "cn": "身体的；物理的",
+   "ex": "The company calls this goal physical AI.",
+   "note": "physical AI 指「具身／物理 AI」，注意与 physics 区分",
+   "cet4": "core"
+  },
+  {
+   "w": "control",
+   "pos": "v.",
+   "cn": "控制；操控",
+   "ex": "An AI model controlled a robot that painted a picture.",
+   "note": "control 是四六级高频，注意与 controll（可控的）区分",
+   "cet4": "core"
+  },
+  {
+   "w": "partner",
+   "pos": "n.",
+   "cn": "合作伙伴",
+   "ex": "The firm plans to work with more than 200 partners.",
+   "note": "partner with sb 是固定搭配；也可作动词「结伴」",
+   "cet4": "core"
+  },
+  {
+   "w": "competition",
+   "pos": "n.",
+   "cn": "比赛；竞争",
+   "ex": "Unitree will hold an annual competition.",
+   "note": "compete 的名词；注意 compete with sb for sth",
+   "cet4": "core"
+  },
+  {
+   "w": "output",
+   "pos": "n.",
+   "cn": "产量；产出",
+   "ex": "The yearly output may pass 100,000 robots.",
+   "note": "output 指「产量、产出」，是外刊经济类高频词",
+   "cet4": "secondary"
+  },
+  {
+   "w": "demand",
+   "pos": "n.",
+   "cn": "需求",
+   "ex": "Market demand, talent and data all matter.",
+   "note": "demand for sth；supply and demand 是固定搭配",
+   "cet4": "core"
+  },
+  {
+   "w": "maintain",
+   "pos": "v.",
+   "cn": "维护；保养",
+   "ex": "Robots must be safe, cheap and easy to maintain.",
+   "note": "maintain a robot 指「保养、维护」",
+   "cet4": "core"
+  }
+ ],
+ "translation": {
+  "title": "人形机器人与具身智能",
+  "brief": "下面五句来自当天的宇树科技报道，按「数据—观点—测试—措施—挑战」展开。注意数量区间和固定搭配。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "宇树科技自2024年5月以来已生产约<b>一万至两万台</b>G1<b>人形机器人</b>。",
+    "ref": "Since May 2024, Unitree has produced about 10,000 to 20,000 G1 humanoid robots.",
+    "hints": {
+     "kw": [
+      "自……以来",
+      "生产",
+      "人形机器人"
+     ],
+     "struct": "Since + 现在完成时 has produced",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>Since + 过去时间</code> 搭配<b>现在完成时</b> has produced，表示从 2024 年 5 月持续到现在的结果。"
+     },
+     {
+      "t": "「一万至两万台」是<b>区间</b>，用 about 10,000 to 20,000，不能再加 more than。"
+     },
+     {
+      "t": "<code>humanoid robots</code> 为可数名词复数；数量后不要漏掉复数 -s。"
+     },
+     {
+      "t": "「宇树科技」的英文名是 Unitree（或 Unitree Robotics），首次出现建议写全。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "王兴兴<b>认为</b>，一到三年内机器人将能<b>更好地完成现实任务</b>。",
+    "ref": "Wang Xingxing believes that within one to three years, robots will be able to complete real-world tasks much better.",
+    "hints": {
+     "kw": [
+      "认为",
+      "一到三年内",
+      "完成现实任务"
+     ],
+     "struct": "主语 + believes that + 从句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>believe that</code> 后接宾语从句，从句用陈述语序，不能写成 believe that robots can will…"
+     },
+     {
+      "t": "<code>within one to three years</code> 表示「在一到三年内」，within 后直接接时间段。"
+     },
+     {
+      "t": "「完成现实任务」用 <code>complete real-world tasks</code>；real-world 作定语时通常带连字符。"
+     },
+     {
+      "t": "<code>will be able to do sth</code> 是四级最稳的「将能够」结构。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "在一次测试中，<b>通用人工智能模型</b>让机器人画画、换颜色并清洗画笔，<b>无需专门编程</b>。",
+    "ref": "In one test, a general AI model made a robot paint a picture, change colors and clean its brush without any special programs.",
+    "hints": {
+     "kw": [
+      "通用人工智能模型",
+      "让……做",
+      "无需专门编程"
+     ],
+     "struct": "make + 宾语 + 动词原形（不带 to）",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>make sb do sth</code> 中 do 前的动词用<b>原形</b>，不能加 to 或 -ed。"
+     },
+     {
+      "t": "三个并列动作 <code>paint, change and clean</code> 全部用动词原形，结构保持一致。"
+     },
+     {
+      "t": "「无需专门编程」用 <code>without any special programs</code>，without 后接名词短语。"
+     },
+     {
+      "t": "<code>a general AI model</code> 中 general 表示「通用的」；AI 首次出现可写 artificial intelligence。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "为<b>加快进展</b>，宇树计划<b>在五年内孵化两百多家</b>合作伙伴，并举办<b>年度竞赛</b>。",
+    "ref": "To speed up progress, Unitree plans to incubate more than 200 partner companies over five years and to hold an annual competition.",
+    "hints": {
+     "kw": [
+      "加快进展",
+      "孵化合作伙伴",
+      "举办年度竞赛"
+     ],
+     "struct": "To do + 主语 + plan to do",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>plan to do sth</code> 中 plan 后必须加 to，不能直接跟动词原形。"
+     },
+     {
+      "t": "<code>incubate</code> 指「孵化（企业、团队）」，是本句的关键词；也可用 support，但意思偏弱。"
+     },
+     {
+      "t": "<code>over five years</code> 表示「五年之内」，不要写成 in five years（五年后）。"
+     },
+     {
+      "t": "<code>hold an annual competition</code> 中 competition 用 a(n) 冠词，annual 表示「年度的」。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "由于在<b>安全、成本和维护</b>方面的要求都很高，机器人<b>进入普通家庭</b>仍需较长时间。",
+    "ref": "Because safety, cost and maintenance requirements are high, robots will take a long time to enter ordinary homes.",
+    "hints": {
+     "kw": [
+      "由于……要求高",
+      "进入普通家庭",
+      "较长时间"
+     ],
+     "struct": "Because + 主谓 + 逗号 + 结果主句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>requirements</code> 是复数名词，谓语用 are；三个并列词后面都接 requirements 才能共用。"
+     },
+     {
+      "t": "because 从句结束后<b>必须有逗号</b>，否则读者会误读成主句的宾语从句。"
+     },
+     {
+      "t": "<code>take a long time to do sth</code> 是四级固定句型，等于 it takes sb a long time to do sth。"
+     },
+     {
+      "t": "<code>ordinary homes</code> 表示「普通家庭」；household 在此也可用，但搭配为 household use。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "自……以来",
+    "en": "since ... has done",
+    "note": "Since + 过去时间，主句用现在完成时。",
+    "re": "since\\s+\\w+",
+    "sno": 1
+   },
+   {
+    "cn": "人形机器人",
+    "en": "humanoid robots",
+    "note": "具身智能领域的核心词，注意复数。",
+    "re": "humanoid\\s+robots?",
+    "sno": 1
+   },
+   {
+    "cn": "生产约……台",
+    "en": "has produced about",
+    "note": "produce + 数量；about 表约数。",
+    "re": "has\\s+produced\\s+about",
+    "sno": 1
+   },
+   {
+    "cn": "认为……将能",
+    "en": "believes that",
+    "note": "believe that + 宾语从句。",
+    "re": "believes?\\s+that",
+    "sno": 2
+   },
+   {
+    "cn": "一到三年内",
+    "en": "within one to three years",
+    "note": "within 后接时间段，表「在……之内」。",
+    "re": "within\\s+(one|1)\\s+to\\s+(three|3)\\s+years",
+    "sno": 2
+   },
+   {
+    "cn": "完成现实任务",
+    "en": "complete real-world tasks",
+    "note": "real-world 作定语，复合形容词。",
+    "re": "complete\\s+real[-\\s]world\\s+tasks?",
+    "sno": 2
+   },
+   {
+    "cn": "通用人工智能模型",
+    "en": "a general AI model",
+    "note": "general 表示「通用的」。",
+    "re": "general\\s+(ai\\s+model|artificial\\s+intelligence\\s+model)",
+    "sno": 3
+   },
+   {
+    "cn": "无需专门编程",
+    "en": "without any special programs",
+    "note": "without 后接名词短语。",
+    "re": "without\\s+any\\s+special\\s+programs|without\\s+\\w+\\s+programs?",
+    "sno": 3
+   },
+   {
+    "cn": "加快进展",
+    "en": "to speed up progress",
+    "note": "speed up 是动词短语，后接名词。",
+    "re": "speed\\s+up\\s+(the\\s+)?progress",
+    "sno": 4
+   },
+   {
+    "cn": "孵化合作伙伴",
+    "en": "incubate partner companies",
+    "note": "incubate 指培育、孵化公司或团队。",
+    "re": "incubat\\w+",
+    "sno": 4
+   },
+   {
+    "cn": "举办年度竞赛",
+    "en": "hold an annual competition",
+    "note": "hold a competition 是固定搭配。",
+    "re": "hold\\s+an?\\s+annual\\s+(competition|contest)",
+    "sno": 4
+   },
+   {
+    "cn": "安全与维护要求",
+    "en": "safety, cost and maintenance requirements",
+    "note": "三个并列名词共用 requirements，谓语用复数。",
+    "re": "(safety|cost|maintenance)\\s+requirements?",
+    "sno": 5
+   },
+   {
+    "cn": "进入普通家庭",
+    "en": "enter ordinary homes",
+    "note": "ordinary 表示普通的、大众的。",
+    "re": "enter\\s+ordinary\\s+homes?|to\\s+enter\\s+ordinary\\s+homes",
+    "sno": 5
+   }
+  ],
+  "classroom": [
+   1,
+   2
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}

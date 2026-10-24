@@ -1,0 +1,355 @@
+{
+ "date": "2026-10-29",
+ "seq": 6,
+ "topic": "传统饮食文化",
+ "title": "一碗莲藕排骨汤的秋天",
+ "subtitle": "节气、慢火与家的味道",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/23/WS6ada8a6ae4b06d4aa0564498.html",
+  "date": "2026-10-23"
+ },
+ "article": {
+  "en": "In Hubei province, autumn means one thing: a hot bowl of soup made from pork ribs and lotus root. It belongs to the 18th solar term, Frost's Descent, when mature lotus roots are <b>rich in starch</b>. In Caidian district of Wuhan, growers read the season by the lotus leaves: when they turn yellow, the roots are ready for <b>harvest</b>.\n\nHubei people eat lotus by season: spring shoots, autumn roots. A rich <b>stock</b> is prepared from pork trotters, pork bones and chicken feet. Salt and sugar season the cut lotus roots, which are rinsed to remove the raw taste. The pork ribs are stir-fried before joining the stock. The mixture then <b>simmers</b> in a traditional pot called a diaozi for about three hours.\n\nThe result is a milky white <b>broth</b> with a thin film of oil. The roots keep their shape but turn soft, and their sweetness balances the pork. Scallions and black pepper finish the dish. To a family in Hubei this soup means more than dinner: it shows up at wedding banquets and family reunions, and it sits on the Spring Festival table, carrying a blessing for marriage. Xiong Yifu, a chef of thirty years, serves it at food events in Japan, Brazil and France.",
+  "zh": "在湖北，秋天意味着一件事：一碗用排骨和莲藕炖出的热汤。它属于<b>第18个节气</b>——霜降，此时成熟的莲藕<b>富含淀粉</b>。在武汉蔡甸区，种植户靠莲叶的颜色读懂季节：叶子一黄，水下的莲藕就可以<b>收割</b>了。\n\n湖北人按<b>季节</b>吃莲藕：春天吃藕尖，秋天吃藕。高汤由猪蹄、猪骨和鸡爪熬出。盐和糖给切好的莲藕调味，再冲洗掉生涩的味道。排骨先爆炒，之后才下高汤。所有食材随后在叫作 diaozi（吊子）的传统瓦罐里用小火<b>慢炖</b>约三个小时。\n\n成品是<b>乳白色</b>的汤，表面浮着薄薄一层油。莲藕保持形状，却变得软糯，自身的甜味正好中和了猪肉的厚重。最后撒上葱花和黑胡椒。对湖北家庭而言，这碗汤不只是饭菜：它出现在婚宴和家庭聚会上，也总在年夜饭的桌上，还承载着对婚姻的祝福。做了三十年菜的主厨熊义甫，如今在日本、巴西和法国的美食活动上把这道汤端给远方食客。",
+  "words": 216
+ },
+ "vocab": [
+  {
+   "w": "solar term",
+   "pos": "phr.",
+   "cn": "二十四节气之一",
+   "ex": "Frost's Descent is the 18th solar term of the Chinese calendar.",
+   "note": "24节气；常用 the 18th solar term，注意 term 用单数",
+   "cet4": "beyond"
+  },
+  {
+   "w": "starch",
+   "pos": "n.",
+   "cn": "淀粉",
+   "ex": "Mature lotus roots are rich in starch.",
+   "note": "be rich in starch 富含淀粉；淀粉类名词在四级阅读里常出现",
+   "cet4": "beyond"
+  },
+  {
+   "w": "harvest",
+   "pos": "v./n.",
+   "cn": "收获；收割",
+   "ex": "The roots are ready for harvest in late autumn.",
+   "note": "作动词时直接带宾语：harvest lotus roots",
+   "cet4": "secondary"
+  },
+  {
+   "w": "season",
+   "pos": "n./v.",
+   "cn": "季节；给…调味",
+   "ex": "Salt and sugar season the cut lotus roots.",
+   "note": "一词两义：名词「季节」/动词「调味」；by season 按季节",
+   "cet4": "core"
+  },
+  {
+   "w": "stock",
+   "pos": "n.",
+   "cn": "（煮出的）汤底，高汤",
+   "ex": "A rich stock is prepared from pork trotters and bones.",
+   "note": "别和 stocks（股票）混；prepare a stock 熬高汤",
+   "cet4": "core"
+  },
+  {
+   "w": "simmer",
+   "pos": "v.",
+   "cn": "小火慢炖；煨",
+   "ex": "The mixture simmers gently in a traditional pot.",
+   "note": "simmer vs boil：小火慢炖是 simmer，对应 boil 是大火煮沸",
+   "cet4": "beyond"
+  },
+  {
+   "w": "broth",
+   "pos": "n.",
+   "cn": "汤；清汤",
+   "ex": "The result is a milky white broth.",
+   "note": "broth 强调汤本身，soup 更宽泛；milky white broth 乳白高汤",
+   "cet4": "beyond"
+  },
+  {
+   "w": "scallion",
+   "pos": "n.",
+   "cn": "大葱；青葱",
+   "ex": "Scallions and black pepper finish the dish.",
+   "note": "= green onion；英式拼写用双 l，勿写 scailion",
+   "cet4": "beyond"
+  },
+  {
+   "w": "banquet",
+   "pos": "n.",
+   "cn": "宴会；宴席",
+   "ex": "The soup appears at wedding banquets and Spring Festival meals.",
+   "note": "四级高频；hold/host a banquet 举办宴会",
+   "cet4": "beyond"
+  },
+  {
+   "w": "blessing",
+   "pos": "n.",
+   "cn": "祝福",
+   "ex": "The lotus root carries a blessing for marriage.",
+   "note": "carry a blessing 寓意/承载祝福，比 bring good luck 更书面",
+   "cet4": "secondary"
+  },
+  {
+   "w": "dish",
+   "pos": "n.",
+   "cn": "菜肴；一道菜",
+   "ex": "It is more than food but still a dish.",
+   "note": "一道菜用 a dish；菜肴总称用 dishes",
+   "cet4": "core"
+  }
+ ],
+ "translation": {
+  "title": "传统饮食文化：莲藕排骨汤为什么受欢迎",
+  "brief": "下面五句围绕「传统饮食文化」，按「调查数据—原因—意义—措施—展望」的真题结构展开。先读原句圈出采分点，再对照参考译文找表达。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "据<b>一项调查</b>，湖北莲藕排骨汤在最受喜爱的家乡菜中<b>排名靠前</b>，<b>超过六成</b>的人会在冬季煮它。",
+    "ref": "According to a survey, Hubei's pork rib and lotus root soup ranks among the most popular hometown dishes, and more than sixty percent of the respondents cook it in winter.",
+    "hints": {
+     "kw": [
+      "据调查",
+      "排名靠前",
+      "超过六成"
+     ],
+     "struct": "According to a survey + 主语 + 谓语 + 宾语",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>According to a survey</code> 是「据一项调查」的固定译法，后面直接跟句子，不要加 \"According to a survey, it says that\"。"
+     },
+     {
+      "t": "<b>排名靠前</b> 用 <code>rank among the most popular</code>；<code>among</code> 表示「在……之中」，后面不接 <code>in</code>。"
+     },
+     {
+      "t": "<b>超过六成的人</b> 是数字改写点，用 <code>more than sixty percent of the respondents</code>；「受访者」译 <code>respondents</code> 比 <code>people who are interviewed</code> 更地道。"
+     },
+     {
+      "t": "并列的两个动作（<code>ranks</code> 与 <code>cook</code>）用 <code>and</code> 连接，主语保持一致，不必另起一句。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "它受欢迎有<b>两个原因</b>：莲藕和排骨<b>富含营养</b>，<b>慢炖三小时</b>也让汤味更加浓郁。",
+    "ref": "There are two reasons for its popularity: lotus roots and pork ribs are rich in nutrients, and slow cooking for three hours makes the broth richer in flavor.",
+    "hints": {
+     "kw": [
+      "两个原因",
+      "富含营养",
+      "慢炖"
+     ],
+     "struct": "There are two reasons for + 分号并列两个从句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>有两个原因</b> 用 <code>There are two reasons for its popularity</code>；<code>for</code> 后接名词，不要写成 <code>reasons of</code>。"
+     },
+     {
+      "t": "<b>富含营养</b> 用 <code>are rich in nutrients</code>；「营养」在此指 nutrient（可数），不要写成 <code>rich in nutrition</code>（前者更准）。"
+     },
+     {
+      "t": "<b>慢炖三小时</b> 用 <code>slow cooking for three hours</code>；<code>for + 时间段</code> 表示持续多久。"
+     },
+     {
+      "t": "<b>更加浓郁</b> 用 <code>richer in flavor</code>（比较级），别漏掉 <code>-er</code>；「汤味」译 <code>the broth</code> 或 <code>the flavor of the soup</code>。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "它<b>不只是</b>家常菜，也是<b>婚宴</b>上的常客，被<b>视为</b>湖北饮食文化的象征。",
+    "ref": "It is not only a home dish but also a common sight at wedding banquets, and it is regarded as a symbol of Hubei's food culture.",
+    "hints": {
+     "kw": [
+      "不只是…而且",
+      "婚宴",
+      "被视为象征"
+     ],
+     "struct": "not only A but also B + and + 被动句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>不只是…而且</b> 固定译法 <code>not only ... but also ...</code>；两个被比较的对象是 <code>a home dish</code> 与 <code>a common sight</code>。"
+     },
+     {
+      "t": "<b>被视为……的象征</b> 用 <code>is regarded as a symbol of</code>；<code>regard A as B</code> 中 as 不能省，也别用 <code>is considered as</code>。"
+     },
+     {
+      "t": "「被视为」是被动语态，主语是 it；翻译时若写成 <code>people regard it as</code> 也可，但要注意和前半句主语衔接。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "<b>为让</b>年轻人了解这项传统，餐馆应<b>多办美食节</b>，并<b>鼓励</b>厨师学习这道菜。",
+    "ref": "To help more young people understand this tradition, restaurants should hold more food festivals and encourage cooks to learn this dish.",
+    "hints": {
+     "kw": [
+      "为让…了解",
+      "应多办",
+      "鼓励…学习"
+     ],
+     "struct": "To do (目的状语) + 主语 + should do + and do",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>为让……</b> 用目的状语 <code>To help ... understand ...</code>；<code>help sb (to) do sth</code> 中 to 可省略。"
+     },
+     {
+      "t": "<b>应多办</b> 是「措施」采分点，用 <code>should hold more ...</code>；情态动词 should 后必须接动词原形。"
+     },
+     {
+      "t": "<b>鼓励厨师学习</b> 用 <code>encourage cooks to learn</code>；<code>encourage sb to do sth</code> 不能写成 <code>encourage sb learning</code>。"
+     },
+     {
+      "t": "两个并列动作（<code>hold</code> 与 <code>encourage</code>）共用一个主语 restaurants，译成 and 连接即可。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "随着<b>数字菜谱</b>普及，这道汤品<b>有望走向世界</b>，让海外食客<b>尝到</b>家乡的味道。",
+    "ref": "With the popularity of digital recipes, this soup is expected to travel overseas and let overseas diners taste the flavor of home.",
+    "hints": {
+     "kw": [
+      "随着…普及",
+      "有望走向世界",
+      "尝到味道"
+     ],
+     "struct": "With + 名词短语, 主句 + and + 动词原形",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>随着……普及</b> 用 <code>With the popularity of ...</code>；<code>popularity</code> 是名词，不能写成 <code>With the popular of</code>。"
+     },
+     {
+      "t": "<b>有望走向世界</b> 用 <code>is expected to travel overseas</code>；「有望」是 <code>be expected to</code>，别写成 <code>will be hoped to</code>。"
+     },
+     {
+      "t": "<b>让……尝到……</b> 用 <code>let sb do sth</code>；<code>let</code> 后接省略 to 的不定式：<code>let overseas diners taste ...</code>。"
+     },
+     {
+      "t": "<b>家乡的味道</b> 译 <code>the flavor of home</code>，比 <code>the taste of hometown</code> 更简洁自然。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "据一项调查",
+    "en": "according to a survey",
+    "note": "引出数据；句首用，后接完整句子。",
+    "re": "according\\s+to\\s+a\\s+survey",
+    "sno": 1
+   },
+   {
+    "cn": "排名靠前",
+    "en": "ranks among the most popular",
+    "note": "among 后不再加 in。",
+    "re": "ranks\\s+among\\s+the\\s+most\\s+popular",
+    "sno": 1
+   },
+   {
+    "cn": "超过六成的受访者",
+    "en": "more than sixty percent of the respondents",
+    "note": "受访者用 respondents；也可用 over 60 percent。",
+    "re": "more\\s+than\\s+\\w+\\s+percent\\s+of\\s+the\\s+respondents",
+    "sno": 1
+   },
+   {
+    "cn": "有两个原因",
+    "en": "there are two reasons for",
+    "note": "reasons for sth；for 不能换成 of。",
+    "re": "two\\s+reasons?\\s+for",
+    "sno": 2
+   },
+   {
+    "cn": "富含营养",
+    "en": "are rich in nutrients",
+    "note": "be rich in + 复数名词最常见。",
+    "re": "rich\\s+in\\s+nutrients?",
+    "sno": 2
+   },
+   {
+    "cn": "慢炖三小时",
+    "en": "slow cooking for three hours",
+    "note": "for + 时间段；simmer 也能得分。",
+    "re": "slow\\s+cook(?:ing)?|simmer\\w*",
+    "sno": 2
+   },
+   {
+    "cn": "更加浓郁",
+    "en": "makes the broth richer in flavor",
+    "note": "比较级 richer，注意 -er。",
+    "re": "richer\\s+in\\s+flavor",
+    "sno": 2
+   },
+   {
+    "cn": "不只是…而且是",
+    "en": "not only ... but also ...",
+    "note": "两个成分要对等，中间可插入词。",
+    "re": "not\\s+only[\\s\\S]{0,200}but\\s+also",
+    "sno": 3
+   },
+   {
+    "cn": "被视为…的象征",
+    "en": "is regarded as a symbol of",
+    "note": "regard A as B；as 不能省。",
+    "re": "regarded\\s+as\\s+a\\s+symbol\\s+of",
+    "sno": 3
+   },
+   {
+    "cn": "多办美食节",
+    "en": "should hold more food festivals",
+    "note": "措施题高频；festival 用复数。",
+    "re": "food\\s+festivals?",
+    "sno": 4
+   },
+   {
+    "cn": "鼓励…学习",
+    "en": "encourage cooks to learn",
+    "note": "encourage sb to do sth。",
+    "re": "encourage\\s+(\\w+\\s+){0,3}to\\s+learn",
+    "sno": 4
+   },
+   {
+    "cn": "有望走向世界",
+    "en": "is expected to travel overseas",
+    "note": "有望＝be expected to。",
+    "re": "expected\\s+to\\s+(travel|go|reach)",
+    "sno": 5
+   },
+   {
+    "cn": "尝到家乡的味道",
+    "en": "taste the flavor of home",
+    "note": "let sb do sth；flavor 尤指味道特色。",
+    "re": "taste\\s+the\\s+flavor\\s+of\\s+home",
+    "sno": 5
+   },
+   {
+    "cn": "随着…普及",
+    "en": "with the popularity of",
+    "note": "popularity 是名词形式。",
+    "re": "with\\s+the\\s+popularity\\s+of",
+    "sno": 5
+   }
+  ],
+  "classroom": [
+   1,
+   2
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}

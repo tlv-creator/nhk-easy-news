@@ -1,0 +1,358 @@
+{
+ "date": "2026-10-27",
+ "seq": 4,
+ "topic": "智能制造与产业升级",
+ "title": "上海智能制造行动计划的2028",
+ "subtitle": "五百家工厂与六百台机器人密度",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/24/WS6adc013fe4b06d4aa05648f5.html",
+  "date": "2026-10-24"
+ },
+ "article": {
+  "en": "At the China International Industry Fair, Shanghai launched a new action plan for intelligent manufacturing on Oct 12. It aims to build 500 advanced intelligent factories in the city and raise robot density to 600 robots for every 10,000 workers by 2028.\n\nThe plan lists four major projects and 19 key tasks. Every key manufacturing company is expected to run a smart factory. More than 2,000 AI-based manufacturing scenarios are expected to be in operation. The city also plans to put about 8,000 humanoid robots into factories by 2028. The scale of AI-powered intelligent equipment is expected to reach more than 200 billion yuan, and the system integration industry is set to grow to 100 billion yuan.\n\nOfficials say the goal is to connect AI with real production. Large models will be used on production lines, and smart agents will join the manufacturing process to reshape production models. Shanghai also wants to build a modern industrial system and welcome more foreign companies to invest and settle down.",
+  "zh": "在<b>中国国际工业博览会</b>上，上海于10月12日<b>发布</b>了新一代智能制造行动计划。计划提出，到2028年在全市建成<b>500家</b>先进智能工厂，并把<b>机器人密度</b>提高到每万名员工<b>600台</b>。\n\n计划列出<b>四个重大项目</b>和<b>19项重点任务</b>，要求重点制造业企业都建有<b>智能工厂</b>，推动超过<b>2000个</b>人工智能赋能的制造场景投入运行。全市还计划到2028年在工厂部署约<b>8000台</b>人形机器人，<b>人工智能赋能</b>的智能装备产业规模预计将超过<b>2000亿元</b>，智能制造系统集成产业将增至<b>1000亿元</b>。\n\n官方表示，目标是让人工智能真正<b>对接生产实际</b>。<b>大模型</b>将用于生产线，智能体将<b>融入制造流程</b>，从而<b>重塑生产模式</b>。上海还希望建设<b>现代化产业体系</b>，吸引更多外资企业来<b>投资兴业</b>。",
+  "words": 156
+ },
+ "vocab": [
+  {
+   "w": "manufacturing",
+   "pos": "n.",
+   "cn": "制造业；制造",
+   "ex": "Every key manufacturing company should run a smart factory.",
+   "note": "manufacture 的名词形式，是产业类外刊高频词",
+   "cet4": "secondary"
+  },
+  {
+   "w": "intelligent",
+   "pos": "adj.",
+   "cn": "智能的",
+   "ex": "The city plans to build 500 intelligent factories.",
+   "note": "intelligent manufacturing 智能制造；也可说 smart",
+   "cet4": "core"
+  },
+  {
+   "w": "factory",
+   "pos": "n.",
+   "cn": "工厂",
+   "ex": "Every key company is expected to run a smart factory.",
+   "note": "复数 factories，注意 y 变 i 再加 es",
+   "cet4": "core"
+  },
+  {
+   "w": "density",
+   "pos": "n.",
+   "cn": "密度",
+   "ex": "The plan wants a robot density of 600 per 10,000 workers.",
+   "note": "robot density 机器人密度；也指人口密度",
+   "cet4": "secondary"
+  },
+  {
+   "w": "launch",
+   "pos": "v.",
+   "cn": "发布；发起",
+   "ex": "Shanghai launched a new action plan on Oct 12.",
+   "note": "launch 指正式启动、发布；发布产品也可用 launch",
+   "cet4": "core"
+  },
+  {
+   "w": "scale",
+   "pos": "n.",
+   "cn": "规模；产量",
+   "ex": "The scale of AI equipment is expected to reach 200 billion yuan.",
+   "note": "on a large scale / at scale 指「大规模」",
+   "cet4": "core"
+  },
+  {
+   "w": "equipment",
+   "pos": "n.",
+   "cn": "设备；装备",
+   "ex": "The intelligent equipment industry will grow fast.",
+   "note": "equipment 不可数，勿加 s",
+   "cet4": "core"
+  },
+  {
+   "w": "production",
+   "pos": "n.",
+   "cn": "生产；产出",
+   "ex": "Large models will be used on production lines.",
+   "note": "production line 生产线，是四级高频搭配",
+   "cet4": "core"
+  },
+  {
+   "w": "industrial",
+   "pos": "adj.",
+   "cn": "工业的",
+   "ex": "Shanghai wants a modern industrial system.",
+   "note": "industrial system 产业体系；industry 是名词",
+   "cet4": "core"
+  },
+  {
+   "w": "modern",
+   "pos": "adj.",
+   "cn": "现代化的",
+   "ex": "The city wants to build a modern industrial system.",
+   "note": "modern 修饰体系、技术；注意 modern 与 modernize 的区别",
+   "cet4": "core"
+  },
+  {
+   "w": "invest",
+   "pos": "v.",
+   "cn": "投资",
+   "ex": "More foreign companies are welcome to invest and settle down.",
+   "note": "invest in sth / invest 是不及物用法",
+   "cet4": "core"
+  }
+ ],
+ "translation": {
+  "title": "智能制造与产业升级",
+  "brief": "以下五句来自当天的上海智能制造行动计划报道，按「发布—目标—任务—路径—展望」推进。重点练数字目标与名词搭配。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "上海于10月12日<b>发布行动计划</b>，以加快<b>新一代智能制造</b>的发展。",
+    "ref": "Shanghai launched an action plan on Oct 12 to speed up the development of next-generation intelligent manufacturing.",
+    "hints": {
+     "kw": [
+      "发布行动计划",
+      "加快……的发展",
+      "新一代"
+     ],
+     "struct": "主语 + launched + 不定式表目的",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "「发布行动计划」用 <code>launch an action plan</code>；launch 强调正式启动，比 issue 更贴政策语境。"
+     },
+     {
+      "t": "「加快……的发展」用 <code>to speed up the development of</code>，speed up 后接名词。"
+     },
+     {
+      "t": "<code>next-generation intelligent manufacturing</code> 中 next-generation 作定语，复合形容词要带连字符。"
+     },
+     {
+      "t": "具体日期用介词 on：<code>on Oct 12</code>；月份前不加 on 的是年份，如 in 2028。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "到2028年建成<b>500家</b>先进智能工厂，<b>机器人密度</b>提高到每万名员工<b>600台</b>。",
+    "ref": "The plan aims to build 500 advanced intelligent factories and raise robot density to 600 robots per 10,000 employees by 2028.",
+    "hints": {
+     "kw": [
+      "到2028年",
+      "建成……家",
+      "机器人密度"
+     ],
+     "struct": "aims to do + and + 第二个动词原形",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>aim to do sth</code> 是「计划做某事」，aims 后要加 to 再跟动词原形。"
+     },
+     {
+      "t": "<code>build</code> 与 <code>raise</code> 并列时共用同一个 to：<code>to build ... and raise ...</code>。"
+     },
+     {
+      "t": "「机器人密度」用 <code>robot density</code>；密度搭配 <code>density of</code> 或作名词直接用。"
+     },
+     {
+      "t": "<code>by 2028</code> 表示「到 2028 年为止」；until 2028 是「直到 2028 年都……」，意思不同。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "计划包括<b>四个重大项目</b>和<b>19项重点任务</b>，推动超过<b>2000个</b>智能制造场景投入运行。",
+    "ref": "The plan includes four major projects and 19 key tasks to push more than 2,000 AI-empowered manufacturing scenarios into real use.",
+    "hints": {
+     "kw": [
+      "包括……和……",
+      "重点任务",
+      "场景落地"
+     ],
+     "struct": "includes A and B + 不定式表目的",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>include</code> 后直接跟宾语，不再加 that；四个项目与十九项任务并列要用 and 连接。"
+     },
+     {
+      "t": "<code>key tasks</code> 是「重点任务」；「关键任务」也可用 key tasks，但「重点」更贴近任务。"
+     },
+     {
+      "t": "「落地、投入运行」用 <code>into real use</code> 或 <code>put into operation</code>，比 literally 地道。"
+     },
+     {
+      "t": "<code>more than 2,000</code> 是「超过 2000 个」，后面的名词用复数 scenarios。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "官方还表示，将把<b>大模型</b>用于生产线，并让智能体<b>融入制造流程</b>，从而<b>重塑生产模式</b>。",
+    "ref": "Officials also said that large models will be applied on production lines and that smart agents will join the manufacturing process to reshape production models.",
+    "hints": {
+     "kw": [
+      "官方表示",
+      "用于生产线",
+      "重塑生产模式"
+     ],
+     "struct": "said that ... and that ...（两个 that 从句）",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "两个并列的宾语从句都要加 <code>that</code>，第二个 that 不能省略，否则结构不平行。"
+     },
+     {
+      "t": "「用于生产线」用 <code>be applied on production lines</code>；apply sth to/on sth，介词是 on。"
+     },
+     {
+      "t": "<code>reshape production models</code> 中 reshape 是及物动词，后面直接跟宾语，不加介词。"
+     },
+     {
+      "t": "「智能体」是 AI agent 的常见译法；<code>join the manufacturing process</code> 表「融入流程」。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "随着装备产业规模突破<b>2000亿元</b>，上海希望<b>吸引更多外资企业</b>来<b>投资兴业</b>。",
+    "ref": "As the intelligent manufacturing equipment industry grows to more than 200 billion yuan, Shanghai hopes to attract more foreign companies to invest and settle down.",
+    "hints": {
+     "kw": [
+      "随着……突破",
+      "吸引外资企业",
+      "投资兴业"
+     ],
+     "struct": "As 引导时间/伴随状语 + 主句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>As</code> 引导伴随状语从句，主句用现在时；「随着」不要写成 Along with。"
+     },
+     {
+      "t": "<code>grows to</code> 表示「增长到」；数字 2000 亿元写成 200 billion yuan。"
+     },
+     {
+      "t": "<code>hope to do sth</code> 中 hope 后加 to；「希望吸引……」写成 hope to attract。"
+     },
+     {
+      "t": "「投资兴业」用 <code>invest and settle down</code>，settle down 指「落户、定居」，比 stay 更贴。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "发布行动计划",
+    "en": "launch an action plan",
+    "note": "launch 指正式启动、发布政策或产品。",
+    "re": "launch\\w*\\s+an?\\s+action\\s+plan",
+    "sno": 1
+   },
+   {
+    "cn": "加快……的发展",
+    "en": "speed up the development",
+    "note": "speed up 是动词短语，后接名词。",
+    "re": "speed\\s+up\\s+(the\\s+)?development",
+    "sno": 1
+   },
+   {
+    "cn": "新一代智能制造",
+    "en": "next-generation intelligent manufacturing",
+    "note": "复合形容词作定语，带连字符。",
+    "re": "next[-\\s]generation\\s+intelligent\\s+manufacturing",
+    "sno": 1
+   },
+   {
+    "cn": "先进智能工厂",
+    "en": "advanced intelligent factories",
+    "note": "工厂是可数名词，数字后用复数。",
+    "re": "advanced\\s+intelligent\\s+factories",
+    "sno": 2
+   },
+   {
+    "cn": "机器人密度",
+    "en": "robot density",
+    "note": "密度是产业类高频名词。",
+    "re": "robot\\s+density",
+    "sno": 2
+   },
+   {
+    "cn": "每万名员工600台",
+    "en": "600 robots per 10,000 employees",
+    "note": "per 表示「每」，数字间用逗号。",
+    "re": "600\\s+robots\\s+per\\s+10,?000\\s+employees",
+    "sno": 2
+   },
+   {
+    "cn": "到2028年",
+    "en": "by 2028",
+    "note": "by 表示「到……为止」，until 含义不同。",
+    "re": "by\\s+2028",
+    "sno": 2
+   },
+   {
+    "cn": "重大项目与重点任务",
+    "en": "major projects and 19 key tasks",
+    "note": "and 连接两个并列宾语。",
+    "re": "major\\s+projects\\s+and\\s+\\d+\\s+key\\s+tasks",
+    "sno": 3
+   },
+   {
+    "cn": "智能制造场景",
+    "en": "AI-empowered manufacturing scenarios",
+    "note": "AI-empowered 表示「被 AI 赋能的」。",
+    "re": "ai[-\\s]empowered\\s+manufacturing\\s+scenarios|manufacturing\\s+scenarios",
+    "sno": 3
+   },
+   {
+    "cn": "投入运行",
+    "en": "into real use",
+    "note": "put ... into real use / operation 是外刊常用。",
+    "re": "into\\s+real\\s+use|into\\s+operation",
+    "sno": 3
+   },
+   {
+    "cn": "用于生产线",
+    "en": "applied on production lines",
+    "note": "apply sth on/to sth，介词用 on。",
+    "re": "applied\\s+(on|to)\\s+(the\\s+)?production\\s+lines?|used\\s+on\\s+(the\\s+)?production\\s+lines?",
+    "sno": 4
+   },
+   {
+    "cn": "融入制造流程",
+    "en": "join the manufacturing process",
+    "note": "join 后直接跟流程，不加 into。",
+    "re": "join\\s+(the\\s+)?manufacturing\\s+process",
+    "sno": 4
+   },
+   {
+    "cn": "重塑生产模式",
+    "en": "reshape production models",
+    "note": "reshape 是及物动词，后面直接跟宾语。",
+    "re": "reshape\\s+(the\\s+)?production\\s+models?",
+    "sno": 4
+   },
+   {
+    "cn": "吸引外资企业",
+    "en": "attract more foreign companies",
+    "note": "attract 后直接跟宾语，foreign companies 复数。",
+    "re": "attract\\s+more\\s+foreign\\s+companies",
+    "sno": 5
+   }
+  ],
+  "classroom": [
+   1,
+   2
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}

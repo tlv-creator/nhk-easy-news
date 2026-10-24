@@ -1,0 +1,98 @@
+/* =====================================================================
+   课堂投影页 · 样式
+   ---------------------------------------------------------------------
+   🔴 投影场景：教室后排要能看清，投影仪对比度差
+     ⇒ 正文 34px 起；正文用纯黑，灰字只用于次要信息
+     ⇒ 不用渐变/阴影/圆角花哨（投影上全是脏东西）
+     ⇒ 底部控制条常驻，内容区留出它的高度
+   ===================================================================== */
+:root {
+  --fg: #000;
+  --bg: #fff;
+  --line: #000;
+  --soft: #f0f0f0;
+  --fs: 1;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg); color: var(--fg);
+  font-family: "Noto Sans CJK SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: calc(34px * var(--fs));
+  line-height: 1.6;
+}
+b, strong { font-weight: 700; }
+code {
+  font-family: "SF Mono", Consolas, "Courier New", monospace;
+  background: var(--soft); padding: 0 .22em; font-size: .92em;
+}
+
+#stage { padding: 26px 46px 120px; }
+.screen { max-width: 1500px; margin: 0 auto; }
+
+/* ---- 标题 ---- */
+.head { border-bottom: 3px solid var(--fg); padding-bottom: 10px; margin-bottom: 26px; }
+.head h2 { margin: 0; font-size: 1.12em; line-height: 1.3; }
+.head-meta { font-size: .58em; color: #444; margin-top: 2px; }
+
+/* ---- 课文 ---- */
+.article { max-width: 1400px; }
+.para { margin: 0 0 26px; font-size: .95em; }
+.para.zh {
+  color: #333; border-left: 5px solid #bbb; padding-left: 20px;
+  font-size: .76em; margin: -8px 0 30px;
+}
+.para b { background: #fff2a8; padding: 0 3px; }
+
+/* ---- 重点单词表 ---- */
+.vt { width: 100%; border-collapse: collapse; max-width: 1500px; }
+.vt td { border-bottom: 1px solid #bbb; padding: 14px 10px 14px 0; vertical-align: top; }
+.vt .vw { font-weight: 700; font-size: .92em; width: 17%; white-space: nowrap; }
+.vt .vpos { font-size: .6em; color: #444; width: 9%; white-space: nowrap; font-style: italic; }
+.vt .vcn { font-size: .76em; width: 24%; }
+.vt .vex { font-size: .66em; color: #333; line-height: 1.5; }
+
+/* ---- 翻译练习 ---- */
+.q { padding: 20px 0; border-bottom: 1px solid #bbb; }
+.q:last-child { border-bottom: 0; }
+.qcn { font-size: .92em; }
+.qcn b { background: #fff2a8; padding: 0 3px; }
+.qhint { font-size: .62em; color: #333; margin-top: 6px; }
+.qref { font-size: .84em; margin-top: 12px; }
+.qpts { margin: 10px 0 0; padding-left: 28px; font-size: .68em; color: #222; }
+.qpts li { margin: 6px 0; }
+.qpts code { background: #eee; }
+
+/* ---- 底部控制条 ---- */
+#chrome {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  background: var(--bg); border-top: 3px solid var(--fg);
+  padding: 10px 30px 12px;
+  display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.steps { display: flex; gap: 8px; }
+.step {
+  border: 2px solid #aaa; border-radius: 4px; padding: 3px 14px;
+  font-size: .44em; color: #555; white-space: nowrap;
+}
+.step.on { border-color: var(--fg); color: var(--fg); font-weight: 700; }
+.acts { display: flex; gap: 8px; }
+.btn {
+  font-family: inherit; font-size: .48em; font-weight: 600;
+  background: var(--bg); color: var(--fg); border: 2px solid var(--fg);
+  border-radius: 4px; padding: 8px 16px; cursor: pointer; white-space: nowrap;
+}
+.btn:hover { background: var(--soft); }
+.btn.primary { background: var(--fg); color: var(--bg); }
+
+/* ---- 状态 ---- */
+.loading, .err { padding: 60px 20px; text-align: center; font-size: .8em; }
+.err h2 { margin: 0 0 10px; }
+.err p { color: #333; }
+
+@media (max-width: 900px) {
+  html, body { font-size: calc(24px * var(--fs)); }
+  #stage { padding: 18px 18px 150px; }
+  .vt .vw { width: 30%; }
+  .vt .vpos { display: none; }
+}

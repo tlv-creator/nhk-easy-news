@@ -1,0 +1,359 @@
+{
+ "date": "2026-10-31",
+ "seq": 8,
+ "topic": "国际文化交流",
+ "title": "上海国际艺术节的第25次亮相",
+ "subtitle": "从演出季到全球艺术网络",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/23/WS6ad48873e4b06d4aa0563693.html",
+  "date": "2026-10-23"
+ },
+ "article": {
+  "en": "The 25th China Shanghai International Arts Festival opened on Saturday with a concert marking the <b>debut</b> of the Shanghai Grand Opera House, a new <b>landmark</b> by the Huangpu River. It runs until Nov 15 and offers nearly 400 performances and <b>exhibitions</b>, with about 1,100 events in the city. Its main program has 60 productions in 168 shows, and almost ninety percent are debuts here.\n\nThe festival also builds <b>lasting ties</b>. The Network of Silk Road Arts Festivals, founded in 2017, now has 216 members from 53 countries and regions, and nearly 300 <b>delegates</b> met in Shanghai on Oct 17. Twenty-five Chinese productions traveled abroad through the network this year, taking Chinese opera, lion dance and piano music to other stages. It also launched a global training program, the CSIAF <b>Academy</b>, and signed more than ten <b>cooperation</b> agreements.\n\nBack in Shanghai, the city also set up a new performing arts group, bringing together 18 state-owned troupes and 25 theaters. The group plans to develop new <b>scripts</b> and send shows on tours abroad. Old and new art now meet here: the city has turned a festival into a <b>bridge</b> between Chinese culture and the world.",
+  "zh": "第25届中国上海国际艺术节于周六开幕，开幕音乐会同时是上海大剧院的<b>首演</b>——这座黄浦江畔的全新<b>地标</b>。艺术节将持续到11月15日，期间举办近400场演出和<b>展览</b>，全城各类活动约1100场。其中主单元共60部剧目、168场演出，近九成是<b>上海首演</b>。\n\n艺术节也在积累<b>长久联系</b>。2017年成立的丝绸之路艺术节联盟如今已有来自53个国家和地区的216家成员，10月17日近300名<b>代表</b>在上海聚会。今年有25部中国作品通过该平台<b>走向海外</b>，把京剧、舞狮和钢琴音乐带到别的舞台；联盟还启动了全球培训项目——CSIAF <b>学院</b>，并签署了十余项<b>合作</b>协定。\n\n在上海本地，城里还成立了新的演艺集团，把18家国有<b>剧团</b>和25家剧场整合到一起，计划开发新<b>剧本</b>、把剧目送到海外巡演。新旧艺术在这里相遇：这座城市把一个艺术节变成了中国与世界之间的<b>桥梁</b>。",
+  "words": 199
+ },
+ "vocab": [
+  {
+   "w": "debut",
+   "pos": "n./v.",
+   "cn": "首演；首次登台",
+   "ex": "The concert marked the debut of the new opera house.",
+   "note": "make one's debut 首次亮相；debut 是四级阅读高频词",
+   "cet4": "beyond"
+  },
+  {
+   "w": "landmark",
+   "pos": "adj./n.",
+   "cn": "标志性的；地标",
+   "ex": "The opera house is a new landmark by the river.",
+   "note": "既指地标建筑，也指里程碑事件：a landmark decision",
+   "cet4": "beyond"
+  },
+  {
+   "w": "exhibition",
+   "pos": "n.",
+   "cn": "展览；博览会",
+   "ex": "Nearly 400 performances and exhibitions will be held.",
+   "note": "hold an exhibition；展览品用 exhibit（可数）",
+   "cet4": "core"
+  },
+  {
+   "w": "production",
+   "pos": "n.",
+   "cn": "剧目；演出作品；制作",
+   "ex": "The main program has 60 productions in 168 shows.",
+   "note": "文艺语境指「剧目/作品」；也可指 production cost（生产成本）",
+   "cet4": "core"
+  },
+  {
+   "w": "network",
+   "pos": "n.",
+   "cn": "网络；联盟",
+   "ex": "The Network of Silk Road Arts Festivals has 216 members.",
+   "note": "此处是成员组成的「联盟」；join a network 加入网络",
+   "cet4": "core"
+  },
+  {
+   "w": "delegate",
+   "pos": "n.",
+   "cn": "代表；与会者",
+   "ex": "Nearly 300 delegates met in Shanghai on Oct 17.",
+   "note": "会议代表用 delegate；不要与 delegate（委派）混淆",
+   "cet4": "beyond"
+  },
+  {
+   "w": "troupe",
+   "pos": "n.",
+   "cn": "剧团；歌舞团",
+   "ex": "The group brings together 18 state-owned troupes.",
+   "note": "同类还有 chorus（合唱团）、company（剧团）",
+   "cet4": "beyond"
+  },
+  {
+   "w": "script",
+   "pos": "n.",
+   "cn": "剧本；脚本",
+   "ex": "The group plans to develop new scripts.",
+   "note": "read/write a script；四级作文写「剧本」用它",
+   "cet4": "beyond"
+  },
+  {
+   "w": "academy",
+   "pos": "n.",
+   "cn": "学院；研究院",
+   "ex": "The CSIAF Academy offers global training.",
+   "note": "常大写并与专名连用，如 Chinese Academy of Sciences",
+   "cet4": "secondary"
+  },
+  {
+   "w": "cooperation",
+   "pos": "n.",
+   "cn": "合作",
+   "ex": "More than ten cooperation agreements were signed.",
+   "note": "cooperate (v.) 合作；in cooperation with 与……合作",
+   "cet4": "secondary"
+  },
+  {
+   "w": "performance",
+   "pos": "n.",
+   "cn": "演出；表演",
+   "ex": "The festival offers nearly 400 performances.",
+   "note": "put on a performance 演出；形容词 performed",
+   "cet4": "core"
+  },
+  {
+   "w": "festival",
+   "pos": "n.",
+   "cn": "节日；艺术节",
+   "ex": "The 25th arts festival opened on Saturday.",
+   "note": "the 25th festival；艺术节前常用专名修饰",
+   "cet4": "core"
+  }
+ ],
+ "translation": {
+  "title": "国际文化交流：艺术节与全球网络",
+  "brief": "下面五句围绕「国际文化交流」话题，按「事实数字—平台发展—成果—措施—展望」展开。注意数字改写与专有名词的处理。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "今年是<b>第25届</b>中国上海国际艺术节，期间将举办<b>近400场演出和展览</b>，全城活动超过1100场。",
+    "ref": "This year marks the 25th China Shanghai International Arts Festival, during which nearly 400 performances and exhibitions will be held, with more than 1,100 events taking place across the city.",
+    "hints": {
+     "kw": [
+      "第25届",
+      "近400场",
+      "全城活动"
+     ],
+     "struct": "This year marks + 专有名词 + 介词短语 + 主句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>第25届</b> 用序数词 <code>the 25th</code>；中文「届」不能用 times 之类。"
+     },
+     {
+      "t": "<b>中国上海国际艺术节</b> 是专有名词，<code>China Shanghai International Arts Festival</code> 各词首字母大写，不要漏译成 generic art festival。"
+     },
+     {
+      "t": "<b>近400场</b> 用 <code>nearly 400</code>；「近……场」不能写成 about 400 performances（about 只是「大约」）。"
+     },
+     {
+      "t": "<b>全城活动</b> 用 <code>events taking place across the city</code>；across the city 是「全城」的自然表达。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "丝绸之路艺术节联盟<b>自2017年成立以来</b>不断发展，如今已拥有来自<b>53个国家和地区的216家成员机构</b>。",
+    "ref": "Since its founding in 2017, the Network of Silk Road Arts Festivals has kept growing and now has 216 member institutions from 53 countries and regions.",
+    "hints": {
+     "kw": [
+      "自…以来",
+      "不断发展",
+      "成员机构"
+     ],
+     "struct": "Since + 主语 + 现在完成时 + and now has",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>自……以来</b> 用 <code>Since its founding in 2017</code>；since + 过去时间点，主句必须用现在完成时 <code>has kept growing</code>。"
+     },
+     {
+      "t": "<b>不断发展</b> 用 <code>kept growing</code>；keep doing 表示持续，符合「不断」的语感。"
+     },
+     {
+      "t": "<b>216家成员机构</b> 用 <code>216 member institutions</code>；机构用 institution，不要写成 member countries。"
+     },
+     {
+      "t": "<b>来自53个国家和地区</b> 用 <code>from 53 countries and regions</code>；国家与地区并列时用 and，不能只写 countries。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "今年有25部中国作品通过这一平台<b>走向海外</b>，国际文化<b>影响力进一步增强</b>。",
+    "ref": "This year, 25 Chinese productions traveled abroad through this platform, and the international influence of Chinese culture has grown even stronger.",
+    "hints": {
+     "kw": [
+      "走向海外",
+      "影响力增强"
+     ],
+     "struct": "时间状语 + 主语 + 过去时 + and + 现在完成时",
+     "goal": "覆盖 2–3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>走向海外</b> 用 <code>traveled abroad</code>；abroad 是副词，不能写成 go to overseas。"
+     },
+     {
+      "t": "<b>中国作品</b> 在文艺语境译 <code>Chinese productions</code>；单复数看前面的 25，用复数。"
+     },
+     {
+      "t": "<b>影响力进一步增强</b> 用 <code>has grown even stronger</code>；「进一步」用 even 或 further 修饰比较级。"
+     },
+     {
+      "t": "前半句是已完成的事实，用一般过去时；后半句讲「（至今）更强」，用现在完成时，时态层次是采分点。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "该平台还<b>启动</b>全球培训项目，为沿线国家<b>培养表演艺术人才</b>。",
+    "ref": "The platform has also launched a global training program to develop performing arts talent for partner countries.",
+    "hints": {
+     "kw": [
+      "启动",
+      "培养人才",
+      "沿线国家"
+     ],
+     "struct": "主语 + has launched + 不定式表目的",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>还启动</b> 用现在完成时 <code>has also launched</code>；also 放在助动词之后。"
+     },
+     {
+      "t": "<b>培养……人才</b> 用 <code>to develop performing arts talent</code>；talent 作「人才」通常不可数，不要写成 talents。"
+     },
+     {
+      "t": "「为……培养……」用不定式表目的 <code>to develop ... for partner countries</code>；「沿线国家」译 <code>partner countries</code> 更贴合作语境的表达。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "未来，随着<b>更多合作协定签署</b>，国际文化交流将<b>搭建更畅通的文明桥梁</b>。",
+    "ref": "In the future, as more cooperation agreements are signed, international cultural exchange will build a smoother bridge between civilizations.",
+    "hints": {
+     "kw": [
+      "随着",
+      "签署",
+      "搭建桥梁"
+     ],
+     "struct": "In the future + as 引导从句 + 主句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>随着……</b> 用 <code>as more ... are signed</code>；as 引导时间状语从句，从句用被动语态。"
+     },
+     {
+      "t": "<b>签署</b> 用 <code>are signed</code>；协定是「被签署」，所以用过去分词。"
+     },
+     {
+      "t": "<b>搭建更畅通的文明桥梁</b> 用 <code>build a smoother bridge between civilizations</code>；bridge between A and B 是固定搭配。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "第25届",
+    "en": "the 25th",
+    "note": "序数词表示「第……届」。",
+    "re": "the\\s+25th",
+    "sno": 1
+   },
+   {
+    "cn": "中国上海国际艺术节",
+    "en": "China Shanghai International Arts Festival",
+    "note": "专有名词，各词首字母大写。",
+    "re": "China\\s+Shanghai\\s+International\\s+Arts\\s+Festival",
+    "sno": 1
+   },
+   {
+    "cn": "近400场演出和展览",
+    "en": "nearly 400 performances and exhibitions",
+    "note": "近……用 nearly / just under。",
+    "re": "nearly\\s+400\\s+performances",
+    "sno": 1
+   },
+   {
+    "cn": "全城活动",
+    "en": "events taking place across the city",
+    "note": "across the city 表示全城范围。",
+    "re": "events\\s+taking\\s+place\\s+across\\s+the\\s+city",
+    "sno": 1
+   },
+   {
+    "cn": "自2017年成立以来",
+    "en": "Since its founding in 2017",
+    "note": "since + 过去时间点，主句用完成时。",
+    "re": "Since\\s+its\\s+founding",
+    "sno": 2
+   },
+   {
+    "cn": "不断发展",
+    "en": "has kept growing",
+    "note": "keep doing 表示持续不断。",
+    "re": "kept\\s+growing",
+    "sno": 2
+   },
+   {
+    "cn": "216家成员机构",
+    "en": "216 member institutions",
+    "note": "机构用 institutions。",
+    "re": "\\d+\\s+member\\s+institutions?",
+    "sno": 2
+   },
+   {
+    "cn": "来自53个国家和地区",
+    "en": "from 53 countries and regions",
+    "note": "国家+地区并列用 and。",
+    "re": "from\\s+\\d+\\s+countries\\s+and\\s+regions",
+    "sno": 2
+   },
+   {
+    "cn": "走向海外",
+    "en": "traveled abroad",
+    "note": "abroad 是副词，不加介词。",
+    "re": "travell?ed\\s+abroad|travels?\\s+abroad",
+    "sno": 3
+   },
+   {
+    "cn": "影响力进一步增强",
+    "en": "has grown even stronger",
+    "note": "「进一步」用 even/further + 比较级。",
+    "re": "grown\\s+even\\s+stronger",
+    "sno": 3
+   },
+   {
+    "cn": "启动",
+    "en": "launched a global training program",
+    "note": "launch 启动项目；过去式配完成时。",
+    "re": "launch\\w*",
+    "sno": 4
+   },
+   {
+    "cn": "培养表演艺术人才",
+    "en": "develop performing arts talent",
+    "note": "talent 作人才不可数。",
+    "re": "develop\\w*\\s+performing\\s+arts\\s+talent",
+    "sno": 4
+   },
+   {
+    "cn": "随着…签署",
+    "en": "as more ... are signed",
+    "note": "as 引导时间状语从句。",
+    "re": "as\\s+more\\s+[\\w\\s]+?are\\s+signed",
+    "sno": 5
+   },
+   {
+    "cn": "搭建更畅通的文明桥梁",
+    "en": "build a smoother bridge",
+    "note": "bridge between A and B。",
+    "re": "build\\s+a\\s+smoother\\s+bridge",
+    "sno": 5
+   }
+  ],
+  "classroom": [
+   1,
+   2
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}

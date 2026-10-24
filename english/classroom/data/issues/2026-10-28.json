@@ -1,0 +1,358 @@
+{
+ "date": "2026-10-28",
+ "seq": 5,
+ "topic": "金融市场与投资",
+ "title": "科技股领涨与资金的长线回补",
+ "subtitle": "指数、涨停板与连续十四日的净流入",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/24/WS6adbfbbde4b06d4aa05648e4.html",
+  "date": "2026-10-24"
+ },
+ "article": {
+  "en": "China's stock market showed strength on Friday after a period of decline. The Shanghai Composite Index rose 0.89 percent, the Shenzhen Component Index gained 2.79 percent, and the ChiNext index in Shenzhen jumped 4.16 percent. The rally came even though the Nasdaq fell 2.6 percent the day before, when investors grew more concerned about the returns on huge AI investments.\n\nTechnology companies led the way. Among the 82 companies that hit the daily price limit, 32 have AI businesses, 28 make robots and five are from the new energy sector. Money also flowed into exchange-traded funds. Since Sept 28, these funds have seen a net inflow for 14 trading days in a row and reached a five-year high of 46.5 billion yuan on Thursday.\n\nExperts say the market may be close to its bottom. Low prices, clear policy support and recovering economic data give investors a chance to make long-term plans. They also note that Chinese firms now pay dividends faster, and that innovation is turning into real output, which is what the market finally rewards.",
+  "zh": "经历一段<b>回调</b>后，中国股市周五表现<b>走强</b>：<b>上证指数</b>上涨<b>0.89%</b>，<b>深证成指</b>上涨<b>2.79%</b>，创业板指数<b>大涨4.16%</b>。此前一天纳斯达克指数下跌2.6%，投资者对巨额人工智能投资的<b>回报</b>更为<b>担忧</b>，但A股依然走强。\n\n<b>科技公司领涨</b>。在82家<b>涨停</b>公司中，32家从事人工智能业务，28家是机器人企业，5家来自<b>新能源</b>板块。资金也<b>流入</b>了交易所交易基金。自9月28日以来，这些基金已<b>连续14个交易日净流入</b>，周四更创下<b>五年新高</b>，达到<b>465亿元</b>。\n\n专家认为，市场可能已接近<b>底部</b>。较低的估值、明确的政策方向和正在<b>复苏</b>的经济数据，为投资者提供了<b>中长期规划</b>的机会。他们还指出，中国上市公司现在<b>分红</b>更及时，而<b>创新</b>正在转化为真实的<b>产出</b>——这正是市场最终愿意给予回报的东西。",
+  "words": 166
+ },
+ "vocab": [
+  {
+   "w": "index",
+   "pos": "n.",
+   "cn": "指数",
+   "ex": "The Shanghai Composite Index rose 0.89 percent.",
+   "note": "股指前必须有 the；指数名称首字母常大写",
+   "cet4": "core"
+  },
+  {
+   "w": "investor",
+   "pos": "n.",
+   "cn": "投资者",
+   "ex": "Low prices give investors a chance to make plans.",
+   "note": "invest 的名词；investor 信心常搭 confidence",
+   "cet4": "core"
+  },
+  {
+   "w": "sector",
+   "pos": "n.",
+   "cn": "板块；行业",
+   "ex": "Five of them are from the new energy sector.",
+   "note": "股市语境指「板块」；sector of the economy 指「领域」",
+   "cet4": "beyond"
+  },
+  {
+   "w": "fund",
+   "pos": "n.",
+   "cn": "基金；资金",
+   "ex": "Money flowed into exchange-traded funds.",
+   "note": "exchange-traded fund 交易所交易基金，缩写 ETF",
+   "cet4": "core"
+  },
+  {
+   "w": "inflow",
+   "pos": "n.",
+   "cn": "流入（资金）",
+   "ex": "The funds have seen a net inflow for 14 days.",
+   "note": "net inflow 净流入；反义词 net outflow 净流出",
+   "cet4": "beyond"
+  },
+  {
+   "w": "decline",
+   "pos": "n./v.",
+   "cn": "下降；下跌",
+   "ex": "The market rose after a period of decline.",
+   "note": "a decline in sth；也作不及物动词",
+   "cet4": "beyond"
+  },
+  {
+   "w": "concern",
+   "pos": "n.",
+   "cn": "担忧",
+   "ex": "Investors grew more concerned about AI investments.",
+   "note": "be concerned about sth；be concerned with 关心",
+   "cet4": "core"
+  },
+  {
+   "w": "innovation",
+   "pos": "n.",
+   "cn": "创新",
+   "ex": "Innovation is turning into real output.",
+   "note": "innovate 的名词；四级写作核心词",
+   "cet4": "beyond"
+  },
+  {
+   "w": "policy",
+   "pos": "n.",
+   "cn": "政策",
+   "ex": "Clear policy support gives investors confidence.",
+   "note": "policy support 政策支持；policies 是复数形式",
+   "cet4": "core"
+  },
+  {
+   "w": "recover",
+   "pos": "v.",
+   "cn": "复苏；恢复",
+   "ex": "Recovering economic data support the market.",
+   "note": "现在分词 recovering 作定语，是四级写作常用结构",
+   "cet4": "core"
+  },
+  {
+   "w": "dividend",
+   "pos": "n.",
+   "cn": "股息；分红",
+   "ex": "Chinese firms now pay dividends faster.",
+   "note": "pay dividends 派发股息；名词常用复数",
+   "cet4": "beyond"
+  },
+  {
+   "w": "output",
+   "pos": "n.",
+   "cn": "产出；产量",
+   "ex": "Innovation is turning into real output.",
+   "note": "经济类高频词，指「实际产出、效果」",
+   "cet4": "secondary"
+  }
+ ],
+ "translation": {
+  "title": "A股反弹与资金流向",
+  "brief": "以下五句来自当天的A股市场报道，依次覆盖行情、领涨板块、资金流向、专家判断与展望。注意百分比与倍数表达。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "上周五<b>上证指数</b>上涨0.89%，<b>深证成指</b>上涨2.79%，创业板指数<b>大涨4.16%</b>。",
+    "ref": "Last Friday, the Shanghai Composite Index rose 0.89 percent, the Shenzhen Component Index gained 2.79 percent and the ChiNext index jumped 4.16 percent.",
+    "hints": {
+     "kw": [
+      "上证指数",
+      "上涨……%",
+      "大涨"
+     ],
+     "struct": "时间状语 + 三个并列谓语（过去式）",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "「上周五」用 <code>Last Friday</code>；有具体过去时间，谓语动词一律用<b>过去式</b>。"
+     },
+     {
+      "t": "股指名称前<b>必须有定冠词 the</b>，写成 Shanghai Composite Index 会像漏词。"
+     },
+     {
+      "t": "「上涨」用 rose / gained，「大涨」用 jumped；三个动词可以换着用，但都要用过去式。"
+     },
+     {
+      "t": "百分比后用 percent；0.89 percent 是涨幅，不要写成 rose by 0.89 percentage points。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "<b>科技股领涨</b>，在82家<b>涨停</b>公司中，有32家从事<b>人工智能业务</b>，28家是机器人企业。",
+    "ref": "Technology stocks led the rally: among the 82 companies that hit the daily price limit, 32 have AI businesses and 28 are robotics firms.",
+    "hints": {
+     "kw": [
+      "领涨",
+      "涨停",
+      "从事……业务"
+     ],
+     "struct": "主句 + 冒号/among 介词短语",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "「领涨」用 <code>led the rally</code>；lead 过去式与过去分词都是 led。"
+     },
+     {
+      "t": "<code>among</code> 表示「在……之中」，后面接复数名词短语 the 82 companies。"
+     },
+     {
+      "t": "「涨停」是股市固定说法 <code>hit the daily price limit</code>；hit 的过去式也是 hit。"
+     },
+     {
+      "t": "「从事……业务」用 <code>have AI businesses</code>；不要说 have AI business work。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "自9月28日以来，股票型<b>ETF</b>已<b>连续14个交易日净流入</b>，周四创下<b>五年新高</b>，达465亿元。",
+    "ref": "Since Sept 28, stock exchange-traded funds have seen a net inflow for 14 trading days in a row, reaching a five-year high of 46.5 billion yuan on Thursday.",
+    "hints": {
+     "kw": [
+      "自……以来",
+      "连续……个交易日",
+      "净流入"
+     ],
+     "struct": "Since + 现在完成时 + 现在分词短语",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>since + 过去时间</code> 配现在完成时 <code>have seen</code>；见某现象用 see。"
+     },
+     {
+      "t": "「连续……个交易日」用 <code>for 14 trading days in a row</code>；in a row 是「一个接一个」。"
+     },
+     {
+      "t": "<code>net inflow</code> 前要加冠词 a，因为前面已有 see。"
+     },
+     {
+      "t": "<code>five-year high</code> 作名词时作定语要带连字符；「465亿元」= 46.5 billion yuan。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "<b>银河证券</b>首席策略师认为，这说明<b>中长期资金</b>已经进入市场，并构成了<b>结构性支撑</b>。",
+    "ref": "Yang Chao, chief strategist of China Galaxy Securities, said this shows that mid-to-long-term capital has entered the market and offers structural support.",
+    "hints": {
+     "kw": [
+      "认为",
+      "中长期资金",
+      "结构性支撑"
+     ],
+     "struct": "人名 + 职务同位语 + said that",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "人名后用<b>逗号 + 职务同位语</b>：<code>Yang Chao, chief strategist of ..., said ...</code>。"
+     },
+     {
+      "t": "<code>mid-to-long-term</code> 作定语时连字符连接三个词，是财经英语高频复合词。"
+     },
+     {
+      "t": "<code>has entered the market</code> 用现在完成时，强调「已经进入」的现状。"
+     },
+     {
+      "t": "「结构性支撑」用 <code>structural support</code>；provide/offer support 均可，不要写成 give a structural support。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "专家认为市场可能已经接近<b>底部</b>，投资者现在就可以制定<b>中长期计划</b>。",
+    "ref": "Experts believe the market may be close to its bottom, so investors can make medium- to long-term plans now.",
+    "hints": {
+     "kw": [
+      "可能接近底部",
+      "制定中长期计划"
+     ],
+     "struct": "主句 + so + 结果从句",
+     "goal": "覆盖 2 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>believe</code> 后可直接接宾语从句，不加 that 也可，但写 that 更稳。"
+     },
+     {
+      "t": "<code>may be close to</code> 中 may 后跟动词原形；close to 是固定搭配，介词用 to。"
+     },
+     {
+      "t": "<code>make plans</code> 是固定搭配，plan 用复数时不要漏 -s。"
+     },
+     {
+      "t": "「中长期」写 <code>medium- to long-term</code>；中间用「to -」连接两种长度。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "上周五",
+    "en": "last Friday",
+    "note": "具体过去时间，谓语用过去式。",
+    "re": "last\\s+friday",
+    "sno": 1
+   },
+   {
+    "cn": "上涨……%",
+    "en": "rose 0.89 percent",
+    "note": "涨幅用 rose/gained + 百分比。",
+    "re": "rose\\s+[\\d.]+\\s+percent",
+    "sno": 1
+   },
+   {
+    "cn": "大涨",
+    "en": "jumped 4.16 percent",
+    "note": "jumped 表示大幅上涨。",
+    "re": "jump\\w+\\s+[\\d.]+\\s+percent",
+    "sno": 1
+   },
+   {
+    "cn": "科技股领涨",
+    "en": "led the rally",
+    "note": "lead 过去式/过去分词是 led。",
+    "re": "led\\s+(the\\s+)?rally|led\\s+the\\s+way",
+    "sno": 2
+   },
+   {
+    "cn": "涨停",
+    "en": "hit the daily price limit",
+    "note": "股市固定说法，等于「涨停」。",
+    "re": "hit\\s+(the\\s+)?daily\\s+price\\s+limit",
+    "sno": 2
+   },
+   {
+    "cn": "从事人工智能业务",
+    "en": "have AI businesses",
+    "note": "have sth 指「从事、拥有」。",
+    "re": "have\\s+ai\\s+businesses|ai[-\\s]related\\s+businesses",
+    "sno": 2
+   },
+   {
+    "cn": "净流入",
+    "en": "a net inflow",
+    "note": "净流入用 net inflow，反义为 net outflow。",
+    "re": "net\\s+inflow",
+    "sno": 3
+   },
+   {
+    "cn": "连续……个交易日",
+    "en": "for 14 trading days in a row",
+    "note": "in a row 表「一个接一个」。",
+    "re": "\\d+\\s+trading\\s+days\\s+in\\s+a\\s+row",
+    "sno": 3
+   },
+   {
+    "cn": "五年新高",
+    "en": "a five-year high",
+    "note": "复合形容词作定语带连字符。",
+    "re": "five[-\\s]year\\s+high",
+    "sno": 3
+   },
+   {
+    "cn": "已进入市场",
+    "en": "capital has entered the market",
+    "note": "现在完成时强调已经进入。",
+    "re": "capital\\s+has\\s+entered\\s+the\\s+market|has\\s+entered\\s+the\\s+market",
+    "sno": 4
+   },
+   {
+    "cn": "结构性支撑",
+    "en": "structural support",
+    "note": "市场类高频搭配。",
+    "re": "structural\\s+support",
+    "sno": 4
+   },
+   {
+    "cn": "接近底部",
+    "en": "close to its bottom",
+    "note": "close to 是固定搭配，介词用 to。",
+    "re": "close\\s+to\\s+(its|the)\\s+bottom|near\\s+the\\s+bottom",
+    "sno": 5
+   },
+   {
+    "cn": "制定中长期计划",
+    "en": "make medium- to long-term plans",
+    "note": "medium- to long-term 是财经复合词。",
+    "re": "make\\s+medium[-\\s]\\s*to\\s+long[-\\s]term\\s+plans",
+    "sno": 5
+   }
+  ],
+  "classroom": [
+   1,
+   2
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}

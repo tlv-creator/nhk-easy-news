@@ -1,0 +1,358 @@
+{
+ "date": "2026-11-01",
+ "seq": 9,
+ "topic": "影视出海与文化传播",
+ "title": "西藏故事走向海外屏幕",
+ "subtitle": "一部微短剧的六种语言旅程",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/23/WS6adb287de4b06d4aa05647f3.html",
+  "date": "2026-10-23"
+ },
+ "article": {
+  "en": "A Chinese <b>micro-drama</b> set in Xizang is traveling well beyond China. The series, \"Where Peach Blossoms Bloom\", follows a botanist who goes back to Taohua, a village in Nyingchi, with a plan to grow rare lingzhi mushrooms. His plan falls apart when his childhood friend cooks the precious seed stock in chicken soup. A food blogger who has not spoken to her father for years and a young <b>inheritor</b> of traditional skills also appear, and the three stories meet at the village's peach blossom festival.\n\nThe first part of the <b>franchise</b> was streamed on ten online platforms and fifteen provincial television channels, and it was <b>broadcast</b> in seven languages to viewers in more than ten countries and regions. Since the second part came out earlier this year, the drama has gathered over 600 million online clicks and over 500 million television views.\n\nResearchers say the drama offers something that computer-made pictures cannot. Professor Kan Ping of Xi'an Jiaotong University believes it escapes flat <b>stereotypes</b> and gives its characters real feeling, while Lyu Fan of Peking University praises the striking natural <b>scenery</b> of snow-covered mountains and peach blossom forests. Both hope such shows can bring more visitors to the region and spread its heritage.",
+  "zh": "一部以西藏为背景的中国<b>微短剧</b>正在走向中国之外。剧集《桃花盛开的地方》讲述了一位植物学家回到林芝桃花村，计划<b>栽培</b>珍贵灵芝的故事。他的计划被儿时玩伴搅乱——对方把宝贵的灵芝菌种炖进了鸡汤里。剧里还有一位多年没和父亲说话的食物博主，以及一位守护传统技艺的年轻<b>非遗传承人</b>，三条线索在桃花节上汇合。\n\n第一部在十个<b>网络平台</b>和十五个省级电视台播出，并以七种语言在十多个国家和地区<b>播映</b>。自今年第二部上线以来，该剧<b>网络点击量</b>已超过六亿次，<b>电视观看量</b>超过五亿次。\n\n研究人员认为，这部剧提供了电脑生成画面难以替代的东西。西安交通大学的康平教授认为它跳出了扁平的<b>刻板印象</b>，让人物有真实情感；北京大学的吕凡则称赞剧中雪覆盖的山脉和桃花林等出色的自然<b>风光</b>。两人都希望这类作品能为当地带来更多游客，把地区的文化传承扩散出去。",
+  "words": 213
+ },
+ "vocab": [
+  {
+   "w": "micro-drama",
+   "pos": "n.",
+   "cn": "微短剧；短剧",
+   "ex": "A Chinese micro-drama set in Xizang is traveling overseas.",
+   "note": "短剧单集短、节奏快；海外平台常称 short drama",
+   "cet4": "beyond"
+  },
+  {
+   "w": "botanist",
+   "pos": "n.",
+   "cn": "植物学家",
+   "ex": "The series follows a botanist who returns to his village.",
+   "note": "四六级阅读常见；动词形式 botanize 植物分类学",
+   "cet4": "beyond"
+  },
+  {
+   "w": "mushroom",
+   "pos": "n.",
+   "cn": "蘑菇；菌类",
+   "ex": "He plans to grow rare lingzhi mushrooms.",
+   "note": "可数名词；灵芝是灵芝属真菌",
+   "cet4": "secondary"
+  },
+  {
+   "w": "inheritor",
+   "pos": "n.",
+   "cn": "传承人；继承人",
+   "ex": "A young inheritor works to preserve traditional skills.",
+   "note": "intangible cultural heritage inheritor 非遗传承人",
+   "cet4": "secondary"
+  },
+  {
+   "w": "franchise",
+   "pos": "n.",
+   "cn": "（系列的）作品；特许经营权",
+   "ex": "The first part of the franchise was streamed online.",
+   "note": "此处指「系列剧」；商业语境也指连锁品牌",
+   "cet4": "beyond"
+  },
+  {
+   "w": "stream",
+   "pos": "v./n.",
+   "cn": "播送；直播；流",
+   "ex": "The first part was streamed on ten online platforms.",
+   "note": "stream sb ＝在平台播出；名词 a stream of praise",
+   "cet4": "core"
+  },
+  {
+   "w": "click",
+   "pos": "n.",
+   "cn": "点击（量）",
+   "ex": "The drama has collected more than 600 million online clicks.",
+   "note": "点击量用复数 clicks；click on ＝点击（鼠标）",
+   "cet4": "beyond"
+  },
+  {
+   "w": "stereotype",
+   "pos": "n.",
+   "cn": "刻板印象；成见",
+   "ex": "The drama moves beyond stereotypical narratives.",
+   "note": "break away from stereotypes 跳出刻板印象",
+   "cet4": "beyond"
+  },
+  {
+   "w": "scenery",
+   "pos": "n.",
+   "cn": "风景；景色",
+   "ex": "The series shows the striking natural scenery of Xizang.",
+   "note": "不可数名词；不要写成 sceneries",
+   "cet4": "secondary"
+  },
+  {
+   "w": "heritage",
+   "pos": "n.",
+   "cn": "遗产；传承",
+   "ex": "Such shows can spread the region's heritage.",
+   "note": "cultural heritage 文化遗产；heritage 不可数",
+   "cet4": "beyond"
+  },
+  {
+   "w": "region",
+   "pos": "n.",
+   "cn": "地区；区域",
+   "ex": "The show may draw more visitors to the region.",
+   "note": "in the region / across the region；四级高频",
+   "cet4": "core"
+  },
+  {
+   "w": "village",
+   "pos": "n.",
+   "cn": "村庄；村落",
+   "ex": "The story takes place in a small village.",
+   "note": "village 村庄；urban 城市的（反义）",
+   "cet4": "core"
+  }
+ ],
+ "translation": {
+  "title": "影视出海与文化传播：微短剧的多语种发行",
+  "brief": "下面五句对应本篇「影视出海与文化传播」话题，按「动态—数据—数据—原因—展望」推进。数字改写和时态是本篇的重点采分点。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "西藏微短剧《桃花盛开的地方》<b>正走向海外</b>，<b>计划</b>12月在多个国家<b>以六种语言</b>播出。",
+    "ref": "The Xizang-themed micro-drama Where Peach Blossoms Bloom is going overseas and is planned to be released in six languages in several countries in December.",
+    "hints": {
+     "kw": [
+      "走向海外",
+      "计划…播出",
+      "以六种语言"
+     ],
+     "struct": "主语 + is going + and is planned",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>正走向海外</b> 用进行时 <code>is going overseas</code>；「正在」别漏掉 be + doing。"
+     },
+     {
+      "t": "<b>计划……播出</b> 用 <code>is planned to be released</code>；「计划」在这里是安排，用被动式 is planned to 更准确。"
+     },
+     {
+      "t": "<b>以六种语言</b> 用 <code>in six languages</code>；表示「用某种语言」介词用 in，不能用 by。"
+     },
+     {
+      "t": "剧名是专有名词，用书名号对应的直译 <code>Where Peach Blossoms Bloom</code>，前面加破折号或逗号引出。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "首季在10个<b>网络平台</b>和15个<b>省级卫视</b>播出，并<b>以七种语言</b>在十多个国家播映。",
+    "ref": "Its first season was shown on ten online platforms and fifteen provincial satellite television channels, and was broadcast in seven languages in more than ten countries.",
+    "hints": {
+     "kw": [
+      "网络平台",
+      "省级卫视",
+      "以…语言播映"
+     ],
+     "struct": "被动 was shown on / was broadcast in",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "「首季在……播出」用被动 <code>was shown on</code>；on 表示「在哪个平台/频道上」。"
+     },
+     {
+      "t": "<b>网络平台</b> 用 <code>online platforms</code>；<b>省级卫视</b> 用 <code>provincial satellite television channels</code>，两个并列结构都要译出。"
+     },
+     {
+      "t": "<b>以七种语言播映</b> 用 <code>was broadcast in seven languages</code>；broadcast 是「播出」的正确词，play 在这里是错的。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "<b>自今年第二季上线以来</b>，该剧<b>点击量</b>已<b>超过六亿次</b>，电视观看量超过五亿次。",
+    "ref": "Since the second season was released earlier this year, the drama has collected more than 600 million online clicks and over 500 million television views.",
+    "hints": {
+     "kw": [
+      "自…以来",
+      "超过六亿次"
+     ],
+     "struct": "Since + 从句 + 现在完成时 has collected",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>自……以来</b> 用 <code>Since the second season was released earlier this year</code>；since 引导的从句用过去时被动。"
+     },
+     {
+      "t": "<b>上线</b> 译 <code>was released</code>；上线是「被发布」，不能写成 released 直接跟宾语。"
+     },
+     {
+      "t": "<b>超过六亿次</b> 用 <code>more than 600 million</code>；数字改写成英文时「亿」用 hundred million，「六亿」＝600 million。"
+     },
+     {
+      "t": "主句用现在完成时 <code>has collected</code>，与「自……以来」呼应。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "专家认为，该剧受欢迎是因为它<b>突破了刻板印象</b>，用真实情感<b>打动观众</b>。",
+    "ref": "Experts believe that the drama is popular because it breaks away from stereotypes and wins viewers over with real emotions.",
+    "hints": {
+     "kw": [
+      "专家认为",
+      "突破刻板印象",
+      "打动观众"
+     ],
+     "struct": "Experts believe that + because + 主句并列",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>专家认为</b> 用 <code>Experts believe that ...</code>；that 从句不能省略（正式书面语）。"
+     },
+     {
+      "t": "<b>突破了刻板印象</b> 用 <code>breaks away from stereotypes</code>；break away from 表示「摆脱、跳脱」。"
+     },
+     {
+      "t": "<b>打动观众</b> 用 <code>wins viewers over</code>；win sb over ＝赢得某人的支持，是固定搭配。"
+     },
+     {
+      "t": "两个并列原因用 and 连接，不要写成两个 because 从句。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "如果更多微短剧能<b>展示自然风光</b>和地方文化，就可能<b>带动当地旅游经济</b>。",
+    "ref": "If more micro-dramas can show natural scenery and local culture, they may also drive the local tourism economy.",
+    "hints": {
+     "kw": [
+      "如果…就可能",
+      "带动旅游经济"
+     ],
+     "struct": "If + 条件从句 + 主句 may do",
+     "goal": "覆盖 2–3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>如果……就可能</b> 用 <code>If ... , they may also ...</code>；条件从句用现在时，主句用 may + 动词原形。"
+     },
+     {
+      "t": "<b>带动</b> 用 <code>drive</code>；不要写 bring the tourism economy，drive 才表示「带动、拉动」。"
+     },
+     {
+      "t": "<b>当地旅游经济</b> 用 <code>the local tourism economy</code>；local 修饰名词组比 in the local 位置更自然。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "走向海外",
+    "en": "is going overseas",
+    "note": "abroad/overseas 是副词；进行时表「正在」。",
+    "re": "(go|going|travel\\w*)\\s+(overseas|abroad)",
+    "sno": 1
+   },
+   {
+    "cn": "计划…播出",
+    "en": "is planned to be released",
+    "note": "计划用被动 is planned to do。",
+    "re": "planned\\s+to\\s+be\\s+released",
+    "sno": 1
+   },
+   {
+    "cn": "以六种语言",
+    "en": "in six languages",
+    "note": "用语言用 in，不用 by。",
+    "re": "in\\s+\\w+\\s+languages",
+    "sno": 1
+   },
+   {
+    "cn": "网络平台",
+    "en": "online platforms",
+    "note": "platform 可数，复数加 s。",
+    "re": "online\\s+platforms?",
+    "sno": 2
+   },
+   {
+    "cn": "省级卫视",
+    "en": "provincial satellite television channels",
+    "note": "卫视＝satellite TV channel。",
+    "re": "provincial\\s+\\w*\\s*television\\s+channels",
+    "sno": 2
+   },
+   {
+    "cn": "播映",
+    "en": "was broadcast",
+    "note": "播出用 broadcast，不用 play。",
+    "re": "w(?:as|ere)\\s+broadcast",
+    "sno": 2
+   },
+   {
+    "cn": "自…以来",
+    "en": "Since the second season was released",
+    "note": "since + 从句用过去时。",
+    "re": "Since\\s+the\\s+second\\s+season",
+    "sno": 3
+   },
+   {
+    "cn": "上线",
+    "en": "was released",
+    "note": "上线＝被发布，被动式。",
+    "re": "was\\s+released",
+    "sno": 3
+   },
+   {
+    "cn": "网络点击量",
+    "en": "online clicks",
+    "note": "clicks 用复数。",
+    "re": "online\\s+clicks",
+    "sno": 3
+   },
+   {
+    "cn": "电视观看量",
+    "en": "television views",
+    "note": "views ＝观看（次数）。",
+    "re": "television\\s+views",
+    "sno": 3
+   },
+   {
+    "cn": "超过六亿次",
+    "en": "more than 600 million",
+    "note": "一亿＝100 million。",
+    "re": "more\\s+than\\s+\\d+\\s+million",
+    "sno": 3
+   },
+   {
+    "cn": "突破了刻板印象",
+    "en": "breaks away from stereotypes",
+    "note": "break away from ＝摆脱。",
+    "re": "break\\w*\\s+away\\s+from\\s+stereotypes",
+    "sno": 4
+   },
+   {
+    "cn": "打动观众",
+    "en": "wins viewers over",
+    "note": "win sb over 固定搭配。",
+    "re": "wins?\\s+viewers\\s+over|win\\w*\\s+viewers",
+    "sno": 4
+   },
+   {
+    "cn": "带动当地旅游经济",
+    "en": "drive the local tourism economy",
+    "note": "drive ＝带动、拉动。",
+    "re": "drive\\s+(the\\s+)?local\\s+tourism\\s+economy",
+    "sno": 5
+   }
+  ],
+  "classroom": [
+   1,
+   3
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}

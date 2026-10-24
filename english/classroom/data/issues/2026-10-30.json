@@ -1,0 +1,346 @@
+{
+ "date": "2026-10-30",
+ "seq": 7,
+ "topic": "文化遗产的数字化保护",
+ "title": "故宫的数字化保护新项目",
+ "subtitle": "136个重大项目里，故宫入选了什么",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/23/WS6adb2017e4b06d4aa05647df.html",
+  "date": "2026-10-23"
+ },
+ "article": {
+  "en": "The National Development and Reform Commission released a list of 136 landmark projects on Oct 20, and one of them comes from the Palace Museum in Beijing. The plan, titled \"Digital Activation and Industrial Innovation of the Palace Museum's Cultural Heritage\", is scheduled to run from 2026 to 2035. The museum acts as the overall coordinator, and the <b>Ministry of Culture and Tourism</b> submitted the proposal.\n\nFour tools sit at the center of the plan: virtual reality, digital twins, real-scene 3D modeling and artificial intelligence. They all rest on one <b>foundation</b>, the museum's <b>vast</b> collection of cultural resources. The plan will cover smart tourism, digital art, immersive experiences and digital exhibitions. Protection comes first: the team will collect data in a <b>systematic</b> way and improve the management of the <b>relics</b>, while the museum's existing digital twin platform already stores information about each object and the spaces around it.\n\nOfficials hope the project will do more than please museum visitors. They say the first batch of projects will produce methods that other cultural heritage sites can copy, together with <b>standards</b> and new rules for funding. The national plan covers five areas, from industrial upgrading to public welfare, and it is designed to spread useful digital practice across the whole heritage sector.",
+  "zh": "10月20日，中国国家发展和改革委员会公布了136个<b>标志性重大项目</b>，其中一个来自北京故宫博物院。该项目名为「故宫文物数字化激活与产业创新」，<b>计划于2026年至2035年</b>运行，由故宫博物院担任<b>总体协调单位</b>，文化和旅游部报送。\n\n项目的核心是四项技术：虚拟现实、数字孪生、真实场景三维建模和人工智能。它们都建立在同一个<b>基础</b>上——故宫<b>庞大的</b>文化资源收藏。项目将覆盖智慧旅游、数字艺术、<b>沉浸式体验</b>和数字展览等方向。保护始终是第一位的：团队将<b>系统</b>采集文物数据，改进<b>文物</b>管理；故宫已有的数字孪生平台，也记录着每件文物及其周边空间的信息。\n\n有关负责人希望，项目带来的不只是参观体验。首批项目将形成其他文化遗产单位可以借鉴的方法，并配套<b>标准</b>与新的资金规则。这项国家计划覆盖五大领域，从产业升级到公共福利，目的在于把可用的数字化经验推广到整个文化遗产行业。",
+  "words": 218
+ },
+ "vocab": [
+  {
+   "w": "landmark",
+   "pos": "adj.",
+   "cn": "标志性的；有里程碑意义的",
+   "ex": "The commission announced 136 landmark projects.",
+   "note": "四级高频；landmark project 标志性项目，也指地标建筑",
+   "cet4": "beyond"
+  },
+  {
+   "w": "coordinator",
+   "pos": "n.",
+   "cn": "协调者；统筹单位",
+   "ex": "The museum acts as the overall coordinator.",
+   "note": "coordinate (v.) 统筹；协调，名词 -or",
+   "cet4": "secondary"
+  },
+  {
+   "w": "vast",
+   "pos": "adj.",
+   "cn": "庞大的；广大的",
+   "ex": "The museum has a vast collection of cultural resources.",
+   "note": "四级核心词；比 large 语气更强，常接 collection / amount",
+   "cet4": "core"
+  },
+  {
+   "w": "foundation",
+   "pos": "n.",
+   "cn": "基础；基石",
+   "ex": "The project uses cultural resources as its foundation.",
+   "note": "as a/the foundation of sth；也指基金会",
+   "cet4": "core"
+  },
+  {
+   "w": "immersive",
+   "pos": "adj.",
+   "cn": "沉浸式的；身临其境的",
+   "ex": "It will focus on immersive experiences.",
+   "note": "四级阅读高频；immerse oneself in sth 沉浸于",
+   "cet4": "beyond"
+  },
+  {
+   "w": "exhibition",
+   "pos": "n.",
+   "cn": "展览；博览会",
+   "ex": "Nearly 400 performances and exhibitions will be held.",
+   "note": "hold/hold open an exhibition；展览品是 exhibit",
+   "cet4": "core"
+  },
+  {
+   "w": "systematic",
+   "pos": "adj.",
+   "cn": "系统的；有条理的",
+   "ex": "The team will collect data in a systematic way.",
+   "note": "systematically 是对应副词；四级作文写「系统地」用它",
+   "cet4": "secondary"
+  },
+  {
+   "w": "relic",
+   "pos": "n.",
+   "cn": "文物；遗物",
+   "ex": "The project will improve the management of the relics.",
+   "note": "文化遗产常用词；relics 指博物馆藏品",
+   "cet4": "beyond"
+  },
+  {
+   "w": "standard",
+   "pos": "n.",
+   "cn": "标准；规范",
+   "ex": "The project will come with new standards and funding rules.",
+   "note": "复数 standards 常指「标准体系」；set/raise a standard",
+   "cet4": "core"
+  },
+  {
+   "w": "cultural heritage",
+   "pos": "phr.",
+   "cn": "文化遗产",
+   "ex": "Other cultural heritage sites can copy the methods.",
+   "note": "不可数；heritage site 遗产地；World Heritage 世界遗产",
+   "cet4": "beyond"
+  },
+  {
+   "w": "virtual",
+   "pos": "adj.",
+   "cn": "虚拟的；虚拟现实的",
+   "ex": "The project will use virtual reality and digital twins.",
+   "note": "virtual reality 虚拟现实；virtually 几乎也是常用副词",
+   "cet4": "beyond"
+  }
+ ],
+ "translation": {
+  "title": "文化遗产的数字化保护：故宫项目入选",
+  "brief": "下面五句对应本篇「文化遗产的数字化保护」话题，按「入选事实—原因—内容—措施—展望」推进。注意被动语态与数字改写两个采分点。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "去年十月，国家发改委公布<b>首批136个</b>重大项目，故宫的<b>数字化保护项目</b>成功入选。",
+    "ref": "Last October, the National Development and Reform Commission announced its first batch of 136 major projects, and the Palace Museum's digital heritage project was selected.",
+    "hints": {
+     "kw": [
+      "国家发改委",
+      "首批重大项目",
+      "入选"
+     ],
+     "struct": "时间 + 主语 announced + 宾语 + and + 被动句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>国家发改委</b> 是固定译名 <code>the National Development and Reform Commission</code>；这是机构名，首字母大写，不要写成 develop committee。"
+     },
+     {
+      "t": "<b>首批</b> 用 <code>its first batch of</code>；数字 136 放在 batch of 之后，注意顺序：<code>the first batch of 136 major projects</code>。"
+     },
+     {
+      "t": "<b>入选</b> 用被动 <code>was selected</code>；中文「故宫的项目入选」主语是项目，不要写成 <code>the Palace Museum was selected</code>。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "该项目<b>受到重视</b>，是因为人工智能、数字孪生等<b>新技术</b>能更好地保护和<b>展示文物</b>。",
+    "ref": "The project has attracted attention because new technologies such as artificial intelligence and digital twins can preserve and present cultural relics in a better way.",
+    "hints": {
+     "kw": [
+      "受到重视",
+      "新技术",
+      "保护和展示"
+     ],
+     "struct": "主语 + has attracted + because + 从句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>受到重视</b> 用 <code>has attracted attention</code>；注意是 attract sb's attention，不写 <code>has been paid attention</code>。"
+     },
+     {
+      "t": "<b>新技术</b> 用 <code>new technologies such as ...</code>；<code>such as</code> 后面列例子，句子成分完整，不要再用 which。"
+     },
+     {
+      "t": "<b>保护和展示文物</b> 用 <code>preserve and present cultural relics</code>；present 在此是动词「呈现」，不要换成 show 作动词接博物馆。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "项目<b>计划从2026年运行到2035年</b>，重点建设<b>沉浸式体验</b>、数字展览等<b>应用场景</b>。",
+    "ref": "The project is planned to run from 2026 to 2035, with a focus on building application scenarios such as immersive experiences and digital exhibitions.",
+    "hints": {
+     "kw": [
+      "计划从…到…",
+      "重点建设",
+      "应用场景"
+     ],
+     "struct": "is planned to do + with a focus on doing",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>计划</b> 用 <code>is planned to do</code>（被动）；也可以写 <code>will run</code>，但 <code>is planned to run</code> 更贴「计划」。"
+     },
+     {
+      "t": "<b>从……到……</b> 用 <code>from ... to ...</code>；时间段起止不能用 during。"
+     },
+     {
+      "t": "<b>重点建设……应用场景</b> 用 <code>with a focus on building application scenarios</code>；<code>focus on</code> 后接动名词 building。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "同时，故宫将<b>系统采集文物数据</b>，<b>加强数字管理</b>，为公众提供更便利的文化服务。",
+    "ref": "At the same time, the Palace Museum will collect data on cultural relics in a systematic way and strengthen digital management to provide the public with more convenient cultural services.",
+    "hints": {
+     "kw": [
+      "同时",
+      "系统采集",
+      "加强管理"
+     ],
+     "struct": "At the same time + 主语 + will do 并列动作",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>同时</b> 用 <code>At the same time</code>；这是并列连词，但本句没有并列谓语，需加逗号另起一谓语。"
+     },
+     {
+      "t": "<b>系统采集文物数据</b> 用 <code>collect data on cultural relics in a systematic way</code>；「系统地」放句末最省事。"
+     },
+     {
+      "t": "<b>加强数字管理</b> 用 <code>strengthen digital management</code>；strengthen 后面直接跟名词，不加 more。"
+     },
+     {
+      "t": "<b>为公众提供……服务</b> 用 <code>provide the public with more convenient cultural services</code>；provide sb with sth 是固定搭配，不能写成 provide sth for sb。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "未来，这些经验将形成<b>可复制的方法和标准</b>，推动全国文化遗产保护<b>协调发展</b>。",
+    "ref": "In the future, the experience of this first batch of projects will be turned into replicable methods and standards, promoting the coordinated development of cultural heritage protection across the country.",
+    "hints": {
+     "kw": [
+      "未来",
+      "可复制",
+      "协调发展"
+     ],
+     "struct": "将来 will be turned into + 分词短语",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>可复制的方法和标准</b> 用 <code>replicable methods and standards</code>；replicable 表示「可以照搬的」，比 <code>copyable</code> 更书面。"
+     },
+     {
+      "t": "<code>will be turned into</code> 是被动+介词短语，「变成」不要用 become 的主动句，否则主语必须是经验以外的东西。"
+     },
+     {
+      "t": "<b>推动……协调发展</b> 用 <code>promoting the coordinated development of ...</code>；现在分词短语作伴随状语，主语仍是前面的经验。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "国家发改委",
+    "en": "the National Development and Reform Commission",
+    "note": "机构固定译名，全大写首字母。",
+    "re": "National\\s+Development\\s+and\\s+Reform\\s+Commission",
+    "sno": 1
+   },
+   {
+    "cn": "首批重大项目",
+    "en": "its first batch of 136 major projects",
+    "note": "the first batch of + 数量 + 名词。",
+    "re": "first\\s+batch\\s+of\\s+\\d+\\s+major\\s+projects",
+    "sno": 1
+   },
+   {
+    "cn": "成功入选",
+    "en": "was selected",
+    "note": "入选用被动语态。",
+    "re": "w(?:as|ere)\\s+selected",
+    "sno": 1
+   },
+   {
+    "cn": "受到重视",
+    "en": "has attracted attention",
+    "note": "attract attention，不用 pay attention。",
+    "re": "attract\\w*\\s+attention",
+    "sno": 2
+   },
+   {
+    "cn": "新技术",
+    "en": "new technologies such as",
+    "note": "such as 引出例子，后面成分要完整。",
+    "re": "new\\s+technolog\\w+",
+    "sno": 2
+   },
+   {
+    "cn": "保护和展示文物",
+    "en": "preserve and present cultural relics",
+    "note": "preserve 保护，present 呈现。",
+    "re": "preserve\\s+and\\s+present",
+    "sno": 2
+   },
+   {
+    "cn": "计划从…运行到…",
+    "en": "is planned to run from 2026 to 2035",
+    "note": "时间段用 from ... to ...。",
+    "re": "planned\\s+to\\s+run\\s+from",
+    "sno": 3
+   },
+   {
+    "cn": "重点建设",
+    "en": "with a focus on building",
+    "note": "focus on 后接动名词。",
+    "re": "focus\\s+on\\s+building",
+    "sno": 3
+   },
+   {
+    "cn": "应用场景",
+    "en": "application scenarios",
+    "note": "场景固定用 scenario。",
+    "re": "application\\s+scenarios?",
+    "sno": 3
+   },
+   {
+    "cn": "系统地采集",
+    "en": "in a systematic way",
+    "note": "「系统地」三种译法都行。",
+    "re": "systematic\\w*\\s+way",
+    "sno": 4
+   },
+   {
+    "cn": "加强数字管理",
+    "en": "strengthen digital management",
+    "note": "strengthen + 名词，不加 more。",
+    "re": "strengthen\\s+(digital\\s+)?management",
+    "sno": 4
+   },
+   {
+    "cn": "为公众提供服务",
+    "en": "provide the public with",
+    "note": "provide sb with sth 固定搭配。",
+    "re": "provide\\s+the\\s+public\\s+with",
+    "sno": 4
+   },
+   {
+    "cn": "可复制的方法",
+    "en": "replicable methods",
+    "note": "书面语：可复制的、可推广的。",
+    "re": "replicable\\s+(methods|approaches)",
+    "sno": 5
+   },
+   {
+    "cn": "协调发展",
+    "en": "coordinated development",
+    "note": "coordinated 协调的，development 发展。",
+    "re": "coordinated\\s+development",
+    "sno": 5
+   }
+  ],
+  "classroom": [
+   1,
+   2
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}

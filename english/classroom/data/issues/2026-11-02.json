@@ -1,0 +1,351 @@
+{
+ "date": "2026-11-02",
+ "seq": 10,
+ "topic": "文学与出版",
+ "title": "宁肯与切尔滕文学节",
+ "subtitle": "一位中国作家的英国读者之旅",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/23/WS6adb1f6ce4b06d4aa05647d4.html",
+  "date": "2026-10-23"
+ },
+ "article": {
+  "en": "Ning Ken, a Chinese writer, became the first author from the Chinese mainland to attend the Cheltenham <b>Literature Festival</b> in the UK. He visited in October with Thomas Moran, a professor who taught Chinese at Middlebury College from 1994 to 2025 and who serves as his <b>translator</b>. The trip celebrated the English <b>translation</b> of Ning Ken's novel \"Tibetan Sky\", which was published by Sinoist Books in 2025.\n\nThe <b>tour</b> covered Cheltenham, Oxford, Leeds and London. In Cheltenham, more than a hundred readers came to meet him on the evening of October 12, even though heavy rain was falling. He was <b>interviewed</b> by the British writer Ann Morgan, who runs a book blog called Read the World. The next day he met students and staff at the University of Leeds and spoke at Oxford.\n\nOn October 16, the two men began their <b>signing</b> tour. Four bookstores that already sold the novel ordered more copies, and two big shops near Piccadilly Circus and Russell Square hosted him. Readers of many ages and backgrounds came to meet a Chinese author <b>in person</b>, which shows the growing <b>interest</b> of English-speaking readers in new Chinese literature.",
+  "zh": "中国作家宁肯成为第一位出席英国切尔滕<b>文学节</b>的中国内地作家。今年10月，他在曾于1994至2025年在美国米德尔伯里学院教授中文的托马斯·莫兰教授陪同下访英。此行是为了推介其小说《Tibetan Sky》的英文<b>译本</b>，该书由 Sinoist Books 于2025年出版。\n\n这次<b>巡回</b>走了切尔滕、牛津、利兹和伦敦。10月12日晚，尽管大雨不停，仍有上百名读者来到切尔滕与他见面。他接受了英国作家安·摩根的<b>采访</b>，后者经营着一个名为 Read the World 的读书博客。第二天，他在利兹大学与师生交流，并到牛津参加活动。\n\n10月16日，两人在伦敦开始了<b>签售</b>之旅。四家已上架该小说的书店追加了备货，皮卡迪利广场和罗素广场附近的两家大店也接待了他。不同年龄、不同背景的读者都来<b>当面</b>见这位中国作家，这说明英语读者对新一批中国文学的<b>兴趣</b>正在增长。",
+  "words": 202
+ },
+ "vocab": [
+  {
+   "w": "writer",
+   "pos": "n.",
+   "cn": "作家；作者",
+   "ex": "Ning Ken, a Chinese writer, visited the UK in October.",
+   "note": "作者/作家用 writer；author 泛指作者",
+   "cet4": "core"
+  },
+  {
+   "w": "translator",
+   "pos": "n.",
+   "cn": "翻译；译者",
+   "ex": "Thomas Moran served as his translator on the tour.",
+   "note": "serve as 担任；also 可作动词「翻译」",
+   "cet4": "core"
+  },
+  {
+   "w": "translation",
+   "pos": "n.",
+   "cn": "译本；翻译",
+   "ex": "The English translation of the novel won new readers.",
+   "note": "the translation of X ＝X 的译本；译本也可用 version",
+   "cet4": "secondary"
+  },
+  {
+   "w": "novel",
+   "pos": "n.",
+   "cn": "（长篇）小说",
+   "ex": "His novel Tibetan Sky was published in 2025.",
+   "note": "a novel 是小说；短篇是 short story",
+   "cet4": "core"
+  },
+  {
+   "w": "publish",
+   "pos": "v.",
+   "cn": "出版；发表",
+   "ex": "The novel was published by Sinoist Books in 2025.",
+   "note": "be published by 由……出版；名词 publication",
+   "cet4": "core"
+  },
+  {
+   "w": "festival",
+   "pos": "n.",
+   "cn": "节日；（艺术）节",
+   "ex": "He attended the Cheltenham Literature Festival.",
+   "note": "文学节/艺术节都用 festival；attend a festival",
+   "cet4": "core"
+  },
+  {
+   "w": "tour",
+   "pos": "n./v.",
+   "cn": "巡回；巡回演出；游览",
+   "ex": "The tour covered four English cities.",
+   "note": "go on tour / a promotional tour 巡回宣传",
+   "cet4": "core"
+  },
+  {
+   "w": "interview",
+   "pos": "n./v.",
+   "cn": "采访；访谈",
+   "ex": "He was interviewed by the writer Ann Morgan.",
+   "note": "interview sb ＝采访某人；名词 an interview with sb",
+   "cet4": "core"
+  },
+  {
+   "w": "bookstore",
+   "pos": "n.",
+   "cn": "书店",
+   "ex": "Four bookstores ordered more copies for the signing.",
+   "note": "英式也写 bookshop；复数 bookstores",
+   "cet4": "beyond"
+  },
+  {
+   "w": "reader",
+   "pos": "n.",
+   "cn": "读者",
+   "ex": "More than a hundred readers came to meet him.",
+   "note": "读者用 reader；readership 指读者群体",
+   "cet4": "core"
+  },
+  {
+   "w": "literature",
+   "pos": "n.",
+   "cn": "文学；文献",
+   "ex": "The event showed the appeal of Chinese literature.",
+   "note": "不可数名词；Chinese literature 中国文学",
+   "cet4": "core"
+  },
+  {
+   "w": "signing",
+   "pos": "n.",
+   "cn": "签名；签售",
+   "ex": "They began a signing tour in London on October 16.",
+   "note": "sign a book 签售书；signing session 签售会",
+   "cet4": "core"
+  }
+ ],
+ "translation": {
+  "title": "文学与出版：中国作家的英国读者之旅",
+  "brief": "下面五句围绕「文学与出版」话题，按「事件—反响—作品—做法—展望」展开。专有名词、定语从句和被动语态是本篇的采分重点。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "十月，作家宁肯<b>赴英国宣传新书</b>，成为<b>首位受邀</b>参加切尔滕文学节的中国内地作家。",
+    "ref": "In October, the writer Ning Ken traveled to the UK to promote his new book and became the first author from the Chinese mainland to be invited to the Cheltenham Literature Festival.",
+    "hints": {
+     "kw": [
+      "赴英国宣传",
+      "首位受邀",
+      "中国内地作家"
+     ],
+     "struct": "时间 + 主语 + 过去时 + and + became",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>赴英国宣传新书</b> 用 <code>traveled to the UK to promote his new book</code>；两个不定式都用 <code>to</code> 原形。"
+     },
+     {
+      "t": "<b>首位受邀……的中国内地作家</b> 用 <code>the first author from the Chinese mainland to be invited to ...</code>；这是**后置定语**修饰 author，要用介词短语而不是 again 之类。"
+     },
+     {
+      "t": "<b>成为</b> 用 <code>became</code>；整句是过去时间（今年10月），不要用 becomes。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "活动<b>吸引了上百名读者</b>，作家先后在切尔滕、牛津、利兹和伦敦<b>与读者见面</b>。",
+    "ref": "The event drew more than a hundred readers, and the author met fans in Cheltenham, Oxford, Leeds and London.",
+    "hints": {
+     "kw": [
+      "吸引读者",
+      "与读者见面"
+     ],
+     "struct": "主语 + drew + 宾语 + and + 主语 + met + 宾语",
+     "goal": "覆盖 2–3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>吸引了上百名读者</b> 用 <code>drew more than a hundred readers</code>；draw 在这里是「吸引」，比 attract 更贴合「读者纷至沓来」。"
+     },
+     {
+      "t": "<b>与读者见面</b> 用 <code>met fans</code>；fans 是「书迷」，也可写 met readers，两个词都不能漏。"
+     },
+     {
+      "t": "四个城市名并列时最后一个前不加 and，但城市之间用逗号隔开：<code>in Cheltenham, Oxford, Leeds and London</code>。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "《Tibetan Sky》<b>英译本广受欢迎</b>，因为作品<b>既</b>展现地域文化，<b>又</b>能引发跨文化共鸣。",
+    "ref": "The English translation of his novel Tibetan Sky is widely popular because it both shows a distinctive local culture and resonates across cultures.",
+    "hints": {
+     "kw": [
+      "英译本广受欢迎",
+      "既…又…"
+     ],
+     "struct": "主语 + be + 表语 + because + both A and B",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>英译本</b> 用 <code>The English translation of his novel ...</code>；也可说 the English version of the novel。"
+     },
+     {
+      "t": "<b>广受欢迎</b> 用 <code>is widely popular</code>；widely 修饰 popular，不要写成 very popular 的直译。"
+     },
+     {
+      "t": "<b>既……又……</b> 用 <code>both A and B</code>；both 放在第一个成分前面，and 前不加逗号。"
+     },
+     {
+      "t": "<b>引发跨文化共鸣</b> 用 <code>resonates across cultures</code>；resonate 是不及物动词，不能加宾语。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "他还<b>与自己的翻译家合作</b>，在牛津、伦敦等地举行<b>签名售书活动</b>，书店为他<b>增加备货</b>。",
+    "ref": "He also worked with his own translator and held book signing events in places such as Oxford and London, where bookstores ordered extra copies for him.",
+    "hints": {
+     "kw": [
+      "与…合作",
+      "签名售书活动",
+      "增加备货"
+     ],
+     "struct": "主语 + worked with + and held + where 从句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>与……合作</b> 用 <code>worked with</code>；也可以用 in collaboration with，但 worked with 更安全。"
+     },
+     {
+      "t": "<b>签名售书活动</b> 用 <code>book signing events</code>；不要直译成 sign book sale activity。"
+     },
+     {
+      "t": "<b>增加备货</b> 用 <code>ordered extra copies</code>；「备货」＝多订几本，ordered extra copies 是地道说法。"
+     },
+     {
+      "t": "最后一句用 <code>where</code> 引导地点状语从句承接前面两个城市，说明书店做了什么。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "随着越来越多中国作品<b>被译成英文</b>，中外读者的<b>距离将会进一步缩短</b>。",
+    "ref": "As more and more Chinese works are translated into English, the distance between Chinese and foreign readers will be further shortened.",
+    "hints": {
+     "kw": [
+      "随着…越来越多",
+      "被译成英文",
+      "距离缩短"
+     ],
+     "struct": "As + 从句 + 主句 will be shortened",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<b>随着越来越多</b> 用 <code>As more and more ...</code>；as 引导时间状语从句，主句用将来时。"
+     },
+     {
+      "t": "<b>被译成英文</b> 用 <code>are translated into English</code>；译成某语言用 into，不用 to。"
+     },
+     {
+      "t": "<b>距离将会进一步缩短</b> 用 <code>the distance ... will be further shortened</code>；被动语态用过去分词 shortened，不能用 shorten。"
+     },
+     {
+      "t": "<b>中外读者</b> 用 <code>between Chinese and foreign readers</code>；between A and B 是固定搭配，中间不要加逗号。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "赴英国宣传新书",
+    "en": "traveled to the UK to promote his new book",
+    "note": "两个 to 引导目的不定式。",
+    "re": "traveled\\s+to\\s+the\\s+UK\\s+to\\s+promote",
+    "sno": 1
+   },
+   {
+    "cn": "首位受邀的…中国内地作家",
+    "en": "the first author from the Chinese mainland",
+    "note": "from the Chinese mainland 固定说法。",
+    "re": "first\\s+author\\s+from\\s+the\\s+Chinese\\s+mainland",
+    "sno": 1
+   },
+   {
+    "cn": "吸引了上百名读者",
+    "en": "drew more than a hundred readers",
+    "note": "draw 吸引读者；hundred 前不加具体数字。",
+    "re": "drew\\s+more\\s+than\\s+a\\s+hundred\\s+readers",
+    "sno": 2
+   },
+   {
+    "cn": "与读者见面",
+    "en": "met fans in",
+    "note": "meet fans ＝与书迷见面。",
+    "re": "met\\s+(fans|readers)\\s+in",
+    "sno": 2
+   },
+   {
+    "cn": "英译本广受欢迎",
+    "en": "is widely popular",
+    "note": "widely popular 是地道搭配。",
+    "re": "widely\\s+popular",
+    "sno": 3
+   },
+   {
+    "cn": "既…又…",
+    "en": "both ... and ...",
+    "note": "both 置于第一个成分前。",
+    "re": "both\\s+\\w+[\\s\\S]{0,120}and\\s+\\w+",
+    "sno": 3
+   },
+   {
+    "cn": "引发跨文化共鸣",
+    "en": "resonates across cultures",
+    "note": "resonate 不及物，不能加宾语。",
+    "re": "resonate\\w*\\s+(with|across)",
+    "sno": 3
+   },
+   {
+    "cn": "签名售书活动",
+    "en": "book signing events",
+    "note": "固定说法；名词用 signing。",
+    "re": "book\\s+signing",
+    "sno": 4
+   },
+   {
+    "cn": "增加备货",
+    "en": "ordered extra copies",
+    "note": "多订几本＝extra copies。",
+    "re": "ordered\\s+extra\\s+copies",
+    "sno": 4
+   },
+   {
+    "cn": "被译成英文",
+    "en": "are translated into English",
+    "note": "译成某语言用 into。",
+    "re": "translated\\s+into\\s+English",
+    "sno": 5
+   },
+   {
+    "cn": "距离进一步缩短",
+    "en": "the distance ... will be further shortened",
+    "note": "被动用过去分词 shortened。",
+    "re": "distance\\s+between[\\s\\S]{0,80}shortened",
+    "sno": 5
+   },
+   {
+    "cn": "随着…越来越多",
+    "en": "As more and more Chinese works",
+    "note": "as + 比较级，主句用将来时。",
+    "re": "As\\s+more\\s+and\\s+more",
+    "sno": 5
+   },
+   {
+    "cn": "与…合作",
+    "en": "worked with his own translator",
+    "note": "work with sb ＝与某人合作。",
+    "re": "worked\\s+with\\s+(his\\s+)?own\\s+translator",
+    "sno": 4
+   }
+  ],
+  "classroom": [
+   3,
+   4
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}

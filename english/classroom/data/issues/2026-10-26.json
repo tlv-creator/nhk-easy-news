@@ -1,0 +1,351 @@
+{
+ "date": "2026-10-26",
+ "seq": 3,
+ "topic": "经济发展与财政政策",
+ "title": "财政加力：收入回升与投资承压",
+ "subtitle": "从预算收入到专项债的第四季度发力",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/24/WS6adbf712e4b06d4aa05648d8.html",
+  "date": "2026-10-24"
+ },
+ "article": {
+  "en": "China will put more fiscal money into investment and into people's daily lives, and it also wants to ease pressure on local governments. The plan comes as the country tries to support domestic demand in the fourth quarter. In the first three quarters, general public budget revenue reached 17.23 trillion yuan, 5.1 percent more than a year earlier. Tax revenue, the main source of the rise, grew by 6.1 percent. Compared with the first half, the rate was 0.8 percentage points higher.\n\nThe economy is also picking up. Official data showed growth of 4.5 percent in the third quarter, up from 4.3 percent in the second. But investment is still weak, especially in property. Revenue from government-managed funds was down 18.6 percent, at 2.50 trillion yuan, and land sales dropped 27.9 percent.\n\nTo support growth, local governments issued 633.9 billion yuan of special-purpose bonds in September. The Ministry of Finance also plans to use 550 billion yuan of unused debt quotas for county-level areas. Experts say these funds should reach real projects faster, and that more support for household income would help consumption recover.",
+  "zh": "中国将把更多<b>财政资金</b>用于投资和民生，同时也要<b>减轻地方财政压力</b>。这一安排出现在各方努力<b>扩大内需</b>、巩固经济回升的第四季度。前三季度，<b>全国一般公共预算收入</b>达到<b>17.23万亿元</b>，比一年前增长<b>5.1%</b>；作为主要来源的<b>税收收入</b>增长<b>6.1%</b>，比上半年<b>快0.8个百分点</b>。\n\n经济也在回升。官方数据显示，三季度经济增速为<b>4.5%</b>，高于二季度的<b>4.3%</b>。但投资仍然疲软，<b>房地产</b>领域尤其明显：政府性基金收入下降<b>18.6%</b>至<b>2.50万亿元</b>，<b>土地出让收入</b>下降<b>27.9%</b>。\n\n为支撑增长，地方政府9月发行了<b>6339亿元</b>专项债券。财政部还计划动用<b>5500亿元</b>未使用的<b>债务限额</b>，支持<b>县级地区</b>。专家认为，这些资金应<b>更快落地</b>到实际项目，并加大对居民<b>收入的支持</b>，从而帮助<b>消费</b>复苏。",
+  "words": 173
+ },
+ "vocab": [
+  {
+   "w": "revenue",
+   "pos": "n.",
+   "cn": "收入（财政收入）",
+   "ex": "Budget revenue rose 5.1 percent year-on-year.",
+   "note": "tax revenue / land-sale revenue；收入义比 income 更偏「一笔笔的钱」",
+   "cet4": "beyond"
+  },
+  {
+   "w": "tax",
+   "pos": "n.",
+   "cn": "税收；税",
+   "ex": "Tax revenue grew 6.1 percent.",
+   "note": "tax 作名词常用复数；tax revenue 是固定搭配",
+   "cet4": "core"
+  },
+  {
+   "w": "demand",
+   "pos": "n.",
+   "cn": "需求",
+   "ex": "The country tries to support domestic demand.",
+   "note": "domestic demand 内需；demand for sth",
+   "cet4": "core"
+  },
+  {
+   "w": "investment",
+   "pos": "n.",
+   "cn": "投资",
+   "ex": "China will put more money into investment.",
+   "note": "invest 的名词；investment in sth",
+   "cet4": "core"
+  },
+  {
+   "w": "property",
+   "pos": "n.",
+   "cn": "房地产；财产",
+   "ex": "Investment is still weak, especially in property.",
+   "note": "此语境指房地产市场；property 不可数，勿加 s",
+   "cet4": "core"
+  },
+  {
+   "w": "consumption",
+   "pos": "n.",
+   "cn": "消费",
+   "ex": "More support for income would help consumption recover.",
+   "note": "consume 的名词；搭配 consumption growth",
+   "cet4": "core"
+  },
+  {
+   "w": "bond",
+   "pos": "n.",
+   "cn": "债券",
+   "ex": "Local governments issued special-purpose bonds in September.",
+   "note": "special-purpose bond 专项债券；issue bonds 发行债券",
+   "cet4": "core"
+  },
+  {
+   "w": "quota",
+   "pos": "n.",
+   "cn": "限额；指标",
+   "ex": "The ministry plans to use 550 billion yuan of unused quotas.",
+   "note": "debt quota 债务限额；unused quotas 未使用的额度",
+   "cet4": "beyond"
+  },
+  {
+   "w": "percentage",
+   "pos": "n.",
+   "cn": "百分比；百分点",
+   "ex": "0.8 percentage points faster than in the first half.",
+   "note": "percentage point 百分点，percent 百分比，二者不可混用",
+   "cet4": "core"
+  },
+  {
+   "w": "recover",
+   "pos": "v.",
+   "cn": "复苏；恢复",
+   "ex": "Support for household income would help consumption recover.",
+   "note": "四级写作常用词；也可作不及物动词单独使用",
+   "cet4": "core"
+  },
+  {
+   "w": "pressure",
+   "pos": "n.",
+   "cn": "压力",
+   "ex": "The government wants to ease pressure on local governments.",
+   "note": "ease/relieve pressure on sb 是高频搭配",
+   "cet4": "core"
+  }
+ ],
+ "translation": {
+  "title": "财政政策与扩大内需",
+  "brief": "以下五句取自当天的财政报道，覆盖收入、税收、投资、专项债与消费。注意百分比与「个百分点」的区分。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "前三季度全国<b>一般公共预算收入</b>同比增长<b>5.1%</b>，达到<b>17.23万亿元</b>。",
+    "ref": "In the first three quarters, general public budget revenue rose 5.1 percent year-on-year to 17.23 trillion yuan.",
+    "hints": {
+     "kw": [
+      "前三季度",
+      "同比增长",
+      "达到……万亿元"
+     ],
+     "struct": "时间状语 + rose ... to",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "「前三季度」用 <code>in the first three quarters</code>；也可说 over the first three quarters。"
+     },
+     {
+      "t": "<code>general public budget revenue</code> 是财政术语的固定说法，不要拆成 general public 和 budget revenue 两个成分乱译。"
+     },
+     {
+      "t": "「同比增长」用 <code>year-on-year</code>，是财经英语高频复合词，中间带连字符。"
+     },
+     {
+      "t": "<code>rose ... to</code> 表示「增长到」；rise to 后接最终数值，数值前用 about 更稳妥。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "<b>税收收入</b>增长<b>6.1%</b>，比上半年快<b>0.8个百分点</b>，这反映出真实经济活动有所<b>改善</b>。",
+    "ref": "Tax revenue grew 6.1 percent, 0.8 percentage points faster than in the first half, which points to an improvement in real economic activity.",
+    "hints": {
+     "kw": [
+      "税收收入",
+      "快……个百分点",
+      "反映出改善"
+     ],
+     "struct": "主句 + which 引导非限制性从句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "「快 0.8 个百分点」必须用 <code>percentage points</code>；percent 指百分比本身，两者不可混。"
+     },
+     {
+      "t": "<code>faster than in the first half</code> 是比较结构，than 后接比较对象，不能漏掉比较级 faster。"
+     },
+     {
+      "t": "<code>point to</code> 表示「表明、指向」，是四级议论文常用表达，后面接名词短语。"
+     },
+     {
+      "t": "which 引导非限制性定语从句补充结论，<b>前面的逗号不能漏</b>。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "为<b>扩大有效投资</b>，地方政府加快<b>发行专项债券</b>，仅9月就发行了<b>6339亿元</b>。",
+    "ref": "To expand effective investment, local governments have sped up the issuance of special-purpose bonds, reaching 633.9 billion yuan in September alone.",
+    "hints": {
+     "kw": [
+      "扩大有效投资",
+      "发行专项债券",
+      "仅9月"
+     ],
+     "struct": "To do + 主语 + have sped up + 现在分词",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "目的状语用 <code>To + 动词原形</code> 开头，后接完整主句，中间加逗号。"
+     },
+     {
+      "t": "<code>sped up the issuance of</code> 用现在完成时表示「已加快」；注意 speed 的过去式是 sped，不是 speeded。"
+     },
+     {
+      "t": "<code>in September alone</code> 中 alone 表示「仅、单单」，强调 9 月一个月的数据。"
+     },
+     {
+      "t": "「6339亿元」写成 633.9 billion yuan；注意中文「亿」对应 billion 而不是 million。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "财政部还计划动用<b>5500亿元</b>未使用的<b>债务限额</b>，以进一步减轻地方的<b>财政压力</b>。",
+    "ref": "The Ministry of Finance also plans to tap 550 billion yuan of unused debt quotas to ease pressure on local finances.",
+    "hints": {
+     "kw": [
+      "计划动用",
+      "债务限额",
+      "减轻财政压力"
+     ],
+     "struct": "plan to do + 不定式表目的",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>plan to tap</code> 中 plan 后必须加 to；tap 是「动用（额度、資金）」的精准用词。"
+     },
+     {
+      "t": "<code>unused debt quotas</code> 中 unused 是过去分词作定语，修饰 quota；不要写成 quota that unused。"
+     },
+     {
+      "t": "「以……为目的」用 <code>to do sth</code> 放在句末最稳，也可写成 in order to do sth。"
+     },
+     {
+      "t": "<code>ease pressure on local finances</code> 是固定搭配，ease 后直接跟 pressure，不加 reduce。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "专家指出，财政资金应<b>更快落地到项目</b>，并加大对困难群体的<b>收入支持</b>，以<b>提振消费</b>。",
+    "ref": "Experts say that fiscal funds should be deployed faster and that stronger support for household income would help boost consumption.",
+    "hints": {
+     "kw": [
+      "财政资金",
+      "落地到项目",
+      "提振消费"
+     ],
+     "struct": "say that + 两个并列 that 从句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>say that ... and that ...</code> 两个 that 从句并列时，第二个 that 不能省略。"
+     },
+     {
+      "t": "「落地到项目」用 <code>be deployed</code>（被动）更贴近政策语境；deploy 后接项目、措施。"
+     },
+     {
+      "t": "<code>would help boost consumption</code> 中 help 后接动词原形，不加 to。"
+     },
+     {
+      "t": "「提振消费」用 <code>boost consumption</code>，boost 是四级写作提振类高频动词。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "前三季度",
+    "en": "in the first three quarters",
+    "note": "季度范围用 in + the first ... quarters。",
+    "re": "in\\s+the\\s+first\\s+three\\s+quarters",
+    "sno": 1
+   },
+   {
+    "cn": "同比增长",
+    "en": "year-on-year",
+    "note": "财经高频复合词，比较同一期不同年份。",
+    "re": "year[-\\s]on[-\\s]year",
+    "sno": 1
+   },
+   {
+    "cn": "一般公共预算收入",
+    "en": "general public budget revenue",
+    "note": "财政术语固定搭配，不可拆译。",
+    "re": "general\\s+public\\s+budget\\s+revenue",
+    "sno": 1
+   },
+   {
+    "cn": "增长到……万亿元",
+    "en": "rose to 17.23 trillion yuan",
+    "note": "rise to 表示「增长到某一数值」。",
+    "re": "(rose|climbed|reach\\w*|to)\\s+[\\d.]+\\s+trillion\\s+yuan",
+    "sno": 1
+   },
+   {
+    "cn": "百分点",
+    "en": "percentage points",
+    "note": "百分点用 point，百分比用 percent。",
+    "re": "percentage\\s+points?",
+    "sno": 2
+   },
+   {
+    "cn": "反映出……改善",
+    "en": "points to an improvement",
+    "note": "point to 表示「表明、指向」。",
+    "re": "points?\\s+to\\s+an?\\s+improvement",
+    "sno": 2
+   },
+   {
+    "cn": "扩大有效投资",
+    "en": "expand effective investment",
+    "note": "expand/boost + 投资，注意用词准确。",
+    "re": "expand\\s+(effective\\s+)?investment|boost\\s+effective\\s+investment",
+    "sno": 3
+   },
+   {
+    "cn": "加快发行",
+    "en": "sped up the issuance",
+    "note": "speed 的过去式/过去分词是 sped。",
+    "re": "sped\\s+up\\s+the\\s+issuance|speed\\w*\\s+up\\s+the\\s+issuance",
+    "sno": 3
+   },
+   {
+    "cn": "专项债券",
+    "en": "special-purpose bonds",
+    "note": "复合形容词带连字符；复数 bonds。",
+    "re": "special[-\\s]purpose\\s+bonds?",
+    "sno": 3
+   },
+   {
+    "cn": "动用债务限额",
+    "en": "tap unused debt quotas",
+    "note": "tap 指动用额度；quota 指限额。",
+    "re": "tap\\w*\\s+(\\d+(\\.\\d+)?\\s+billion\\s+yuan\\s+of\\s+)?unused\\s+debt\\s+quotas",
+    "sno": 4
+   },
+   {
+    "cn": "减轻地方财政压力",
+    "en": "ease pressure on local finances",
+    "note": "ease pressure on sb 是固定搭配。",
+    "re": "ease\\s+(the\\s+)?pressure\\s+on\\s+local\\s+finances?",
+    "sno": 4
+   },
+   {
+    "cn": "财政资金更快落地",
+    "en": "fiscal funds should be deployed faster",
+    "note": "deploy 指资金、措施「落地、下达」。",
+    "re": "fiscal\\s+funds?\\s+should\\s+be\\s+deployed\\s+faster",
+    "sno": 5
+   },
+   {
+    "cn": "提振消费",
+    "en": "boost consumption",
+    "note": "boost 是写作中「提振」类高频动词。",
+    "re": "boost\\s+(the\\s+)?consumption",
+    "sno": 5
+   }
+  ],
+  "classroom": [
+   1,
+   3
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}

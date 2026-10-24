@@ -1,0 +1,343 @@
+{
+ "date": "2026-10-24",
+ "seq": 1,
+ "topic": "生态保护",
+ "title": "雪豹数量翻倍背后的保护行动",
+ "subtitle": "从栖息地到社区参与，看中国雪豹保护",
+ "source": {
+  "name": "China Daily",
+  "url": "https://www.chinadaily.com.cn/a/202610/24/WS6adbf264e4b06d4aa05648ce.html",
+  "date": "2026-10-24"
+ },
+ "article": {
+  "en": "China's snow leopard population has doubled to about 5,000 since systematic protection began in 2013. The animal now lives in a habitat of about 2.08 million square kilometers, which is more than 60 percent of the world's snow leopard habitat. Officials also say China has the largest population and the largest distribution area of the species on earth.\n\nTo protect snow leopards, China has set up two national parks and 78 other key protected areas in the main habitats. More than 800,000 square kilometers of snow leopard land is under strict protection, and close to 40 percent of the possible habitat is under standard management. The Helan Mountains project shows the results. Eight snow leopards were released into the wild there, and in 2026 a cub was born and survived.\n\nStill, the work is far from easy. Climate change, habitat fragmentation and conflicts between people and animals remain serious problems. Researchers need to monitor the animals, find the core habitats and the paths they use to move, and the government should also improve its laws and bring local people into the work.",
+  "zh": "自2013年系统保护工作启动以来，中国雪豹数量已<b>翻倍至约5000只</b>。如今，雪豹的栖息地面积约为<b>208万平方公里</b>，占全球雪豹栖息地的<b>六成以上</b>。官方还表示，中国拥有全球数量最多、分布面积最大的雪豹种群。\n\n为保护雪豹，中国已在主要栖息地设立<b>两个国家公园</b>和<b>78个其他重要保护区</b>。超过<b>80万平方公里</b>的雪豹区域已纳入严格保护，接近<b>40%</b>的潜在栖息地实行标准化管理。贺兰山项目就是明证：<b>八只雪豹被放归野外</b>，2026年更有一只幼崽在野外出生并存活下来。\n\n不过，这项工作仍远非轻松。气候变化、<b>栖息地破碎化</b>和人兽冲突依然是不小的难题。研究人员需要<b>监测</b>雪豹，找出核心栖息地以及它们迁移的通道，政府也应完善法律并让当地居民参与进来。",
+  "words": 174
+ },
+ "vocab": [
+  {
+   "w": "habitat",
+   "pos": "n.",
+   "cn": "栖息地",
+   "ex": "The snow leopard habitat now covers 2.08 million square kilometers.",
+   "note": "四级核心词；注意与 hotel（旅馆）区分",
+   "cet4": "beyond"
+  },
+  {
+   "w": "population",
+   "pos": "n.",
+   "cn": "种群；人口",
+   "ex": "The population has doubled to about 5,000.",
+   "note": "指动物数量时说 population of + 动物；the number of 后面接复数",
+   "cet4": "core"
+  },
+  {
+   "w": "protection",
+   "pos": "n.",
+   "cn": "保护",
+   "ex": "Systematic protection began in 2013.",
+   "note": "protect 名词化，常搭 protection of / under protection",
+   "cet4": "core"
+  },
+  {
+   "w": "distribution",
+   "pos": "n.",
+   "cn": "分布（区域）",
+   "ex": "China has the largest distribution area of the species.",
+   "note": "distribution area 指物种分布区；distribute 是动词",
+   "cet4": "core"
+  },
+  {
+   "w": "official",
+   "pos": "n.",
+   "cn": "官员",
+   "ex": "Officials say the population has doubled.",
+   "note": "名词复数 officials 表「官方人士」；形容词义「官方的」",
+   "cet4": "core"
+  },
+  {
+   "w": "release",
+   "pos": "v.",
+   "cn": "放归野外；释放",
+   "ex": "Eight snow leopards were released into the wild.",
+   "note": "be released into the wild 是野生动物放归的固定说法",
+   "cet4": "core"
+  },
+  {
+   "w": "strict",
+   "pos": "adj.",
+   "cn": "严格的",
+   "ex": "More than 800,000 square kilometers is under strict protection.",
+   "note": "strict protection / strict control，都是高频搭配",
+   "cet4": "core"
+  },
+  {
+   "w": "conflict",
+   "pos": "n.",
+   "cn": "冲突（尤指人兽冲突）",
+   "ex": "Conflicts between people and animals remain serious.",
+   "note": "human-wildlife conflict 四级外刊高频；conflict with sb",
+   "cet4": "core"
+  },
+  {
+   "w": "species",
+   "pos": "n.",
+   "cn": "物种",
+   "ex": "The species is called the king of the mountains.",
+   "note": "单复数同形，谓语用单数；本义「种类」",
+   "cet4": "beyond"
+  },
+  {
+   "w": "monitor",
+   "pos": "v.",
+   "cn": "监测；监控",
+   "ex": "Researchers need to monitor the animals.",
+   "note": "四级常考义；monitor 作名词时是「显示器」",
+   "cet4": "core"
+  }
+ ],
+ "translation": {
+  "title": "雪豹保护：从数量翻倍到社区共治",
+  "brief": "本篇五句取自当天的雪豹保护报道，依次覆盖数据、意义、措施、挑战与对策。注意数字表达和固定搭配。",
+  "sentences": [
+   {
+    "no": 1,
+    "cn": "自2013年系统保护工作启动以来，中国雪豹<b>数量</b>已<b>翻倍至约5000只</b>。",
+    "ref": "Since systematic conservation work began in 2013, China's snow leopard population has doubled to about 5,000.",
+    "hints": {
+     "kw": [
+      "自……以来",
+      "数量",
+      "翻倍至"
+     ],
+     "struct": "Since + 现在完成时 has doubled to",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "<code>Since</code> 引导时间状语从句，主句必须用<b>现在完成时</b> has doubled，表示从 2013 年持续到现在的结果。"
+     },
+     {
+      "t": "「数量」用 <code>population</code>；不要写成 number of snow leopards（the number of 后面接复数会变成「雪豹的数量」）。"
+     },
+     {
+      "t": "<code>double to</code> 是「翻倍到」；<code>double by</code> 是「翻了一倍」，介词不能混用。"
+     },
+     {
+      "t": "5,000 要加千分位逗号；约数用 about 修饰数字。"
+     }
+    ]
+   },
+   {
+    "no": 2,
+    "cn": "<b>目前</b>，中国拥有全球<b>六成以上</b>的雪豹<b>栖息地</b>，面积约<b>208万平方公里</b>。",
+    "ref": "China now holds more than 60 percent of the world's snow leopard habitat, about 2.08 million square kilometers.",
+    "hints": {
+     "kw": [
+      "占……比例",
+      "栖息地",
+      "面积"
+     ],
+     "struct": "主语 + hold + 比例 of + 同位语",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "「占……的」最稳的写法是 <code>hold / account for</code> + 比例 + <code>of</code> + 名词，不要写 has 60 percent of。"
+     },
+     {
+      "t": "<code>more than 60 percent</code> 表示「超过六成」，percent 前面用基数词。"
+     },
+     {
+      "t": "「面积约……」在句中作同位语，用逗号隔开；也可改写成 which covers about 2.08 million square kilometers。"
+     },
+     {
+      "t": "<code>habitat</code> 是「栖息地」四级核心词，注意与 hotel（旅馆）拼写只差一个字母。"
+     }
+    ]
+   },
+   {
+    "no": 3,
+    "cn": "雪豹<b>被视为</b>高海拔生态系统健康的<b>重要指标</b>，因此保护它们<b>意义重大</b>。",
+    "ref": "Snow leopards are considered an important indicator of the health of high-altitude ecosystems, which is why their protection is of great significance.",
+    "hints": {
+     "kw": [
+      "被视为",
+      "重要指标",
+      "意义重大"
+     ],
+     "struct": "被动语态 + which 引导非限制性从句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "「被视为」用 <code>be considered / be regarded as</code>，是被动语态；不要写成 people consider that。"
+     },
+     {
+      "t": "<code>indicator of</code> 后接 of + 名词；health 在此作名词，需写成 of the health。"
+     },
+     {
+      "t": "「意义重大」用 <code>be of great significance</code>，这是四级写作的高频倒装结构。"
+     },
+     {
+      "t": "which 引导非限制性定语从句补充原因，<b>前面的逗号不能漏</b>，否则意思会变。"
+     }
+    ]
+   },
+   {
+    "no": 4,
+    "cn": "为保护雪豹，中国已在核心地区<b>设立</b>两个国家公园和<b>78个其他重要保护区</b>。",
+    "ref": "To protect snow leopards, China has set up two national parks and 78 other key protected areas in the core areas.",
+    "hints": {
+     "kw": [
+      "为……（目的）",
+      "设立",
+      "保护区"
+     ],
+     "struct": "To + 动词原形 + 主句（现在完成时）",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "目的状语用 <code>To + 动词原形</code> 开头并加逗号；不要写 So to protect…（so 表结果）。"
+     },
+     {
+      "t": "「设立机构、设施」用 <code>set up</code>；establish 更偏「建立制度、理论」。"
+     },
+     {
+      "t": "数字后加 <code>other</code>，写成 78 other key protected areas，意思是「另外 78 个重点保护区」。"
+     },
+     {
+      "t": "<code>protected areas</code> 是「保护区」的固定搭配，不要写成 protection areas。"
+     }
+    ]
+   },
+   {
+    "no": 5,
+    "cn": "气候变化、<b>栖息地破碎化</b>和人兽冲突仍<b>构成威胁</b>，未来还需<b>进一步加强监测</b>并<b>鼓励社区参与</b>。",
+    "ref": "Climate change, habitat fragmentation and conflicts between people and wildlife still pose threats, so more monitoring and community participation will be needed in the future.",
+    "hints": {
+     "kw": [
+      "构成威胁",
+      "加强监测",
+      "社区参与"
+     ],
+     "struct": "并列主语 + pose threats + so 结果从句",
+     "goal": "覆盖 3 个采分点"
+    },
+    "pts": [
+     {
+      "t": "「构成威胁」用 <code>pose threats</code>，pose 是及物动词，后面必须直接跟 threats。"
+     },
+     {
+      "t": "三个并列名词短语作主语，谓语用复数 <code>pose</code>，不能写成 pose a threat。"
+     },
+     {
+      "t": "「加强监测」可写 <code>more monitoring</code> 或 strengthen monitoring；「社区参与」写 <code>community participation</code>。"
+     },
+     {
+      "t": "<code>will be needed</code> 是被动语态，比 students need 更符合四级书面语。"
+     }
+    ]
+   }
+  ],
+  "exprs": [
+   {
+    "cn": "自……以来",
+    "en": "since ... has done",
+    "note": "Since 引导时间状语，主句用现在完成时。",
+    "re": "since\\s+\\w+",
+    "sno": 1
+   },
+   {
+    "cn": "数量翻倍至",
+    "en": "has doubled to",
+    "note": "double to 给结果，double by 给增幅。",
+    "re": "has\\s+doubled\\s+to|double\\s+to",
+    "sno": 1
+   },
+   {
+    "cn": "占全球六成以上",
+    "en": "hold more than 60 percent of",
+    "note": "「占……的」用 hold/account for + of。",
+    "re": "holds?\\s+more\\s+than\\s+\\d+\\s+percent\\s+of",
+    "sno": 2
+   },
+   {
+    "cn": "栖息地",
+    "en": "habitat",
+    "note": "四级核心词，指动物或植物的生存环境。",
+    "re": "habitat",
+    "sno": 2
+   },
+   {
+    "cn": "被视为重要指标",
+    "en": "considered an important indicator of",
+    "note": "被动语态 + indicator of。",
+    "re": "considered\\s+an?\\s+important\\s+indicator\\s+of",
+    "sno": 3
+   },
+   {
+    "cn": "意义重大",
+    "en": "be of great significance",
+    "note": "四级高频倒装，of 后接名词。",
+    "re": "of\\s+great\\s+significance",
+    "sno": 3
+   },
+   {
+    "cn": "设立（机构）",
+    "en": "has set up",
+    "note": "set up 用于设立机构、设施、平台。",
+    "re": "has\\s+set\\s+up|set\\s+up\\s+two",
+    "sno": 4
+   },
+   {
+    "cn": "重要保护区",
+    "en": "key protected areas",
+    "note": "protected areas 是固定搭配。",
+    "re": "protected\\s+areas?",
+    "sno": 4
+   },
+   {
+    "cn": "构成威胁",
+    "en": "pose threats",
+    "note": "pose threat to sb/sth，threat 用复数。",
+    "re": "pose\\s+threats?",
+    "sno": 5
+   },
+   {
+    "cn": "栖息地破碎化",
+    "en": "habitat fragmentation",
+    "note": "外刊高频名词化表达。",
+    "re": "habitat\\s+fragmentation",
+    "sno": 5
+   },
+   {
+    "cn": "加强监测",
+    "en": "more monitoring",
+    "note": "名词化比名词+动词更稳。",
+    "re": "more\\s+monitoring|strengthen\\w*\\s+monitoring",
+    "sno": 5
+   },
+   {
+    "cn": "社区参与",
+    "en": "community participation",
+    "note": "社区参与（保护行动）固定说法。",
+    "re": "community\\s+participation",
+    "sno": 5
+   },
+   {
+    "cn": "人兽冲突",
+    "en": "conflicts between people and wildlife",
+    "note": "wildlife 不可数，指野生动物。",
+    "re": "conflict\\w*\\s+between\\s+people\\s+and\\s+wildlife",
+    "sno": 5
+   }
+  ],
+  "classroom": [
+   1,
+   5
+  ],
+  "classroomNote": "课堂速练用的两句（2 句模式默认出这两句；5 句全练出全部）"
+ }
+}
