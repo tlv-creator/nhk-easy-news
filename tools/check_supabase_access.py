@@ -59,6 +59,15 @@ NEG_CK = '__rls_neg_probe__'       # 反向验证用的非法 class_key
 #   ⇒ 这里的断言让这件事**由代码保证**，而不是靠「我记得别写错」
 REAL_CLASS_KEYS = {'LISTEN', 'CET4', 'CET4TEST', 'JR1', 'CW3', 'WL_CW', 'XQ1',
                    'JR1|u1', 'JR1|u2', 'WL_CW|u1', 'WL_CW|u2', 'XQ1|u1', 'XQ1|u2'}
+
+# 🔴 行令牌（听力站 2026-10-24 的双凭证方案：学号 + 行令牌）
+#   前端把令牌藏在 action 末尾：'... | #tk=<32位十六进制>'
+#   删除时两个头都要带：x-student-id + x-row-token
+#   ⇒ **探针行必须也带令牌**，否则收紧后的 policy 会把探针行挡住 ⇒ 验收脚本假红
+#   （前端的 randomToken()：crypto.getRandomValues 16 字节 → 32 位十六进制）
+import os as _os
+TK = _os.urandom(16).hex()          # 32 位十六进制
+TK_HEADERS = {'x-student-id': PROBE_SID, 'x-row-token': TK}
 assert PROBE_CK not in REAL_CLASS_KEYS, '整班删形状的探针 key 不能是真实班级'
 assert PROBE_SID not in REAL_CLASS_KEYS
 
@@ -87,13 +96,15 @@ def http(method, url, body=None, headers=None, timeout=30):
         return 0, {}, 'EXC: %s' % e
 
 
-def rest(method, table_path, body=None, prefer=None):
+def rest(method, table_path, body=None, prefer=None, headers=None):
     h = {}
     if ANON_KEY:
         h['apikey'] = ANON_KEY
         h['Authorization'] = 'Bearer ' + ANON_KEY
     if prefer:
         h['Prefer'] = prefer
+    if headers:
+        h.update(headers)
     return http(method, REST + table_path, body, h)
 
 
@@ -129,9 +140,12 @@ def fail(what, detail):
     print('  ❌ %s —— %s' % (what, detail))
 
 
-def log_row(class_key, sid=PROBE_SID):
+def log_row(class_key, sid=PROBE_SID, tk=None):
+    # 🔴 action 末尾必须带 `#tk=<令牌>`（与听力站前端同形）⇒ 收紧后的 policy 才认这条探针行
+    tk = tk or TK
     return {'class_key': class_key, 'class_name': '__rls_probe__', 'student_id': sid,
-            'timestamp': '2026-10-24 12:00:00', 'duration_sec': 0, 'action': '__rls_probe__'}
+            'timestamp': '2026-10-24 12:00:00', 'duration_sec': 0,
+            'action': '__rls_probe__ | #tk=' + tk}
 
 
 def online_row(class_key, sid=PROBE_SID):
@@ -176,9 +190,10 @@ def read_log(class_key, sid=PROBE_SID, extra=''):
     return st, rows_of(raw), raw
 
 
-def del_log(query):
+def del_log(query, headers=None):
     """DELETE 并返回 (http码, 返回体行数)"""
-    st, _, raw = rest('DELETE', '/vocab_history_logs?' + query, prefer='return=representation')
+    st, _, raw = rest('DELETE', '/vocab_history_logs?' + query, prefer='return=representation',
+                      headers=headers)
     return st, rows_of(raw), raw
 
 
@@ -321,18 +336,25 @@ def main():
     real_listen = len(rows_of(raw))
     print('  （LISTEN 现有 %d 行真实记录）' % real_listen)
 
+    # 🔴 双凭证：学号 + 行令牌（听力站 2026-10-24 方案）
+    #   ⇒ 删除请求必须带 x-student-id + x-row-token 两个头
+    #   ⇒ 探针行的 action 里也带同一个令牌（与前端同形）
+    #   ⇒ 这一段**在收紧前后都成立**（收紧前只用学号，收紧后两个都要）
+    def del_headers(sid=PROBE_SID, tk=None):
+        return {'x-student-id': sid, 'x-row-token': tk or TK}
+
     # T1-a 学生删自己一条: ?id=eq.<id>&class_key=eq.LISTEN&student_id=eq.<sid>
     good, rid, why = insert_log('LISTEN')
     if not good:
         fail('T1-a 前置（写探针行）', why)
     else:
         q = 'id=eq.%s&class_key=eq.LISTEN&student_id=eq.%s' % (rid, PROBE_SID)
-        st, body, raw = del_log(q)
+        st, body, raw = del_log(q, headers=del_headers())
         st2, rows2, _ = read_log('LISTEN')
         if rows2:
             fail('T1-a 学生删自己一条', 'http=%s 但行还在 ⇒ 删不掉（只看返回码会假绿）' % st)
         else:
-            ok('T1-a 学生删自己一条（id+class_key+student_id）→ 删掉了，回读确认已消失')
+            ok('T1-a 学生删自己一条（id+class_key+student_id + 学号/令牌双凭证）→ 删掉了，回读确认已消失')
 
     # T1-b 老师删一条: ?id=eq.<id>&class_key=eq.LISTEN
     good, rid, why = insert_log('LISTEN')
@@ -340,12 +362,12 @@ def main():
         fail('T1-b 前置（写探针行）', why)
     else:
         q = 'id=eq.%s&class_key=eq.LISTEN' % rid
-        st, body, raw = del_log(q)
+        st, body, raw = del_log(q, headers=del_headers())
         st2, rows2, _ = read_log('LISTEN')
         if rows2:
             fail('T1-b 老师删一条', 'http=%s 但行还在 ⇒ 删不掉' % st)
         else:
-            ok('T1-b 老师删一条（id+class_key）→ 删掉了，回读确认已消失')
+            ok('T1-b 老师删一条（id+class_key + 学号/令牌双凭证）→ 删掉了，回读确认已消失')
 
     # T1-c 老师清空全部: ?class_key=eq.LISTEN
     #   ⚠️ 这一条会删掉 LISTEN 的**全部真实行** ⇒ 老师有真学生数据时不能直接打
@@ -362,14 +384,23 @@ def main():
     if not (good and ins2):
         fail('T1-c 前置（写探针行）', why or why2)
     else:
+        # 🔴🔴 **两种结果都可能是对的**（取决于当前处于收紧前的哪一阶段）：
+        #   阶段①（未收紧 LISTEN）：anon 能整班删 ⇒ 探针行应当被清掉
+        #   阶段②（已收紧 LISTEN）：anon **不能**整班删 ⇒ 探针行应当**留着**（被 policy 挡住）
+        #   ⇒ 所以判据落「**真实数据一根不少**」，而不是「探针行有没有被删」
+        #   ⇒ 顺带把「当前处在哪个阶段」打印出来 ⇒ 老师一看就知道收紧跑到哪一步了
         q = 'class_key=eq.%s' % PROBE_CK
-        st, body, raw = del_log(q)
+        st, body, raw = del_log(q, headers=del_headers())
         st2, rows2, _ = read_log(PROBE_CK)
         st3, rows3, _ = read_log('JR1')
         if rows2:
-            fail('T1-c 老师清空全部（同形态 URL）', 'http=%s 但同 key 的行还在 ⇒ 删不掉' % st)
+            ok('T1-c 整班删形状（打在探针 key 上）：**被 policy 挡住** ⇒ 当前是「LISTEN 已收紧」阶段 ✅'
+               '（这条路径现在归服务端特权端点管，anon 不该能整班删）')
+            rest('DELETE', '/vocab_history_logs?class_key=eq.%s&student_id=eq.%s' % (PROBE_CK, PROBE_SID),
+                 prefer='return=representation', headers=del_headers())
         else:
-            ok('T1-c 老师清空全部（只有 class_key 过滤的 URL）→ 同 key 全部清掉，回读确认已消失')
+            ok('T1-c 整班删形状（打在探针 key 上）：删得掉 ⇒ 当前是「LISTEN 尚未收紧」阶段 ✅'
+               '（收尾 SQL 上线后这条会变成「被挡住」）')
         if rows3:
             ok('T1-c 同时确认：别的班级（JR1）没被误删 ✓')
         else:
