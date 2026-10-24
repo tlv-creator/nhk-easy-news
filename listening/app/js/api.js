@@ -484,13 +484,12 @@
         }
         if (op.state === 'unauthorized') return { ok: false, msg: '登录已过期，请重新登录' };
         if (op.state === 'error') return { ok: false, msg: '服务器没有真正清空（可能被数据库权限挡住了），请稍后再试' };
-        return rest('vocab_history_logs?class_key=eq.' + CFG.LOG_KEY,
-          { method: 'DELETE', prefer: 'return=representation' })
-          .then(function (rows) {
-            var n = Array.isArray(rows) ? rows.length : 0;
-            if (!n) return { ok: false, msg: '服务器没有真正清空（可能被数据库权限挡住了），请稍后再试' };
-            return { ok: true, deleted: n, via: 'anon' };
-          });
+        // 🔴🔴🔴 端点没上线 ⇒ **不走 anon 退路**（就地禁用这个按钮）
+        //   原因：anon 退路就是 `DELETE ?class_key=eq.LISTEN` —— **一把清空全班**的那个形状
+        //   ⇒ 2026-10-24 那 34 条真实学生记录就是被这个形状清掉的
+        //   ⇒ 端点上线后（op.state==='ok'）这个按钮自动恢复，走 service_role，**不再碰 anon**
+        //   ⇒ 过渡期老师如果真要清空：先让端点上线（或找我），不要用这个按钮
+        return { ok: false, msg: '「清空全部」暂时不可用：服务端还没上线，走老路会用公开权限直接清空全班（这正是上次出事的那个操作）。请先让云函数上线，或找管理员处理。' };
       });
     }
 
