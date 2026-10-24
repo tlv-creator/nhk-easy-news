@@ -144,6 +144,7 @@ def ok(what):
 
 
 PHASE_FAILS = []
+POLICY_VARIANT = 'UNKNOWN'
 
 def phase_fail(what, detail):
     """阶段未完成（不是脚本坏了）⇒ 单独记，汇总时分开说"""
@@ -512,6 +513,52 @@ def main():
         else:
             ok('清理：判别行一根不剩（老师真表零污染）')
 
+    # ── T1-f：🔴「现役前端形状」的真实学生路径 ────────────────────────────
+    #   现役前端（2026-10-24 起）：action 里写 **sha256(原始令牌)**，删除时发**原始令牌**
+    #   ⇒ 这一行 = 学生真的点「删掉这条」时走的那条路
+    #   ⇒ 它一次回答两个问题：
+    #     ① 学生现在到底能不能删掉自己那条
+    #     ② 生产 policy 是「明文版」还是「sha256 版」
+    #   ⚠️ 用**非探针**学号（否则探针例外会让结论说谎）
+    #   ⚠️ 两个分支都能自己清干净：
+    #     · 发原始令牌删得掉 ⇒ sha256 版 ⇒ 行没了 ✅
+    #     · 发原始令牌删不掉 ⇒ 明文版 ⇒ 再发「摘要」当令牌 ⇒ 明文版能删掉 ✅
+    #       （而「发摘要能删掉」这件事本身就是「明文版」的证据）
+    RAW2 = _os.urandom(16).hex()
+    HASH2 = _hl.sha256(RAW2.encode('utf-8')).hexdigest()
+    good, rid, why = insert_log('LISTEN', PHASE_SID, action='__rls_probe__ | #tk=' + HASH2)
+    if not good:
+        fail('T1-f 前置（写现役形状的行）', why)
+    else:
+        st, body, raw = del_log('id=eq.%s&class_key=eq.LISTEN' % rid,
+                                headers={'x-student-id': PHASE_SID, 'x-row-token': RAW2})
+        st2, rows2, _ = read_log('LISTEN', PHASE_SID)
+        if not rows2:
+            # 🔴 关键前提：**必须先确认 policy 已经收紧**（T1-d 说 LOCKED）
+            #   否则「删得掉」是因为**权限太松**（class_key='LISTEN' 一把放行），
+            #   **不能**据此判断「是 sha256 版」⇒ 那会把「还没收紧」误报成「已收紧」
+            if PHASE == 'LOCKED':
+                ok('T1-f 现役前端形状（action 存摘要 + 请求头发原文）⇒ **学生删自己那条是通的** ✅'
+                   '（且 policy 已收紧 ⇒ 这说明它确实是 **sha256 版**）')
+                POLICY_VARIANT = 'SHA256'
+            else:
+                ok('T1-f 现役前端形状：删得掉，但 **policy 还没收紧** ⇒ 现在删得掉是因为**权限太松**，'
+                   '**不能**据此判断令牌口径 ⇒ 令牌路径要等收尾 SQL 生效才能验')
+                POLICY_VARIANT = 'LOOSE'
+        else:
+            st, body, raw = del_log('id=eq.%s&class_key=eq.LISTEN' % rid,
+                                    headers={'x-student-id': PHASE_SID, 'x-row-token': HASH2})
+            st2, rows2, _ = read_log('LISTEN', PHASE_SID)
+            if rows2:
+                fail('T1-f 清理失败', '判别行还剩 %d 行 ⇒ 请老师跑：delete from public.vocab_history_logs '
+                     "where student_id = '%s'" % (len(rows2), PHASE_SID))
+            else:
+                fail('T1-f 令牌路径不通 🔴',
+                     '现役前端把 **sha256 摘要**写进 action、删除时发**原始令牌**，'
+                     '但 policy 判不过去 ⇒ 学生「删自己那一条」是废的 '
+                     '⇒ **必须跑收尾 SQL（sha256 版）**')
+                POLICY_VARIANT = 'PLAIN'
+
     # 真实 LISTEN 复核（确认上面那些删除没有伤到真实数据）
     # 🔴 判据落「**跑之前的 id 还在不在**」，不落「条数一样吗」
     #   ⇒ 学生实时交作业 ⇒ 条数会涨 ⇒ 那不是「动了真实数据」
@@ -676,6 +723,12 @@ def main():
 
     # ── 7) 汇总
     print('\n━━ 6) 汇总 ━━')
+    print('  当前 LISTEN 删除口径：%s' % {
+        'SHA256': 'sha256 版（前端写摘要、policy 比摘要）✅ 与现役前端一致',
+        'PLAIN': '🔴 令牌路径不通 ⇒ 学生「删自己那一条」是废的 ⇒ 必须跑收尾 SQL',
+        'LOOSE': '🔴 **权限还没收紧**（class_key=LISTEN 一把放行）⇒ 现在删得掉是因为太松，'
+                 '**不是**因为令牌对 ⇒ 必须跑收尾 SQL',
+        'UNKNOWN': '未测到'}.get(POLICY_VARIANT, '未测到'))
     print('  断言数：%d' % CHECKS)
     if PHASE_FAILS:
         print('  ⚠️ 阶段未完成 %d 条（**不是脚本坏了** ⇒ 收尾还没做完）：' % len(PHASE_FAILS))
