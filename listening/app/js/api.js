@@ -37,9 +37,7 @@
     }).then(function (r) {
       return r.text().then(function (t) {
         if (!r.ok) {
-          var msg = 'HTTP ' + r.status;
-          try { var j = JSON.parse(t); msg = j.message || j.hint || msg; } catch (e) { }
-          throw new Error(msg);
+          throw new Error(friendlyMsg(r.status, t));
         }
         if (!t) return null;
         try { return JSON.parse(t); } catch (e) { return t; }
@@ -138,6 +136,34 @@
         });
     }
     return Promise.reject(new Error('这个浏览器不支持安全哈希，请换新版浏览器打开'));
+  }
+
+  /* ================= 错误翻译 =================
+     🔴 原始报错会直接显示给学生 —— 浏览器实测：提交失败时页面吐的是
+        「new row violates row-level security policy for table "vocab_history_logs"」
+        ⇒ 统一翻译成人话；技术细节只进 console（我和老师看日志用）
+     ⚠️ 判据：宁可笼统，也不要把数据库/接口内部结构暴露给学生 */
+  function friendlyMsg(status, text) {
+    var low = String(text || '').toLowerCase();
+    var tech = 'HTTP ' + status + ' ' + String(text || '').slice(0, 200);
+    try { console.warn('[听力站]', tech); } catch (e) { }
+    if (status === 401 || status === 403 || low.indexOf('row-level security') >= 0 ||
+        low.indexOf('42501') >= 0 || low.indexOf('permission denied') >= 0) {
+      return '服务器暂时收不到数据。请稍后再试一次，还是不行就告诉老师。';
+    }
+    if (status === 404 || low.indexOf('pgrst202') >= 0) {
+      return '页面版本不一致。请刷新一次，还是不行就告诉老师。';
+    }
+    if (status === 429) {
+      return '请求太频繁，请稍后再试。';
+    }
+    if (status >= 500) {
+      return '服务器出错了，请稍后再试。';
+    }
+    if (status === 0) {
+      return '连不上服务器，请检查网络后重试。';
+    }
+    return '操作没成功，请稍后再试。';
   }
 
   /* ================= 真实实现 ================= */
