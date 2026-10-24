@@ -74,16 +74,18 @@
 
   /* ------------------------------------------------------------------
      句子结构完整性（机器能可靠判的部分）
-     · 谓语：be 动词 / 情态 / 动词原形或屈折形
+     · 谓语：优先用**参考译文的动词词干**判定（事实量），
+            词表只作兜底 —— 手写词表永远不全，必然假阳性
      · 结尾标点
      · 残片（只有 1-2 个词）
      ⚠️ 这是「明显缺陷」筛查，**不是**语法检查器。
-        它抓的是「整句不成立」这种大硬伤，正好对应评分标准里的
-        「支离破碎」「句子不通顺」。
+     ⚠️ 「看不出谓语」是**提示**不是错误：宁可漏报，不可误报
+        （误报会给学生一条无意义的警告，比不报更糟）。
      ------------------------------------------------------------------ */
   var BE = /^(am|is|are|was|were|be|been|being)$/i;
   var MODAL = /^(can|could|will|would|shall|should|may|might|must|ought|need)$/i;
-  // 常见动词（含不规则过去式/过去分词），够用即可 —— 只用来判断「有没有谓语」
+  // 常见动词（含不规则过去式/过去分词）—— 只作**兜底**，
+  // 因为任何手写词表都覆盖不全（实测 missed: exceeded / account for …）
   var VERBS = new RegExp(
     '^(' + [
       'have', 'has', 'had', 'do', 'does', 'did', 'go', 'goes', 'went', 'gone',
@@ -106,11 +108,80 @@
       'complete', 'completes', 'completed', 'enable', 'enables', 'enabled', 'allow', 'allows', 'allowed',
       'increase', 'increases', 'increased', 'reach', 'reaches', 'reached', 'remain', 'remains', 'remained',
       'reflect', 'reflects', 'reflected', 'represent', 'represents', 'represented', 'form', 'forms', 'formed',
-      'suffer', 'suffers', 'suffered', 'face', 'faces', 'faced', 'cost', 'costs', 'costed'
+      'suffer', 'suffers', 'suffered', 'face', 'faces', 'faced', 'cost', 'costs', 'costed',
+      'exceed', 'exceeds', 'exceeded', 'account', 'accounts', 'accounted', 'contribute', 'contributes',
+      'indicate', 'indicates', 'indicated', 'ensure', 'ensures', 'ensured', 'expand', 'expands', 'expanded',
+      'create', 'creates', 'created', 'apply', 'applies', 'applied', 'solve', 'solves', 'solved',
+      'produce', 'produces', 'produced', 'prevent', 'prevents', 'prevented', 'cause', 'causes', 'caused',
+      'result', 'results', 'resulted', 'receive', 'receives', 'received', 'attract', 'attracts', 'attracted'
     ].join('|') + ')$', 'i'
   );
 
-  function sentenceIssues(text) {
+  /* ------------------------------------------------------------------
+     谓语判据（事实量优先）
+     ------------------------------------------------------------------
+     🔴 教训（2026-10-24 实测踩到）：原来只靠手写动词表判「有没有谓语」，
+        于是 "…exceeded 57 million…" 被判成「没有谓语」⇒ 假阳性警告。
+        手写词表**永远覆盖不全** ⇒ 必然假阳性。
+
+     ⇒ 改成：**参考译文的动词词干**是权威。
+        1. 从参考译文抽出所有词的「词干」（去屈折后缀）
+        2. 学生句子里只要出现某个词干（允许 ≤3 个字母的屈折后缀）⇒ 有谓语
+        3. 词干法判不出时，才退到词表 + 屈折启发式
+     ------------------------------------------------------------------ */
+  var STEM_EXCEPT = { 'this': 1, 'his': 1, 'is': 1, 'as': 1, 'us': 1, 'was': 1, 'has': 1, 'its': 1 };
+
+  function stemsOf(text) {
+    var out = [], ws = String(text || '').toLowerCase().match(/[a-z][a-z'-]*/g) || [];
+    for (var i = 0; i < ws.length; i++) {
+      var w = ws[i];
+      if (w.length < 3 || STEM_EXCEPT[w]) continue;
+      var cands = [w];
+      if (/ies$/.test(w)) cands.push(w.slice(0, -3) + 'y');
+      if (/(ches|shes|sses|xes|zes)$/.test(w)) cands.push(w.slice(0, -2));
+      if (/s$/.test(w) && !/ss$/.test(w)) cands.push(w.slice(0, -1));
+      if (/ed$/.test(w)) {
+        cands.push(w.slice(0, -2));
+        if (/ied$/.test(w)) cands.push(w.slice(0, -3) + 'y');
+      }
+      if (/ing$/.test(w)) {
+        cands.push(w.slice(0, -3));
+        if (/ying$/.test(w)) cands.push(w.slice(0, -4) + 'i');
+      }
+      for (var j = 0; j < cands.length; j++) {
+        if (cands[j].length >= 3) out.push(cands[j]);
+      }
+    }
+    return out;
+  }
+
+  // 学生句里出现参考译文的某个词干（允许 ≤3 字母屈折尾巴）⇒ 该句有谓语
+  function stemHit(words, stems) {
+    if (!stems || !stems.length) return false;
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i].replace(/[^A-Za-z'-]/g, '').toLowerCase();
+      if (w.length < 2) continue;
+      for (var j = 0; j < stems.length; j++) {
+        var s = stems[j];
+        if (w === s) return true;
+        if (w.length > s.length && w.length - s.length <= 3 && w.indexOf(s) === 0) return true;
+      }
+    }
+    return false;
+  }
+
+  function looksVerb(w) {
+    if (BE.test(w) || MODAL.test(w) || VERBS.test(w)) return true;
+    // 屈折启发式（兜底）：-ed 结尾几乎都是动词过去式（排除几个以 ed 结尾的名词）
+    if (/ed$/.test(w) && w.length >= 4 &&
+        !/(bed|red|seed|fled|shed|wed|breed|feed|deed|need|indeed|speed|weed|greed|embed)$/.test(w)) return true;
+    // -ing 结尾：排除常见以 ing 结尾的名词
+    if (/ing$/.test(w) && w.length >= 5 &&
+        !/(thing|king|ring|ting|sing|wing|bring|spring|string|evening|morning|building|something|anything|everything|nothing|ceiling|facing|lighting|reading|wording|hearing|meaning|training|opening|closing|setting|building)$/.test(w)) return true;
+    return false;
+  }
+
+  function sentenceIssues(text, ref) {
     var t = String(text || '').trim();
     var out = [];
     if (!t) return out;
@@ -122,16 +193,17 @@
     if (!/[.!?;)"'”’]$/.test(t)) {
       out.push({ kind: 'nopunct', msg: '句末没有标点' });
     }
-    // 找谓语：取「不在名词位置的最后一个动词性词」
-    var hasPred = false;
-    for (var i = words.length - 1; i >= 0; i--) {
-      var w = words[i].replace(/[^A-Za-z'-]/g, '').toLowerCase();
-      if (!w) continue;
-      if (BE.test(w) || MODAL.test(w) || VERBS.test(w)) { hasPred = true; break; }
-      // 遇到明显是名词/代词的词就继续往前找（最多找 3 个）
+    // 谓语：先用参考译文的词干（事实量），判不出再退到词表/屈折启发式
+    var hasPred = stemHit(words, stemsOf(ref || ''));
+    if (!hasPred) {
+      for (var i = words.length - 1; i >= 0; i--) {
+        var w = words[i].replace(/[^A-Za-z'-]/g, '').toLowerCase();
+        if (!w) continue;
+        if (looksVerb(w)) { hasPred = true; break; }
+      }
     }
     if (!hasPred) {
-      out.push({ kind: 'nopred', msg: '看不出谓语动词，句子可能不成立' });
+      out.push({ kind: 'nopred', msg: '看不出明显的谓语动词，句子可能没写完' });
     }
     return out;
   }
@@ -171,7 +243,7 @@
         words: words,
         refWords: refWords,
         ratio: ratio,
-        issues: sentenceIssues(text),
+        issues: sentenceIssues(text, s.ref || ''),
         short: (words > 0 && refWords > 0 && ratio < 55),
         empty: (words === 0)
       });
