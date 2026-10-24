@@ -1,1 +1,169 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIC0qLSBjb2Rpbmc6IHV0Zi04IC0qLQoiIiJwdXNoX2Jvb3QucHkg4oCU4oCUIOaOqCBTaHVuIOeahCoq5rC45LmF5byV5a+86aG1KirvvIhzaHVuLmpzb24gKyBzaHVuLmh0bWzvvInliLAgR2l0SHViIFBhZ2VzCgrwn5S0IOS4uuS7gOS5iOW/hemhu+iEmuacrOWMlu+8mgogICAgbWNvZGUg5q+P5qyh6YOo572y6YO95o2i6ZqP5py65Z+f5ZCNIOKHkiDlr7nor53ph4znu5nnmoTpk77mjqUqKuS4i+asoeWPkeeJiOWwseatuyoqCiAgICDih5Ig5rC45LmF5YWl5Y+j5Y+q5pyJ5LiA5Liq77yaaHR0cHM6Ly90bHYtY3JlYXRvci5naXRodWIuaW8vbmhrLWVhc3ktbmV3cy9zaHVuLmh0bWwKICAgIOKHkiDph4zpnaLnmoQgc2l0ZSAvIGF1ZGlvIC8gYXBrIOavj+asoeWPkeeJiOmDveimgeabtOaWsOOAggoK8J+UtCDmjqjnmoTmlrnlvI/vvIjnhaflhbHkuqvku5PlupMgc2NyaXB0cy91cGRhdGVfZ3VpZGVfcGFnZS5weSDnmoTlgZrms5XvvInvvJoKICAgIMK3IFJFU1QgQVBJ77yI5rKZ566x6YeM5rKh5pyJIGdoIENMSe+8jOWPquaciSBHSF9UT0tFTu+8iQogICAgwrcgKirlhYjor7sgc2hh77yMUFVUIOaXtuW4puS4iiBzaGEqKiDih5Ig5Yir5Lq65Yia5o6o6L+H5bCxIDQwOSDih5Ig6YeN6K+7ICsg5ZCI5bm277yMKirkuI3opobnm5blr7nmlrkqKgogICAgwrcg5o6o5a6MKirlm57or7vlpI3moLgqKu+8iFBhZ2VzIOaciee8k+WtmOW7tui/nyDih5Ig5aSN5qC46LWwIENvbnRlbnRzIEFQSSDmupDnq6/vvIkKCueUqOazle+8mgogICAgcHl0aG9uMyB0b29scy9wdXNoX2Jvb3QucHkgLS1zaXRlIGh0dHBzOi8veHh4LnNwYWNlLm1jb2RlLmNuIFwKICAgICAgICAtLWF1ZGlvIGh0dHBzOi8veHh4LnNwYWNlLm1jb2RlLmNuL21lZGlhLyAtLWFwayBodHRwczovL3h4eC5zcGFjZS5tY29kZS5jbi9zaHVuLmFwayBcCiAgICAgICAgLS12ZXIgMjAgLS12ZXJuYW1lIDEuMi4yIC0tbm90ZSAi5paw5aKeIEVwMjc4IiAtLW9sZC1zaXRlIGh0dHBzOi8vYm84dTY5aGR3NTh0NC5zcGFjZS5tY29kZS5jbgoiIiIKaW1wb3J0IGFyZ3BhcnNlCmltcG9ydCBiYXNlNjQKaW1wb3J0IGpzb24KaW1wb3J0IG9zCmltcG9ydCByZQppbXBvcnQgc3lzCmltcG9ydCB0aW1lCmltcG9ydCB1cmxsaWIuZXJyb3IKaW1wb3J0IHVybGxpYi5yZXF1ZXN0CgpPV05FUiA9ICJ0bHYtY3JlYXRvciIKUkVQTyA9ICJuaGstZWFzeS1uZXdzIgpBUEkgPSAiaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy8lcy8lcy9jb250ZW50cy8iICUgKE9XTkVSLCBSRVBPKQpQQUdFUyA9ICJodHRwczovL3Rsdi1jcmVhdG9yLmdpdGh1Yi5pby9uaGstZWFzeS1uZXdzLyIKCgpkZWYgYXBpKG1ldGhvZCwgdXJsLCB0b2tlbiwgcGF5bG9hZD1Ob25lKToKICAgIHJlcSA9IHVybGxpYi5yZXF1ZXN0LlJlcXVlc3QodXJsLCBtZXRob2Q9bWV0aG9kKQogICAgcmVxLmFkZF9oZWFkZXIoIkF1dGhvcml6YXRpb24iLCAiQmVhcmVyICIgKyB0b2tlbikKICAgIHJlcS5hZGRfaGVhZGVyKCJBY2NlcHQiLCAiYXBwbGljYXRpb24vdm5kLmdpdGh1Yitqc29uIikKICAgIHJlcS5hZGRfaGVhZGVyKCJVc2VyLUFnZW50IiwgIm1hdmlzLXNodW4tYm9vdCIpCiAgICBkYXRhID0gTm9uZQogICAgaWYgcGF5bG9hZCBpcyBub3QgTm9uZToKICAgICAgICBkYXRhID0ganNvbi5kdW1wcyhwYXlsb2FkKS5lbmNvZGUoInV0Zi04IikKICAgICAgICByZXEuYWRkX2hlYWRlcigiQ29udGVudC1UeXBlIiwgImFwcGxpY2F0aW9uL2pzb24iKQogICAgdHJ5OgogICAgICAgIHdpdGggdXJsbGliLnJlcXVlc3QudXJsb3BlbihyZXEsIGRhdGEsIHRpbWVvdXQ9NDUpIGFzIHI6CiAgICAgICAgICAgIHJldHVybiByLnN0YXR1cywganNvbi5sb2FkcyhyLnJlYWQoKS5kZWNvZGUoInV0Zi04IikpCiAgICBleGNlcHQgdXJsbGliLmVycm9yLkhUVFBFcnJvciBhcyBlOgogICAgICAgIGJvZHkgPSBlLnJlYWQoKS5kZWNvZGUoInV0Zi04Iikgb3IgInt9IgogICAgICAgIHRyeToKICAgICAgICAgICAgcmV0dXJuIGUuY29kZSwganNvbi5sb2Fkcyhib2R5KQogICAgICAgIGV4Y2VwdCBFeGNlcHRpb246CiAgICAgICAgICAgIHJldHVybiBlLmNvZGUsIHsicmF3IjogYm9keVs6MjAwXX0KCgpkZWYgZ2V0X2ZpbGUocGF0aCwgdG9rZW4pOgogICAgc3QsIGQgPSBhcGkoIkdFVCIsIEFQSSArIHBhdGgsIHRva2VuKQogICAgaWYgc3QgIT0gMjAwOgogICAgICAgIHJhaXNlIFN5c3RlbUV4aXQoIuKdjCDor7vkuI3liLAgJXPvvJpIVFRQICVzICVzIiAlIChwYXRoLCBzdCwgc3RyKGQpWzoxNTBdKSkKICAgIHJhdyA9IGQuZ2V0KCJjb250ZW50IiwgIiIpCiAgICB0cnk6CiAgICAgICAgdGV4dCA9IGJhc2U2NC5iNjRkZWNvZGUocmF3KS5kZWNvZGUoInV0Zi04IikKICAgIGV4Y2VwdCBFeGNlcHRpb246CiAgICAgICAgdGV4dCA9IHJhdwogICAgcmV0dXJuIHRleHQsIGRbInNoYSJdCgoKZGVmIHB1dF9maWxlKHBhdGgsIGNvbnRlbnQsIHRva2VuLCBzaGE9Tm9uZSk6CiAgICBwYXlsb2FkID0gewogICAgICAgICJtZXNzYWdlIjogImNob3JlKHNodW4pOiDmm7TmlrDlvJXlr7zpobXmjIflkJHmlrDlhoXlrrnnq5kiLAogICAgICAgICJjb250ZW50IjogYmFzZTY0LmI2NGVuY29kZShjb250ZW50LmVuY29kZSgidXRmLTgiKSkuZGVjb2RlKCJhc2NpaSIpLAogICAgfQogICAgaWYgc2hhOgogICAgICAgIHBheWxvYWRbInNoYSJdID0gc2hhCiAgICBzdCwgZCA9IGFwaSgiUFVUIiwgQVBJICsgcGF0aCwgdG9rZW4sIHBheWxvYWQpCiAgICByZXR1cm4gc3QsIGQKCgpkZWYgcHVzaF93aXRoX3JldHJ5KHBhdGgsIGJ1aWxkLCB0b2tlbiwgdHJpZXM9NCk6CiAgICAiIiJQVVQgNDA5ID0g5Yir5Lq65Yia5o6o6L+HIOKHkiDph43or7sgKyDph43mlrDnlJ/miJAgKyDlho3mjqjvvIgqKuS4jeimhuebluWvueaWueeahOaUueWKqCoq77yJIiIiCiAgICBmb3IgYXR0ZW1wdCBpbiByYW5nZSh0cmllcyk6CiAgICAgICAgY29udGVudCwgc2hhID0gZ2V0X2ZpbGUocGF0aCwgdG9rZW4pCiAgICAgICAgbmV3ID0gYnVpbGQoY29udGVudCkKICAgICAgICBzdCwgZCA9IHB1dF9maWxlKHBhdGgsIG5ldywgdG9rZW4sIHNoYSkKICAgICAgICBpZiBzdCBpbiAoMjAwLCAyMDEpOgogICAgICAgICAgICByZXR1cm4gVHJ1ZSwgZAogICAgICAgIGlmIHN0ID09IDQwOToKICAgICAgICAgICAgcHJpbnQoIiAg4oa7IDQwOe+8iOacieS6uuWImuaOqOi/h++8ieKHkiDph43or7vlho3mjqjvvIjnrKwgJWQg5qyh77yJIiAlIChhdHRlbXB0ICsgMSksCiAgICAgICAgICAgICAgICAgIGZpbGU9c3lzLnN0ZGVycikKICAgICAgICAgICAgdGltZS5zbGVlcCgyKQogICAgICAgICAgICBjb250aW51ZQogICAgICAgIHJhaXNlIFN5c3RlbUV4aXQoIuKdjCDmjqggJXMg5aSx6LSl77yaSFRUUCAlcyAlcyIgJSAocGF0aCwgc3QsIHN0cihkKVs6MjAwXSkpCiAgICByYWlzZSBTeXN0ZW1FeGl0KCLinYwg5o6oICVzIOi/nue7reWGsueqgSAlZCDmrKHvvIzmlL7lvIMiICUgKHBhdGgsIHRyaWVzKSkKCgpkZWYgbWFpbigpOgogICAgYXAgPSBhcmdwYXJzZS5Bcmd1bWVudFBhcnNlcigpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tc2l0ZSIsIHJlcXVpcmVkPVRydWUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tYXVkaW8iLCByZXF1aXJlZD1UcnVlKQogICAgYXAuYWRkX2FyZ3VtZW50KCItLWFwayIsIHJlcXVpcmVkPVRydWUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tdmVyIiwgdHlwZT1pbnQsIHJlcXVpcmVkPVRydWUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tdmVybmFtZSIsIHJlcXVpcmVkPVRydWUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tbm90ZSIsIHJlcXVpcmVkPVRydWUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tb2xkLXNpdGUiLCBkZWZhdWx0PU5vbmUsCiAgICAgICAgICAgICAgICAgICAgaGVscD0i5pen56uZ5Z+f5ZCN77yI6KaB5oqK5a6D5LuO5byV5a+86aG16YeM5o2i5o6J77yJIikKICAgIGFwLmFkZF9hcmd1bWVudCgiLS11cGRhdGVkIiwgZGVmYXVsdD1Ob25lKQogICAgYXJncyA9IGFwLnBhcnNlX2FyZ3MoKQoKICAgIHRva2VuID0gb3MuZW52aXJvbi5nZXQoIkdIX1RPS0VOIiwgIiIpCiAgICBpZiBub3QgdG9rZW46CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgi4p2MIOayoeaciSBHSF9UT0tFTiIpCiAgICB1cGRhdGVkID0gYXJncy51cGRhdGVkIG9yIHRpbWUuc3RyZnRpbWUoIiVZLSVtLSVkVCVIOiVNOiVTWiIsIHRpbWUuZ210aW1lKCkpCgogICAgZGVmIGJ1aWxkX2pzb24oX29sZCk6CiAgICAgICAgcmV0dXJuIGpzb24uZHVtcHMoewogICAgICAgICAgICAidmVyIjogYXJncy52ZXIsCiAgICAgICAgICAgICJ2ZXJOYW1lIjogYXJncy52ZXJuYW1lLAogICAgICAgICAgICAic2l0ZSI6IGFyZ3Muc2l0ZSwKICAgICAgICAgICAgImF1ZGlvIjogYXJncy5hdWRpbywKICAgICAgICAgICAgImFwayI6IGFyZ3MuYXBrLAogICAgICAgICAgICAidXBkYXRlZCI6IHVwZGF0ZWQsCiAgICAgICAgICAgICJub3RlIjogYXJncy5ub3RlLAogICAgICAgIH0sIGVuc3VyZV9hc2NpaT1GYWxzZSwgaW5kZW50PTEpICsgIlxuIgoKICAgIGRlZiBidWlsZF9odG1sKG9sZCk6CiAgICAgICAgcyA9IG9sZAogICAgICAgICMg5o2i5omA5pyJ5pen5Z+f5ZCN77yI57K+56GuIHRva2VuIOabv+aNou+8jOS4jeeisOWIq+eahOWfn++8iQogICAgICAgIGlmIGFyZ3Mub2xkX3NpdGU6CiAgICAgICAgICAgIGZvciBwcmVmIGluIChhcmdzLm9sZF9zaXRlLCBhcmdzLm9sZF9zaXRlLnJlcGxhY2UoImh0dHBzOi8vIiwgIiIpKToKICAgICAgICAgICAgICAgIHMgPSBzLnJlcGxhY2UocHJlZiwgYXJncy5zaXRlLnJlcGxhY2UoImh0dHBzOi8vIiwgIiIpCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmIHByZWYuc3RhcnRzd2l0aCgiaHR0cCIpIGVsc2UgYXJncy5zaXRlKQogICAgICAgIHMgPSByZS5zdWIocidocmVmPSJodHRwczovL1teIi9dK1wuc3BhY2VcLm1jb2RlXC5jbiInLAogICAgICAgICAgICAgICAgICAgJ2hyZWY9IiVzIicgJSBhcmdzLnNpdGUsIHMpCiAgICAgICAgcyA9IHJlLnN1YihyJyjniYjmnKxccyo8Y29kZT4pXHMqXGQrXHMqL1xzKltcZC5dKyhccyo8L2NvZGU+KScsCiAgICAgICAgICAgICAgICAgICByJ1xnPDE+JWQgLyAlc1xnPDI+JyAlIChhcmdzLnZlciwgYXJncy52ZXJuYW1lKSwgcykKICAgICAgICBzID0gcmUuc3ViKHInKOabtOaWsOS6jlxzKjxjb2RlPilbXjxdKig8L2NvZGU+KScsCiAgICAgICAgICAgICAgICAgICByJ1xnPDE+JXNcZzwyPicgJSB1cGRhdGVkLnJlcGxhY2UoIlQiLCAiICIpLnJlcGxhY2UoIloiLCAiIilbOjE2XSwKICAgICAgICAgICAgICAgICAgIHMpCiAgICAgICAgIyDor7TmmI7ooYzvvIjlnKjjgIzniYjmnKwg4oCm44CN6YKj5LiA6KGM5LiL6Z2i77yJCiAgICAgICAgcyA9IHJlLnN1YihyJyjniYjmnKxccyo8Y29kZT4uKj88L2NvZGU+Lio/PGJyPlxzKiknLAogICAgICAgICAgICAgICAgICAgbGFtYmRhIG06IG0uZ3JvdXAoMSkgKyBhcmdzLm5vdGUgKyAiPGJyPlxuIiwgcywgY291bnQ9MSwgZmxhZ3M9cmUuUykKICAgICAgICByZXR1cm4gcwoKICAgIHByaW50KCI9PSDmjqggc2h1bi5qc29uID09IikKICAgIG9rLCBkID0gcHVzaF93aXRoX3JldHJ5KCJzaHVuLmpzb24iLCBidWlsZF9qc29uLCB0b2tlbikKICAgIHByaW50KCIgIOKchSAlcyIgJSBkLmdldCgiY29udGVudCIsIHt9KS5nZXQoImh0bWxfdXJsIiwgIiIpKQoKICAgIHByaW50KCI9PSDmjqggc2h1bi5odG1sID09IikKICAgIG9rLCBkID0gcHVzaF93aXRoX3JldHJ5KCJzaHVuLmh0bWwiLCBidWlsZF9odG1sLCB0b2tlbikKICAgIHByaW50KCIgIOKchSAlcyIgJSBkLmdldCgiY29udGVudCIsIHt9KS5nZXQoImh0bWxfdXJsIiwgIiIpKQoKICAgICMg5aSN5qC477yaKirlm57mupAqKu+8iENvbnRlbnRzIEFQSe+8ie+8jOS4jeaYr+a4suafk+err++8iFBhZ2VzIOaciee8k+WtmOW7tui/n++8iQogICAgcHJpbnQoIj09IOWbnua6kOWkjeaguCA9PSIpCiAgICBqLCBfID0gZ2V0X2ZpbGUoInNodW4uanNvbiIsIHRva2VuKQogICAgamQgPSBqc29uLmxvYWRzKGopCiAgICBmb3IgayBpbiAoInZlciIsICJzaXRlIiwgImF1ZGlvIiwgImFwayIpOgogICAgICAgIHByaW50KCIgICUtNnMgJXMiICUgKGssIGpkLmdldChrKSkpCiAgICBiYWQgPSBbayBmb3IgayBpbiAoInNpdGUiLCAiYXVkaW8iLCAiYXBrIikgaWYgYXJncy5zaXRlIG5vdCBpbiBzdHIoamQuZ2V0KGssICIiKSldCiAgICBpZiBiYWQ6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgi4p2MIOW8leWvvOmhtemHjOayoeaNouaIkOaWsOerme+8miVzIiAlIGJhZCkKICAgIGgsIF8gPSBnZXRfZmlsZSgic2h1bi5odG1sIiwgdG9rZW4pCiAgICBocyA9IGgKICAgIGlmIGFyZ3Mub2xkX3NpdGUgYW5kIGFyZ3Mub2xkX3NpdGUgaW4gaHM6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgi4p2MIHNodW4uaHRtbCDph4zov5jmrovnlZnml6fnq5kgJXMiICUgYXJncy5vbGRfc2l0ZSkKICAgIHByaW50KCLwn5+iIOW8leWvvOmhteW3suabtOaWsOW5tuWkjeaguOmAmui/hyIpCgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIG1haW4oKQo=
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""push_boot.py —— 推 Shun 的**永久引导页**（shun.json + shun.html）到 GitHub Pages
+
+🔴 为什么必须脚本化：
+    mcode 每次部署都换随机域名 ⇒ 对话里给的链接**下次发版就死**
+    ⇒ 永久入口只有一个：https://tlv-creator.github.io/nhk-easy-news/shun.html
+    ⇒ 里面的 site / audio / apk 每次发版都要更新。
+
+🔴 推的方式（照共享仓库 scripts/update_guide_page.py 的做法）：
+    · REST API（沙箱里没有 gh CLI，只有 GH_TOKEN）
+    · **先读 sha，PUT 时带上 sha** ⇒ 别人刚推过就 409 ⇒ 重读 + 合并，**不覆盖对方**
+    · 推完**回读复核**（Pages 有缓存延迟 ⇒ 复核走 Contents API 源端）
+
+用法：
+    python3 tools/push_boot.py --site https://xxx.space.mcode.cn \
+        --audio https://xxx.space.mcode.cn/media/ --apk https://xxx.space.mcode.cn/shun.apk \
+        --ver 20 --vername 1.2.2 --note "新增 Ep278" --old-site https://bo8u69hdw58t4.space.mcode.cn
+"""
+import argparse
+import base64
+import json
+import os
+import re
+import sys
+import time
+import urllib.error
+import urllib.request
+
+OWNER = "tlv-creator"
+REPO = "nhk-easy-news"
+API = "https://api.github.com/repos/%s/%s/contents/" % (OWNER, REPO)
+PAGES = "https://tlv-creator.github.io/nhk-easy-news/"
+
+
+def api(method, url, token, payload=None):
+    req = urllib.request.Request(url, method=method)
+    req.add_header("Authorization", "Bearer " + token)
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("User-Agent", "mavis-shun-boot")
+    data = None
+    if payload is not None:
+        data = json.dumps(payload).encode("utf-8")
+        req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, data, timeout=45) as r:
+            return r.status, json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8") or "{}"
+        try:
+            return e.code, json.loads(body)
+        except Exception:
+            return e.code, {"raw": body[:200]}
+
+
+def get_file(path, token):
+    st, d = api("GET", API + path, token)
+    if st != 200:
+        raise SystemExit("❌ 读不到 %s：HTTP %s %s" % (path, st, str(d)[:150]))
+    raw = d.get("content", "")
+    try:
+        text = base64.b64decode(raw).decode("utf-8")
+    except Exception:
+        text = raw
+    return text, d["sha"]
+
+
+def put_file(path, content, token, sha=None):
+    payload = {
+        "message": "chore(shun): 更新引导页指向新内容站",
+        "content": base64.b64encode(content.encode("utf-8")).decode("ascii"),
+    }
+    if sha:
+        payload["sha"] = sha
+    st, d = api("PUT", API + path, token, payload)
+    return st, d
+
+
+def push_with_retry(path, build, token, tries=4):
+    """PUT 409 = 别人刚推过 ⇒ 重读 + 重新生成 + 再推（**不覆盖对方的改动**）"""
+    for attempt in range(tries):
+        content, sha = get_file(path, token)
+        new = build(content)
+        st, d = put_file(path, new, token, sha)
+        if st in (200, 201):
+            return True, d
+        if st == 409:
+            print("  ↻ 409（有人刚推过）⇒ 重读再推（第 %d 次）" % (attempt + 1),
+                  file=sys.stderr)
+            time.sleep(2)
+            continue
+        raise SystemExit("❌ 推 %s 失败：HTTP %s %s" % (path, st, str(d)[:200]))
+    raise SystemExit("❌ 推 %s 连续冲突 %d 次，放弃" % (path, tries))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--site", required=True)
+    ap.add_argument("--audio", required=True)
+    ap.add_argument("--apk", required=True)
+    ap.add_argument("--ver", type=int, required=True)
+    ap.add_argument("--vername", required=True)
+    ap.add_argument("--note", required=True)
+    ap.add_argument("--old-site", default=None,
+                    help="旧站域名（要把它从引导页里换掉）")
+    ap.add_argument("--updated", default=None)
+    args = ap.parse_args()
+
+    token = os.environ.get("GH_TOKEN", "")
+    if not token:
+        raise SystemExit("❌ 没有 GH_TOKEN")
+    updated = args.updated or time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+    def build_json(_old):
+        return json.dumps({
+            "ver": args.ver,
+            "verName": args.vername,
+            "site": args.site,
+            "audio": args.audio,
+            "apk": args.apk,
+            "updated": updated,
+            "note": args.note,
+        }, ensure_ascii=False, indent=1) + "\n"
+
+    def build_html(old):
+        s = old
+        # 换所有旧域名（精确 token 替换，不碰别的域）
+        if args.old_site:
+            for pref in (args.old_site, args.old_site.replace("https://", "")):
+                s = s.replace(pref, args.site.replace("https://", "")
+                              if pref.startswith("http") else args.site)
+        s = re.sub(r'href="https://[^"/]+\.space\.mcode\.cn"',
+                   'href="%s"' % args.site, s)
+        s = re.sub(r'(版本\s*<code>)\s*\d+\s*/\s*[\d.]+(\s*</code>)',
+                   r'\g<1>%d / %s\g<2>' % (args.ver, args.vername), s)
+        s = re.sub(r'(更新于\s*<code>)[^<]*(</code>)',
+                   r'\g<1>%s\g<2>' % updated.replace("T", " ").replace("Z", "")[:16],
+                   s)
+        # 说明行（在「版本 …」那一行下面）
+        s = re.sub(r'(版本\s*<code>.*?</code>.*?<br>\s*)',
+                   lambda m: m.group(1) + args.note + "<br>\n", s, count=1, flags=re.S)
+        return s
+
+    print("== 推 shun.json ==")
+    ok, d = push_with_retry("shun.json", build_json, token)
+    print("  ✅ %s" % d.get("content", {}).get("html_url", ""))
+
+    print("== 推 shun.html ==")
+    ok, d = push_with_retry("shun.html", build_html, token)
+    print("  ✅ %s" % d.get("content", {}).get("html_url", ""))
+
+    # 复核：**回源**（Contents API），不是渲染端（Pages 有缓存延迟）
+    print("== 回源复核 ==")
+    j, _ = get_file("shun.json", token)
+    jd = json.loads(j)
+    for k in ("ver", "site", "audio", "apk"):
+        print("  %-6s %s" % (k, jd.get(k)))
+    bad = [k for k in ("site", "audio", "apk") if args.site not in str(jd.get(k, ""))]
+    if bad:
+        raise SystemExit("❌ 引导页里没换成新站：%s" % bad)
+    h, _ = get_file("shun.html", token)
+    hs = h
+    if args.old_site and args.old_site in hs:
+        raise SystemExit("❌ shun.html 里还残留旧站 %s" % args.old_site)
+    print("🟢 引导页已更新并复核通过")
+
+
+if __name__ == "__main__":
+    main()

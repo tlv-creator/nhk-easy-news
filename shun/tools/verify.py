@@ -1,1 +1,177 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIC0qLSBjb2Rpbmc6IHV0Zi04IC0qLQoiIiJ2ZXJpZnkucHkg4oCU4oCUIOWPkeeJiOWJjeeahCoq5pWw5o2u6Ieq5qOAKirvvIjlr7nlupTljp/mnaXnmoQgdG9vbHMvdmVyaWZ5LnB5ICsgdmVyaWZ5X3N5bmMucHnvvIkKCvCflLQg5Yik5o2u5YWo5piv44CM5LqL5a6e6YeP44CN77yM5LiN5piv44CM55yL6LW35p2l5a+544CN77yaCiAgICDikaAg57uT5p6E77ya5q+P6KGM6YO95pyJIHQvcnUvemgvdy9zdC9ibGsg5LqU5Liq5a2X5q61CiAgICDikaEg6KaG55uW77yacnUg6YCQ5a2X5ou85Zue5Y67ID09IHTvvIjlsJHkuIDkuKrlrZfpg73kuI3ooYzvvIkKICAgIOKRoiDntKLlvJXvvJppbmRleC5qc29uIOeahOavj+S4gOmbhumDveiDveWcqCBkYXRhL2Vwcy8g5om+5Yiw5a+55bqU5paH5Lu277yM6ZuG5Y+3L+agh+mimC/ml7bplb8v5Y+l5pWw5a+55b6X5LiKCiAgICDikaMg5ZCM5q2l77yILS1zeW5j77yJ77yaCiAgICAgICAgIMK3IOihjOaXtumXtOWNleiwg+mAkuWinuOAgeS4jemHjeWPoOOAgeihjOS4jei2iuWHuumfs+mikeaXtumVvwogICAgICAgICDCtyDnm7jpgrvooYznmoTpl7TpmpTkuI3og73lpKflvpfnprvosLHvvIg+IDEycyDih5Ig5pyJ5LiA5aSn5q615rKh5a2X5bmV77yJCiAgICAgICAgIMK3IOavj+ihjOeahOaXtumVv+imgeS5iCDiiaUgMC4zc++8jOimgeS5iOS4uuepuuihjO+8iOS4jeiuuOWHuueOsCAwIOWuveeahOihjO+8iQogICAgICAgICDCtyDlrZfluZXmgLvml7bplb8gdnMg6Z+z6aKR5pe26ZW/77yI5beuID4gMzBzIOKHkiDmnInkuIDlpKfmrrXmvI/kuobvvIkKICAgIOKRpCDpn7PpopHvvJrmiJDlk4HlrZjlnKjjgIHml7bplb/kuI7mupDlt64g4omkIDAuNXMKCueUqOazle+8mgogICAgcHl0aG9uMyB0b29scy92ZXJpZnkucHkgLS1kaXIgd2ViL2RhdGEvZXBzIC0tbGV4ZGlyIHdlYi9kYXRhL2xleGljb24KICAgIHB5dGhvbjMgdG9vbHMvdmVyaWZ5LnB5IC0tZGlyIHdlYi9kYXRhL2VwcyAtLWxleGRpciB3ZWIvZGF0YS9sZXhpY29uIC0tc3luYyAtLWF1ZGlvIHdvcmsvYXVkaW8vZXAxMy5tNGEgLS1zcmMgL3dvcmtzcGFjZS9saXZlL2VwMjc4X3NyYy5tcDMKIiIiCmltcG9ydCBhcmdwYXJzZQppbXBvcnQganNvbgppbXBvcnQgb3MKaW1wb3J0IHN1YnByb2Nlc3MKaW1wb3J0IHN5cwoKUkVRVUlSRURfUk9XX0tFWVMgPSBbInQiLCAicnUiLCAiemgiLCAidyIsICJzdCIsICJibGsiXQoKCmRlZiBmYWlsKG1zZyk6CiAgICBwcmludCgiICDinYwgJXMiICUgbXNnKQogICAgcmV0dXJuIDEKCgpkZWYgb2sobXNnKToKICAgIHByaW50KCIgIOKchSAlcyIgJSBtc2cpCiAgICByZXR1cm4gMAoKCmRlZiBjaGVja19lcChwYXRoLCBlcnJvcnMpOgogICAgdGFnID0gb3MucGF0aC5iYXNlbmFtZShwYXRoKVs6LTVdCiAgICBkID0ganNvbi5sb2FkKG9wZW4ocGF0aCkpCiAgICBucm93cyA9IDAKICAgIGZvciBjaSwgYyBpbiBlbnVtZXJhdGUoZC5nZXQoImN1ZXMiLCBbXSkpOgogICAgICAgIGZvciByaSwgciBpbiBlbnVtZXJhdGUoYy5nZXQoInJvd3MiLCBbXSkpOgogICAgICAgICAgICBucm93cyArPSAxCiAgICAgICAgICAgIGZvciBrIGluIFJFUVVJUkVEX1JPV19LRVlTOgogICAgICAgICAgICAgICAgaWYgayBub3QgaW4gcjoKICAgICAgICAgICAgICAgICAgICBlcnJvcnMuYXBwZW5kKCIlcyDnrKwlZOihjOe8uuWtl+autSAlcyIgJSAodGFnLCBjaSwgaykpCiAgICAgICAgICAgIHQgPSByLmdldCgidCIsICIiKQogICAgICAgICAgICBydSA9IHIuZ2V0KCJydSIsIFtdKQogICAgICAgICAgICBpZiAiIi5qb2luKHhbMF0gZm9yIHggaW4gcnUpICE9IHQ6CiAgICAgICAgICAgICAgICBlcnJvcnMuYXBwZW5kKCIlcyDnrKwlZOihjCBydSDmsqHopobnm5bkvY/mraPmlociICUgKHRhZywgY2kpKQogICAgICAgICAgICBpZiBub3Qgci5nZXQoInpoIiwgIiIpLnN0cmlwKCk6CiAgICAgICAgICAgICAgICBlcnJvcnMuYXBwZW5kKCIlcyDnrKwlZOihjOayoeacieS4reaWhyIgJSAodGFnLCBjaSkpCiAgICAgICAgICAgIGlmIG5vdCBpc2luc3RhbmNlKHIuZ2V0KCJibGsiKSwgbGlzdCkgb3Igbm90IHJbImJsayJdOgogICAgICAgICAgICAgICAgZXJyb3JzLmFwcGVuZCgiJXMg56ysJWTooYzmsqHmnInmlbTlj6Xnu5PmnoTlnZciICUgKHRhZywgY2kpKQogICAgcmV0dXJuIGQsIG5yb3dzCgoKZGVmIG1haW4oKToKICAgIGFwID0gYXJncGFyc2UuQXJndW1lbnRQYXJzZXIoKQogICAgYXAuYWRkX2FyZ3VtZW50KCItLWRpciIsIHJlcXVpcmVkPVRydWUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tbGV4ZGlyIiwgcmVxdWlyZWQ9VHJ1ZSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1zeW5jIiwgYWN0aW9uPSJzdG9yZV90cnVlIikKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1hdWRpbyIsIGRlZmF1bHQ9Tm9uZSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1zcmMiLCBkZWZhdWx0PU5vbmUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tb25seSIsIGRlZmF1bHQ9Tm9uZSwgaGVscD0i5Y+q5p+l5p+Q5LiA6ZuG77yIZXAxM++8iSIpCiAgICBhcmdzID0gYXAucGFyc2VfYXJncygpCgogICAgZXJyb3JzID0gW10KICAgIHByaW50KCI9PSDikaAg57uT5p6EID09IikKICAgIGlkeF9wYXRoID0gb3MucGF0aC5qb2luKGFyZ3MuZGlyLCAiaW5kZXguanNvbiIpCiAgICBpZHggPSBqc29uLmxvYWQob3BlbihpZHhfcGF0aCkpCiAgICBlcHMgPSBpZHguZ2V0KCJlcGlzb2RlcyIsIFtdKQogICAgaWYgbm90IGVwczoKICAgICAgICBlcnJvcnMuYXBwZW5kKCJpbmRleC5qc29uIOmHjOS4gOmbhumDveayoeaciSIpCiAgICBwcmludCgiICDntKLlvJUgJWQg6ZuGIiAlIGxlbihlcHMpKQoKICAgIG5yb3dzX2FsbCA9IDAKICAgIGZvciBlIGluIGVwczoKICAgICAgICBpZiBhcmdzLm9ubHkgYW5kIGUuZ2V0KCJ0YWciKSAhPSBhcmdzLm9ubHk6CiAgICAgICAgICAgIGNvbnRpbnVlCiAgICAgICAgcCA9IG9zLnBhdGguam9pbihhcmdzLmRpciwgZVsidGFnIl0gKyAiLmpzb24iKQogICAgICAgIGlmIG5vdCBvcy5wYXRoLmV4aXN0cyhwKToKICAgICAgICAgICAgZXJyb3JzLmFwcGVuZCgi57Si5byV6YeM55qEICVzIOayoeacieWvueW6lOaWh+S7tiIgJSBlWyJ0YWciXSkKICAgICAgICAgICAgY29udGludWUKICAgICAgICBkLCBucm93cyA9IGNoZWNrX2VwKHAsIGVycm9ycykKICAgICAgICBucm93c19hbGwgKz0gbnJvd3MKICAgICAgICBpZiBkLmdldCgiZXAiKSAhPSBlLmdldCgiZXAiKToKICAgICAgICAgICAgZXJyb3JzLmFwcGVuZCgiJXMg55qEIGVwIOWPt+S4jue0ouW8leS4jeespiIgJSBlWyJ0YWciXSkKICAgICAgICBpZiBkLmdldCgidGl0bGUiKSAhPSBlLmdldCgidGl0bGUiKToKICAgICAgICAgICAgZXJyb3JzLmFwcGVuZCgiJXMg55qE5qCH6aKY5LiO57Si5byV5LiN56ymIiAlIGVbInRhZyJdKQogICAgICAgIGlmIGFicyhmbG9hdChkLmdldCgiZHVyIiwgMCkpIC0gZmxvYXQoZS5nZXQoImR1ciIsIDApKSkgPiAwLjI6CiAgICAgICAgICAgIGVycm9ycy5hcHBlbmQoIiVzIOeahOaXtumVv+S4jue0ouW8leS4jeespiIgJSBlWyJ0YWciXSkKICAgICAgICBpZiBpbnQoZS5nZXQoIm4iLCAtMSkpICE9IGxlbihkLmdldCgiY3VlcyIsIFtdKSk6CiAgICAgICAgICAgIGVycm9ycy5hcHBlbmQoIiVzIOeahOWPpeaVsOS4jue0ouW8leS4jeespu+8iOe0ouW8lSAlc++8jOWunumZhSAlZO+8iSIKICAgICAgICAgICAgICAgICAgICAgICAgICAlIChlWyJ0YWciXSwgZS5nZXQoIm4iKSwgbGVuKGQuZ2V0KCJjdWVzIiwgW10pKSkpCiAgICAgICAgaWYgbm90IG9zLnBhdGguZXhpc3RzKG9zLnBhdGguam9pbihhcmdzLmRpciwgZVsidGFnIl0gKyAiLmJsay5qc29uIikpOgogICAgICAgICAgICBlcnJvcnMuYXBwZW5kKCIlcyDnvLrml4HmjILnmoQgLmJsay5qc29uIiAlIGVbInRhZyJdKQogICAgcHJpbnQoIiAg5qOA5p+l5LqGICVkIOihjCIgJSBucm93c19hbGwpCgogICAgcHJpbnQoIj09IOKRoSDor43lupMgLyDlj6XlnovooaggPT0iKQogICAgZm9yIG5hbWUgaW4gKCJ2b2NhYi5qc29uIiwgInN0eWxlcy5qc29uIiwgImdyYW1tYXIuanNvbiIpOgogICAgICAgIHAgPSBvcy5wYXRoLmpvaW4oYXJncy5sZXhkaXIsIG5hbWUpCiAgICAgICAgaWYgbm90IG9zLnBhdGguZXhpc3RzKHApOgogICAgICAgICAgICBlcnJvcnMuYXBwZW5kKCLnvLogJXMiICUgbmFtZSkKICAgICAgICAgICAgY29udGludWUKICAgICAgICBkID0ganNvbi5sb2FkKG9wZW4ocCkpCiAgICAgICAgcHJpbnQoIiAgJXPvvJolZCDmnaEiICUgKG5hbWUsIGxlbihkKSkpCiAgICBnciA9IGpzb24ubG9hZChvcGVuKG9zLnBhdGguam9pbihhcmdzLmxleGRpciwgImdyYW1tYXIuanNvbiIpKSkKICAgIGZvciBrLCB2IGluIGdyLml0ZW1zKCk6CiAgICAgICAgIyBuID0g6K+l5Y+l5Z6L5Zyo5YWo5Ymn55qEKirlh7rnjrDmrKHmlbAqKu+8m2V4cyDlj6rmmK/moLfmnKwg4oeSIG4g5Y+v5Lul5aSn5LqOIGV4cyDnmoTmnaHmlbAKICAgICAgICBpZiBpbnQodi5nZXQoIm4iLCAwKSkgPCBsZW4odi5nZXQoImV4cyIsIFtdKSk6CiAgICAgICAgICAgIGVycm9ycy5hcHBlbmQoIuWPpeWeiyAlcyDnmoQgbiglcykg5bCP5LqO5L6L5Y+l5pWwKCVkKSIgJSAoaywgdi5nZXQoIm4iKSwgbGVuKHYuZ2V0KCJleHMiLCBbXSkpKSkKICAgICAgICBpZiBub3Qgdi5nZXQoImV4Iik6CiAgICAgICAgICAgIGVycm9ycy5hcHBlbmQoIuWPpeWeiyAlcyDmsqHmnInnpLrkvovlj6UiICUgaykKCiAgICBpZiBhcmdzLnN5bmM6CiAgICAgICAgcHJpbnQoIj09IOKRoiDlrZfluZUg4oaUIOmfs+mikSDlkIzmraUgPT0iKQogICAgICAgIHRhZyA9IGFyZ3Mub25seSBvciBlcHNbMF1bInRhZyJdCiAgICAgICAgZCA9IGpzb24ubG9hZChvcGVuKG9zLnBhdGguam9pbihhcmdzLmRpciwgdGFnICsgIi5qc29uIikpKQogICAgICAgIGR1ciA9IGZsb2F0KGQuZ2V0KCJkdXIiLCAwKSkKICAgICAgICBwcmV2X2VuZCA9IC0xLjAKICAgICAgICBtYXhnYXAgPSAwLjAKICAgICAgICBmb3IgaSwgYyBpbiBlbnVtZXJhdGUoZFsiY3VlcyJdKToKICAgICAgICAgICAgcywgZSA9IGZsb2F0KGNbInMiXSksIGZsb2F0KGNbImUiXSkKICAgICAgICAgICAgaWYgZSA8PSBzOgogICAgICAgICAgICAgICAgZXJyb3JzLmFwcGVuZCgiJXMg56ysJWTooYzml7bplb/pnZ7mraPvvIglLjJmLSUuMmbvvIkiICUgKHRhZywgaSwgcywgZSkpCiAgICAgICAgICAgIGlmIHMgPCBwcmV2X2VuZCAtIDAuMDE6CiAgICAgICAgICAgICAgICBlcnJvcnMuYXBwZW5kKCIlcyDnrKwlZOihjOS4juS4iuS4gOihjOmHjeWPoO+8iCUuMmYgPCAlLjJm77yJIiAlICh0YWcsIGksIHMsIHByZXZfZW5kKSkKICAgICAgICAgICAgaWYgZSA+IGR1ciArIDEuMDoKICAgICAgICAgICAgICAgIGVycm9ycy5hcHBlbmQoIiVzIOesrCVk6KGM6LaF5Ye66Z+z6aKR5pe26ZW/77yIJS4yZiA+ICUuMmbvvIkiICUgKHRhZywgaSwgZSwgZHVyKSkKICAgICAgICAgICAgaWYgcHJldl9lbmQgPj0gMDoKICAgICAgICAgICAgICAgIGcgPSBzIC0gcHJldl9lbmQKICAgICAgICAgICAgICAgIG1heGdhcCA9IG1heChtYXhnYXAsIGcpCiAgICAgICAgICAgICAgICBpZiBnID4gMTIuMDoKICAgICAgICAgICAgICAgICAgICBlcnJvcnMuYXBwZW5kKCIlcyDnrKwlZOihjOWJjeaciSAlLjFmcyDnqbrnmb3msqHlrZfluZUiICUgKHRhZywgaSwgZykpCiAgICAgICAgICAgIHByZXZfZW5kID0gZQogICAgICAgIHByaW50KCIgIOacq+ihjOe7k+adn+S6jiAlLjJmcyAvIOmfs+mikSAlLjJmcyDvvZwg5pyA5aSn6KGM6Ze056m655m9ICUuMmZzIgogICAgICAgICAgICAgICUgKHByZXZfZW5kLCBkdXIsIG1heGdhcCkpCiAgICAgICAgaWYgcHJldl9lbmQgPCBkdXIgLSAzMDoKICAgICAgICAgICAgZXJyb3JzLmFwcGVuZCgi5a2X5bmV5Y+q5YiwICUuMWZz77yM6Z+z6aKR5pyJICUuMWZz77yIPjMwc++8ieayoeimhuebliIgJSAocHJldl9lbmQsIGR1ciAtIHByZXZfZW5kKSkKCiAgICBpZiBhcmdzLmF1ZGlvOgogICAgICAgIHByaW50KCI9PSDikaMg6Z+z6aKRID09IikKICAgICAgICBpZiBub3Qgb3MucGF0aC5leGlzdHMoYXJncy5hdWRpbyk6CiAgICAgICAgICAgIGVycm9ycy5hcHBlbmQoIuaIkOWTgemfs+mikeS4jeWtmOWcqO+8miVzIiAlIGFyZ3MuYXVkaW8pCiAgICAgICAgZWxzZToKICAgICAgICAgICAgZGVmIGR1cl9vZihwKToKICAgICAgICAgICAgICAgIG91dCA9IHN1YnByb2Nlc3MucnVuKFsiZmZwcm9iZSIsICItdiIsICJlcnJvciIsICItc2hvd19lbnRyaWVzIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiZm9ybWF0PWR1cmF0aW9uIiwgIi1vZiIsICJkZWZhdWx0PW53PTE6bms9MSIsIHBdLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc3Rkb3V0PXN1YnByb2Nlc3MuUElQRSwgc3RkZXJyPXN1YnByb2Nlc3MuREVWTlVMTCkKICAgICAgICAgICAgICAgIHRyeToKICAgICAgICAgICAgICAgICAgICByZXR1cm4gZmxvYXQob3V0LnN0ZG91dC5kZWNvZGUoKS5zdHJpcCgpKQogICAgICAgICAgICAgICAgZXhjZXB0IEV4Y2VwdGlvbjoKICAgICAgICAgICAgICAgICAgICByZXR1cm4gTm9uZQogICAgICAgICAgICBhZCA9IGR1cl9vZihhcmdzLmF1ZGlvKQogICAgICAgICAgICBwcmludCgiICDmiJDlk4Hml7bplb8gJXMiICUgYWQpCiAgICAgICAgICAgIGlmIGFyZ3Muc3JjIGFuZCBvcy5wYXRoLmV4aXN0cyhhcmdzLnNyYyk6CiAgICAgICAgICAgICAgICBzZCA9IGR1cl9vZihhcmdzLnNyYykKICAgICAgICAgICAgICAgIHByaW50KCIgIOa6kOaXtumVvyAgICVzIiAlIHNkKQogICAgICAgICAgICAgICAgaWYgYWQgYW5kIHNkIGFuZCBhYnMoYWQgLSBzZCkgPiAwLjU6CiAgICAgICAgICAgICAgICAgICAgZXJyb3JzLmFwcGVuZCgi5oiQ5ZOB5LiO5rqQ5pe26ZW/5beuICUuM2ZzID4gMC41cyIgJSBhYnMoYWQgLSBzZCkpCiAgICAgICAgICAgIGVsc2U6CiAgICAgICAgICAgICAgICBwcmludCgiICDvvIjmsqHnu5kgLS1zcmPvvIzot7Pov4fml7bplb/lr7nmr5TvvIkiKQoKICAgIHByaW50KCkKICAgIGlmIGVycm9yczoKICAgICAgICBmb3IgZSBpbiBlcnJvcnM6CiAgICAgICAgICAgIHByaW50KCLinYwgJXMiICUgZSkKICAgICAgICBwcmludCgi8J+UtCDmoKHpqozmsqHov4fvvJolZCDkuKrpl67popgiICUgbGVuKGVycm9ycykpCiAgICAgICAgc3lzLmV4aXQoMSkKICAgIHByaW50KCLwn5+iIOWFqOmDqOmAmui/hyIpCgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIG1haW4oKQo=
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""verify.py —— 发版前的**数据自检**（对应原来的 tools/verify.py + verify_sync.py）
+
+🔴 判据全是「事实量」，不是「看起来对」：
+    ① 结构：每行都有 t/ru/zh/w/st/blk 五个字段
+    ② 覆盖：ru 逐字拼回去 == t（少一个字都不行）
+    ③ 索引：index.json 的每一集都能在 data/eps/ 找到对应文件，集号/标题/时长/句数对得上
+    ④ 同步（--sync）：
+         · 行时间单调递增、不重叠、行不越出音频时长
+         · 相邻行的间隔不能大得离谱（> 12s ⇒ 有一大段没字幕）
+         · 每行的时长要么 ≥ 0.3s，要么为空行（不许出现 0 宽的行）
+         · 字幕总时长 vs 音频时长（差 > 30s ⇒ 有一大段漏了）
+    ⑤ 音频：成品存在、时长与源差 ≤ 0.5s
+
+用法：
+    python3 tools/verify.py --dir web/data/eps --lexdir web/data/lexicon
+    python3 tools/verify.py --dir web/data/eps --lexdir web/data/lexicon --sync --audio work/audio/ep13.m4a --src /workspace/live/ep278_src.mp3
+"""
+import argparse
+import json
+import os
+import subprocess
+import sys
+
+REQUIRED_ROW_KEYS = ["t", "ru", "zh", "w", "st", "blk"]
+
+
+def fail(msg):
+    print("  ❌ %s" % msg)
+    return 1
+
+
+def ok(msg):
+    print("  ✅ %s" % msg)
+    return 0
+
+
+def check_ep(path, errors):
+    tag = os.path.basename(path)[:-5]
+    d = json.load(open(path))
+    nrows = 0
+    for ci, c in enumerate(d.get("cues", [])):
+        for ri, r in enumerate(c.get("rows", [])):
+            nrows += 1
+            for k in REQUIRED_ROW_KEYS:
+                if k not in r:
+                    errors.append("%s 第%d行缺字段 %s" % (tag, ci, k))
+            t = r.get("t", "")
+            ru = r.get("ru", [])
+            if "".join(x[0] for x in ru) != t:
+                errors.append("%s 第%d行 ru 没覆盖住正文" % (tag, ci))
+            if not r.get("zh", "").strip():
+                errors.append("%s 第%d行没有中文" % (tag, ci))
+            if not isinstance(r.get("blk"), list) or not r["blk"]:
+                errors.append("%s 第%d行没有整句结构块" % (tag, ci))
+    return d, nrows
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--dir", required=True)
+    ap.add_argument("--lexdir", required=True)
+    ap.add_argument("--sync", action="store_true")
+    ap.add_argument("--audio", default=None)
+    ap.add_argument("--src", default=None)
+    ap.add_argument("--only", default=None, help="只查某一集（ep13）")
+    args = ap.parse_args()
+
+    errors = []
+    print("== ① 结构 ==")
+    idx_path = os.path.join(args.dir, "index.json")
+    idx = json.load(open(idx_path))
+    eps = idx.get("episodes", [])
+    if not eps:
+        errors.append("index.json 里一集都没有")
+    print("  索引 %d 集" % len(eps))
+
+    nrows_all = 0
+    for e in eps:
+        if args.only and e.get("tag") != args.only:
+            continue
+        p = os.path.join(args.dir, e["tag"] + ".json")
+        if not os.path.exists(p):
+            errors.append("索引里的 %s 没有对应文件" % e["tag"])
+            continue
+        d, nrows = check_ep(p, errors)
+        nrows_all += nrows
+        if d.get("ep") != e.get("ep"):
+            errors.append("%s 的 ep 号与索引不符" % e["tag"])
+        if d.get("title") != e.get("title"):
+            errors.append("%s 的标题与索引不符" % e["tag"])
+        if abs(float(d.get("dur", 0)) - float(e.get("dur", 0))) > 0.2:
+            errors.append("%s 的时长与索引不符" % e["tag"])
+        if int(e.get("n", -1)) != len(d.get("cues", [])):
+            errors.append("%s 的句数与索引不符（索引 %s，实际 %d）"
+                          % (e["tag"], e.get("n"), len(d.get("cues", []))))
+        if not os.path.exists(os.path.join(args.dir, e["tag"] + ".blk.json")):
+            errors.append("%s 缺旁挂的 .blk.json" % e["tag"])
+    print("  检查了 %d 行" % nrows_all)
+
+    print("== ② 词库 / 句型表 ==")
+    for name in ("vocab.json", "styles.json", "grammar.json"):
+        p = os.path.join(args.lexdir, name)
+        if not os.path.exists(p):
+            errors.append("缺 %s" % name)
+            continue
+        d = json.load(open(p))
+        print("  %s：%d 条" % (name, len(d)))
+    gr = json.load(open(os.path.join(args.lexdir, "grammar.json")))
+    for k, v in gr.items():
+        # n = 该句型在全剧的**出现次数**；exs 只是样本 ⇒ n 可以大于 exs 的条数
+        if int(v.get("n", 0)) < len(v.get("exs", [])):
+            errors.append("句型 %s 的 n(%s) 小于例句数(%d)" % (k, v.get("n"), len(v.get("exs", []))))
+        if not v.get("ex"):
+            errors.append("句型 %s 没有示例句" % k)
+
+    if args.sync:
+        print("== ③ 字幕 ↔ 音频 同步 ==")
+        tag = args.only or eps[0]["tag"]
+        d = json.load(open(os.path.join(args.dir, tag + ".json")))
+        dur = float(d.get("dur", 0))
+        prev_end = -1.0
+        maxgap = 0.0
+        for i, c in enumerate(d["cues"]):
+            s, e = float(c["s"]), float(c["e"])
+            if e <= s:
+                errors.append("%s 第%d行时长非正（%.2f-%.2f）" % (tag, i, s, e))
+            if s < prev_end - 0.01:
+                errors.append("%s 第%d行与上一行重叠（%.2f < %.2f）" % (tag, i, s, prev_end))
+            if e > dur + 1.0:
+                errors.append("%s 第%d行超出音频时长（%.2f > %.2f）" % (tag, i, e, dur))
+            if prev_end >= 0:
+                g = s - prev_end
+                maxgap = max(maxgap, g)
+                if g > 12.0:
+                    errors.append("%s 第%d行前有 %.1fs 空白没字幕" % (tag, i, g))
+            prev_end = e
+        print("  末行结束于 %.2fs / 音频 %.2fs ｜ 最大行间空白 %.2fs"
+              % (prev_end, dur, maxgap))
+        if prev_end < dur - 30:
+            errors.append("字幕只到 %.1fs，音频有 %.1fs（>30s）没覆盖" % (prev_end, dur - prev_end))
+
+    if args.audio:
+        print("== ④ 音频 ==")
+        if not os.path.exists(args.audio):
+            errors.append("成品音频不存在：%s" % args.audio)
+        else:
+            def dur_of(p):
+                out = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                                      "format=duration", "-of", "default=nw=1:nk=1", p],
+                                     stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+                try:
+                    return float(out.stdout.decode().strip())
+                except Exception:
+                    return None
+            ad = dur_of(args.audio)
+            print("  成品时长 %s" % ad)
+            if args.src and os.path.exists(args.src):
+                sd = dur_of(args.src)
+                print("  源时长   %s" % sd)
+                if ad and sd and abs(ad - sd) > 0.5:
+                    errors.append("成品与源时长差 %.3fs > 0.5s" % abs(ad - sd))
+            else:
+                print("  （没给 --src，跳过时长对比）")
+
+    print()
+    if errors:
+        for e in errors:
+            print("❌ %s" % e)
+        print("🔴 校验没过：%d 个问题" % len(errors))
+        sys.exit(1)
+    print("🟢 全部通过")
+
+
+if __name__ == "__main__":
+    main()

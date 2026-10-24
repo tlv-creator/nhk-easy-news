@@ -1,1 +1,67 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIC0qLSBjb2Rpbmc6IHV0Zi04IC0qLQoiIiJhc3IucHkg4oCU4oCUIOacrOWcsCBBU1LvvIhmYXN0ZXItd2hpc3BlciAvIENUcmFuc2xhdGUy77yJ77yM5Lqn5Ye65bim5pe26Ze05oiz55qE5pel5paH5YiG5q61CgrkuLrku4DkuYjoh6rlt7HlhpnvvJrljp8gdG9vbHMvYXNyLnB5IOmaj+aymeeusemHjee9ruS4ouWkse+8jOacrOiEmuacrOaMiSoq5bey5Y+R5biD5pWw5o2u55qE5aWR57qmKirph43lu7rvvJoKICAgIOWIhuautSA9IFt7c3RhcnQsIGVuZCwgdGV4dH1d77yMc3RhcnQvZW5kIOaYryoq56eSKirvvIhmbG9hdO+8iQogICAgdGV4dCAgPSDor6Xml7bpl7TmrrXnmoTml6Xmlofljp/mlofvvIjkuI3luKbmoIfngrnnlLEgd2hpc3BlciDnu5nlh7rvvJvmoIfngrnnlLHlkI7lpITnkIbooaXvvIkKCueUqOazle+8mgogICAgcHl0aG9uMyB0b29scy9hc3IucHkgLS1hdWRpbyB3b3JrL2VwMTMubXAzIC0tb3V0IHdvcmsvYXNyL2VwMTMuanNvbgoiIiIKaW1wb3J0IGFyZ3BhcnNlCmltcG9ydCBqc29uCmltcG9ydCBvcwppbXBvcnQgc3lzCgpNT0RFTF9ESVIgPSAiL3dvcmtzcGFjZS9tb2RlbHMvZnctYmFzZSIKCgpkZWYgbWFpbigpOgogICAgYXAgPSBhcmdwYXJzZS5Bcmd1bWVudFBhcnNlcigpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tYXVkaW8iLCByZXF1aXJlZD1UcnVlKQogICAgYXAuYWRkX2FyZ3VtZW50KCItLW91dCIsIHJlcXVpcmVkPVRydWUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tbW9kZWwiLCBkZWZhdWx0PU1PREVMX0RJUikKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1iZWFtIiwgdHlwZT1pbnQsIGRlZmF1bHQ9NSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1pbml0aWFsLXByb21wdCIsIGRlZmF1bHQ9IiIpCiAgICBhcmdzID0gYXAucGFyc2VfYXJncygpCgogICAgZnJvbSBmYXN0ZXJfd2hpc3BlciBpbXBvcnQgV2hpc3Blck1vZGVsCgogICAgbW9kZWwgPSBXaGlzcGVyTW9kZWwoYXJncy5tb2RlbCwgZGV2aWNlPSJjcHUiLCBjb21wdXRlX3R5cGU9ImludDgiLCBjcHVfdGhyZWFkcz0yKQogICAgc2VnbWVudHMsIGluZm8gPSBtb2RlbC50cmFuc2NyaWJlKAogICAgICAgIGFyZ3MuYXVkaW8sCiAgICAgICAgbGFuZ3VhZ2U9ImphIiwKICAgICAgICB0YXNrPSJ0cmFuc2NyaWJlIiwKICAgICAgICBiZWFtX3NpemU9YXJncy5iZWFtLAogICAgICAgIHdvcmRfdGltZXN0YW1wcz1UcnVlLAogICAgICAgIHZhZF9maWx0ZXI9RmFsc2UsCiAgICAgICAgY29uZGl0aW9uX29uX3ByZXZpb3VzX3RleHQ9RmFsc2UsCiAgICAgICAgaW5pdGlhbF9wcm9tcHQ9YXJncy5pbml0aWFsX3Byb21wdCBvciBOb25lLAogICAgKQoKICAgIG91dCA9IFtdCiAgICBmb3Igc2VnIGluIHNlZ21lbnRzOgogICAgICAgIHdvcmRzID0gW10KICAgICAgICBmb3IgdyBpbiAoc2VnLndvcmRzIG9yIFtdKToKICAgICAgICAgICAgd29yZHMuYXBwZW5kKHsicyI6IHJvdW5kKGZsb2F0KHcuc3RhcnQpLCAzKSwgImUiOiByb3VuZChmbG9hdCh3LmVuZCksIDMpLAogICAgICAgICAgICAgICAgICAgICAgICAgICJ3IjogKHcud29yZCBvciAiIikuc3RyaXAoKX0pCiAgICAgICAgb3V0LmFwcGVuZCh7CiAgICAgICAgICAgICJzdGFydCI6IHJvdW5kKGZsb2F0KHNlZy5zdGFydCksIDMpLAogICAgICAgICAgICAiZW5kIjogcm91bmQoZmxvYXQoc2VnLmVuZCksIDMpLAogICAgICAgICAgICAidGV4dCI6IChzZWcudGV4dCBvciAiIikuc3RyaXAoKSwKICAgICAgICAgICAgIndvcmRzIjogd29yZHMsCiAgICAgICAgfSkKICAgICAgICBwcmludCgiICBbJTcuMmYgLSAlNy4yZl0gJXMiICUgKHNlZy5zdGFydCwgc2VnLmVuZCwgKHNlZy50ZXh0IG9yICIiKS5zdHJpcCgpKSwKICAgICAgICAgICAgICBmaWxlPXN5cy5zdGRlcnIpCgogICAgb3MubWFrZWRpcnMob3MucGF0aC5kaXJuYW1lKG9zLnBhdGguYWJzcGF0aChhcmdzLm91dCkpLCBleGlzdF9vaz1UcnVlKQogICAgd2l0aCBvcGVuKGFyZ3Mub3V0LCAidyIsIGVuY29kaW5nPSJ1dGYtOCIpIGFzIGY6CiAgICAgICAganNvbi5kdW1wKHsiYXVkaW8iOiBhcmdzLmF1ZGlvLCAiZHVyYXRpb24iOiBmbG9hdChpbmZvLmR1cmF0aW9uKSwKICAgICAgICAgICAgICAgICAgICJzZWdtZW50cyI6IG91dH0sIGYsIGVuc3VyZV9hc2NpaT1GYWxzZSwgaW5kZW50PTEpCiAgICBwcmludCgi4pyFICVkIOautSDihpIgJXPvvIjpn7PpopEgJS4xZnPvvIkiICUgKGxlbihvdXQpLCBhcmdzLm91dCwgaW5mby5kdXJhdGlvbiksCiAgICAgICAgICBmaWxlPXN5cy5zdGRlcnIpCgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIG1haW4oKQo=
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""asr.py —— 本地 ASR（faster-whisper / CTranslate2），产出带时间戳的日文分段
+
+为什么自己写：原 tools/asr.py 随沙箱重置丢失，本脚本按**已发布数据的契约**重建：
+    分段 = [{start, end, text}]，start/end 是**秒**（float）
+    text  = 该时间段的日文原文（不带标点由 whisper 给出；标点由后处理补）
+
+用法：
+    python3 tools/asr.py --audio work/ep13.mp3 --out work/asr/ep13.json
+"""
+import argparse
+import json
+import os
+import sys
+
+MODEL_DIR = "/workspace/models/fw-base"
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--audio", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--model", default=MODEL_DIR)
+    ap.add_argument("--beam", type=int, default=5)
+    ap.add_argument("--initial-prompt", default="")
+    args = ap.parse_args()
+
+    from faster_whisper import WhisperModel
+
+    model = WhisperModel(args.model, device="cpu", compute_type="int8", cpu_threads=2)
+    segments, info = model.transcribe(
+        args.audio,
+        language="ja",
+        task="transcribe",
+        beam_size=args.beam,
+        word_timestamps=True,
+        vad_filter=False,
+        condition_on_previous_text=False,
+        initial_prompt=args.initial_prompt or None,
+    )
+
+    out = []
+    for seg in segments:
+        words = []
+        for w in (seg.words or []):
+            words.append({"s": round(float(w.start), 3), "e": round(float(w.end), 3),
+                          "w": (w.word or "").strip()})
+        out.append({
+            "start": round(float(seg.start), 3),
+            "end": round(float(seg.end), 3),
+            "text": (seg.text or "").strip(),
+            "words": words,
+        })
+        print("  [%7.2f - %7.2f] %s" % (seg.start, seg.end, (seg.text or "").strip()),
+              file=sys.stderr)
+
+    os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+    with open(args.out, "w", encoding="utf-8") as f:
+        json.dump({"audio": args.audio, "duration": float(info.duration),
+                   "segments": out}, f, ensure_ascii=False, indent=1)
+    print("✅ %d 段 → %s（音频 %.1fs）" % (len(out), args.out, info.duration),
+          file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

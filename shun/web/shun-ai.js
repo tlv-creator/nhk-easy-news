@@ -1,1 +1,132 @@
-LyohCiAqIFNodW4g5LiT5bGeIEFJIOiusuino+aOpeWFpe+8iOWfuuS6jiBhaS1jbGllbnQuanMgdjEuMu+8iQogKgogKiDkuInmnaEgU2h1biDkuJPlsZ7op4TliJnvvJoKICogICAxLiByZWZzIOW/hemhu+aYryoq5bmy5YeA5Y+w6K+NKirvvJoKICogICAgICAtIOihjOS4reeahOivu+mfs+aLrOWPt+WIoOaOie+8iFNodW4g5piv5Y2V5Lq65pKt5a6i77yM5rKh5pyJ6K+06K+d5Lq65ous5Y+35Y+v5L+d55WZ77yJCiAqICAgICAgLSAqKuaXpeaWh+WQjueymOi/nueahOiLseaWh+imgeaLhuW8gCoq77yIU2h1biDorrLkvJror53nlKjor63nmoTlm7rlrprmrrXokL3vvJoKICogICAgICAgIGDmmYLmnJ9wZXJpb2RgIC8gYOmAo+e1oeOCkuOBqOOCi3RvY29udGFjdGAg4oCU4oCUIOaooeWei+S8muWOn+agt+aKhOi/m+S+i+WPpe+8iQogKiAgIDIuIOmAkOWtl+azqOmfsyoq5a6M5YWo5LiN5L6d6LWW5qih5Z6LKirvvJrmuLLmn5PlsYLnlKggQXBwIOiHquW3seeahCBydWJ5IOihqOeUn+aIkO+8jAogKiAgICAgIOaooeWei+e7meeahOaLrOWPt+WBh+WQjeS4gOW+i+S4jeaYvuekuu+8iOmBv+WFjeS4pOWll+azqOmfs+aJk+aetu+8iQogKiAgIDMuIOmVv+WPpeaMieWtkOWPpeWIh++8iFNodW4g5LiA5Y+l6K+d6IO96K+0IDMwKyDor43vvIzmlbTlj6XkuKLnu5nmqKHlnovkvJrmlaPvvIkKICovCihmdW5jdGlvbiAoZ2xvYmFsKSB7CiAgJ3VzZSBzdHJpY3QnOwoKICB2YXIgU0hVTiA9IHt9OwoKICAvKiDilIDilIAg5riF5rSX77ya5Yig6KGM5Lit5ous5Y+35YGH5ZCNIOKUgOKUgCAqLwogIFNIVU4uY2xlYW5KYSA9IGZ1bmN0aW9uIChzKSB7CiAgICBpZiAoIXMpIHJldHVybiAnJzsKICAgIHZhciB0ID0gU3RyaW5nKHMpOwogICAgLyog6KGM5Lit55qE5ous5Y+377yI6K+76Z+z77yJ4oaSIOWIoOOAglNodW4g5peg6K+06K+d5Lq65ous5Y+377yM5omA5Lul6KGM6aaW6KGM5Lit5LiA5b6L5Yig44CCICovCiAgICB0ID0gdC5yZXBsYWNlKC9b77yIKF1b44GBLeOCk+OCoS3jg7bjg7xcc10rW++8iSldL2csICcnKTsKICAgIHJldHVybiB0LnJlcGxhY2UoL1xzKy9nLCAnICcpLnRyaW0oKTsKICB9OwoKICAvKiDilIDilIAg5ouG5YiG44CM5pel5paHICsg57KY6L+e6Iux5paH44CN4pSA4pSACiAgICog5L6L77yaYOaZguacn3BlcmlvZGAg4oaSIGDmmYLmnJ9g77ybYOmAo+e1oeOCkuOBqOOCi3RvY29udGFjdGAg4oaSIGDpgKPntaHjgpLjgajjgotgCiAgICog5L6d5o2u77ya5pel5paH6KGo5bGC5b2i5ZCO6Z2i57Sn6LefIOKJpTIg5LiqIEFTQ0lJIOWtl+avjeS4lOayoeacieepuuagvOOAggogICAqLwogIFNIVU4uc3BsaXRHbHVlZCA9IGZ1bmN0aW9uIChzKSB7CiAgICBpZiAoIXMpIHJldHVybiB7IGphOiAnJywgZW46ICcnIH07CiAgICB2YXIgdCA9IFN0cmluZyhzKTsKICAgIHZhciBtID0gdC5tYXRjaCgvXihb44GALeODv+S4gC3pv7/jgIXjgIbjg7Xjg7bjgIHjgILvvIHvvJ8hP+OAjOOAjeOAjuOAj+ODu1xzXSs/KShbQS1aYS16XXsyLH1bXHNBLVphLXpdKikkLyk7CiAgICBpZiAobSkgcmV0dXJuIHsgamE6IG1bMV0udHJpbSgpLCBlbjogbVsyXS50cmltKCkgfTsKICAgIC8qIOWPpeS4reeymOi/nu+8mmAuLi5UYWtpbmcgdC4uLmAg4oaSIOmAkOWkhOaLhiAqLwogICAgdmFyIGphID0gJycsIGVuID0gJycsIHJlc3QgPSB0OwogICAgdmFyIHJlID0gLyhb44GALeODv+S4gC3pv7/jgIXjgIbjg7Xjg7ZdKykoW0EtWmEtel17Mix9KS9nOwogICAgdmFyIGxhc3QgPSAwLCBtbTsKICAgIHdoaWxlICgobW0gPSByZS5leGVjKHJlc3QpKSAhPT0gbnVsbCkgewogICAgICBqYSArPSByZXN0LnNsaWNlKGxhc3QsIG1tLmluZGV4KSArIG1tWzFdOwogICAgICBlbiArPSAoZW4gPyAnICcgOiAnJykgKyBtbVsyXTsKICAgICAgbGFzdCA9IG1tLmluZGV4ICsgbW1bMF0ubGVuZ3RoOwogICAgfQogICAgamEgKz0gcmVzdC5zbGljZShsYXN0KTsKICAgIHJldHVybiB7IGphOiBqYS50cmltKCksIGVuOiBlbi50cmltKCkgfTsKICB9OwoKICAvKiDilIDilIAg5bmy5YeA5Y+w6K+N77ya5riF5rSXICsg5ouG57KY6L+eIOKUgOKUgCAqLwogIFNIVU4uY2xlYW5MaW5lID0gZnVuY3Rpb24gKHMpIHsKICAgIHZhciBnID0gU0hVTi5zcGxpdEdsdWVkKFNIVU4uY2xlYW5KYShzKSk7CiAgICByZXR1cm4gZy5qYTsKICB9OwoKICAvKiDilIDilIAg5a2Q5Y+l5YiH5YiG77yIU2h1biDplb/lj6XkuJPnlKjvvInilIDilIAKICAgKiDikaAg5YWI5oyJ5Y+l5pyr5qCH54K55YiHIOKRoSDlho3mjInliqnor43ovrnnlYzliIcg4pGiIOWQiOW5tuWIsCDiiaQ0MCDlrZcKICAgKi8KICBTSFVOLnNwbGl0Q2xhdXNlcyA9IGZ1bmN0aW9uIChqYSwgemgsIG1heExlbikgewogICAgbWF4TGVuID0gbWF4TGVuIHx8IDQwOwogICAgdmFyIG91dCA9IFtdOwogICAgaWYgKCFqYSkgcmV0dXJuIG91dDsKICAgIHZhciBwYXJ0cyA9IFN0cmluZyhqYSkuc3BsaXQoLyg/PD1b44CC77yB77yfIT9dKS8pOwogICAgdmFyIGJ1ZiA9ICcnOwogICAgZm9yICh2YXIgaSA9IDA7IGkgPCBwYXJ0cy5sZW5ndGg7IGkrKykgewogICAgICB2YXIgcCA9IHBhcnRzW2ldOwogICAgICBpZiAoIXApIGNvbnRpbnVlOwogICAgICBpZiAoKGJ1ZiArIHApLmxlbmd0aCA+IG1heExlbiAmJiBidWYpIHsKICAgICAgICBvdXQucHVzaChidWYpOwogICAgICAgIGJ1ZiA9IHA7CiAgICAgIH0gZWxzZSB7CiAgICAgICAgYnVmICs9IHA7CiAgICAgIH0KICAgIH0KICAgIGlmIChidWYpIG91dC5wdXNoKGJ1Zik7CiAgICAvKiDov5jmmK/lpKrplb8g4oaSIOaMieWKqeivjei+ueeVjOWGjeWIhyAqLwogICAgdmFyIGZpbmFsID0gW107CiAgICBmb3IgKHZhciBqID0gMDsgaiA8IG91dC5sZW5ndGg7IGorKykgewogICAgICB2YXIgcyA9IG91dFtqXTsKICAgICAgaWYgKHMubGVuZ3RoIDw9IG1heExlbikgeyBmaW5hbC5wdXNoKHMpOyBjb250aW51ZTsgfQogICAgICB2YXIgcGllY2VzID0gcy5zcGxpdCgvKD89W+OBjOOCkuOBr+OBq+OBp+OBqOOCguOBi+OCieOBvuOBp+OCiOOCil0pLyk7CiAgICAgIHZhciBiID0gJyc7CiAgICAgIGZvciAodmFyIGsgPSAwOyBrIDwgcGllY2VzLmxlbmd0aDsgaysrKSB7CiAgICAgICAgaWYgKChiICsgcGllY2VzW2tdKS5sZW5ndGggPiBtYXhMZW4gJiYgYikgeyBmaW5hbC5wdXNoKGIpOyBiID0gcGllY2VzW2tdOyB9CiAgICAgICAgZWxzZSBiICs9IHBpZWNlc1trXTsKICAgICAgfQogICAgICBpZiAoYikgZmluYWwucHVzaChiKTsKICAgIH0KICAgIHJldHVybiBmaW5hbC5tYXAoZnVuY3Rpb24gKHgpIHsgcmV0dXJuIHgudHJpbSgpOyB9KS5maWx0ZXIoQm9vbGVhbik7CiAgfTsKCiAgLyog4pSA4pSAIOWPluS4iuS4i+aWh++8iHByZXYvbmV4dCDlkIQg4omkMiDlj6XvvIkrIHJlZnPvvIjlkIzpm4bjgIHlubLlh4DvvInilIDilIAgKi8KICBTSFVOLmJ1aWxkQ3R4ID0gZnVuY3Rpb24gKG9wdHMpIHsKICAgIG9wdHMgPSBvcHRzIHx8IHt9OwogICAgdmFyIGxpbmVzID0gb3B0cy5saW5lcyB8fCBbXTsKICAgIHZhciBpZHggPSBvcHRzLmluZGV4IHx8IDA7CiAgICB2YXIgcHJldiA9IFtdLCBuZXh0ID0gW10sIGk7CiAgICBmb3IgKGkgPSBpZHggLSAxOyBpID49IDAgJiYgcHJldi5sZW5ndGggPCAyOyBpLS0pIHsKICAgICAgdmFyIGxwID0gbGluZXNbaV07CiAgICAgIGlmIChscCAmJiBscC5yb3cgJiYgbHAucm93LnQpIHByZXYudW5zaGlmdCh7IGphOiBTSFVOLmNsZWFuTGluZShscC5yb3cudCksIHpoOiBscC5yb3cuemggfHwgJycgfSk7CiAgICB9CiAgICBmb3IgKGkgPSBpZHggKyAxOyBpIDwgbGluZXMubGVuZ3RoICYmIG5leHQubGVuZ3RoIDwgMjsgaSsrKSB7CiAgICAgIHZhciBsbiA9IGxpbmVzW2ldOwogICAgICBpZiAobG4gJiYgbG4ucm93ICYmIGxuLnJvdy50KSBuZXh0LnB1c2goeyBqYTogU0hVTi5jbGVhbkxpbmUobG4ucm93LnQpLCB6aDogbG4ucm93LnpoIHx8ICcnIH0pOwogICAgfQogICAgLyogcmVmc++8muWQjOS4gOmbhumHjOaMkSAyfjQg5Y+lKirplb/nn63pgILkuK0qKueahOW5suWHgOWPsOivjSAqLwogICAgdmFyIHJlZnMgPSBbXSwgY2FuZHMgPSBbXTsKICAgIGZvciAoaSA9IDA7IGkgPCBsaW5lcy5sZW5ndGg7IGkrKykgewogICAgICB2YXIgTCA9IGxpbmVzW2ldOwogICAgICBpZiAoIUwgfHwgIUwucm93IHx8ICFMLnJvdy50KSBjb250aW51ZTsKICAgICAgdmFyIGNsZWFuID0gU0hVTi5jbGVhbkxpbmUoTC5yb3cudCk7CiAgICAgIGlmIChjbGVhbi5sZW5ndGggPCA4IHx8IGNsZWFuLmxlbmd0aCA+IDQ1KSBjb250aW51ZTsKICAgICAgaWYgKC9bYS16QS1aXXszLH0vLnRlc3QoY2xlYW4pKSBjb250aW51ZTsgICAvKiDlkKvoi7HmlofmrovnlZnnmoTkuI3opoEgKi8KICAgICAgY2FuZHMucHVzaCh7IGphOiBjbGVhbiwgemg6IEwucm93LnpoIHx8ICcnIH0pOwogICAgfQogICAgZm9yIChpID0gMDsgaSA8IGNhbmRzLmxlbmd0aCAmJiByZWZzLmxlbmd0aCA8IDQ7IGkrKykgewogICAgICBpZiAoaSAlIE1hdGgubWF4KDEsIE1hdGguZmxvb3IoY2FuZHMubGVuZ3RoIC8gNCkpID09PSAwKSByZWZzLnB1c2goY2FuZHNbaV0pOwogICAgfQogICAgcmV0dXJuIHsgcHJldjogcHJldiwgbmV4dDogbmV4dCwgcmVmczogcmVmcyB9OwogIH07CgogIC8qIOKUgOKUgCDpgJDlrZcgcnVieSDmn6XooajvvIjnu5nmqKHlnovovpPlh7rlgZrnuqDmraPnlKjvvJvkuLvmuLLmn5PkuI3kvp3otZblroPvvInilIDilIAgKi8KICBTSFVOLnJlYWRpbmdMb29rdXAgPSBmdW5jdGlvbiAod29yZCkgewogICAgaWYgKCF3b3JkKSByZXR1cm4gJyc7CiAgICB2YXIgbGV4ID0gKGdsb2JhbC5fX3NodW5MZXggJiYgZ2xvYmFsLl9fc2h1bkxleCgpKSB8fCB7fTsKICAgIHZhciB2ID0gbGV4LnZvY2FiIHx8IHt9OwogICAgdmFyIGUgPSB2W3dvcmRdOwogICAgaWYgKCFlKSByZXR1cm4gJyc7CiAgICByZXR1cm4gZS5yZWFkaW5nIHx8IGUuciB8fCAnJzsKICB9OwoKICBnbG9iYWwuU2h1bkFJID0gU0hVTjsKfSkodHlwZW9mIHdpbmRvdyAhPT0gJ3VuZGVmaW5lZCcgPyB3aW5kb3cgOiB0aGlzKTsK
+/*!
+ * Shun 专属 AI 讲解接入（基于 ai-client.js v1.2）
+ *
+ * 三条 Shun 专属规则：
+ *   1. refs 必须是**干净台词**：
+ *      - 行中的读音括号删掉（Shun 是单人播客，没有说话人括号可保留）
+ *      - **日文后粘连的英文要拆开**（Shun 讲会话用语的固定段落：
+ *        `時期period` / `連絡をとるtocontact` —— 模型会原样抄进例句）
+ *   2. 逐字注音**完全不依赖模型**：渲染层用 App 自己的 ruby 表生成，
+ *      模型给的括号假名一律不显示（避免两套注音打架）
+ *   3. 长句按子句切（Shun 一句话能说 30+ 词，整句丢给模型会散）
+ */
+(function (global) {
+  'use strict';
+
+  var SHUN = {};
+
+  /* ── 清洗：删行中括号假名 ── */
+  SHUN.cleanJa = function (s) {
+    if (!s) return '';
+    var t = String(s);
+    /* 行中的括号（读音）→ 删。Shun 无说话人括号，所以行首行中一律删。 */
+    t = t.replace(/[（(][ぁ-んァ-ヶー\s]+[）)]/g, '');
+    return t.replace(/\s+/g, ' ').trim();
+  };
+
+  /* ── 拆分「日文 + 粘连英文」──
+   * 例：`時期period` → `時期`；`連絡をとるtocontact` → `連絡をとる`
+   * 依据：日文表层形后面紧跟 ≥2 个 ASCII 字母且没有空格。
+   */
+  SHUN.splitGlued = function (s) {
+    if (!s) return { ja: '', en: '' };
+    var t = String(s);
+    var m = t.match(/^([぀-ヿ一-鿿々〆ヵヶ、。！？!?「」『』・\s]+?)([A-Za-z]{2,}[\sA-Za-z]*)$/);
+    if (m) return { ja: m[1].trim(), en: m[2].trim() };
+    /* 句中粘连：`...Taking t...` → 逐处拆 */
+    var ja = '', en = '', rest = t;
+    var re = /([぀-ヿ一-鿿々〆ヵヶ]+)([A-Za-z]{2,})/g;
+    var last = 0, mm;
+    while ((mm = re.exec(rest)) !== null) {
+      ja += rest.slice(last, mm.index) + mm[1];
+      en += (en ? ' ' : '') + mm[2];
+      last = mm.index + mm[0].length;
+    }
+    ja += rest.slice(last);
+    return { ja: ja.trim(), en: en.trim() };
+  };
+
+  /* ── 干净台词：清洗 + 拆粘连 ── */
+  SHUN.cleanLine = function (s) {
+    var g = SHUN.splitGlued(SHUN.cleanJa(s));
+    return g.ja;
+  };
+
+  /* ── 子句切分（Shun 长句专用）──
+   * ① 先按句末标点切 ② 再按助词边界切 ③ 合并到 ≤40 字
+   */
+  SHUN.splitClauses = function (ja, zh, maxLen) {
+    maxLen = maxLen || 40;
+    var out = [];
+    if (!ja) return out;
+    var parts = String(ja).split(/(?<=[。！？!?])/);
+    var buf = '';
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      if (!p) continue;
+      if ((buf + p).length > maxLen && buf) {
+        out.push(buf);
+        buf = p;
+      } else {
+        buf += p;
+      }
+    }
+    if (buf) out.push(buf);
+    /* 还是太长 → 按助词边界再切 */
+    var final = [];
+    for (var j = 0; j < out.length; j++) {
+      var s = out[j];
+      if (s.length <= maxLen) { final.push(s); continue; }
+      var pieces = s.split(/(?=[がをはにでともからまでより])/);
+      var b = '';
+      for (var k = 0; k < pieces.length; k++) {
+        if ((b + pieces[k]).length > maxLen && b) { final.push(b); b = pieces[k]; }
+        else b += pieces[k];
+      }
+      if (b) final.push(b);
+    }
+    return final.map(function (x) { return x.trim(); }).filter(Boolean);
+  };
+
+  /* ── 取上下文（prev/next 各 ≤2 句）+ refs（同集、干净）── */
+  SHUN.buildCtx = function (opts) {
+    opts = opts || {};
+    var lines = opts.lines || [];
+    var idx = opts.index || 0;
+    var prev = [], next = [], i;
+    for (i = idx - 1; i >= 0 && prev.length < 2; i--) {
+      var lp = lines[i];
+      if (lp && lp.row && lp.row.t) prev.unshift({ ja: SHUN.cleanLine(lp.row.t), zh: lp.row.zh || '' });
+    }
+    for (i = idx + 1; i < lines.length && next.length < 2; i++) {
+      var ln = lines[i];
+      if (ln && ln.row && ln.row.t) next.push({ ja: SHUN.cleanLine(ln.row.t), zh: ln.row.zh || '' });
+    }
+    /* refs：同一集里挑 2~4 句**长短适中**的干净台词 */
+    var refs = [], cands = [];
+    for (i = 0; i < lines.length; i++) {
+      var L = lines[i];
+      if (!L || !L.row || !L.row.t) continue;
+      var clean = SHUN.cleanLine(L.row.t);
+      if (clean.length < 8 || clean.length > 45) continue;
+      if (/[a-zA-Z]{3,}/.test(clean)) continue;   /* 含英文残留的不要 */
+      cands.push({ ja: clean, zh: L.row.zh || '' });
+    }
+    for (i = 0; i < cands.length && refs.length < 4; i++) {
+      if (i % Math.max(1, Math.floor(cands.length / 4)) === 0) refs.push(cands[i]);
+    }
+    return { prev: prev, next: next, refs: refs };
+  };
+
+  /* ── 逐字 ruby 查表（给模型输出做纠正用；主渲染不依赖它）── */
+  SHUN.readingLookup = function (word) {
+    if (!word) return '';
+    var lex = (global.__shunLex && global.__shunLex()) || {};
+    var v = lex.vocab || {};
+    var e = v[word];
+    if (!e) return '';
+    return e.reading || e.r || '';
+  };
+
+  global.ShunAI = SHUN;
+})(typeof window !== 'undefined' ? window : this);

@@ -1,1 +1,153 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIC0qLSBjb2Rpbmc6IHV0Zi04IC0qLQoiIiJ0cmFuc2xhdGVfemgucHkg4oCU4oCUIOeUqCBNaW5pTWF4IOaKiuaXpeaWh+mAkOihjOe/u+aIkOS4reaWh++8iOWIhueJh++8jOWIq+S4gOasoeWhnuWujO+8iQoK8J+UtCDkuLrku4DkuYjopoEqKuWIhueJhyoq77ya5LiA5qyh5oqKIDEwMCsg5Y+l5aGe57uZ5qih5Z6LIOKHkiDlroPkvJrmvI/lj6XjgIHkuLLooYzjgIHlrZfmlbDnvKnmsLTjgIIKICAg4oeSIOavj+eJhyB+MTUg5Y+l77yM5bim5bqP5Y+36L+b44CB5bim5bqP5Y+35Ye677yMKirlr7nkuI3kuIrlj7fnmoTnm7TmjqXliKTlpLHotKUqKu+8iOS4jeeziui/h+WOu++8ieOAggoK6aOO5qC877yI54Wn5bey5Y+R5biD5pWw5o2u77yJ77yaCiAgICDCtyDlj6Por63ljJbkuK3mlofvvIzkuIDooYzlr7nkuIDooYwKICAgIMK3IOaVsOWtl+S4pOS+p+eVmeepuuagvO+8iOOAjOesrCAyNzcg5pyf44CN44CMMeeVquOAje+8iQogICAgwrcg5LiT5pyJ5ZCN6K+NL+iLseaWh+S/neeVmeWOn+aWhwoK55So5rOV77yaCiAgICBweXRob24zIHRvb2xzL3RyYW5zbGF0ZV96aC5weSAtLWN1ZXMgd29yay9jdWVzL2VwMTNfY3Vlcy5qc29uIFwKICAgICAgICAtLW91dCB3b3JrL3poL2VwMTNfemguanNvbgoiIiIKaW1wb3J0IGFyZ3BhcnNlCmltcG9ydCBqc29uCmltcG9ydCBvcwppbXBvcnQgcmUKaW1wb3J0IHN1YnByb2Nlc3MKaW1wb3J0IHN5cwppbXBvcnQgdGltZQoKQVBJID0gImh0dHBzOi8vYXBpLm1pbmltYXguY2hhdC92MS90ZXh0L2NoYXRjb21wbGV0aW9uX3YyIgpNT0RFTCA9ICJNaW5pTWF4LVRleHQtMDEiCgpQUk9NUFQgPSAiIiLkvaDmmK/ml6Xor63nsr7or7sgQXBwIOeahOivkeiAheOAguS4i+mdoue7meS9oOiLpeW5suWPpeaXpeaWh+WPsOivje+8jOivt+mAkOWPpee/u+ivkeaIkOS4reaWh+OAggoK6KaB5rGC77yaCjEuICoq5LiA6KGM5a+55LiA6KGMKirvvIzmjInljp/pobrluo/ovpPlh7rvvIwqKuS4jeimgeWQiOW5tuOAgeS4jeimgeaLhuWIhuOAgeS4jeimgea8j+WPpSoq44CCCjIuIOi+k+WHuuagvOW8j++8muS4peagvCBKU09OIOaVsOe7hO+8jOavj+S4quWFg+e0oOaYryB7eyJpIjog5bqP5Y+3LCAiemgiOiAi5Lit5paHIn1977yM5bqP5Y+35LiO6L6T5YWl55qEIGkg5LiA6Ie044CCCjMuIOmjjuagvO+8muWPo+ivreWMluOAgeiHqueEtu+8jOWDj+iAgeW4iOiusue7mSBONSDlrabkuaDogIXlkKzvvJvkuI3opoHkuabpnaLohZTjgIIKNC4g5pWw5a2X5Lik5L6n55WZ56m65qC877yM5L6L5aaC44CM56ysIDI3NyDmnJ/jgI3jgIwx55Wq44CN44CMODAwIOS6uuOAjeOAggo1LiDoi7Hmlocv5LiT5pyJ5ZCN6K+N5L+d55WZ5Y6f5paH77yIWW91VHViZeOAgUdlbmtpIOetie+8ieOAggo2LiDor63msJTor43jgIHmhJ/lj7nvvIjjgYjjg7zjgIHjga3jg7zvvInnv7vor5HmiJDoh6rnhLbnmoTkuK3mlofor63msJTljbPlj6/jgIIKNy4g5Y+q6L6T5Ye6IEpTT04g5pWw57uE77yM5LiN6KaB5Lu75L2V6Kej6YeK5paH5a2X44CCCgrlvoXnv7vor5HnmoTlj7Dor43vvJoKe2l0ZW1zfSIiIgoKCmRlZiBjYWxsX21pbmltYXgocHJvbXB0LCByZXRyaWVzPTMpOgogICAgYm9keSA9IHsKICAgICAgICAibW9kZWwiOiBNT0RFTCwKICAgICAgICAibWVzc2FnZXMiOiBbeyJyb2xlIjogInVzZXIiLCAiY29udGVudCI6IHByb21wdH1dLAogICAgICAgICJtYXhfdG9rZW5zIjogODAwMCwKICAgICAgICAidGVtcGVyYXR1cmUiOiAwLjIsCiAgICB9CiAgICBrZXkgPSBvcy5lbnZpcm9uLmdldCgiTUlOSU1BWF9TVUJfS0VZIiwgIiIpCiAgICBmb3IgYXR0ZW1wdCBpbiByYW5nZShyZXRyaWVzKToKICAgICAgICBwID0gc3VicHJvY2Vzcy5ydW4oCiAgICAgICAgICAgIFsiY3VybCIsICItcyIsICItWCIsICJQT1NUIiwgQVBJLAogICAgICAgICAgICAgIi1IIiwgIkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvbiIsCiAgICAgICAgICAgICAiLUgiLCAiQXV0aG9yaXphdGlvbjogQmVhcmVyICIgKyBrZXksCiAgICAgICAgICAgICAiLWQiLCBqc29uLmR1bXBzKGJvZHksIGVuc3VyZV9hc2NpaT1GYWxzZSldLAogICAgICAgICAgICBzdGRvdXQ9c3VicHJvY2Vzcy5QSVBFLCBzdGRlcnI9c3VicHJvY2Vzcy5QSVBFLCB0aW1lb3V0PTMwMCkKICAgICAgICB0cnk6CiAgICAgICAgICAgIGQgPSBqc29uLmxvYWRzKHAuc3Rkb3V0LmRlY29kZSgpKQogICAgICAgIGV4Y2VwdCBFeGNlcHRpb246CiAgICAgICAgICAgIHRpbWUuc2xlZXAoMikKICAgICAgICAgICAgY29udGludWUKICAgICAgICBjaCA9IGQuZ2V0KCJjaG9pY2VzIikKICAgICAgICBpZiBjaDoKICAgICAgICAgICAgcmV0dXJuIGNoWzBdWyJtZXNzYWdlIl1bImNvbnRlbnQiXQogICAgICAgIGVyciA9IGQuZ2V0KCJiYXNlX3Jlc3AiLCBkKQogICAgICAgIHByaW50KCIgIOKaoO+4jyBBUEk6ICVzIiAlIHN0cihlcnIpWzoxMjBdLCBmaWxlPXN5cy5zdGRlcnIpCiAgICAgICAgdGltZS5zbGVlcCgyKQogICAgcmFpc2UgUnVudGltZUVycm9yKCJNaW5pTWF4IOiwg+eUqOWksei0pSIpCgoKZGVmIHBhcnNlX2l0ZW1zKHRleHQpOgogICAgIiIi5LuO5qih5Z6L6L6T5Ye66YeM5oqg5Ye6IEpTT04g5pWw57uEIiIiCiAgICBtID0gcmUuc2VhcmNoKHIiXFsuKlxdIiwgdGV4dCwgcmUuUykKICAgIGlmIG5vdCBtOgogICAgICAgIHJldHVybiBOb25lCiAgICB0cnk6CiAgICAgICAgcmV0dXJuIGpzb24ubG9hZHMobS5ncm91cCgwKSkKICAgIGV4Y2VwdCBFeGNlcHRpb246CiAgICAgICAgIyDluLjop4HlnY/ms5XvvJrlsL7pgJflj7cgLyDljZXlvJXlj7cKICAgICAgICBzID0gbS5ncm91cCgwKQogICAgICAgIHMgPSByZS5zdWIociIsXHMqKFtcXX1dKSIsIHIiXDEiLCBzKQogICAgICAgIHRyeToKICAgICAgICAgICAgcmV0dXJuIGpzb24ubG9hZHMocykKICAgICAgICBleGNlcHQgRXhjZXB0aW9uOgogICAgICAgICAgICByZXR1cm4gTm9uZQoKCmRlZiBtYWluKCk6CiAgICBhcCA9IGFyZ3BhcnNlLkFyZ3VtZW50UGFyc2VyKCkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1jdWVzIiwgcmVxdWlyZWQ9VHJ1ZSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1vdXQiLCByZXF1aXJlZD1UcnVlKQogICAgYXAuYWRkX2FyZ3VtZW50KCItLXNoYXJkIiwgdHlwZT1pbnQsIGRlZmF1bHQ9MTUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tb25seS1taXNzaW5nIiwgYWN0aW9uPSJzdG9yZV90cnVlIikKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1yZXVzZSIsIGRlZmF1bHQ9Tm9uZSwKICAgICAgICAgICAgICAgICAgICBoZWxwPSLml6fnv7vor5Hmlofku7bvvJrmjIkqKuaXpeaWh+WOn+aWhyoq5aSN55So77yI6KGM5bqP5Y+Y5LqG5Lmf6IO95aSN55So77yJIikKICAgIGFyZ3MgPSBhcC5wYXJzZV9hcmdzKCkKCiAgICBjdWVzID0ganNvbi5sb2FkKG9wZW4oYXJncy5jdWVzKSlbImN1ZXMiXQogICAgb3V0X3BhdGggPSBhcmdzLm91dAogICAgZG9uZSA9IHt9CiAgICBpZiBhcmdzLm9ubHlfbWlzc2luZyBhbmQgb3MucGF0aC5leGlzdHMob3V0X3BhdGgpOgogICAgICAgIGRvbmUgPSB7c3RyKGspOiB2IGZvciBrLCB2IGluIGpzb24ubG9hZChvcGVuKG91dF9wYXRoKSkuaXRlbXMoKX0KCiAgICBpZiBhcmdzLnJldXNlIGFuZCBvcy5wYXRoLmV4aXN0cyhhcmdzLnJldXNlKToKICAgICAgICBvbGQgPSBqc29uLmxvYWQob3BlbihhcmdzLnJldXNlKSkKICAgICAgICBvbGRjdWVzID0ganNvbi5sb2FkKG9wZW4oYXJncy5yZXVzZS5yZXBsYWNlKCIvemgvIiwgIi9jdWVzLyIpKSlbImN1ZXMiXSBcCiAgICAgICAgICAgIGlmIG9zLnBhdGguZXhpc3RzKGFyZ3MucmV1c2UucmVwbGFjZSgiL3poLyIsICIvY3Vlcy8iKSkgZWxzZSBOb25lCiAgICAgICAgaWYgb2xkY3VlczoKICAgICAgICAgICAgamEyemggPSB7b2xkY3Vlc1tpbnQoayldWyJ0Il06IHYgZm9yIGssIHYgaW4gb2xkLml0ZW1zKCkKICAgICAgICAgICAgICAgICAgICAgaWYgaW50KGspIDwgbGVuKG9sZGN1ZXMpfQogICAgICAgICAgICBmb3IgaSwgYyBpbiBlbnVtZXJhdGUoY3Vlcyk6CiAgICAgICAgICAgICAgICBpZiBzdHIoaSkgbm90IGluIGRvbmUgYW5kIGNbInQiXSBpbiBqYTJ6aDoKICAgICAgICAgICAgICAgICAgICBkb25lW3N0cihpKV0gPSBqYTJ6aFtjWyJ0Il1dCiAgICAgICAgICAgICAgICAgICAgcHJpbnQoIiAg4pm777iPIOWkjeeUqCAlZCIgJSBpLCBmaWxlPXN5cy5zdGRlcnIpCiAgICB0b2RvID0gW2kgZm9yIGkgaW4gcmFuZ2UobGVuKGN1ZXMpKSBpZiBzdHIoaSkgbm90IGluIGRvbmVdCiAgICBwcmludCgi5b6F57+76K+RICVkIOWPpe+8iOW3suaciSAlZCDlj6XvvIkiICUgKGxlbih0b2RvKSwgbGVuKGRvbmUpKSwgZmlsZT1zeXMuc3RkZXJyKQoKICAgIGZvciBzIGluIHJhbmdlKDAsIGxlbih0b2RvKSwgYXJncy5zaGFyZCk6CiAgICAgICAgcGFydCA9IHRvZG9bczpzICsgYXJncy5zaGFyZF0KICAgICAgICBpdGVtcyA9ICJcbiIuam9pbigneyJpIjogJWQsICJqYSI6ICVzfScgJSAoaSwganNvbi5kdW1wcyhjdWVzW2ldWyJ0Il0sIGVuc3VyZV9hc2NpaT1GYWxzZSkpCiAgICAgICAgICAgICAgICAgICAgICAgICAgZm9yIGkgaW4gcGFydCkKICAgICAgICByZXNwID0gY2FsbF9taW5pbWF4KFBST01QVC5mb3JtYXQoaXRlbXM9aXRlbXMpKQogICAgICAgIGFyciA9IHBhcnNlX2l0ZW1zKHJlc3ApCiAgICAgICAgaWYgbm90IGFycjoKICAgICAgICAgICAgcHJpbnQoIiAg4p2MIOesrCAlZCDniYfop6PmnpDlpLHotKXvvIzljp/moLfovpPlh7rliY0gMzAwIOWtl++8miVyIiAlIChzLCByZXNwWzozMDBdKSwKICAgICAgICAgICAgICAgICAgZmlsZT1zeXMuc3RkZXJyKQogICAgICAgICAgICBjb250aW51ZQogICAgICAgIGdvdCA9IHt9CiAgICAgICAgZm9yIHggaW4gYXJyOgogICAgICAgICAgICB0cnk6CiAgICAgICAgICAgICAgICBnb3RbaW50KHhbImkiXSldID0gc3RyKHhbInpoIl0pLnN0cmlwKCkKICAgICAgICAgICAgZXhjZXB0IEV4Y2VwdGlvbjoKICAgICAgICAgICAgICAgIGNvbnRpbnVlCiAgICAgICAgbWlzc2luZyA9IFtpIGZvciBpIGluIHBhcnQgaWYgaSBub3QgaW4gZ290XQogICAgICAgIGZvciBpIGluIHBhcnQ6CiAgICAgICAgICAgIGlmIGkgaW4gZ290OgogICAgICAgICAgICAgICAgZG9uZVtzdHIoaSldID0gZ290W2ldCiAgICAgICAgcHJpbnQoIiAg54mHICUyZDog5ou/5YiwICVkLyVkIOWPpSVzIgogICAgICAgICAgICAgICUgKHMgLy8gYXJncy5zaGFyZCwgbGVuKHBhcnQpIC0gbGVuKG1pc3NpbmcpLCBsZW4ocGFydCksCiAgICAgICAgICAgICAgICAgKCIgIOe8uiAlcyIgJSBtaXNzaW5nKSBpZiBtaXNzaW5nIGVsc2UgIiIpLCBmaWxlPXN5cy5zdGRlcnIpCiAgICAgICAgb3MubWFrZWRpcnMob3MucGF0aC5kaXJuYW1lKG9zLnBhdGguYWJzcGF0aChvdXRfcGF0aCkpLCBleGlzdF9vaz1UcnVlKQogICAgICAgIHdpdGggb3BlbihvdXRfcGF0aCwgInciLCBlbmNvZGluZz0idXRmLTgiKSBhcyBmOgogICAgICAgICAgICBqc29uLmR1bXAoZG9uZSwgZiwgZW5zdXJlX2FzY2lpPUZhbHNlLCBpbmRlbnQ9MSkKCiAgICBoYXZlID0gc3VtKDEgZm9yIGkgaW4gcmFuZ2UobGVuKGN1ZXMpKSBpZiBzdHIoaSkgaW4gZG9uZSkKICAgIHByaW50KCLinIUgJWQvJWQg5Y+l5bey57+76K+RIOKGkiAlcyIgJSAoaGF2ZSwgbGVuKGN1ZXMpLCBvdXRfcGF0aCksIGZpbGU9c3lzLnN0ZGVycikKICAgIGlmIGhhdmUgPCBsZW4oY3Vlcyk6CiAgICAgICAgc3lzLmV4aXQoMSkKCgppZiBfX25hbWVfXyA9PSAiX19tYWluX18iOgogICAgbWFpbigpCg==
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""translate_zh.py —— 用 MiniMax 把日文逐行翻成中文（分片，别一次塞完）
+
+🔴 为什么要**分片**：一次把 100+ 句塞给模型 ⇒ 它会漏句、串行、字数缩水。
+   ⇒ 每片 ~15 句，带序号进、带序号出，**对不上号的直接判失败**（不糊过去）。
+
+风格（照已发布数据）：
+    · 口语化中文，一行对一行
+    · 数字两侧留空格（「第 277 期」「1番」）
+    · 专有名词/英文保留原文
+
+用法：
+    python3 tools/translate_zh.py --cues work/cues/ep13_cues.json \
+        --out work/zh/ep13_zh.json
+"""
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+
+API = "https://api.minimax.chat/v1/text/chatcompletion_v2"
+MODEL = "MiniMax-Text-01"
+
+PROMPT = """你是日语精读 App 的译者。下面给你若干句日文台词，请逐句翻译成中文。
+
+要求：
+1. **一行对一行**，按原顺序输出，**不要合并、不要拆分、不要漏句**。
+2. 输出格式：严格 JSON 数组，每个元素是 {{"i": 序号, "zh": "中文"}}，序号与输入的 i 一致。
+3. 风格：口语化、自然，像老师讲给 N5 学习者听；不要书面腔。
+4. 数字两侧留空格，例如「第 277 期」「1番」「800 人」。
+5. 英文/专有名词保留原文（YouTube、Genki 等）。
+6. 语气词、感叹（えー、ねー）翻译成自然的中文语气即可。
+7. 只输出 JSON 数组，不要任何解释文字。
+
+待翻译的台词：
+{items}"""
+
+
+def call_minimax(prompt, retries=3):
+    body = {
+        "model": MODEL,
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": 8000,
+        "temperature": 0.2,
+    }
+    key = os.environ.get("MINIMAX_SUB_KEY", "")
+    for attempt in range(retries):
+        p = subprocess.run(
+            ["curl", "-s", "-X", "POST", API,
+             "-H", "Content-Type: application/json",
+             "-H", "Authorization: Bearer " + key,
+             "-d", json.dumps(body, ensure_ascii=False)],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=300)
+        try:
+            d = json.loads(p.stdout.decode())
+        except Exception:
+            time.sleep(2)
+            continue
+        ch = d.get("choices")
+        if ch:
+            return ch[0]["message"]["content"]
+        err = d.get("base_resp", d)
+        print("  ⚠️ API: %s" % str(err)[:120], file=sys.stderr)
+        time.sleep(2)
+    raise RuntimeError("MiniMax 调用失败")
+
+
+def parse_items(text):
+    """从模型输出里抠出 JSON 数组"""
+    m = re.search(r"\[.*\]", text, re.S)
+    if not m:
+        return None
+    try:
+        return json.loads(m.group(0))
+    except Exception:
+        # 常见坏法：尾逗号 / 单引号
+        s = m.group(0)
+        s = re.sub(r",\s*([\]}])", r"\1", s)
+        try:
+            return json.loads(s)
+        except Exception:
+            return None
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--cues", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--shard", type=int, default=15)
+    ap.add_argument("--only-missing", action="store_true")
+    ap.add_argument("--reuse", default=None,
+                    help="旧翻译文件：按**日文原文**复用（行序变了也能复用）")
+    args = ap.parse_args()
+
+    cues = json.load(open(args.cues))["cues"]
+    out_path = args.out
+    done = {}
+    if args.only_missing and os.path.exists(out_path):
+        done = {str(k): v for k, v in json.load(open(out_path)).items()}
+
+    if args.reuse and os.path.exists(args.reuse):
+        old = json.load(open(args.reuse))
+        oldcues = json.load(open(args.reuse.replace("/zh/", "/cues/")))["cues"] \
+            if os.path.exists(args.reuse.replace("/zh/", "/cues/")) else None
+        if oldcues:
+            ja2zh = {oldcues[int(k)]["t"]: v for k, v in old.items()
+                     if int(k) < len(oldcues)}
+            for i, c in enumerate(cues):
+                if str(i) not in done and c["t"] in ja2zh:
+                    done[str(i)] = ja2zh[c["t"]]
+                    print("  ♻️ 复用 %d" % i, file=sys.stderr)
+    todo = [i for i in range(len(cues)) if str(i) not in done]
+    print("待翻译 %d 句（已有 %d 句）" % (len(todo), len(done)), file=sys.stderr)
+
+    for s in range(0, len(todo), args.shard):
+        part = todo[s:s + args.shard]
+        items = "\n".join('{"i": %d, "ja": %s}' % (i, json.dumps(cues[i]["t"], ensure_ascii=False))
+                          for i in part)
+        resp = call_minimax(PROMPT.format(items=items))
+        arr = parse_items(resp)
+        if not arr:
+            print("  ❌ 第 %d 片解析失败，原样输出前 300 字：%r" % (s, resp[:300]),
+                  file=sys.stderr)
+            continue
+        got = {}
+        for x in arr:
+            try:
+                got[int(x["i"])] = str(x["zh"]).strip()
+            except Exception:
+                continue
+        missing = [i for i in part if i not in got]
+        for i in part:
+            if i in got:
+                done[str(i)] = got[i]
+        print("  片 %2d: 拿到 %d/%d 句%s"
+              % (s // args.shard, len(part) - len(missing), len(part),
+                 ("  缺 %s" % missing) if missing else ""), file=sys.stderr)
+        os.makedirs(os.path.dirname(os.path.abspath(out_path)), exist_ok=True)
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(done, f, ensure_ascii=False, indent=1)
+
+    have = sum(1 for i in range(len(cues)) if str(i) in done)
+    print("✅ %d/%d 句已翻译 → %s" % (have, len(cues), out_path), file=sys.stderr)
+    if have < len(cues):
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

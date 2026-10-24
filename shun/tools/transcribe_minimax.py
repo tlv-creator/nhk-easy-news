@@ -1,1 +1,96 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIC0qLSBjb2Rpbmc6IHV0Zi04IC0qLQoiIiJ0cmFuc2NyaWJlX21pbmltYXgucHkg4oCU4oCUIOeUqCBNaW5pTWF4IOeahOWQrOWGmeaOpeWPo+mAkOWdl+i9rOWGme+8iOaLv+W5suWHgOaXpeaWhyArIOWIhuWdl+aXtumXtOmUmueCue+8iQoK5Li65LuA5LmI5LiN55So5pys5ZywIEFTUiDnmoTmlofmnKzvvJrmnKzlnLAgQVNS77yId2hpc3BlciBiYXNl77yJ5pe26Ze05YeG5L2GKirlrZfplJkqKu+8iOWmguOAjOOCt+ODpeODs+ODiOOAjeOAgQrmvI/moIfngrnvvInvvJtNaW5pTWF4IOeahOaWh+acrOWHhuS9hioq5rKh5pyJ5pe26Ze05oizKirjgIIK4oeSIOS4pOiAhemFjeWQiO+8mk1pbmlNYXgg57uZ5paH5pys77yMd2hpc3BlciDnu5nml7bpl7TvvIzlnZfnuqflr7npvZDvvIhjaHVuayBhbmNob3LvvInpgb/lhY3plb/nqIvmvILnp7vjgIIKCueUqOazle+8mgogICAgcHl0aG9uMyB0b29scy90cmFuc2NyaWJlX21pbmltYXgucHkgLS1hdWRpbyB3b3JrL2VwMTMubXAzIFwKICAgICAgICAtLWFzciB3b3JrL2Fzci9lcDEzLmpzb24gLS1vdXQgd29yay9hc3IvZXAxM19tbS5qc29uCiIiIgppbXBvcnQgYXJncGFyc2UKaW1wb3J0IGpzb24KaW1wb3J0IG9zCmltcG9ydCBzdWJwcm9jZXNzCmltcG9ydCBzeXMKaW1wb3J0IHRlbXBmaWxlCgpTSVRFID0gImh0dHBzOi8vYm84dTY5aGR3NTh0NC5zcGFjZS5tY29kZS5jbiIgICMg5Y+q5L2c5Y2g5L2N77yM55yf5q2j55So55qE5pivIG1jb2RlLXRvb2xzCgoKZGVmIGN1dF9jaHVuayhhdWRpbywgc3RhcnQsIGVuZCwgb3V0KToKICAgIGNtZCA9IFsiZmZtcGVnIiwgIi1oaWRlX2Jhbm5lciIsICItbG9nbGV2ZWwiLCAiZXJyb3IiLCAiLXNzIiwgIiUuM2YiICUgc3RhcnQsCiAgICAgICAgICAgIi10byIsICIlLjNmIiAlIGVuZCwgIi1pIiwgYXVkaW8sICItYzphIiwgImxpYm1wM2xhbWUiLCAiLWI6YSIsICI2NGsiLAogICAgICAgICAgICItYXIiLCAiNDQxMDAiLCAiLWFjIiwgIjEiLCBvdXQsICIteSJdCiAgICBzdWJwcm9jZXNzLnJ1bihjbWQsIGNoZWNrPVRydWUsIHN0ZG91dD1zdWJwcm9jZXNzLkRFVk5VTEwsIHN0ZGVycj1zdWJwcm9jZXNzLkRFVk5VTEwpCgoKZGVmIHVwbG9hZChwYXRoKToKICAgIHAgPSBzdWJwcm9jZXNzLnJ1bihbIm1jb2RlLXRvb2xzIiwgInVwbG9hZC10ZW1wLXVybCIsIHBhdGhdLAogICAgICAgICAgICAgICAgICAgICAgIHN0ZG91dD1zdWJwcm9jZXNzLlBJUEUsIHN0ZGVycj1zdWJwcm9jZXNzLlBJUEUsIGNoZWNrPVRydWUpCiAgICByZXR1cm4ganNvbi5sb2FkcyhwLnN0ZG91dC5kZWNvZGUoKSlbInRlbXBfdXJsIl0KCgpkZWYgbGlzdGVuKHVybCk6CiAgICBhcmdzID0ganNvbi5kdW1wcyh7ImF1ZGlvX2luZm8iOiB7InVybCI6IHVybCwgIm1pbWVfdHlwZSI6ICJhdWRpby9tcGVnIn19LAogICAgICAgICAgICAgICAgICAgICAgZW5zdXJlX2FzY2lpPUZhbHNlKQogICAgcCA9IHN1YnByb2Nlc3MucnVuKFsibWNvZGUtdG9vbHMiLCAiY29ubmVjdG9yIiwgImNhbGwiLAogICAgICAgICAgICAgICAgICAgICAgICAiY29ubmVjdG9yX19tYXRyaXhfX2xpc3Rlbl9hdWRpbyIsICItLWFyZ3MiLCBhcmdzXSwKICAgICAgICAgICAgICAgICAgICAgICBzdGRvdXQ9c3VicHJvY2Vzcy5QSVBFLCBzdGRlcnI9c3VicHJvY2Vzcy5QSVBFLCBjaGVjaz1UcnVlKQogICAgZCA9IGpzb24ubG9hZHMocC5zdGRvdXQuZGVjb2RlKCkpCiAgICBpZiBkLmdldCgiY29kZSIpIG5vdCBpbiAoMCwgTm9uZSk6CiAgICAgICAgcmFpc2UgUnVudGltZUVycm9yKCJsaXN0ZW5fYXVkaW8gZmFpbGVkOiAlcyIgJSBkLmdldCgibWVzc2FnZSIpKQogICAgcmV0dXJuIChkLmdldCgidHJhbnNjcmlwdGlvbiIpIG9yICIiKS5zdHJpcCgpCgoKZGVmIG1haW4oKToKICAgIGFwID0gYXJncGFyc2UuQXJndW1lbnRQYXJzZXIoKQogICAgYXAuYWRkX2FyZ3VtZW50KCItLWF1ZGlvIiwgcmVxdWlyZWQ9VHJ1ZSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1hc3IiLCByZXF1aXJlZD1UcnVlKQogICAgYXAuYWRkX2FyZ3VtZW50KCItLW91dCIsIHJlcXVpcmVkPVRydWUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tY2h1bmstc2VjIiwgdHlwZT1mbG9hdCwgZGVmYXVsdD03MC4wKQogICAgYXJncyA9IGFwLnBhcnNlX2FyZ3MoKQoKICAgIGFzciA9IGpzb24ubG9hZChvcGVuKGFyZ3MuYXNyKSkKICAgIHNlZ3MgPSBhc3JbInNlZ21lbnRzIl0KCiAgICBjaHVua3MgPSBbXQogICAgY3VyID0gW10KICAgIGZvciBzIGluIHNlZ3M6CiAgICAgICAgY3VyLmFwcGVuZChzKQogICAgICAgIGlmIHNbImVuZCJdIC0gY3VyWzBdWyJzdGFydCJdID49IGFyZ3MuY2h1bmtfc2VjOgogICAgICAgICAgICBjaHVua3MuYXBwZW5kKGN1cikKICAgICAgICAgICAgY3VyID0gW10KICAgIGlmIGN1cjoKICAgICAgICBjaHVua3MuYXBwZW5kKGN1cikKCiAgICBvdXQgPSBbXQogICAgdG1wZCA9IHRlbXBmaWxlLm1rZHRlbXAocHJlZml4PSJtbWNodW5rXyIpCiAgICBmb3IgaSwgY2ggaW4gZW51bWVyYXRlKGNodW5rcyk6CiAgICAgICAgc3RhcnQgPSBtYXgoMC4wLCBjaFswXVsic3RhcnQiXSAtIDAuMjUpCiAgICAgICAgZW5kID0gbWluKGFzclsiZHVyYXRpb24iXSwgY2hbLTFdWyJlbmQiXSArIDAuMjUpCiAgICAgICAgcGF0aCA9IG9zLnBhdGguam9pbih0bXBkLCAiYyUwM2QubXAzIiAlIGkpCiAgICAgICAgY3V0X2NodW5rKGFyZ3MuYXVkaW8sIHN0YXJ0LCBlbmQsIHBhdGgpCiAgICAgICAgdXJsID0gdXBsb2FkKHBhdGgpCiAgICAgICAgdHJ5OgogICAgICAgICAgICB0ZXh0ID0gbGlzdGVuKHVybCkKICAgICAgICBleGNlcHQgRXhjZXB0aW9uIGFzIGU6ICAjIG5vcWE6IEJMRTAwMQogICAgICAgICAgICBwcmludCgiICDinYwgY2h1bmsgJWQg5aSx6LSlOiAlcyIgJSAoaSwgZSksIGZpbGU9c3lzLnN0ZGVycikKICAgICAgICAgICAgdGV4dCA9ICIiCiAgICAgICAgb3V0LmFwcGVuZCh7InN0YXJ0Ijogcm91bmQoc3RhcnQsIDMpLCAiZW5kIjogcm91bmQoZW5kLCAzKSwKICAgICAgICAgICAgICAgICAgICAidGV4dCI6IHRleHQsICJpZHgiOiBpfSkKICAgICAgICBwcmludCgiICBjaHVuayAlMmQgWyU3LjJmLSU3LjJmXSAlZCDlrZciICUgKGksIHN0YXJ0LCBlbmQsIGxlbih0ZXh0KSksCiAgICAgICAgICAgICAgZmlsZT1zeXMuc3RkZXJyKQogICAgICAgIG9zLnJlbW92ZShwYXRoKQogICAgb3Mucm1kaXIodG1wZCkKCiAgICBvcy5tYWtlZGlycyhvcy5wYXRoLmRpcm5hbWUob3MucGF0aC5hYnNwYXRoKGFyZ3Mub3V0KSksIGV4aXN0X29rPVRydWUpCiAgICB3aXRoIG9wZW4oYXJncy5vdXQsICJ3IiwgZW5jb2Rpbmc9InV0Zi04IikgYXMgZjoKICAgICAgICBqc29uLmR1bXAoeyJhdWRpbyI6IGFyZ3MuYXVkaW8sICJjaHVua3MiOiBvdXR9LCBmLCBlbnN1cmVfYXNjaWk9RmFsc2UsIGluZGVudD0xKQogICAgcHJpbnQoIuKchSAlZCDlnZcg4oaSICVzIiAlIChsZW4ob3V0KSwgYXJncy5vdXQpLCBmaWxlPXN5cy5zdGRlcnIpCgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIG1haW4oKQo=
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""transcribe_minimax.py —— 用 MiniMax 的听写接口逐块转写（拿干净日文 + 分块时间锚点）
+
+为什么不用本地 ASR 的文本：本地 ASR（whisper base）时间准但**字错**（如「シュント」、
+漏标点）；MiniMax 的文本准但**没有时间戳**。
+⇒ 两者配合：MiniMax 给文本，whisper 给时间，块级对齐（chunk anchor）避免长程漂移。
+
+用法：
+    python3 tools/transcribe_minimax.py --audio work/ep13.mp3 \
+        --asr work/asr/ep13.json --out work/asr/ep13_mm.json
+"""
+import argparse
+import json
+import os
+import subprocess
+import sys
+import tempfile
+
+SITE = "https://bo8u69hdw58t4.space.mcode.cn"  # 只作占位，真正用的是 mcode-tools
+
+
+def cut_chunk(audio, start, end, out):
+    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-ss", "%.3f" % start,
+           "-to", "%.3f" % end, "-i", audio, "-c:a", "libmp3lame", "-b:a", "64k",
+           "-ar", "44100", "-ac", "1", out, "-y"]
+    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
+def upload(path):
+    p = subprocess.run(["mcode-tools", "upload-temp-url", path],
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+    return json.loads(p.stdout.decode())["temp_url"]
+
+
+def listen(url):
+    args = json.dumps({"audio_info": {"url": url, "mime_type": "audio/mpeg"}},
+                      ensure_ascii=False)
+    p = subprocess.run(["mcode-tools", "connector", "call",
+                        "connector__matrix__listen_audio", "--args", args],
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+    d = json.loads(p.stdout.decode())
+    if d.get("code") not in (0, None):
+        raise RuntimeError("listen_audio failed: %s" % d.get("message"))
+    return (d.get("transcription") or "").strip()
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--audio", required=True)
+    ap.add_argument("--asr", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--chunk-sec", type=float, default=70.0)
+    args = ap.parse_args()
+
+    asr = json.load(open(args.asr))
+    segs = asr["segments"]
+
+    chunks = []
+    cur = []
+    for s in segs:
+        cur.append(s)
+        if s["end"] - cur[0]["start"] >= args.chunk_sec:
+            chunks.append(cur)
+            cur = []
+    if cur:
+        chunks.append(cur)
+
+    out = []
+    tmpd = tempfile.mkdtemp(prefix="mmchunk_")
+    for i, ch in enumerate(chunks):
+        start = max(0.0, ch[0]["start"] - 0.25)
+        end = min(asr["duration"], ch[-1]["end"] + 0.25)
+        path = os.path.join(tmpd, "c%03d.mp3" % i)
+        cut_chunk(args.audio, start, end, path)
+        url = upload(path)
+        try:
+            text = listen(url)
+        except Exception as e:  # noqa: BLE001
+            print("  ❌ chunk %d 失败: %s" % (i, e), file=sys.stderr)
+            text = ""
+        out.append({"start": round(start, 3), "end": round(end, 3),
+                    "text": text, "idx": i})
+        print("  chunk %2d [%7.2f-%7.2f] %d 字" % (i, start, end, len(text)),
+              file=sys.stderr)
+        os.remove(path)
+    os.rmdir(tmpd)
+
+    os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+    with open(args.out, "w", encoding="utf-8") as f:
+        json.dump({"audio": args.audio, "chunks": out}, f, ensure_ascii=False, indent=1)
+    print("✅ %d 块 → %s" % (len(out), args.out), file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

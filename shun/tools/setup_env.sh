@@ -1,1 +1,92 @@
-IyEvdXNyL2Jpbi9lbnYgYmFzaAojIHNldHVwX2Vudi5zaCDigJTigJQg5rKZ566x6YeN572u5ZCOKiroh6rmhIgqKu+8muaKiumhueebruOAgeS+nei1luOAgeaooeWei+OAgeWFseS6q+W3peWFt+mDveWHhuWkh+WlvQojCiMg8J+UtCDkuLrku4DkuYjlv4XpobvmnInov5nkuKrvvJrmspnnrrHmr4/lkajph43nva7kuIDmrKHvvIzpobnnm67jgIF2ZW5244CB5qih5Z6L5YWo5rKhIOKHkiDkuI3oh6rmhIjlsLHlvpfku47lpLTph43lu7rnrqHnur/jgIIKIyAgICDmnKzohJrmnKzlj6rlgZrjgIznjq/looPlh4blpIfjgI3vvIwqKuS4jeeisOS7u+S9leWGheWuuSoq77yI5LiN5LiL6L295LiN5Y+R5biD77yJ44CCCnNldCAtdW8gcGlwZWZhaWwKClJPT1Q9L3dvcmtzcGFjZQpQUk9KPSRST09UL3NodW4KVkVOVj0kUk9PVC92ZW52Ck1PREVMUz0kUk9PVC9tb2RlbHMvZnctYmFzZQpTSEFSRUQ9JFJPT1QvbmhrLWVhc3ktbmV3cwpSRVBPPXRsdi1jcmVhdG9yL25oay1lYXN5LW5ld3MKVE9LRU49IiR7R0hfVE9LRU46LX0iCgpzYXkoKSB7IHByaW50ZiAnXG5cMDMzWzE7MzZtPT0gJXNcMDMzWzBtXG4nICIkKiI7IH0Kd2FybigpIHsgcHJpbnRmICdcMDMzWzE7MzNtISAlc1wwMzNbMG1cbicgIiQqIjsgfQpkaWUoKSB7IHByaW50ZiAnXDAzM1sxOzMxbeKclyAlc1wwMzNbMG1cbicgIiQqIjsgZXhpdCAxOyB9CgpzYXkgIjEvNSDpobnnm67nm67lvZUiCmlmIFsgLWQgIiRQUk9KL3Rvb2xzIiBdOyB0aGVuCiAgZWNobyAiICDlt7LlnKjvvJokUFJPSiIKZWxzZQogICMg5LuO5YWx5Lqr5LuT5bqT5oGi5aSNIFNodW4g55uu5b2V77yI6aG555uu5bCx5a2Y5Zyo5YWx5Lqr5LuT5bqT55qEIHNodW4vIOWtkOebruW9lemHjO+8iQogIFsgLW4gIiRUT0tFTiIgXSB8fCBkaWUgIuayoeaciSBHSF9UT0tFTu+8jOaBouWkjeS4jeS6humhueebriIKICBpZiBbICEgLWQgIiRTSEFSRUQiIF07IHRoZW4KICAgIGVjaG8gIiAg5YWL6ZqG5YWx5Lqr5LuT5bqT4oCmIgogICAgbWtkaXIgLXAgIiRTSEFSRUQiCiAgICBjdXJsIC1zTCAtbyAvdG1wL3NoYXJlZC50YXIuZ3ogImh0dHBzOi8vY29kZWxvYWQuZ2l0aHViLmNvbS8kUkVQTy90YXIuZ3ovcmVmcy9oZWFkcy9tYWluIiBcCiAgICAgIHx8IGRpZSAi5YWL6ZqG5aSx6LSlIgogICAgdGFyIHh6ZiAvdG1wL3NoYXJlZC50YXIuZ3ogLUMgIiRTSEFSRUQiIC0tc3RyaXAtY29tcG9uZW50cz0xIHx8IGRpZSAi6Kej5Y6L5aSx6LSlIgogIGZpCiAgWyAtZCAiJFNIQVJFRC9zaHVuIiBdIHx8IGRpZSAi5YWx5Lqr5LuT5bqT6YeM5rKh5pyJIHNodW4vIOebruW9le+8iOmhueebruS4ouS6hu+8jOmcgOimgeS6uuW3peaBouWkje+8iSIKICBjcCAtciAiJFNIQVJFRC9zaHVuIiAiJFBST0oiICYmIGVjaG8gIiAg5bey5LuO5YWx5Lqr5LuT5bqT5oGi5aSN77yaJFBST0oiCmZpCm1rZGlyIC1wICIkUFJPSiIve3dvcmssZGVwbG95LG1lZGlhfQpta2RpciAtcCAiJFBST0ovd29yayIve2FzcixjdWVzLHpoLGxleCxhdWRpb30KCnNheSAiMi81IOWFseS6q+W3peWFt++8iOmfs+mikeS9k+ajgOetie+8iSIKaWYgWyAhIC1mICIkU0hBUkVEL3NjcmlwdHMvYXVkaW9faGVhbHRoLnB5IiBdOyB0aGVuCiAgWyAtbiAiJFRPS0VOIiBdIHx8IGRpZSAi5rKh5pyJIEdIX1RPS0VO77yM5ouJ5LiN5LqG5YWx5Lqr5bel5YW3IgogIGN1cmwgLXNMIC1vIC90bXAvc2hhcmVkLnRhci5neiAiaHR0cHM6Ly9jb2RlbG9hZC5naXRodWIuY29tLyRSRVBPL3Rhci5nei9yZWZzL2hlYWRzL21haW4iIFwKICAgIHx8IGRpZSAi5YWL6ZqG5aSx6LSlIgogIG1rZGlyIC1wICIkU0hBUkVEIiAmJiB0YXIgeHpmIC90bXAvc2hhcmVkLnRhci5neiAtQyAiJFNIQVJFRCIgLS1zdHJpcC1jb21wb25lbnRzPTEgfHwgZGllICLop6PljovlpLHotKUiCmZpCmVjaG8gIiAg5L2T5qOA5bel5YW377yaJFNIQVJFRC9zY3JpcHRzL2F1ZGlvX2hlYWx0aC5weSIKCnNheSAiMy81IFB5dGhvbiDnjq/looMiCmlmIFsgISAteCAiJFZFTlYvYmluL3B5dGhvbiIgXTsgdGhlbgogIHB5dGhvbjMgLW0gdmVudiAiJFZFTlYiIHx8IGRpZSAi5bu6IHZlbnYg5aSx6LSlIgpmaQoiJFZFTlYvYmluL3BpcCIgaW5zdGFsbCAtLW5vLWlucHV0IC1xIC1pIGh0dHBzOi8vcHlwaS50dW5hLnRzaW5naHVhLmVkdS5jbi9zaW1wbGUgXAogIGZhc3Rlci13aGlzcGVyIHN1ZGFjaGlweSBzdWRhY2hpZGljdC1jb3JlIHJlcXVlc3RzIDI+JjEgfCB0YWlsIC0yCiIkVkVOVi9iaW4vcHl0aG9uIiAtIDw8J1BZJyB8fCBkaWUgIuS+nei1luayoeijheS4iiIKaW1wb3J0IGZhc3Rlcl93aGlzcGVyLCBzdWRhY2hpcHksIHJlcXVlc3RzICAjIG5vcWE6IEY0MDEKcHJpbnQoIiAg5L6d6LWWIE9L77yaZmFzdGVyLXdoaXNwZXIgLyBzdWRhY2hpcHkgLyByZXF1ZXN0cyIpClBZCgpzYXkgIjQvNSBBU1Ig5qih5Z6L77yIQ1RyYW5zbGF0ZTIg54mIIGZhc3Rlci13aGlzcGVyLWJhc2XvvIkiCm1rZGlyIC1wICIkTU9ERUxTIgppZiBbICEgLXMgIiRNT0RFTFMvbW9kZWwuYmluIiBdOyB0aGVuCiAgIyBNb2RlbFNjb3BlIOmVnOWDj++8iEhGIOS4u+ermeWcqOaymeeusemHjOe7j+W4uOi/nuS4jeS4iu+8iQogIEJBU0U9Imh0dHBzOi8vd3d3Lm1vZGVsc2NvcGUuY24vYXBpL3YxL21vZGVscy9wZW5nemhlbmRvbmcvZmFzdGVyLXdoaXNwZXItYmFzZS9yZXBvP1JldmlzaW9uPW1hc3RlciZGaWxlUGF0aD0iCiAgZm9yIGYgaW4gY29uZmlnLmpzb24gY29uZmlndXJhdGlvbi5qc29uIHRva2VuaXplci5qc29uIHZvY2FidWxhcnkudHh0OyBkbwogICAgWyAtcyAiJE1PREVMUy8kZiIgXSB8fCBjdXJsIC1zTCAtbyAiJE1PREVMUy8kZiIgIiR7QkFTRX0ke2Z9IiB8fCB3YXJuICIkZiDkuIvovb3lpLHotKUiCiAgZG9uZQogIFsgLXMgIiRNT0RFTFMvbW9kZWwuYmluIiBdIHx8IGN1cmwgLXNMIC1vICIkTU9ERUxTL21vZGVsLmJpbiIgIiR7QkFTRX1tb2RlbC5iaW4iIFwKICAgIHx8IHdhcm4gIm1vZGVsLmJpbiDkuIvovb3lpLHotKXvvIhBU1Ig5Lya6LeR5LiN6LW35p2l77yJIgpmaQpscyAtbGEgIiRNT0RFTFMvbW9kZWwuYmluIiAyPi9kZXYvbnVsbCB8IGF3ayAne3ByaW50ICIgIG1vZGVsLmJpbiIsJDUsImJ5dGVzIn0nCgpzYXkgIjUvNSDnq5nngrkv5bel5YW35qOA5p+lIgpmb3IgdCBpbiBmZXRjaF9uZXcucHkgYXNyLnB5IHRyYW5zY3JpYmVfbWluaW1heC5weSBidWlsZF9jdWVzLnB5IHRyYW5zbGF0ZV96aC5weSBcCiAgICAgICAgIGJ1aWxkX2xleGljb24ucHkgYnVpbGRfZXBfZGF0YS5weSB2ZXJpZnkucHkgcHVzaF9ib290LnB5OyBkbwogIFsgLWYgIiRQUk9KL3Rvb2xzLyR0IiBdIHx8IHdhcm4gIue8uiB0b29scy8kdCIKZG9uZQpjb21tYW5kIC12IGZmbXBlZyA+L2Rldi9udWxsIHx8IHdhcm4gIuayoeaciSBmZm1wZWfvvIjovaznoIEv5L2T5qOA6KaB55So77yJIgpjb21tYW5kIC12IG1jb2RlLXRvb2xzID4vZGV2L251bGwgfHwgd2FybiAi5rKh5pyJIG1jb2RlLXRvb2xz77yI5ZCs5YaZL+mDqOe9suimgeeUqO+8iSIKWyAtbiAiJFRPS0VOIiBdIHx8IHdhcm4gIuayoeaciSBHSF9UT0tFTu+8iOaOqOW8leWvvOmhteimgeeUqO+8iSIKCmNhdCA8PCdFT0YnCgrinIUg546v5aKD5bCx57uq44CC5LiL5LiA5q2l77yI5oyJIHRvb2xzL+aJi+WGjC5tZCDnrKwgMiDoioLvvInvvJoKICAgIHB5dGhvbjMgL3dvcmtzcGFjZS9zaHVuL3Rvb2xzL2ZldGNoX25ldy5weSAtLWRyeS1ydW4KRU9GCg==
+#!/usr/bin/env bash
+# setup_env.sh —— 沙箱重置后**自愈**：把项目、依赖、模型、共享工具都准备好
+#
+# 🔴 为什么必须有这个：沙箱每周重置一次，项目、venv、模型全没 ⇒ 不自愈就得从头重建管线。
+#    本脚本只做「环境准备」，**不碰任何内容**（不下载不发布）。
+set -uo pipefail
+
+ROOT=/workspace
+PROJ=$ROOT/shun
+VENV=$ROOT/venv
+MODELS=$ROOT/models/fw-base
+SHARED=$ROOT/nhk-easy-news
+REPO=tlv-creator/nhk-easy-news
+TOKEN="${GH_TOKEN:-}"
+
+say() { printf '\n\033[1;36m== %s\033[0m\n' "$*"; }
+warn() { printf '\033[1;33m! %s\033[0m\n' "$*"; }
+die() { printf '\033[1;31m✗ %s\033[0m\n' "$*"; exit 1; }
+
+say "1/5 项目目录"
+if [ -d "$PROJ/tools" ]; then
+  echo "  已在：$PROJ"
+else
+  # 从共享仓库恢复 Shun 目录（项目就存在共享仓库的 shun/ 子目录里）
+  [ -n "$TOKEN" ] || die "没有 GH_TOKEN，恢复不了项目"
+  if [ ! -d "$SHARED" ]; then
+    echo "  克隆共享仓库…"
+    mkdir -p "$SHARED"
+    curl -sL -o /tmp/shared.tar.gz "https://codeload.github.com/$REPO/tar.gz/refs/heads/main" \
+      || die "克隆失败"
+    tar xzf /tmp/shared.tar.gz -C "$SHARED" --strip-components=1 || die "解压失败"
+  fi
+  [ -d "$SHARED/shun" ] || die "共享仓库里没有 shun/ 目录（项目丢了，需要人工恢复）"
+  cp -r "$SHARED/shun" "$PROJ" && echo "  已从共享仓库恢复：$PROJ"
+fi
+mkdir -p "$PROJ"/{work,deploy,media}
+mkdir -p "$PROJ/work"/{asr,cues,zh,lex,audio}
+
+say "2/5 共享工具（音频体检等）"
+if [ ! -f "$SHARED/scripts/audio_health.py" ]; then
+  [ -n "$TOKEN" ] || die "没有 GH_TOKEN，拉不了共享工具"
+  curl -sL -o /tmp/shared.tar.gz "https://codeload.github.com/$REPO/tar.gz/refs/heads/main" \
+    || die "克隆失败"
+  mkdir -p "$SHARED" && tar xzf /tmp/shared.tar.gz -C "$SHARED" --strip-components=1 || die "解压失败"
+fi
+echo "  体检工具：$SHARED/scripts/audio_health.py"
+
+say "3/5 Python 环境"
+if [ ! -x "$VENV/bin/python" ]; then
+  python3 -m venv "$VENV" || die "建 venv 失败"
+fi
+# 🔴 janome 是**硬依赖**：tools/token_match.py 用它做句型的 **token 边界匹配**
+#    （子串匹配会把「だけ」误标到「だけど」上 ⇒ 真实事故 ep13:69），
+#    tools/gen_gs.py 也用它做词性校验（独立事实源）。
+#    漏装 ⇒ 周更跑到句型标注那步直接崩。
+"$VENV/bin/pip" install --no-input -q -i https://pypi.tuna.tsinghua.edu.cn/simple \
+  faster-whisper sudachipy sudachidict-core requests 2>&1 | tail -2
+"$VENV/bin/python" - <<'PY' || die "依赖没装上"
+import faster_whisper, sudachipy, requests  # noqa: F401
+from janome.tokenizer import Tokenizer
+Tokenizer()  # 真的能初始化才算装上
+print("  依赖 OK：faster-whisper / sudachipy / requests / janome")
+PY
+
+say "4/5 ASR 模型（CTranslate2 版 faster-whisper-base）"
+mkdir -p "$MODELS"
+if [ ! -s "$MODELS/model.bin" ]; then
+  # ModelScope 镜像（HF 主站在沙箱里经常连不上）
+  BASE="https://www.modelscope.cn/api/v1/models/pengzhendong/faster-whisper-base/repo?Revision=master&FilePath="
+  for f in config.json configuration.json tokenizer.json vocabulary.txt; do
+    [ -s "$MODELS/$f" ] || curl -sL -o "$MODELS/$f" "${BASE}${f}" || warn "$f 下载失败"
+  done
+  [ -s "$MODELS/model.bin" ] || curl -sL -o "$MODELS/model.bin" "${BASE}model.bin" \
+    || warn "model.bin 下载失败（ASR 会跑不起来）"
+fi
+ls -la "$MODELS/model.bin" 2>/dev/null | awk '{print "  model.bin",$5,"bytes"}'
+
+say "5/5 站点/工具检查"
+for t in fetch_new.py asr.py transcribe_minimax.py build_cues.py translate_zh.py \
+         build_lexicon.py build_ep_data.py verify.py push_boot.py \
+         token_match.py gen_gs.py; do
+  [ -f "$PROJ/tools/$t" ] || warn "缺 tools/$t"
+done
+command -v ffmpeg >/dev/null || warn "没有 ffmpeg（转码/体检要用）"
+command -v mcode-tools >/dev/null || warn "没有 mcode-tools（听写/部署要用）"
+[ -n "$TOKEN" ] || warn "没有 GH_TOKEN（推引导页要用）"
+
+cat <<'EOF'
+
+✅ 环境就绪。下一步（按 tools/手册.md 第 2 节）：
+    python3 /workspace/shun/tools/fetch_new.py --dry-run
+EOF

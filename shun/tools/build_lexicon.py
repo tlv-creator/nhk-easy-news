@@ -1,1 +1,239 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIC0qLSBjb2Rpbmc6IHV0Zi04IC0qLQoiIiJidWlsZF9sZXhpY29uLnB5IOKAlOKAlCDmlrDkuIDpm4bluKbov5vmnaXnmoQqKuivjeW6kyAvIOWPpeWei+ihqCoq5pu05pawCgrlgZrkuInku7bkuovvvJoKICAgIOKRoCDor43lupPvvJrmiormlrDkuIDpm4bph4zlh7rnjrDjgIHkvYbor43lupPph4zov5jmsqHmnInnmoTor43vvIznlKggTWluaU1heCDooaXjgIzor43mgKcv6YeK5LmJL+eUqOazlS/or7vpn7PjgI0KICAgICAgIOKHkiDlkIjlubbov5sgZGF0YS9sZXhpY29uL3ZvY2FiLmpzb27vvIjlt7LmnInor43kuI3liqjvvIkKICAgIOKRoSDlj6Xlnovor7TmmI7vvIhzdHlsZXMuanNvbu+8ie+8mue7meaWsOS4gOmbhueahOWPpeWtkOaMkeS4gOS4quWPpeWeiyDih5Ig6KGM55qEIHN0IOWtl+autQogICAg4pGiIOWPpeWei+ihqO+8iGdyYW1tYXIuanNvbu+8ie+8muaKiuaWsOS4gOmbhueahOS+i+WPpeaMguWIsOWvueW6lOWPpeWei+S4iyDih5IgbiDorqHmlbAgKyBleHMKCuWPpeWei+WIpOaNru+8iCoq5aSa5a2X5LyY5YWIKirvvJrotorlhbfkvZPnmoTlj6XlnovotormnInnlKjvvIkKICAgIOOAjOOAnOOBk+OBqOOBjOOBp+OBjeOBvuOBmeOAjeavlOOAjOOBqOOAjeacieeUqO+8m+OAjOOBqOOAjeWHoOS5juavj+WPpemDveaciSDih5Ig5Y+q5Zyo5YmN6Z2i55qE6YO95LiN5Yy56YWN5pe25omN55So5a6DCgrnlKjms5XvvJoKICAgIHB5dGhvbjMgdG9vbHMvYnVpbGRfbGV4aWNvbi5weSAtLWVwIDEzIC0tY3VlcyB3b3JrL2N1ZXMvZXAxM19jdWVzLmpzb24gXAogICAgICAgIC0temggd29yay96aC9lcDEzX3poLmpzb24gLS1sZXhkaXIgd2ViL2RhdGEvbGV4aWNvbiAtLW91dCB3b3JrL2xleC9lcDEzX2xleC5qc29uCiIiIgppbXBvcnQgYXJncGFyc2UKaW1wb3J0IGpzb24KaW1wb3J0IG9zCmltcG9ydCByZQppbXBvcnQgc3VicHJvY2VzcwppbXBvcnQgc3lzCgpzeXMucGF0aC5pbnNlcnQoMCwgb3MucGF0aC5kaXJuYW1lKG9zLnBhdGguYWJzcGF0aChfX2ZpbGVfXykpKQpmcm9tIHJ1YnkgaW1wb3J0IGdldF90b2tlbml6ZXIgICMgbm9xYTogRTQwMgoKQVBJID0gImh0dHBzOi8vYXBpLm1pbmltYXguY2hhdC92MS90ZXh0L2NoYXRjb21wbGV0aW9uX3YyIgpNT0RFTCA9ICJNaW5pTWF4LVRleHQtMDEiCgpERUZfUFJPTVBUID0gIiIi5L2g5piv5pel6K+t6K+N5YW457yW57qC44CC5LiL6Z2i57uZ5L2g5LiA5om55pel6K+t5Y2V6K+N77yM6K+357uZ5q+P5Liq6K+N5YaZ5LiA5p2h6K+N5YW45p2h55uu44CCCgropoHmsYLvvJoKMS4g5Lil5qC86L6T5Ye6IEpTT04g5pWw57uE77yM5q+P5Liq5YWD57Sg77yae3sidyI6IuWNleivjSIsInBvcyI6IuivjeaApyIsImRlZiI6IuS4reaWh+mHiuS5iSIsInVzYWdlIjoi5LiA5Y+l5Lit5paH55So5rOV6K+05piOIiwicmVhZGluZyI6IuW5s+WBh+WQjeivu+mfsyJ9fQoyLiDph4rkuYnnlKjkuK3mlofvvIznroDmtIHvvIgxMCDlrZfku6XlhoXvvInvvIznlKjms5Xor7TmmI4gMSDlj6XvvIgyMCDlrZfku6XlhoXvvInvvIzorrLmuIXmgI7kuYjnlKjjgIIKMy4gcmVhZGluZyDlv4XpobvmmK8qKuW5s+WBh+WQjSoq6K+76Z+z77yI5L6L5aaCIOOBqOOCguOBoOOBoSAvIOOBi+OBnuOBj++8ie+8m+ayoeacieivu+mfs+eahO+8iOagh+eCueOAgee6r+aVsOWtl++8ieWwsee7mSAiIuOAggo0LiDor43mgKfnlKjkuK3mlofvvJrlkI3or40v5Yqo6K+NL+W9ouWuueivjS/lia/or40v5Yqp6K+NL+WPueivjS/ov57or40v5Luj6K+NL+aVsOivjS/mjqXlpLTor40v57uT5bC+6K+NIOetieOAggo1LiDlj6rovpPlh7ogSlNPTiDmlbDnu4TvvIzkuI3opoHop6Pph4rjgIIKCuWNleivjeWIl+ihqO+8mgp7aXRlbXN9IiIiCgoKZGVmIGNhbGxfbWluaW1heChwcm9tcHQsIHJldHJpZXM9Myk6CiAgICBib2R5ID0geyJtb2RlbCI6IE1PREVMLCAibWVzc2FnZXMiOiBbeyJyb2xlIjogInVzZXIiLCAiY29udGVudCI6IHByb21wdH1dLAogICAgICAgICAgICAibWF4X3Rva2VucyI6IDgwMDAsICJ0ZW1wZXJhdHVyZSI6IDAuMn0KICAgIGtleSA9IG9zLmVudmlyb24uZ2V0KCJNSU5JTUFYX1NVQl9LRVkiLCAiIikKICAgIGZvciBfIGluIHJhbmdlKHJldHJpZXMpOgogICAgICAgIHAgPSBzdWJwcm9jZXNzLnJ1bihbImN1cmwiLCAiLXMiLCAiLVgiLCAiUE9TVCIsIEFQSSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICItSCIsICJDb250ZW50LVR5cGU6IGFwcGxpY2F0aW9uL2pzb24iLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIi1IIiwgIkF1dGhvcml6YXRpb246IEJlYXJlciAiICsga2V5LAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIi1kIiwganNvbi5kdW1wcyhib2R5LCBlbnN1cmVfYXNjaWk9RmFsc2UpXSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgc3Rkb3V0PXN1YnByb2Nlc3MuUElQRSwgc3RkZXJyPXN1YnByb2Nlc3MuUElQRSwgdGltZW91dD0zMDApCiAgICAgICAgdHJ5OgogICAgICAgICAgICBkID0ganNvbi5sb2FkcyhwLnN0ZG91dC5kZWNvZGUoKSkKICAgICAgICBleGNlcHQgRXhjZXB0aW9uOgogICAgICAgICAgICBjb250aW51ZQogICAgICAgIGlmIGQuZ2V0KCJjaG9pY2VzIik6CiAgICAgICAgICAgIHJldHVybiBkWyJjaG9pY2VzIl1bMF1bIm1lc3NhZ2UiXVsiY29udGVudCJdCiAgICByYWlzZSBSdW50aW1lRXJyb3IoIk1pbmlNYXgg6LCD55So5aSx6LSlIikKCgpkZWYgcGFyc2VfanNvbih0ZXh0KToKICAgIG0gPSByZS5zZWFyY2gociJcWy4qXF0iLCB0ZXh0LCByZS5TKQogICAgaWYgbm90IG06CiAgICAgICAgcmV0dXJuIFtdCiAgICBzID0gcmUuc3ViKHIiLFxzKihbXF19XSkiLCByIlwxIiwgbS5ncm91cCgwKSkKICAgIHRyeToKICAgICAgICByZXR1cm4ganNvbi5sb2FkcyhzKQogICAgZXhjZXB0IEV4Y2VwdGlvbjoKICAgICAgICByZXR1cm4gW10KCgojIOKUgOKUgCDlj6XlnovvvJrlpJrlrZfkvJjlhYgg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAClNUWUxFX1JVTEVTID0gWwogICAgKCJnXzM5YzYyNjhiIiwgIuOBk+OBqOOBjOOBp+OBjeOBvuOBmSIpLAogICAgKCJnX2EwNmE4MmE0IiwgIuOBqOaAneOBhOOBvuOBl+OBnyIpLAogICAgKCJnXzI1ZTkxN2Q2IiwgIuOCiOOBrSIpLAogICAgKCJnXzA3ZTcyZTlhIiwgIuOBvuOBm+OCk+OBiyIpLAogICAgKCJnX2MxMDhhNGRiIiwgIuOBvuOBl+OCh+OBhiIpLAogICAgKCJnXzVmMDMxNDFkIiwgIuOBvuOBmeOBiyIpLAogICAgKCJnXzU2MTNkZWE3IiwgIuOBoOOBkSIpLAogICAgKCJnXzZkMTA4MDljIiwgIuOBn+OCiSIpLAogICAgKCJnXzBkNjQ1MGYwIiwgIuOBi+OCiSIpLAogICAgKCJnXzQ4NDM0ZWI1IiwgIuOBn+OCiiIpLAogICAgKCJnXzFlMmI5NDFkIiwgIuOCiOOCiiIpLAogICAgKCJnXzY0YmNlM2M2IiwgIuOBvuOBpyIpLAogICAgKCJnX2U1NDQwOTk3IiwgIuOBryIpLAogICAgKCJnXzc4NWQ1YTE2IiwgIuOBjCIpLAogICAgKCJnX2NmNzgwZjBiIiwgIuOCkiIpLAogICAgKCJnXzUzZDE0N2MzIiwgIuOBqCIpLAogICAgKCJnXzE4MDE2ZTk4IiwgIuOBriIpLAogICAgKCJnXzMzYzM3ZTBiIiwgIuOBqyIpLAogICAgKCJnXzhjOWFjZDc1IiwgIuOBpyIpLAogICAgKCJnXzk5Njk2ZmExIiwgIuOBryIpLApdCgoKZGVmIHBpY2tfc3R5bGUodCk6CiAgICBmb3Igc2lkLCBrZXkgaW4gU1RZTEVfUlVMRVM6CiAgICAgICAgaWYgc2lkID09ICJnX2U1NDQwOTk3IjogICAgICAjIOOBr+OAnOOBp+OBmQogICAgICAgICAgICBpZiAi44GvIiBpbiB0IGFuZCAi44Gn44GZIiBpbiB0OgogICAgICAgICAgICAgICAgcmV0dXJuIHNpZAogICAgICAgICAgICBjb250aW51ZQogICAgICAgIGlmIHNpZCA9PSAiZ183ODVkNWExNiI6ICAgICAgIyDjgYzjgJzjgafjgZkKICAgICAgICAgICAgaWYgIuOBjCIgaW4gdCBhbmQgIuOBp+OBmSIgaW4gdDoKICAgICAgICAgICAgICAgIHJldHVybiBzaWQKICAgICAgICAgICAgY29udGludWUKICAgICAgICBpZiBrZXkgaW4gdDoKICAgICAgICAgICAgcmV0dXJuIHNpZAogICAgcmV0dXJuICIiCgoKZGVmIHN0eWxlX3RvX2dyYW1tYXJfa2V5KHN0eWxlcywgZ3IsIHNpZCk6CiAgICBuYW1lID0gc3R5bGVzLmdldChzaWQsIHt9KS5nZXQoIm5hbWUiLCAiIikKICAgIGZvciBrLCB2IGluIGdyLml0ZW1zKCk6CiAgICAgICAgaWYgdi5nZXQoIm5hbWUiLCAiIikuc3BsaXQoIuOAnCIpWzBdID09IG5hbWUuc3BsaXQoIuOAnCIpWzBdOgogICAgICAgICAgICByZXR1cm4gawogICAgcmV0dXJuIE5vbmUKCgpkZWYgbWFpbigpOgogICAgYXAgPSBhcmdwYXJzZS5Bcmd1bWVudFBhcnNlcigpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tZXAiLCB0eXBlPWludCwgcmVxdWlyZWQ9VHJ1ZSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1jdWVzIiwgcmVxdWlyZWQ9VHJ1ZSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS16aCIsIHJlcXVpcmVkPVRydWUpCiAgICBhcC5hZGRfYXJndW1lbnQoIi0tbGV4ZGlyIiwgcmVxdWlyZWQ9VHJ1ZSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1vdXQiLCByZXF1aXJlZD1UcnVlKQogICAgYXAuYWRkX2FyZ3VtZW50KCItLXNoYXJkIiwgdHlwZT1pbnQsIGRlZmF1bHQ9NDApCiAgICBhcmdzID0gYXAucGFyc2VfYXJncygpCgogICAgY3VlcyA9IGpzb24ubG9hZChvcGVuKGFyZ3MuY3VlcykpWyJjdWVzIl0KICAgIHpoID0ganNvbi5sb2FkKG9wZW4oYXJncy56aCkpCiAgICB2cCA9IG9zLnBhdGguam9pbihhcmdzLmxleGRpciwgInZvY2FiLmpzb24iKQogICAgc3AgPSBvcy5wYXRoLmpvaW4oYXJncy5sZXhkaXIsICJzdHlsZXMuanNvbiIpCiAgICBncCA9IG9zLnBhdGguam9pbihhcmdzLmxleGRpciwgImdyYW1tYXIuanNvbiIpCiAgICB2b2NhYiA9IGpzb24ubG9hZChvcGVuKHZwKSkKICAgIHN0eWxlcyA9IGpzb24ubG9hZChvcGVuKHNwKSkKICAgIGdyID0ganNvbi5sb2FkKG9wZW4oZ3ApKQoKICAgIHRvayA9IGdldF90b2tlbml6ZXIoKQoKICAgICMg4pGgIOaWsOS4gOmbhueUqOWIsOeahOivje+8iOaMieivjeW6k+mHjOacgOmVv+WMuemFjeeahOaWueW8j+WQiOW5tu+8jOWSjCBBcHAg55qEIGJ1aWxkV29yZHMg5LiA6Ie077yJCiAgICB3b3Jkc19pbl9lcCA9IHt9CiAgICBmb3IgaSwgYyBpbiBlbnVtZXJhdGUoY3Vlcyk6CiAgICAgICAgc2VncyA9IFtdCiAgICAgICAgZm9yIHQgaW4gdG9rLnRva2VuaXplKGNbInQiXSk6CiAgICAgICAgICAgIHNlZ3MuYXBwZW5kKHQuc3VyZmFjZSgpKQogICAgICAgICMg55So6K+N5bqT5YGa5pyA6ZW/5Yy56YWN5ZCI5bm277yI5LiO5YmN56uv5LiA6Ie077yJCiAgICAgICAgYXJyID0gbGlzdChzZWdzKQogICAgICAgIG1lcmdlZCA9IFtdCiAgICAgICAgcCA9IDAKICAgICAgICB3aGlsZSBwIDwgbGVuKGFycik6CiAgICAgICAgICAgIGhpdCA9IDEKICAgICAgICAgICAgZm9yIGxuIGluIHJhbmdlKG1pbig2LCBsZW4oYXJyKSAtIHApLCAxLCAtMSk6CiAgICAgICAgICAgICAgICBjYW5kID0gIiIuam9pbihhcnJbcDpwICsgbG5dKQogICAgICAgICAgICAgICAgaWYgY2FuZCBpbiB2b2NhYjoKICAgICAgICAgICAgICAgICAgICBoaXQgPSBsbgogICAgICAgICAgICAgICAgICAgIGJyZWFrCiAgICAgICAgICAgIG1lcmdlZC5hcHBlbmQoIiIuam9pbihhcnJbcDpwICsgaGl0XSkpCiAgICAgICAgICAgIHAgKz0gaGl0CiAgICAgICAgZm9yIHcgaW4gbWVyZ2VkOgogICAgICAgICAgICBpZiB3IGFuZCB3IG5vdCBpbiB2b2NhYjoKICAgICAgICAgICAgICAgIHdvcmRzX2luX2VwLnNldGRlZmF1bHQodywgW10pLmFwcGVuZChpKQoKICAgIG5ld193b3JkcyA9IHNvcnRlZCh3b3Jkc19pbl9lcC5rZXlzKCkpCiAgICBwcmludCgi5paw6K+NICVkIOS4qiIgJSBsZW4obmV3X3dvcmRzKSwgZmlsZT1zeXMuc3RkZXJyKQoKICAgICMg4pGhIE1pbmlNYXgg6KGl6K+N5p2hCiAgICBkZWZzID0ge30KICAgIGZvciBzIGluIHJhbmdlKDAsIGxlbihuZXdfd29yZHMpLCBhcmdzLnNoYXJkKToKICAgICAgICBwYXJ0ID0gbmV3X3dvcmRzW3M6cyArIGFyZ3Muc2hhcmRdCiAgICAgICAgaXRlbXMgPSAiXG4iLmpvaW4oIi0gIiArIHcgZm9yIHcgaW4gcGFydCkKICAgICAgICB0cnk6CiAgICAgICAgICAgIGFyciA9IHBhcnNlX2pzb24oY2FsbF9taW5pbWF4KERFRl9QUk9NUFQuZm9ybWF0KGl0ZW1zPWl0ZW1zKSkpCiAgICAgICAgZXhjZXB0IEV4Y2VwdGlvbiBhcyBlOiAgIyBub3FhOiBCTEUwMDEKICAgICAgICAgICAgcHJpbnQoIiAg4pqg77iPIOivjeadoeeUn+aIkOWksei0pTogJXMiICUgZSwgZmlsZT1zeXMuc3RkZXJyKQogICAgICAgICAgICBjb250aW51ZQogICAgICAgIGZvciB4IGluIGFycjoKICAgICAgICAgICAgdyA9ICh4LmdldCgidyIpIG9yICIiKS5zdHJpcCgpCiAgICAgICAgICAgIGlmIHc6CiAgICAgICAgICAgICAgICBkZWZzW3ddID0gewogICAgICAgICAgICAgICAgICAgICJwb3MiOiAoeC5nZXQoInBvcyIpIG9yICIiKS5zdHJpcCgpLAogICAgICAgICAgICAgICAgICAgICJkZWYiOiAoeC5nZXQoImRlZiIpIG9yICIiKS5zdHJpcCgpLAogICAgICAgICAgICAgICAgICAgICJ1c2FnZSI6ICh4LmdldCgidXNhZ2UiKSBvciAiIikuc3RyaXAoKSwKICAgICAgICAgICAgICAgICAgICAicmVhZGluZyI6ICh4LmdldCgicmVhZGluZyIpIG9yICIiKS5zdHJpcCgpLAogICAgICAgICAgICAgICAgfQogICAgICAgIHByaW50KCIgIOivjeadoSAlZC8lZCIgJSAobGVuKGRlZnMpLCBsZW4obmV3X3dvcmRzKSksIGZpbGU9c3lzLnN0ZGVycikKCiAgICBmb3IgdyBpbiBuZXdfd29yZHM6CiAgICAgICAgaWYgdyBpbiBkZWZzOgogICAgICAgICAgICBkID0gZGVmc1t3XQogICAgICAgICAgICBleF9pID0gd29yZHNfaW5fZXBbd11bMF0KICAgICAgICAgICAgdm9jYWJbd10gPSB7CiAgICAgICAgICAgICAgICAicG9zIjogZC5nZXQoInBvcyIpIG9yICLlkI3or40iLAogICAgICAgICAgICAgICAgImRlZiI6IGQuZ2V0KCJkZWYiKSBvciAiIiwKICAgICAgICAgICAgICAgICJ1c2FnZSI6IGQuZ2V0KCJ1c2FnZSIpIG9yICIiLAogICAgICAgICAgICAgICAgImV4IjogY3Vlc1tleF9pXVsidCJdLAogICAgICAgICAgICAgICAgImV4emgiOiB6aC5nZXQoc3RyKGV4X2kpLCAiIiksCiAgICAgICAgICAgICAgICAicmVhZGluZyI6IGQuZ2V0KCJyZWFkaW5nIikgb3IgIiIsCiAgICAgICAgICAgIH0KICAgICAgICBlbHNlOgogICAgICAgICAgICB2b2NhYlt3XSA9IHsicG9zIjogIuWQjeivjSIsICJkZWYiOiAiIiwgInVzYWdlIjogIiIsICJyZWFkaW5nIjogIiJ9CgogICAgIyDikaIg5Y+l5Z6L77ya57uZ5q+P6KGM5oyRIHN077yM5bm25oyC6L+bIGdyYW1tYXIuanNvbgogICAgdGFnID0gImVwJTAyZCIgJSBhcmdzLmVwCiAgICBzdF9hc3NpZ24gPSB7fQogICAgZm9yIGksIGMgaW4gZW51bWVyYXRlKGN1ZXMpOgogICAgICAgIHNpZCA9IHBpY2tfc3R5bGUoY1sidCJdKQogICAgICAgIHN0X2Fzc2lnbltzdHIoaSldID0gc2lkCiAgICAgICAgaWYgbm90IHNpZDoKICAgICAgICAgICAgY29udGludWUKICAgICAgICBnayA9IHN0eWxlX3RvX2dyYW1tYXJfa2V5KHN0eWxlcywgZ3IsIHNpZCkKICAgICAgICBpZiBub3QgZ2s6CiAgICAgICAgICAgIGNvbnRpbnVlCiAgICAgICAgZW50cnkgPSBncltna10KICAgICAgICBleHMgPSBlbnRyeS5zZXRkZWZhdWx0KCJleHMiLCBbXSkKICAgICAgICBpZiBub3QgYW55KGUuZ2V0KCJqYSIpID09IGNbInQiXSBhbmQgZS5nZXQoImVwIikgPT0gdGFnIGZvciBlIGluIGV4cyk6CiAgICAgICAgICAgIGV4cy5hcHBlbmQoeyJqYSI6IGNbInQiXSwgInpoIjogemguZ2V0KHN0cihpKSwgIiIpLCAiZXAiOiB0YWcsICJpIjogaX0pCiAgICAgICAgICAgICMg8J+UtCBuID0g6K+l5Y+l5Z6L5ZyoKirlhajliacqKueahOWHuueOsOasoeaVsO+8iGV4cyDlj6rmmK/moLfmnKzvvIzkuKTogIXkuI3nm7jnrYnmmK/mraPluLjnmoTvvIkKICAgICAgICAgICAgZW50cnlbIm4iXSA9IGludChlbnRyeS5nZXQoIm4iLCAwKSkgKyAxCiAgICAgICAgaWYgbm90IGVudHJ5LmdldCgiZXgiKToKICAgICAgICAgICAgZW50cnlbImV4Il0gPSBjWyJ0Il0KICAgICAgICAgICAgZW50cnlbImV4emgiXSA9IHpoLmdldChzdHIoaSksICIiKQoKICAgIHdpdGggb3Blbih2cCwgInciLCBlbmNvZGluZz0idXRmLTgiKSBhcyBmOgogICAgICAgIGpzb24uZHVtcCh2b2NhYiwgZiwgZW5zdXJlX2FzY2lpPUZhbHNlLCBpbmRlbnQ9MSkKICAgIHdpdGggb3BlbihncCwgInciLCBlbmNvZGluZz0idXRmLTgiKSBhcyBmOgogICAgICAgIGpzb24uZHVtcChnciwgZiwgZW5zdXJlX2FzY2lpPUZhbHNlLCBpbmRlbnQ9MSkKICAgIHdpdGggb3BlbihzcCwgInciLCBlbmNvZGluZz0idXRmLTgiKSBhcyBmOgogICAgICAgIGpzb24uZHVtcChzdHlsZXMsIGYsIGVuc3VyZV9hc2NpaT1GYWxzZSwgaW5kZW50PTEpCgogICAgb3MubWFrZWRpcnMob3MucGF0aC5kaXJuYW1lKG9zLnBhdGguYWJzcGF0aChhcmdzLm91dCkpLCBleGlzdF9vaz1UcnVlKQogICAgd2l0aCBvcGVuKGFyZ3Mub3V0LCAidyIsIGVuY29kaW5nPSJ1dGYtOCIpIGFzIGY6CiAgICAgICAganNvbi5kdW1wKHsic3QiOiBzdF9hc3NpZ24sICJuZXdfd29yZHMiOiBuZXdfd29yZHMsCiAgICAgICAgICAgICAgICAgICAiZGVmc19hZGRlZCI6IGxlbihkZWZzKX0sIGYsIGVuc3VyZV9hc2NpaT1GYWxzZSwgaW5kZW50PTEpCiAgICBwcmludCgi4pyFIOivjeW6kyAlZCDmnaEg772cIOWPpeWei+ihqCAlZCDmnaEg4oaSICVzIiAlIChsZW4odm9jYWIpLCBsZW4oZ3IpLCBhcmdzLm91dCksCiAgICAgICAgICBmaWxlPXN5cy5zdGRlcnIpCgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIG1haW4oKQo=
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""build_lexicon.py —— 新一集带进来的**词库 / 句型表**更新
+
+做三件事：
+    ① 词库：把新一集里出现、但词库里还没有的词，用 MiniMax 补「词性/释义/用法/读音」
+       ⇒ 合并进 data/lexicon/vocab.json（已有词不动）
+    ② 句型说明（styles.json）：给新一集的句子挑一个句型 ⇒ 行的 st 字段
+    ③ 句型表（grammar.json）：把新一集的例句挂到对应句型下 ⇒ n 计数 + exs
+
+句型判据（**多字优先**：越具体的句型越有用）
+    「〜ことができます」比「と」有用；「と」几乎每句都有 ⇒ 只在前面的都不匹配时才用它
+
+用法：
+    python3 tools/build_lexicon.py --ep 13 --cues work/cues/ep13_cues.json \
+        --zh work/zh/ep13_zh.json --lexdir web/data/lexicon --out work/lex/ep13_lex.json
+"""
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from ruby import get_tokenizer  # noqa: E402
+
+API = "https://api.minimax.chat/v1/text/chatcompletion_v2"
+MODEL = "MiniMax-Text-01"
+
+DEF_PROMPT = """你是日语词典编纂。下面给你一批日语单词，请给每个词写一条词典条目。
+
+要求：
+1. 严格输出 JSON 数组，每个元素：{{"w":"单词","pos":"词性","def":"中文释义","usage":"一句中文用法说明","reading":"平假名读音"}}
+2. 释义用中文，简洁（10 字以内），用法说明 1 句（20 字以内），讲清怎么用。
+3. reading 必须是**平假名**读音（例如 ともだち / かぞく）；没有读音的（标点、纯数字）就给 ""。
+4. 词性用中文：名词/动词/形容词/副词/助词/叹词/连词/代词/数词/接头词/结尾词 等。
+5. 只输出 JSON 数组，不要解释。
+
+单词列表：
+{items}"""
+
+
+def call_minimax(prompt, retries=3):
+    body = {"model": MODEL, "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 8000, "temperature": 0.2}
+    key = os.environ.get("MINIMAX_SUB_KEY", "")
+    for _ in range(retries):
+        p = subprocess.run(["curl", "-s", "-X", "POST", API,
+                            "-H", "Content-Type: application/json",
+                            "-H", "Authorization: Bearer " + key,
+                            "-d", json.dumps(body, ensure_ascii=False)],
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=300)
+        try:
+            d = json.loads(p.stdout.decode())
+        except Exception:
+            continue
+        if d.get("choices"):
+            return d["choices"][0]["message"]["content"]
+    raise RuntimeError("MiniMax 调用失败")
+
+
+def parse_json(text):
+    m = re.search(r"\[.*\]", text, re.S)
+    if not m:
+        return []
+    s = re.sub(r",\s*([\]}])", r"\1", m.group(0))
+    try:
+        return json.loads(s)
+    except Exception:
+        return []
+
+
+# ── 句型：多字优先 ──────────────────────────────────────────────
+STYLE_RULES = [
+    ("g_39c6268b", "ことができます"),
+    ("g_a06a82a4", "と思いました"),
+    ("g_25e917d6", "よね"),
+    ("g_07e72e9a", "ませんか"),
+    ("g_c108a4db", "ましょう"),
+    ("g_5f03141d", "ますか"),
+    ("g_5613dea7", "だけ"),
+    ("g_6d10809c", "たら"),
+    ("g_0d6450f0", "から"),
+    ("g_48434eb5", "たり"),
+    ("g_1e2b941d", "より"),
+    ("g_64bce3c6", "まで"),
+    ("g_e5440997", "は"),
+    ("g_785d5a16", "が"),
+    ("g_cf780f0b", "を"),
+    ("g_53d147c3", "と"),
+    ("g_18016e98", "の"),
+    ("g_33c37e0b", "に"),
+    ("g_8c9acd75", "で"),
+    ("g_99696fa1", "は"),
+]
+
+
+# 🔴 句型匹配必须走 **token 边界**（tools/token_match.py），不能用 `key in t`：
+#     「だけ」⊂「だけど」⇒ 子串匹配把「…友達だけど最近…」误标成「〜だけ（只…）」。
+#     真实事故：ep13:69。⇒ 判据落在词边界上，不是子串。
+from token_match import StyleMatcher  # noqa: E402
+
+_MATCHER = StyleMatcher(STYLE_RULES)
+
+
+def pick_style(t):
+    return _MATCHER.pick(t)
+
+
+def style_to_grammar_key(styles, gr, sid):
+    name = styles.get(sid, {}).get("name", "")
+    for k, v in gr.items():
+        if v.get("name", "").split("〜")[0] == name.split("〜")[0]:
+            return k
+    return None
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--ep", type=int, required=True)
+    ap.add_argument("--cues", required=True)
+    ap.add_argument("--zh", required=True)
+    ap.add_argument("--lexdir", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--shard", type=int, default=40)
+    args = ap.parse_args()
+
+    cues = json.load(open(args.cues))["cues"]
+    zh = json.load(open(args.zh))
+    vp = os.path.join(args.lexdir, "vocab.json")
+    sp = os.path.join(args.lexdir, "styles.json")
+    gp = os.path.join(args.lexdir, "grammar.json")
+    vocab = json.load(open(vp))
+    styles = json.load(open(sp))
+    gr = json.load(open(gp))
+
+    tok = get_tokenizer()
+
+    # ① 新一集用到的词（按词库里最长匹配的方式合并，和 App 的 buildWords 一致）
+    words_in_ep = {}
+    for i, c in enumerate(cues):
+        segs = []
+        for t in tok.tokenize(c["t"]):
+            segs.append(t.surface())
+        # 用词库做最长匹配合并（与前端一致）
+        arr = list(segs)
+        merged = []
+        p = 0
+        while p < len(arr):
+            hit = 1
+            for ln in range(min(6, len(arr) - p), 1, -1):
+                cand = "".join(arr[p:p + ln])
+                if cand in vocab:
+                    hit = ln
+                    break
+            merged.append("".join(arr[p:p + hit]))
+            p += hit
+        for w in merged:
+            if w and w not in vocab:
+                words_in_ep.setdefault(w, []).append(i)
+
+    new_words = sorted(words_in_ep.keys())
+    print("新词 %d 个" % len(new_words), file=sys.stderr)
+
+    # ② MiniMax 补词条
+    defs = {}
+    for s in range(0, len(new_words), args.shard):
+        part = new_words[s:s + args.shard]
+        items = "\n".join("- " + w for w in part)
+        try:
+            arr = parse_json(call_minimax(DEF_PROMPT.format(items=items)))
+        except Exception as e:  # noqa: BLE001
+            print("  ⚠️ 词条生成失败: %s" % e, file=sys.stderr)
+            continue
+        for x in arr:
+            w = (x.get("w") or "").strip()
+            if w:
+                defs[w] = {
+                    "pos": (x.get("pos") or "").strip(),
+                    "def": (x.get("def") or "").strip(),
+                    "usage": (x.get("usage") or "").strip(),
+                    "reading": (x.get("reading") or "").strip(),
+                }
+        print("  词条 %d/%d" % (len(defs), len(new_words)), file=sys.stderr)
+
+    for w in new_words:
+        if w in defs:
+            d = defs[w]
+            ex_i = words_in_ep[w][0]
+            vocab[w] = {
+                "pos": d.get("pos") or "名词",
+                "def": d.get("def") or "",
+                "usage": d.get("usage") or "",
+                "ex": cues[ex_i]["t"],
+                "exzh": zh.get(str(ex_i), ""),
+                "reading": d.get("reading") or "",
+            }
+        else:
+            vocab[w] = {"pos": "名词", "def": "", "usage": "", "reading": ""}
+
+    # ③ 句型：给每行挑 st，并挂进 grammar.json
+    tag = "ep%02d" % args.ep
+    st_assign = {}
+    for i, c in enumerate(cues):
+        sid = pick_style(c["t"])
+        st_assign[str(i)] = sid
+        if not sid:
+            continue
+        gk = style_to_grammar_key(styles, gr, sid)
+        if not gk:
+            continue
+        entry = gr[gk]
+        exs = entry.setdefault("exs", [])
+        if not any(e.get("ja") == c["t"] and e.get("ep") == tag for e in exs):
+            exs.append({"ja": c["t"], "zh": zh.get(str(i), ""), "ep": tag, "i": i})
+            # 🔴 n = 该句型在**全剧**的出现次数（exs 只是样本，两者不相等是正常的）
+            entry["n"] = int(entry.get("n", 0)) + 1
+        if not entry.get("ex"):
+            entry["ex"] = c["t"]
+            entry["exzh"] = zh.get(str(i), "")
+
+    with open(vp, "w", encoding="utf-8") as f:
+        json.dump(vocab, f, ensure_ascii=False, indent=1)
+    with open(gp, "w", encoding="utf-8") as f:
+        json.dump(gr, f, ensure_ascii=False, indent=1)
+    with open(sp, "w", encoding="utf-8") as f:
+        json.dump(styles, f, ensure_ascii=False, indent=1)
+
+    os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
+    with open(args.out, "w", encoding="utf-8") as f:
+        json.dump({"st": st_assign, "new_words": new_words,
+                   "defs_added": len(defs)}, f, ensure_ascii=False, indent=1)
+    print("✅ 词库 %d 条 ｜ 句型表 %d 条 → %s" % (len(vocab), len(gr), args.out),
+          file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

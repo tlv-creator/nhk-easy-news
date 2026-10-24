@@ -1,1 +1,9 @@
-IyBKYXBhbmVzZSB3aXRoIFNodW7vvIjml6XkuK3nsr7or7vvvIkKCuS4u+aSrSBTaHVuIOeahOaXpeivreaSreWuou+8iE41LU4077yJ5pel5Lit5a+554Wn57K+6K+7IEFwcCDnmoQqKuWGheWuueeUn+S6pyArIOWPkeW4g+euoee6vyoq44CCCgotIPCflLQgKirmr4/lkajmm7TmlrDlhYjor7sgW2B0b29scy/miYvlhowubWRgXSh0b29scy/miYvlhowubWQpKirvvIjpgqPph4znmoTmlbDlrZfku6XlroPkuLrlh4bvvIkKLSDmspnnrrHph43nva7lkI7vvJpgYmFzaCB0b29scy9zZXR1cF9lbnYuc2hgIOiHquaEiAotIOawuOS5heWFpeWPo++8mmh0dHBzOi8vdGx2LWNyZWF0b3IuZ2l0aHViLmlvL25oay1lYXN5LW5ld3Mvc2h1bi5odG1sCgrnm67lvZXvvJpgdG9vbHMvYCDnrqHnur/ohJrmnKwg772cIGB3ZWIvYCDnq5nngrnmupDnoIEg772cIGB3b3JrL2Ag5Lit6Ze05Lqn54mpIO+9nCBgZGVwbG95L2Ag5Y+R54mI5YyF77yI5LiN5YWl5bqT77yJCg==
+# Japanese with Shun（日中精读）
+
+主播 Shun 的日语播客（N5-N4）日中对照精读 App 的**内容生产 + 发布管线**。
+
+- 🔴 **每周更新先读 [`tools/手册.md`](tools/手册.md)**（那里的数字以它为准）
+- 沙箱重置后：`bash tools/setup_env.sh` 自愈
+- 永久入口：https://tlv-creator.github.io/nhk-easy-news/shun.html
+
+目录：`tools/` 管线脚本 ｜ `web/` 站点源码 ｜ `work/` 中间产物 ｜ `deploy/` 发版包（不入库）

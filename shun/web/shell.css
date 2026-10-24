@@ -1,1 +1,272 @@
-LyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogKiBIdWIgU2hlbGwg4oCU4oCUIOWbm+S4quaXpeivreeyvuivu+mhueebruWFseeUqOeahOOAjOeVjOmdouWkluWjs+OAjQogKiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAqIOaooeadv+adpea6kO+8mumtlOWNoeWwkeWls+aosSB2Mi4xMO+8iGh0dHBzOi8vdTh0cHV4Zmt1MXhvaS5zcGFjZS5tY29kZS5jbu+8iQogKiAgIMK3IOS4u+mimOezu+e7n++8mmRhdGEtdGhlbWUo5piO5pqXKSDDlyBkYXRhLXBhbGV0dGUo6YWN6ImyKSDkuKTlsYIKICogICDCtyA3IOWll+mFjeiJsu+8mnNha3VyYSAvIG5pZ2h0IC8gcGFwZXIgLyBzb2Z0IC8gYncgLyBpbmsgLyBncmVlbgogKiAgIMK3IOWiqOawtOWxj+S/ruato++8mmJ3L2luayDnmoTmj4/ovrnkuIDlvovljYrpgI/mmI7vvIjnuq/pu5Ev57qv55m95o+P6L655Lya5Y+Y5oiQ5LiA5o6S57KX5p2g5p2g77yJCiAqICAgwrcg5riQ5Y+Y5Zyo5aKo5rC05bGP5LiK5Lya57OK5oiQ6ISP54Gw5Z2XIOKGkiDmiqTnnLzkuLvpopjkuIDlvosgYmFja2dyb3VuZC1pbWFnZTpub25lCiAqCiAqIOeUqOazle+8muavj+S4qumhueebrueahCBpbmRleC5odG1sIOmHjAogKiAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Ii4uL3NoZWxsL3NoZWxsLmNzcyI+ICAg4oaQIOaUvuWcqOiHquW3sSBzdHlsZS5jc3Mg5LmL5ZCOCiAqICAgIDxzY3JpcHQgc3JjPSIuLi9zaGVsbC9zaGVsbC5qcyI+PC9zY3JpcHQ+ICAgICAgICAgICAg4oaQIOaUvuWcqOiHquW3sSBhcHAuanMg5LmL5YmNCiAqIOmhueebrueahCBzdHlsZS5jc3Mg5oqK56Gs57yW56CB6aKc6Imy5o2i5oiQIHZhcigtLXNoLSopIOWNs+WPr+iHquWKqOi3n+maj+S4u+mimOOAggogKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwoKLyogLS0tLS0tLS0tLSAxLiDorr7orqHku6TniYwgLS0tLS0tLS0tLSAqLwo6cm9vdCB7CiAgLyog6a2U5Y2h5bCR5aWz5qix6YWN6Imy77ya5qix6Iqx57KJIC8g5pif5YWJ6YeRIC8g5Zub5Y+26I2J57u/IC8g5aSc56m657SrICovCiAgLS1zaC1iZzogICAgICAjZmRmNWZiOwogIC0tc2gtYmcyOiAgICAgcmdiYSgyNTUsIDI1NSwgMjU1LCAuOTQpOwogIC0tc2gtYmczOiAgICAgI2Y3ZTlmNDsKICAtLXNoLWxpbmU6ICAgICNlZGQ5ZWE7CiAgLS1zaC1mZzogICAgICAjM2IyYTRhOwogIC0tc2gtZmctZGltOiAgIzdhNmE4YzsKICAtLXNoLWphOiAgICAgICNiMjNhNDg7CiAgLS1zaC16aDogICAgICAjMmE1YWE4OwogIC0tc2gtcm86ICAgICAgIzhhNmFhODsKICAtLXNoLWFjY2VudDogICNlODYxOWM7CiAgLS1zaC1hY2NlbnQyOiAjNGZhZThiOwogIC0tc2gtc2hhZG93OiAgMCA2cHggMThweCByZ2JhKDEyMCwgNzAsIDEzMCwgLjE0KTsKICAtLXNoLXJhZGl1czogIDE2cHg7CgogIC8qIOS4u+mimOWxgu+8mmJvZHkg6IOM5pmvIC8g5b2T5YmN5Y+l6auY5LquIC8g6aG25qCP77yI5ZCE6YWN6Imy5Y+v6KaG55uW77yJICovCiAgLS1zaC1ib2R5LWJnOiAgI2ZkZjNmYjsKICAtLXNoLWJvZHktaW1nOgogICAgcmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCAxOCUgMTAlLCByZ2JhKDI1NSwgMTkwLCAyMjIsIC41NSksIHRyYW5zcGFyZW50IDQ1JSksCiAgICByYWRpYWwtZ3JhZGllbnQoY2lyY2xlIGF0IDgyJSA2JSwgIHJnYmEoMjA1LCAyMDAsIDI1NSwgLjQ1KSwgdHJhbnNwYXJlbnQgNDIlKSwKICAgIHJhZGlhbC1ncmFkaWVudChjaXJjbGUgYXQgNTAlIDk2JSwgcmdiYSgyNTUsIDIyNiwgMTY4LCAuMzUpLCB0cmFuc3BhcmVudCA0OCUpLAogICAgbGluZWFyLWdyYWRpZW50KDE4MGRlZywgI2ZkZjNmYiAwJSwgI2YzZWRmZiAxMDAlKTsKICAtLXNoLWN1ZS1vbjogICAjZmZmMmY4OwogIC0tc2gtdG9wYmFyOiAgIHJnYmEoMjU1LCAyNTUsIDI1NSwgLjgyKTsKCiAgLyog5a2X5Y+377ya5a2X5bmVIC0tc2gtZnPvvIgxNH4zMO+8ieOAgeW8ueeqlyAtLXNoLXBmc++8iDE0fjMw77yJ77yM5LiO6a2U5Y2h5LiA6Ie0ICovCiAgLS1zaC1mczogIDI2cHg7CiAgLS1zaC1wZnM6IDE3cHg7CiAgLS1zaC1zYWZlLWI6IGVudihzYWZlLWFyZWEtaW5zZXQtYm90dG9tLCAwcHgpOwoKICAvKiDloqjmsLTlsY/vvJrmiorlvanlsY/nmoTpq5jlr7nmr5TmqKHlvI/ni6znq4vlh7rmnaXvvIjnlKjmiLforr7lpIfmmK/pu5Hnmb3loqjmsLTlsY8gKyDogIHoirHnnLzvvIkgKi8KICAtLXNoLWhjLWxpbmU6IHZhcigtLXNoLWxpbmUpOwp9CgovKiDlhbzlrrnprZTljaHoh6rlt7HnmoTlj5jph4/lkI3vvIjlkIzkuIDlpZcgdG9rZW4g55qE5Yir5ZCN77yJICovCjpyb290IHsKICAtLWJnOiB2YXIoLS1zaC1iZyk7IC0tYmctMjogdmFyKC0tc2gtYmcyKTsgLS1iZy0zOiB2YXIoLS1zaC1iZzMpOwogIC0tbGluZTogdmFyKC0tc2gtbGluZSk7IC0tZmc6IHZhcigtLXNoLWZnKTsgLS1mZy1kaW06IHZhcigtLXNoLWZnLWRpbSk7CiAgLS1qYTogdmFyKC0tc2gtamEpOyAtLXpoOiB2YXIoLS1zaC16aCk7IC0tcm86IHZhcigtLXNoLXJvKTsKICAtLWFjY2VudDogdmFyKC0tc2gtYWNjZW50KTsgLS1hY2NlbnQtMjogdmFyKC0tc2gtYWNjZW50Mik7CiAgLS1ib2R5LWJnOiB2YXIoLS1zaC1ib2R5LWJnKTsgLS1ib2R5LWltZzogdmFyKC0tc2gtYm9keS1pbWcpOwogIC0tY3VlLW9uLWJnOiB2YXIoLS1zaC1jdWUtb24pOyAtLXRvcGJhci1iZzogdmFyKC0tc2gtdG9wYmFyKTsKfQoKLyogLS0tLS0tLS0tLSAyLiDmmI7mmpflsYLvvIjlhrPlrprmt7HoibLns7vkuJPmnInmoLflvI/vvIkgLS0tLS0tLS0tLSAqLwpodG1sW2RhdGEtdGhlbWU9ImRhcmsiXSB7CiAgLS1zaC1iZzogICAgICAjMTcxMjJhOwogIC0tc2gtYmcyOiAgICAgcmdiYSgzNCwgMjgsIDU2LCAuOTQpOwogIC0tc2gtYmczOiAgICAgIzI4MjA0MDsKICAtLXNoLWxpbmU6ICAgICMzZDMzNTg7CiAgLS1zaC1mZzogICAgICAjZjJlZGZiOwogIC0tc2gtZmctZGltOiAgI2E5OWNjNjsKICAtLXNoLWphOiAgICAgICNmZmIzYmY7CiAgLS1zaC16aDogICAgICAjOWVkNGZmOwogIC0tc2gtcm86ICAgICAgI2MzYWVlMDsKICAtLXNoLWFjY2VudDogICNmZjhhYjg7CiAgLS1zaC1hY2NlbnQyOiAjNTZjOWE0OwogIC0tc2gtc2hhZG93OiAgMCA2cHggMThweCByZ2JhKDAsIDAsIDAsIC4zOCk7CiAgLS1zaC1ib2R5LWJnOiAjMTQxMDJhOwogIC0tc2gtYm9keS1pbWc6CiAgICByYWRpYWwtZ3JhZGllbnQoY2lyY2xlIGF0IDE4JSAxMCUsIHJnYmEoMTQwLCA3MCwgMTIwLCAuNDApLCB0cmFuc3BhcmVudCA0NSUpLAogICAgcmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCA4MiUgNiUsICByZ2JhKDgwLCA3MCwgMTUwLCAuNDUpLCB0cmFuc3BhcmVudCA0MiUpLAogICAgcmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCA1MCUgOTYlLCByZ2JhKDE1MCwgMTEwLCA1MCwgLjI4KSwgdHJhbnNwYXJlbnQgNDglKSwKICAgIGxpbmVhci1ncmFkaWVudCgxODBkZWcsICMxNDEwMmEgMCUsICMxZDE3MzggMTAwJSk7CiAgLS1zaC1jdWUtb246ICAjMzUyNDQ0OwogIC0tc2gtdG9wYmFyOiAgcmdiYSgyOCwgMjIsIDQ4LCAuODYpOwp9CgovKiAtLS0tLS0tLS0tIDMuIOmFjeiJsuWxgu+8iOaUvuWcqCB0aGVtZSDkuYvlkI7vvIzopobnm5blkIzkuIDlsYLnuqfvvIkgLS0tLS0tLS0tLQogKiDloqjmsLTlsY/lj6rmnInpu5Hnmb3ngbDvvJrlvanoibLkuLvpopjlnKjlsY/kuIrkvJrns4rmiJDngbDvvIzmiYDku6Xmr4/kuKrmlrnmoYjpg73moIfkuoblrp7pmYXmlYjmnpwgKi8KaHRtbFtkYXRhLXBhbGV0dGU9InNha3VyYSJdIHsgLyog6buY6K6k5YC85bCx5pivIDpyb290IOmHjOeahOaoseiKseeyie+8jOS4jemHjeWkjeWGmSAqLyB9CgpodG1sW2RhdGEtcGFsZXR0ZT0icGFwZXIiXSB7CiAgLS1zaC1iZzogI2Y1ZWRkYjsgLS1zaC1iZzI6ICNmYmY2ZWE7IC0tc2gtYmczOiAjZWZlNmQyOwogIC0tc2gtbGluZTogI2RkZDBiNjsgLS1zaC1mZzogIzQ1M2EyYjsgLS1zaC1mZy1kaW06ICM3YzZlNWE7CiAgLS1zaC1qYTogIzlhNGEzYTsgLS1zaC16aDogIzJmNWE4YzsgLS1zaC1ybzogIzdhNmE1NTsKICAtLXNoLWFjY2VudDogI2IwOGE1YTsgLS1zaC1hY2NlbnQyOiAjNWU4YzZhOwogIC0tc2gtc2hhZG93OiAwIDRweCAxNHB4IHJnYmEoMTIwLCAxMDAsIDcwLCAuMTIpOwogIC0tc2gtYm9keS1iZzogI2Y1ZWRkYjsgLS1zaC1ib2R5LWltZzogbm9uZTsKICAtLXNoLWN1ZS1vbjogI2VmZTRjYjsgLS1zaC10b3BiYXI6IHJnYmEoMjUxLCAyNDYsIDIzNCwgLjkyKTsKfQpodG1sW2RhdGEtcGFsZXR0ZT0ic29mdCJdIHsKICAtLXNoLWJnOiAjZTllOWU5OyAtLXNoLWJnMjogI2Y0ZjRmNDsgLS1zaC1iZzM6ICNkY2RjZGM7CiAgLS1zaC1saW5lOiAjY2ZjZmNmOyAtLXNoLWZnOiAjM2MzYzNjOyAtLXNoLWZnLWRpbTogIzc1NzU3NTsKICAtLXNoLWphOiAjNDY0NjQ2OyAtLXNoLXpoOiAjNWE1YTVhOyAtLXNoLXJvOiAjN2E3YTdhOwogIC0tc2gtYWNjZW50OiAjOGE4YThhOyAtLXNoLWFjY2VudDI6ICM4YThhOGE7CiAgLS1zaC1zaGFkb3c6IDAgM3B4IDEwcHggcmdiYSgwLCAwLCAwLCAuMDgpOwogIC0tc2gtYm9keS1iZzogI2U5ZTllOTsgLS1zaC1ib2R5LWltZzogbm9uZTsKICAtLXNoLWN1ZS1vbjogI2Q4ZDhkODsgLS1zaC10b3BiYXI6IHJnYmEoMjQ0LCAyNDQsIDI0NCwgLjkyKTsKfQpodG1sW2RhdGEtcGFsZXR0ZT0iYnciXSB7CiAgLS1zaC1iZzogI2ZmZmZmZjsgLS1zaC1iZzI6ICNmZmZmZmY7IC0tc2gtYmczOiAjZjBmMGYwOwogIC0tc2gtbGluZTogcmdiYSgwLCAwLCAwLCAuMjYpOyAgIC8qIOe6r+m7keaPj+i+ueWcqOeZveW6leS4iuS8muWPmOaIkOS4gOaOkueyl+adoOadoCAqLwogIC0tc2gtZmc6ICMwMDAwMDA7IC0tc2gtZmctZGltOiAjMzMzMzMzOwogIC0tc2gtamE6ICMwMDAwMDA7IC0tc2gtemg6ICMwMDAwMDA7IC0tc2gtcm86ICM0NDQ0NDQ7CiAgLS1zaC1hY2NlbnQ6ICMwMDAwMDA7IC0tc2gtYWNjZW50MjogIzAwMDAwMDsKICAtLXNoLXNoYWRvdzogbm9uZTsKICAtLXNoLWJvZHktYmc6ICNmZmZmZmY7IC0tc2gtYm9keS1pbWc6IG5vbmU7CiAgLS1zaC1jdWUtb246ICNlOGU4ZTg7IC0tc2gtdG9wYmFyOiByZ2JhKDI1NSwgMjU1LCAyNTUsIC45Nik7Cn0KaHRtbFtkYXRhLXBhbGV0dGU9ImluayJdIHsKICAtLXNoLWJnOiAjMDAwMDAwOyAtLXNoLWJnMjogIzBiMGIwYjsgLS1zaC1iZzM6ICMxNzE3MTc7CiAgLS1zaC1saW5lOiByZ2JhKDI1NSwgMjU1LCAyNTUsIC4yNik7ICAvKiDnuq/nmb3mj4/ovrnlnKjpu5HlupXkuIrkvJrlj5jmiJDkuIDmjpLnspfmnaDmnaAgKi8KICAtLXNoLWZnOiAjZmZmZmZmOyAtLXNoLWZnLWRpbTogI2I4YjhiODsKICAtLXNoLWphOiAjZmZmZmZmOyAtLXNoLXpoOiAjZThlOGU4OyAtLXNoLXJvOiAjYmJiYmJiOwogIC0tc2gtYWNjZW50OiAjZGNkY2RjOyAgIC8qIOS4jeiDvee6r+eZve+8mmFjY2VudCDlupUgKyDnmb3lrZfkvJrlj5jmiJDnmb3lnZcgKi8KICAtLXNoLWFjY2VudDI6ICNkZGRkZGQ7CiAgLS1zaC1zaGFkb3c6IG5vbmU7CiAgLS1zaC1ib2R5LWJnOiAjMDAwMDAwOyAtLXNoLWJvZHktaW1nOiBub25lOwogIC0tc2gtY3VlLW9uOiAjMWMxYzFjOyAtLXNoLXRvcGJhcjogcmdiYSgwLCAwLCAwLCAuOTIpOwp9Cmh0bWxbZGF0YS1wYWxldHRlPSJncmVlbiJdIHsKICAtLXNoLWJnOiAjMGUxNzEwOyAtLXNoLWJnMjogIzExMWMxMjsgLS1zaC1iZzM6ICMxNzI1MWE7CiAgLS1zaC1saW5lOiAjMmU0YTMyOyAtLXNoLWZnOiAjODZlMDhhOyAtLXNoLWZnLWRpbTogIzVmOWM2NDsKICAtLXNoLWphOiAjOWJmMGEwOyAtLXNoLXpoOiAjZDNlOGQ0OyAtLXNoLXJvOiAjNmZiZjc0OwogIC0tc2gtYWNjZW50OiAjODZlMDhhOyAtLXNoLWFjY2VudDI6ICNjOGYwYzg7CiAgLS1zaC1zaGFkb3c6IG5vbmU7CiAgLS1zaC1ib2R5LWJnOiAjMGUxNzEwOyAtLXNoLWJvZHktaW1nOiBub25lOwogIC0tc2gtY3VlLW9uOiAjMTYyNjFhOyAtLXNoLXRvcGJhcjogcmdiYSgxNCwgMjMsIDE2LCAuOTQpOwp9Cmh0bWxbZGF0YS1wYWxldHRlPSJuaWdodCJdIHsgLyogPSBkYXRhLXRoZW1lPWRhcmsg55qE5aSc56m657Sr77yMcGFsZXR0ZSDmmL7lvI/mjIflrprml7bnlJ/mlYggKi8gfQoKLyogLS0tLS0tLS0tLSA0LiDpgJrnlKjnu4Tku7bvvIhzaC0g5YmN57yA77yM6YG/5YWN5ZKM6aG555uu6Ieq6LqrIGNsYXNzIOWGsueqge+8iSAtLS0tLS0tLS0tICovCgovKiDpobbmoI8gKi8KLnNoLXRvcGJhciB7CiAgZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGNlbnRlcjsgZ2FwOiAxMHB4OwogIHBhZGRpbmc6IGNhbGMoZW52KHNhZmUtYXJlYS1pbnNldC10b3AsIDBweCkgKyAxMHB4KSAxMnB4IDEwcHg7CiAgYmFja2dyb3VuZDogdmFyKC0tc2gtdG9wYmFyKTsKICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoMTRweCk7CiAgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkIHZhcigtLXNoLWxpbmUpOwogIHBvc2l0aW9uOiBzdGlja3k7IHRvcDogMDsgei1pbmRleDogMjA7Cn0KLnNoLWJyYW5kIHsgZmxleDogMTsgbWluLXdpZHRoOiAwOyB9Ci5zaC1icmFuZCBoMSwgLnNoLWJyYW5kIGIgewogIG1hcmdpbjogMDsgZm9udC1zaXplOiAxOHB4OyBmb250LXdlaWdodDogODAwOyBsZXR0ZXItc3BhY2luZzogLjVweDsKICB3aGl0ZS1zcGFjZTogbm93cmFwOyBvdmVyZmxvdzogaGlkZGVuOyB0ZXh0LW92ZXJmbG93OiBlbGxpcHNpczsgZGlzcGxheTogYmxvY2s7Cn0KLnNoLWJyYW5kIHAsIC5zaC1icmFuZCBzbWFsbCB7CiAgbWFyZ2luOiAycHggMCAwOyBmb250LXNpemU6IDEzcHg7IGNvbG9yOiB2YXIoLS1zaC1mZy1kaW0pOwogIHdoaXRlLXNwYWNlOiBub3dyYXA7IG92ZXJmbG93OiBoaWRkZW47IHRleHQtb3ZlcmZsb3c6IGVsbGlwc2lzOyBkaXNwbGF5OiBibG9jazsKfQovKiDpm4bmlbDlvr3nq6DvvIjprZTljaHpobbmoI/nmoQgRVAx77yJICovCi5zaC1iYWRnZSB7CiAgYmFja2dyb3VuZDogdmFyKC0tc2gtYWNjZW50KTsgY29sb3I6ICNmZmY7IGZvbnQtc2l6ZTogMTJweDsgZm9udC13ZWlnaHQ6IDgwMDsKICBwYWRkaW5nOiA1cHggOXB4OyBib3JkZXItcmFkaXVzOiA5cHg7IGZsZXg6IG5vbmU7IGxldHRlci1zcGFjaW5nOiAuNXB4Owp9Cmh0bWxbZGF0YS1wYWxldHRlPSJpbmsiXSAuc2gtYmFkZ2UgeyBiYWNrZ3JvdW5kOiAjMGQwZDBkOyBjb2xvcjogI2ZmZjsgYm9yZGVyOiAxcHggc29saWQgcmdiYSgyNTUsMjU1LDI1NSwuNTUpOyB9Cmh0bWxbZGF0YS1wYWxldHRlPSJidyJdICAuc2gtYmFkZ2UgeyBiYWNrZ3JvdW5kOiAjMDAwOyBjb2xvcjogI2ZmZjsgfQoKLyog5Zu+5qCH5oyJ6ZKuICovCi5zaC1idG4gewogIGJhY2tncm91bmQ6IHZhcigtLXNoLWJnMyk7IGNvbG9yOiB2YXIoLS1zaC1mZyk7IGJvcmRlcjogMXB4IHNvbGlkIHZhcigtLXNoLWxpbmUpOwogIGJvcmRlci1yYWRpdXM6IDExcHg7IHdpZHRoOiA0MnB4OyBoZWlnaHQ6IDQycHg7IGZvbnQtc2l6ZTogMjFweDsgbGluZS1oZWlnaHQ6IDE7CiAgY3Vyc29yOiBwb2ludGVyOyBmbGV4OiBub25lOyBkaXNwbGF5OiBpbmxpbmUtZmxleDsgYWxpZ24taXRlbXM6IGNlbnRlcjsganVzdGlmeS1jb250ZW50OiBjZW50ZXI7Cn0KLnNoLWJ0bjphY3RpdmUgeyB0cmFuc2Zvcm06IHNjYWxlKC45NCk7IH0KCi8qIOaWh+Wtl+aMiemSru+8iOiAgeiKseecvOeci+Wbvuagh+i0ueWKsiDihpIg6IO955So5paH5a2X5bCx5Yir55So5Zu+5qCH77yJICovCi5zaC10YnRuIHsKICBiYWNrZ3JvdW5kOiB2YXIoLS1zaC1iZzIpOyBjb2xvcjogdmFyKC0tc2gtZmcpOyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1zaC1saW5lKTsKICBib3JkZXItcmFkaXVzOiAxMnB4OyBwYWRkaW5nOiA5cHggMTNweDsgZm9udC1zaXplOiAxNC41cHg7IGZvbnQtd2VpZ2h0OiA3MDA7CiAgY3Vyc29yOiBwb2ludGVyOyBmbGV4OiBub25lOyBtaW4td2lkdGg6IDU4cHg7Cn0KLnNoLXRidG46YWN0aXZlIHsgdHJhbnNmb3JtOiBzY2FsZSguOTcpOyB9Ci5zaC10YnRuLm9uIHsgYmFja2dyb3VuZDogdmFyKC0tc2gtYWNjZW50KTsgY29sb3I6ICNmZmY7IGJvcmRlci1jb2xvcjogdmFyKC0tc2gtYWNjZW50KTsgfQpodG1sW2RhdGEtcGFsZXR0ZT0iaW5rIl0gLnNoLXRidG4ub24geyBiYWNrZ3JvdW5kOiAjMGQwZDBkOyBjb2xvcjogI2ZmZjsgYm9yZGVyLWNvbG9yOiByZ2JhKDI1NSwyNTUsMjU1LC41NSk7IH0KaHRtbFtkYXRhLXBhbGV0dGU9ImJ3Il0gIC5zaC10YnRuLm9uIHsgYmFja2dyb3VuZDogIzAwMDsgY29sb3I6ICNmZmY7IGJvcmRlci1jb2xvcjogIzAwMDsgfQoKLyog5Y2h54mHICovCi5zaC1jYXJkIHsKICBiYWNrZ3JvdW5kOiB2YXIoLS1zaC1iZzIpOyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1zaC1saW5lKTsKICBib3JkZXItcmFkaXVzOiB2YXIoLS1zaC1yYWRpdXMpOyBib3gtc2hhZG93OiB2YXIoLS1zaC1zaGFkb3cpOwp9CgovKiDlupXpg6jpnaLmnb/vvIjwn5S0IOW/hemhu+mZkOmrmCArIOiHquW3sea7mu+8jOWQpuWImeWGheWuuei2hemrmOS8mua6ouWHuuWxj+W5leWkliDihpIg55yL5LiN6KeB5Lmf5rua5LiN5Yiw77yJICovCi5zaC1zaGVldCB7CiAgcG9zaXRpb246IGZpeGVkOyBsZWZ0OiAwOyByaWdodDogMDsgYm90dG9tOiAwOyB6LWluZGV4OiA2MDsKICBiYWNrZ3JvdW5kOiB2YXIoLS1zaC1iZzIpOyBib3JkZXItdG9wLWxlZnQtcmFkaXVzOiAyMHB4OyBib3JkZXItdG9wLXJpZ2h0LXJhZGl1czogMjBweDsKICBwYWRkaW5nOiAxOHB4IDE2cHggY2FsYygxOHB4ICsgdmFyKC0tc2gtc2FmZS1iKSk7IG1heC13aWR0aDogOTIwcHg7IG1hcmdpbjogMCBhdXRvOwogIGJvcmRlci10b3A6IDFweCBzb2xpZCB2YXIoLS1zaC1saW5lKTsgYm94LXNoYWRvdzogMCAtOHB4IDMwcHggcmdiYSg5MCwgNjAsIDE0MCwgLjE4KTsKICBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoMTZweCk7CiAgbWF4LWhlaWdodDogODZ2aDsgb3ZlcmZsb3cteTogYXV0bzsgb3ZlcnNjcm9sbC1iZWhhdmlvcjogY29udGFpbjsKICAtd2Via2l0LW92ZXJmbG93LXNjcm9sbGluZzogdG91Y2g7Cn0KLnNoLXNoZWV0W2hpZGRlbl0geyBkaXNwbGF5OiBub25lOyB9Ci5zaC1zaGVldC1yb3cgeyBkaXNwbGF5OiBmbGV4OyBhbGlnbi1pdGVtczogY2VudGVyOyBnYXA6IDEycHg7IHBhZGRpbmc6IDEzcHggMnB4OyBmb250LXNpemU6IDE2cHg7IH0KLnNoLXNoZWV0LW5vdGUgeyBmb250LXNpemU6IDEzcHg7IGNvbG9yOiB2YXIoLS1zaC1mZy1kaW0pOyBsaW5lLWhlaWdodDogMS42OyB9Ci5zaC1zaGVldCBoMyB7IG1hcmdpbjogMCAwIDZweDsgZm9udC1zaXplOiAxN3B4OyBmb250LXdlaWdodDogODAwOyB9Ci5zaC1zaGVldCAuc2gtY2xvc2UgewogIHBvc2l0aW9uOiBhYnNvbHV0ZTsgcmlnaHQ6IDEycHg7IHRvcDogMTJweDsgYmFja2dyb3VuZDogdmFyKC0tc2gtYmczKTsKICBjb2xvcjogdmFyKC0tc2gtZmcpOyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1zaC1saW5lKTsgYm9yZGVyLXJhZGl1czogMTBweDsKICB3aWR0aDogMzZweDsgaGVpZ2h0OiAzNnB4OyBmb250LXNpemU6IDE3cHg7IGN1cnNvcjogcG9pbnRlcjsgbGluZS1oZWlnaHQ6IDE7Cn0KCi8qIOWtl+WPt+a7keadhiAqLwouc2gtcmFuZ2UgeyAtd2Via2l0LWFwcGVhcmFuY2U6IG5vbmU7IGFwcGVhcmFuY2U6IG5vbmU7IGZsZXg6IDE7IGhlaWdodDogMjJweDsgYmFja2dyb3VuZDogdHJhbnNwYXJlbnQ7IG1hcmdpbjogMDsgfQouc2gtcmFuZ2U6Oi13ZWJraXQtc2xpZGVyLXJ1bm5hYmxlLXRyYWNrIHsgaGVpZ2h0OiA1cHg7IGJhY2tncm91bmQ6IHZhcigtLXNoLWJnMyk7IGJvcmRlci1yYWRpdXM6IDRweDsgfQouc2gtcmFuZ2U6Oi13ZWJraXQtc2xpZGVyLXRodW1iIHsKICAtd2Via2l0LWFwcGVhcmFuY2U6IG5vbmU7IHdpZHRoOiAxNnB4OyBoZWlnaHQ6IDE2cHg7IGJvcmRlci1yYWRpdXM6IDUwJTsKICBiYWNrZ3JvdW5kOiB2YXIoLS1zaC1hY2NlbnQpOyBtYXJnaW4tdG9wOiAtNS41cHg7CiAgYm9yZGVyOiAycHggc29saWQgI2ZmZjsgICAvKiBlaW5rLW9rOiDmu5HmnYbml4vpkq7nmoQgMnB4IOeZveeOryDigJTigJQgMTZweCDlsI/lnIbngrnvvIznlKjmnaXot5/ovajpgZPljLrliIbvvIzkuI3mmK/lhoXlrrnmoYYgKi8KICBib3gtc2hhZG93OiAwIDFweCA0cHggcmdiYSgwLDAsMCwuMjUpOwp9Cmh0bWxbZGF0YS1wYWxldHRlPSJpbmsiXSAuc2gtcmFuZ2U6Oi13ZWJraXQtc2xpZGVyLXRodW1iIHsgYm9yZGVyLWNvbG9yOiAjMDAwOyB9CgovKiDkuLvpopjnvZHmoLwgKi8KLnNoLXRoZW1lLWdyaWQgewogIGRpc3BsYXk6IGdyaWQ7IGdyaWQtdGVtcGxhdGUtY29sdW1uczogcmVwZWF0KGF1dG8tZmlsbCwgbWlubWF4KDg4cHgsIDFmcikpOwogIGdhcDogOHB4OyBtYXJnaW46IDRweCAwIDJweDsKfQouc2gtdGhlbWUtb3B0IHsKICBkaXNwbGF5OiBmbGV4OyBmbGV4LWRpcmVjdGlvbjogY29sdW1uOyBhbGlnbi1pdGVtczogY2VudGVyOyBnYXA6IDZweDsKICBwYWRkaW5nOiA5cHggNHB4IDhweDsgYm9yZGVyOiAycHggc29saWQgdmFyKC0tc2gtbGluZSk7IGJvcmRlci1yYWRpdXM6IDEycHg7CiAgYmFja2dyb3VuZDogdmFyKC0tc2gtYmcyKTsgY3Vyc29yOiBwb2ludGVyOyBmb250LXNpemU6IDEyLjVweDsgY29sb3I6IHZhcigtLXNoLWZnLWRpbSk7CiAgZm9udC13ZWlnaHQ6IDcwMDsgbGluZS1oZWlnaHQ6IDEuMjU7IHRleHQtYWxpZ246IGNlbnRlcjsKfQouc2gtdGhlbWUtb3B0Lm9uIHsgYm9yZGVyLWNvbG9yOiB2YXIoLS1zaC1hY2NlbnQpOyBjb2xvcjogdmFyKC0tc2gtZmcpOyBiYWNrZ3JvdW5kOiB2YXIoLS1zaC1iZzMpOyB9Ci5zaC10aGVtZS1vcHQ6YWN0aXZlIHsgdHJhbnNmb3JtOiBzY2FsZSguOTcpOyB9Ci5zaC10aGVtZS1zdyB7CiAgd2lkdGg6IDEwMCU7IGhlaWdodDogMzBweDsgYm9yZGVyLXJhZGl1czogN3B4OyBib3JkZXI6IDFweCBzb2xpZCByZ2JhKDAsIDAsIDAsIC4xOCk7CiAgZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGNlbnRlcjsganVzdGlmeS1jb250ZW50OiBjZW50ZXI7IGdhcDogNHB4OwogIGZvbnQtc2l6ZTogMTFweDsgZm9udC13ZWlnaHQ6IDgwMDsKfQpodG1sW2RhdGEtcGFsZXR0ZT0iaW5rIl0gLnNoLXRoZW1lLW9wdCB7IGJhY2tncm91bmQ6ICMwZDBkMGQ7IH0KaHRtbFtkYXRhLXBhbGV0dGU9ImluayJdIC5zaC10aGVtZS1vcHQub24geyBiYWNrZ3JvdW5kOiAjMWMxYzFjOyB9CgovKiDorr7nva7mta7moIfvvIjlj7PkuIvop5LvvIzkuI3mjKHlrZfluZXvvJvnlKjjgIzoqK3lrprjgI3mloflrZfvvIzogIHoirHnnLzog73orqTvvIkgKi8KLnNoLWZhYiB7CiAgcG9zaXRpb246IGZpeGVkOyByaWdodDogMTBweDsgYm90dG9tOiBjYWxjKDg0cHggKyB2YXIoLS1zaC1zYWZlLWIpKTsgei1pbmRleDogNTU7CiAgYmFja2dyb3VuZDogdmFyKC0tc2gtYmcyKTsgY29sb3I6IHZhcigtLXNoLWZnKTsgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tc2gtbGluZSk7CiAgYm9yZGVyLXJhZGl1czogMTNweDsgcGFkZGluZzogOXB4IDEycHg7IGZvbnQtc2l6ZTogMTRweDsgZm9udC13ZWlnaHQ6IDcwMDsKICBib3gtc2hhZG93OiB2YXIoLS1zaC1zaGFkb3cpOyBjdXJzb3I6IHBvaW50ZXI7IG9wYWNpdHk6IC45MjsKfQouc2gtZmFiOmFjdGl2ZSB7IHRyYW5zZm9ybTogc2NhbGUoLjk2KTsgfQoKLyogdG9hc3QgKi8KLnNoLXRvYXN0IHsKICBwb3NpdGlvbjogZml4ZWQ7IGxlZnQ6IDUwJTsgYm90dG9tOiBjYWxjKDI2cHggKyB2YXIoLS1zaC1zYWZlLWIpKTsKICB0cmFuc2Zvcm06IHRyYW5zbGF0ZVgoLTUwJSkgdHJhbnNsYXRlWSgyMHB4KTsKICBiYWNrZ3JvdW5kOiByZ2JhKDQwLCAzMCwgNjAsIC45NCk7IGNvbG9yOiAjZmZmOyBwYWRkaW5nOiAxMXB4IDE4cHg7CiAgYm9yZGVyLXJhZGl1czogMTJweDsgZm9udC1zaXplOiAxNXB4OyB6LWluZGV4OiA5MDsgb3BhY2l0eTogMDsKICB0cmFuc2l0aW9uOiBvcGFjaXR5IC4ycywgdHJhbnNmb3JtIC4yczsgcG9pbnRlci1ldmVudHM6IG5vbmU7IG1heC13aWR0aDogODZ2dzsgdGV4dC1hbGlnbjogY2VudGVyOwp9Ci5zaC10b2FzdC5vbiB7IG9wYWNpdHk6IDE7IHRyYW5zZm9ybTogdHJhbnNsYXRlWCgtNTAlKSB0cmFuc2xhdGVZKDApOyB9Cmh0bWxbZGF0YS10aGVtZT0iZGFyayJdIC5zaC10b2FzdCB7IGJhY2tncm91bmQ6IHJnYmEoMzQsIDI4LCA1NiwgLjk2KTsgY29sb3I6ICNmMmVkZmI7IH0KCi8qIC0tLS0tLS0tLS0gNS4g5aKo5rC05bGPIC8g6ICB6Iqx55y85LiT55SoIC0tLS0tLS0tLS0gKi8KQG1lZGlhIChwcmVmZXJzLWNvbnRyYXN0OiBtb3JlKSB7IDpyb290IHsgLS1zaC1zaGFkb3c6IG5vbmU7IH0gfQoKLyog6aG555uu5Y+q6KaB57uZIDxodG1sPiDliqAgY2xhc3M9InNoLWhjIiDlsLHotbDnuq/pu5Hnmb3pq5jlr7nmr5QgKi8KaHRtbC5zaC1oYywgaHRtbC5zaC1oYyBib2R5IHsKICBiYWNrZ3JvdW5kOiAjZmZmICFpbXBvcnRhbnQ7IGJhY2tncm91bmQtaW1hZ2U6IG5vbmUgIWltcG9ydGFudDsgY29sb3I6ICMwMDAgIWltcG9ydGFudDsKfQpodG1sLnNoLWhjLnNoLWRhcmssIGh0bWwuc2gtaGMuc2gtZGFyayBib2R5IHsgYmFja2dyb3VuZDogIzAwMCAhaW1wb3J0YW50OyBjb2xvcjogI2ZmZiAhaW1wb3J0YW50OyB9Cg==
+/* ============================================================================
+ * Hub Shell —— 四个日语精读项目共用的「界面外壳」
+ * ----------------------------------------------------------------------------
+ * 模板来源：魔卡少女樱 v2.10（https://u8tpuxfku1xoi.space.mcode.cn）
+ *   · 主题系统：data-theme(明暗) × data-palette(配色) 两层
+ *   · 7 套配色：sakura / night / paper / soft / bw / ink / green
+ *   · 墨水屏修正：bw/ink 的描边一律半透明（纯黑/纯白描边会变成一排粗杠杠）
+ *   · 渐变在墨水屏上会糊成脏灰块 → 护眼主题一律 background-image:none
+ *
+ * 用法：每个项目的 index.html 里
+ *    <link rel="stylesheet" href="../shell/shell.css">   ← 放在自己 style.css 之后
+ *    <script src="../shell/shell.js"></script>            ← 放在自己 app.js 之前
+ * 项目的 style.css 把硬编码颜色换成 var(--sh-*) 即可自动跟随主题。
+ * ========================================================================== */
+
+/* ---------- 1. 设计令牌 ---------- */
+:root {
+  /* 魔卡少女樱配色：樱花粉 / 星光金 / 四叶草绿 / 夜空紫 */
+  --sh-bg:      #fdf5fb;
+  --sh-bg2:     rgba(255, 255, 255, .94);
+  --sh-bg3:     #f7e9f4;
+  --sh-line:    #edd9ea;
+  --sh-fg:      #3b2a4a;
+  --sh-fg-dim:  #7a6a8c;
+  --sh-ja:      #b23a48;
+  --sh-zh:      #2a5aa8;
+  --sh-ro:      #8a6aa8;
+  --sh-accent:  #e8619c;
+  --sh-accent2: #4fae8b;
+  --sh-shadow:  0 6px 18px rgba(120, 70, 130, .14);
+  --sh-radius:  16px;
+
+  /* 主题层：body 背景 / 当前句高亮 / 顶栏（各配色可覆盖） */
+  --sh-body-bg:  #fdf3fb;
+  --sh-body-img:
+    radial-gradient(circle at 18% 10%, rgba(255, 190, 222, .55), transparent 45%),
+    radial-gradient(circle at 82% 6%,  rgba(205, 200, 255, .45), transparent 42%),
+    radial-gradient(circle at 50% 96%, rgba(255, 226, 168, .35), transparent 48%),
+    linear-gradient(180deg, #fdf3fb 0%, #f3edff 100%);
+  --sh-cue-on:   #fff2f8;
+  --sh-topbar:   rgba(255, 255, 255, .82);
+
+  /* 字号：字幕 --sh-fs（14~30）、弹窗 --sh-pfs（14~30），与魔卡一致 */
+  --sh-fs:  26px;
+  --sh-pfs: 17px;
+  --sh-safe-b: env(safe-area-inset-bottom, 0px);
+
+  /* 墨水屏：把彩屏的高对比模式独立出来（用户设备是黑白墨水屏 + 老花眼） */
+  --sh-hc-line: var(--sh-line);
+}
+
+/* 兼容魔卡自己的变量名（同一套 token 的别名） */
+:root {
+  --bg: var(--sh-bg); --bg-2: var(--sh-bg2); --bg-3: var(--sh-bg3);
+  --line: var(--sh-line); --fg: var(--sh-fg); --fg-dim: var(--sh-fg-dim);
+  --ja: var(--sh-ja); --zh: var(--sh-zh); --ro: var(--sh-ro);
+  --accent: var(--sh-accent); --accent-2: var(--sh-accent2);
+  --body-bg: var(--sh-body-bg); --body-img: var(--sh-body-img);
+  --cue-on-bg: var(--sh-cue-on); --topbar-bg: var(--sh-topbar);
+}
+
+/* ---------- 2. 明暗层（决定深色系专有样式） ---------- */
+html[data-theme="dark"] {
+  --sh-bg:      #17122a;
+  --sh-bg2:     rgba(34, 28, 56, .94);
+  --sh-bg3:     #282040;
+  --sh-line:    #3d3358;
+  --sh-fg:      #f2edfb;
+  --sh-fg-dim:  #a99cc6;
+  --sh-ja:      #ffb3bf;
+  --sh-zh:      #9ed4ff;
+  --sh-ro:      #c3aee0;
+  --sh-accent:  #ff8ab8;
+  --sh-accent2: #56c9a4;
+  --sh-shadow:  0 6px 18px rgba(0, 0, 0, .38);
+  --sh-body-bg: #14102a;
+  --sh-body-img:
+    radial-gradient(circle at 18% 10%, rgba(140, 70, 120, .40), transparent 45%),
+    radial-gradient(circle at 82% 6%,  rgba(80, 70, 150, .45), transparent 42%),
+    radial-gradient(circle at 50% 96%, rgba(150, 110, 50, .28), transparent 48%),
+    linear-gradient(180deg, #14102a 0%, #1d1738 100%);
+  --sh-cue-on:  #352444;
+  --sh-topbar:  rgba(28, 22, 48, .86);
+}
+
+/* ---------- 3. 配色层（放在 theme 之后，覆盖同一层级） ----------
+ * 墨水屏只有黑白灰：彩色主题在屏上会糊成灰，所以每个方案都标了实际效果 */
+html[data-palette="sakura"] { /* 默认值就是 :root 里的樱花粉，不重复写 */ }
+
+html[data-palette="paper"] {
+  --sh-bg: #f5eddb; --sh-bg2: #fbf6ea; --sh-bg3: #efe6d2;
+  --sh-line: #ddd0b6; --sh-fg: #453a2b; --sh-fg-dim: #7c6e5a;
+  --sh-ja: #9a4a3a; --sh-zh: #2f5a8c; --sh-ro: #7a6a55;
+  --sh-accent: #b08a5a; --sh-accent2: #5e8c6a;
+  --sh-shadow: 0 4px 14px rgba(120, 100, 70, .12);
+  --sh-body-bg: #f5eddb; --sh-body-img: none;
+  --sh-cue-on: #efe4cb; --sh-topbar: rgba(251, 246, 234, .92);
+}
+html[data-palette="soft"] {
+  --sh-bg: #e9e9e9; --sh-bg2: #f4f4f4; --sh-bg3: #dcdcdc;
+  --sh-line: #cfcfcf; --sh-fg: #3c3c3c; --sh-fg-dim: #757575;
+  --sh-ja: #464646; --sh-zh: #5a5a5a; --sh-ro: #7a7a7a;
+  --sh-accent: #8a8a8a; --sh-accent2: #8a8a8a;
+  --sh-shadow: 0 3px 10px rgba(0, 0, 0, .08);
+  --sh-body-bg: #e9e9e9; --sh-body-img: none;
+  --sh-cue-on: #d8d8d8; --sh-topbar: rgba(244, 244, 244, .92);
+}
+html[data-palette="bw"] {
+  --sh-bg: #ffffff; --sh-bg2: #ffffff; --sh-bg3: #f0f0f0;
+  --sh-line: rgba(0, 0, 0, .26);   /* 纯黑描边在白底上会变成一排粗杠杠 */
+  --sh-fg: #000000; --sh-fg-dim: #333333;
+  --sh-ja: #000000; --sh-zh: #000000; --sh-ro: #444444;
+  --sh-accent: #000000; --sh-accent2: #000000;
+  --sh-shadow: none;
+  --sh-body-bg: #ffffff; --sh-body-img: none;
+  --sh-cue-on: #e8e8e8; --sh-topbar: rgba(255, 255, 255, .96);
+}
+html[data-palette="ink"] {
+  --sh-bg: #000000; --sh-bg2: #0b0b0b; --sh-bg3: #171717;
+  --sh-line: rgba(255, 255, 255, .26);  /* 纯白描边在黑底上会变成一排粗杠杠 */
+  --sh-fg: #ffffff; --sh-fg-dim: #b8b8b8;
+  --sh-ja: #ffffff; --sh-zh: #e8e8e8; --sh-ro: #bbbbbb;
+  --sh-accent: #dcdcdc;   /* 不能纯白：accent 底 + 白字会变成白块 */
+  --sh-accent2: #dddddd;
+  --sh-shadow: none;
+  --sh-body-bg: #000000; --sh-body-img: none;
+  --sh-cue-on: #1c1c1c; --sh-topbar: rgba(0, 0, 0, .92);
+}
+html[data-palette="green"] {
+  --sh-bg: #0e1710; --sh-bg2: #111c12; --sh-bg3: #17251a;
+  --sh-line: #2e4a32; --sh-fg: #86e08a; --sh-fg-dim: #5f9c64;
+  --sh-ja: #9bf0a0; --sh-zh: #d3e8d4; --sh-ro: #6fbf74;
+  --sh-accent: #86e08a; --sh-accent2: #c8f0c8;
+  --sh-shadow: none;
+  --sh-body-bg: #0e1710; --sh-body-img: none;
+  --sh-cue-on: #16261a; --sh-topbar: rgba(14, 23, 16, .94);
+}
+html[data-palette="night"] { /* = data-theme=dark 的夜空紫，palette 显式指定时生效 */ }
+
+/* ---------- 4. 通用组件（sh- 前缀，避免和项目自身 class 冲突） ---------- */
+
+/* 顶栏 */
+.sh-topbar {
+  display: flex; align-items: center; gap: 10px;
+  padding: calc(env(safe-area-inset-top, 0px) + 10px) 12px 10px;
+  background: var(--sh-topbar);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--sh-line);
+  position: sticky; top: 0; z-index: 20;
+}
+.sh-brand { flex: 1; min-width: 0; }
+.sh-brand h1, .sh-brand b {
+  margin: 0; font-size: 18px; font-weight: 800; letter-spacing: .5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
+}
+.sh-brand p, .sh-brand small {
+  margin: 2px 0 0; font-size: 13px; color: var(--sh-fg-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
+}
+/* 集数徽章（魔卡顶栏的 EP1） */
+.sh-badge {
+  background: var(--sh-accent); color: #fff; font-size: 12px; font-weight: 800;
+  padding: 5px 9px; border-radius: 9px; flex: none; letter-spacing: .5px;
+}
+html[data-palette="ink"] .sh-badge { background: #0d0d0d; color: #fff; border: 1px solid rgba(255,255,255,.55); }
+html[data-palette="bw"]  .sh-badge { background: #000; color: #fff; }
+
+/* 图标按钮 */
+.sh-btn {
+  background: var(--sh-bg3); color: var(--sh-fg); border: 1px solid var(--sh-line);
+  border-radius: 11px; width: 42px; height: 42px; font-size: 21px; line-height: 1;
+  cursor: pointer; flex: none; display: inline-flex; align-items: center; justify-content: center;
+}
+.sh-btn:active { transform: scale(.94); }
+
+/* 文字按钮（老花眼看图标费劲 → 能用文字就别用图标） */
+.sh-tbtn {
+  background: var(--sh-bg2); color: var(--sh-fg); border: 1px solid var(--sh-line);
+  border-radius: 12px; padding: 9px 13px; font-size: 14.5px; font-weight: 700;
+  cursor: pointer; flex: none; min-width: 58px;
+}
+.sh-tbtn:active { transform: scale(.97); }
+.sh-tbtn.on { background: var(--sh-accent); color: #fff; border-color: var(--sh-accent); }
+html[data-palette="ink"] .sh-tbtn.on { background: #0d0d0d; color: #fff; border-color: rgba(255,255,255,.55); }
+html[data-palette="bw"]  .sh-tbtn.on { background: #000; color: #fff; border-color: #000; }
+
+/* 卡片 */
+.sh-card {
+  background: var(--sh-bg2); border: 1px solid var(--sh-line);
+  border-radius: var(--sh-radius); box-shadow: var(--sh-shadow);
+}
+
+/* 底部面板（🔴 必须限高 + 自己滚，否则内容超高会溢出屏幕外 → 看不见也滚不到） */
+.sh-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  background: var(--sh-bg2); border-top-left-radius: 20px; border-top-right-radius: 20px;
+  padding: 18px 16px calc(18px + var(--sh-safe-b)); max-width: 920px; margin: 0 auto;
+  border-top: 1px solid var(--sh-line); box-shadow: 0 -8px 30px rgba(90, 60, 140, .18);
+  backdrop-filter: blur(16px);
+  max-height: 86vh; overflow-y: auto; overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.sh-sheet[hidden] { display: none; }
+.sh-sheet-row { display: flex; align-items: center; gap: 12px; padding: 13px 2px; font-size: 16px; }
+.sh-sheet-note { font-size: 13px; color: var(--sh-fg-dim); line-height: 1.6; }
+.sh-sheet h3 { margin: 0 0 6px; font-size: 17px; font-weight: 800; }
+.sh-sheet .sh-close {
+  position: absolute; right: 12px; top: 12px; background: var(--sh-bg3);
+  color: var(--sh-fg); border: 1px solid var(--sh-line); border-radius: 10px;
+  width: 36px; height: 36px; font-size: 17px; cursor: pointer; line-height: 1;
+}
+
+/* 字号滑杆 */
+.sh-range { -webkit-appearance: none; appearance: none; flex: 1; height: 22px; background: transparent; margin: 0; }
+.sh-range::-webkit-slider-runnable-track { height: 5px; background: var(--sh-bg3); border-radius: 4px; }
+.sh-range::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--sh-accent); margin-top: -5.5px;
+  border: 2px solid #fff;   /* eink-ok: 滑杆旋钮的 2px 白环 —— 16px 小圆点，用来跟轨道区分，不是内容框 */
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
+}
+html[data-palette="ink"] .sh-range::-webkit-slider-thumb { border-color: #000; }
+
+/* 主题网格 */
+.sh-theme-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 8px; margin: 4px 0 2px;
+}
+.sh-theme-opt {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 9px 4px 8px; border: 2px solid var(--sh-line); border-radius: 12px;
+  background: var(--sh-bg2); cursor: pointer; font-size: 12.5px; color: var(--sh-fg-dim);
+  font-weight: 700; line-height: 1.25; text-align: center;
+}
+.sh-theme-opt.on { border-color: var(--sh-accent); color: var(--sh-fg); background: var(--sh-bg3); }
+.sh-theme-opt:active { transform: scale(.97); }
+.sh-theme-sw {
+  width: 100%; height: 30px; border-radius: 7px; border: 1px solid rgba(0, 0, 0, .18);
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  font-size: 11px; font-weight: 800;
+}
+html[data-palette="ink"] .sh-theme-opt { background: #0d0d0d; }
+html[data-palette="ink"] .sh-theme-opt.on { background: #1c1c1c; }
+
+/* 设置浮标（右下角，不挡字幕；用「設定」文字，老花眼能认） */
+.sh-fab {
+  position: fixed; right: 10px; bottom: calc(84px + var(--sh-safe-b)); z-index: 55;
+  background: var(--sh-bg2); color: var(--sh-fg); border: 1px solid var(--sh-line);
+  border-radius: 13px; padding: 9px 12px; font-size: 14px; font-weight: 700;
+  box-shadow: var(--sh-shadow); cursor: pointer; opacity: .92;
+}
+.sh-fab:active { transform: scale(.96); }
+
+/* toast */
+.sh-toast {
+  position: fixed; left: 50%; bottom: calc(26px + var(--sh-safe-b));
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(40, 30, 60, .94); color: #fff; padding: 11px 18px;
+  border-radius: 12px; font-size: 15px; z-index: 90; opacity: 0;
+  transition: opacity .2s, transform .2s; pointer-events: none; max-width: 86vw; text-align: center;
+}
+.sh-toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+html[data-theme="dark"] .sh-toast { background: rgba(34, 28, 56, .96); color: #f2edfb; }
+
+/* ---------- 5. 墨水屏 / 老花眼专用 ---------- */
+@media (prefers-contrast: more) { :root { --sh-shadow: none; } }
+
+/* 项目只要给 <html> 加 class="sh-hc" 就走纯黑白高对比 */
+html.sh-hc, html.sh-hc body {
+  background: #fff !important; background-image: none !important; color: #000 !important;
+}
+html.sh-hc.sh-dark, html.sh-hc.sh-dark body { background: #000 !important; color: #fff !important; }

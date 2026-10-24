@@ -1,1 +1,144 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIC0qLSBjb2Rpbmc6IHV0Zi04IC0qLQoiIiJ1cGRhdGVfcHJvdGVjdGVkLnB5IOKAlOKAlCDmm7TmlrDlhbHkuqvku5PlupPnmoQgcHJvdGVjdGVkLXNpdGVzLmpzb27vvIgqKuWPquWKqOacrOmhueebrueahOadoeebrioq77yJCgrwn5S0IHByb3RlY3RlZC1zaXRlcy5qc29uIOaYryoq5omA5pyJIGFnZW50IOWFseeUqCoq55qE5paH5Lu2IOKHkgogICAgwrcg5Y+q5pS56Ieq5bex6aG555uu55qE5p2h55uu77yILS1wcm9qZWN0IHNodW7vvIkKICAgIMK3ICoq5YWI6K+7IHNoYSDlho0gUFVUKirvvIg0MDkgPSDliKvkurrliJrmjqjov4cg4oeSIOmHjeivu+WQiOW5tu+8jOWIq+imhueblu+8iQogICAgwrcg5o6o5a6M5Zue5rqQ5aSN5qC4CgrnlKjms5XvvJoKICAgIHB5dGhvbjMgdG9vbHMvdXBkYXRlX3Byb3RlY3RlZC5weSAtLXByb2plY3Qgc2h1biBcCiAgICAgICAgLS1hZGQgMmFpeGQwMzdzZDhmazpzaHVuOueOsOW9ueWGheWuueerme+8iOWQqyBBUEsgKyDlrZfluZUv6K+N5bqTL+mfs+mike+8iSBcCiAgICAgICAgLS1tYXJrIHc5NG9qMnVpajg5eDA6REVMRVRFRDrmnKzmrKHlj5HniYjnmoTkuK3pl7Tnq5nvvIjlt7Looqvlj5bku6PvvIkKIiIiCmltcG9ydCBhcmdwYXJzZQppbXBvcnQgYmFzZTY0CmltcG9ydCBqc29uCmltcG9ydCBvcwppbXBvcnQgc3lzCmltcG9ydCB0aW1lCmltcG9ydCB1cmxsaWIuZXJyb3IKaW1wb3J0IHVybGxpYi5yZXF1ZXN0CgpPV05FUiA9ICJ0bHYtY3JlYXRvciIKUkVQTyA9ICJuaGstZWFzeS1uZXdzIgpQQVRIID0gInByb3RlY3RlZC1zaXRlcy5qc29uIgpBUEkgPSAiaHR0cHM6Ly9hcGkuZ2l0aHViLmNvbS9yZXBvcy8lcy8lcy9jb250ZW50cy8lcyIgJSAoT1dORVIsIFJFUE8sIFBBVEgpCgoKZGVmIGFwaShtZXRob2QsIHVybCwgdG9rZW4sIHBheWxvYWQ9Tm9uZSk6CiAgICByZXEgPSB1cmxsaWIucmVxdWVzdC5SZXF1ZXN0KHVybCwgbWV0aG9kPW1ldGhvZCkKICAgIHJlcS5hZGRfaGVhZGVyKCJBdXRob3JpemF0aW9uIiwgIkJlYXJlciAiICsgdG9rZW4pCiAgICByZXEuYWRkX2hlYWRlcigiQWNjZXB0IiwgImFwcGxpY2F0aW9uL3ZuZC5naXRodWIranNvbiIpCiAgICByZXEuYWRkX2hlYWRlcigiVXNlci1BZ2VudCIsICJtYXZpcy1zaHVuLXByb3RlY3RlZCIpCiAgICBkYXRhID0gTm9uZQogICAgaWYgcGF5bG9hZCBpcyBub3QgTm9uZToKICAgICAgICBkYXRhID0ganNvbi5kdW1wcyhwYXlsb2FkLCBlbnN1cmVfYXNjaWk9RmFsc2UpLmVuY29kZSgidXRmLTgiKQogICAgICAgIHJlcS5hZGRfaGVhZGVyKCJDb250ZW50LVR5cGUiLCAiYXBwbGljYXRpb24vanNvbiIpCiAgICB0cnk6CiAgICAgICAgd2l0aCB1cmxsaWIucmVxdWVzdC51cmxvcGVuKHJlcSwgZGF0YSwgdGltZW91dD02MCkgYXMgcjoKICAgICAgICAgICAgcmV0dXJuIHIuc3RhdHVzLCBqc29uLmxvYWRzKHIucmVhZCgpLmRlY29kZSgidXRmLTgiKSkKICAgIGV4Y2VwdCB1cmxsaWIuZXJyb3IuSFRUUEVycm9yIGFzIGU6CiAgICAgICAgYm9keSA9IGUucmVhZCgpLmRlY29kZSgidXRmLTgiKSBvciAie30iCiAgICAgICAgdHJ5OgogICAgICAgICAgICByZXR1cm4gZS5jb2RlLCBqc29uLmxvYWRzKGJvZHkpCiAgICAgICAgZXhjZXB0IEV4Y2VwdGlvbjoKICAgICAgICAgICAgcmV0dXJuIGUuY29kZSwgeyJyYXciOiBib2R5WzoyMDBdfQoKCmRlZiBtYWluKCk6CiAgICBhcCA9IGFyZ3BhcnNlLkFyZ3VtZW50UGFyc2VyKCkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1wcm9qZWN0IiwgcmVxdWlyZWQ9VHJ1ZSkKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1hZGQiLCBhY3Rpb249ImFwcGVuZCIsIGRlZmF1bHQ9W10sCiAgICAgICAgICAgICAgICAgICAgaGVscD0iZG9tYWluOnByb2plY3Q6cmVhc29u77yI5Y+v5bimIDpmcm96ZW4gLyA6cm9sZT14eHjvvIkiKQogICAgYXAuYWRkX2FyZ3VtZW50KCItLW1hcmsiLCBhY3Rpb249ImFwcGVuZCIsIGRlZmF1bHQ9W10sCiAgICAgICAgICAgICAgICAgICAgaGVscD0iZG9tYWluOlNUQVRVUzpub3RlIikKICAgIGFwLmFkZF9hcmd1bWVudCgiLS1ub3RlIiwgYWN0aW9uPSJhcHBlbmQiLCBkZWZhdWx0PVtdLAogICAgICAgICAgICAgICAgICAgIGhlbHA9ImRvbWFpbjropoHov73liqDliLAgcmVhc29uIOmHjOeahOivtOaYjiIpCiAgICBhcmdzID0gYXAucGFyc2VfYXJncygpCiAgICB0b2tlbiA9IG9zLmVudmlyb24uZ2V0KCJHSF9UT0tFTiIsICIiKQogICAgaWYgbm90IHRva2VuOgogICAgICAgIHJhaXNlIFN5c3RlbUV4aXQoIuKdjCDmsqHmnIkgR0hfVE9LRU4iKQoKICAgIGRlZiBsb2FkKCk6CiAgICAgICAgc3QsIGQgPSBhcGkoIkdFVCIsIEFQSSwgdG9rZW4pCiAgICAgICAgaWYgc3QgIT0gMjAwOgogICAgICAgICAgICByYWlzZSBTeXN0ZW1FeGl0KCLinYwg6K+75LiN5YiwICVz77yaJXMiICUgKFBBVEgsIHN0cihkKVs6MjAwXSkpCiAgICAgICAgdGV4dCA9IGJhc2U2NC5iNjRkZWNvZGUoZFsiY29udGVudCJdKS5kZWNvZGUoInV0Zi04IikKICAgICAgICByZXR1cm4ganNvbi5sb2Fkcyh0ZXh0KSwgZFsic2hhIl0KCiAgICBkZWYgc2F2ZShvYmosIHNoYSk6CiAgICAgICAgcGF5bG9hZCA9IHsibWVzc2FnZSI6ICJjaG9yZShwcm90ZWN0ZWQpOiDmm7TmlrAgJXMg55qE56uZ54K55riF5Y2VIiAlIGFyZ3MucHJvamVjdCwKICAgICAgICAgICAgICAgICAgICJjb250ZW50IjogYmFzZTY0LmI2NGVuY29kZSgKICAgICAgICAgICAgICAgICAgICAgICBqc29uLmR1bXBzKG9iaiwgZW5zdXJlX2FzY2lpPUZhbHNlLCBpbmRlbnQ9MSkuZW5jb2RlKCJ1dGYtOCIpCiAgICAgICAgICAgICAgICAgICApLmRlY29kZSgiYXNjaWkiKX0KICAgICAgICBpZiBzaGE6CiAgICAgICAgICAgIHBheWxvYWRbInNoYSJdID0gc2hhCiAgICAgICAgc3QsIGQgPSBhcGkoIlBVVCIsIEFQSSwgdG9rZW4sIHBheWxvYWQpCiAgICAgICAgcmV0dXJuIHN0LCBkCgogICAgZm9yIGF0dGVtcHQgaW4gcmFuZ2UoNCk6CiAgICAgICAgb2JqLCBzaGEgPSBsb2FkKCkKICAgICAgICBzaXRlcyA9IG9iai5zZXRkZWZhdWx0KCJwcm90ZWN0ZWRfc2l0ZXMiLCBbXSkKICAgICAgICBieV9kb20gPSB7ZS5nZXQoImRvbWFpbiIpOiBlIGZvciBlIGluIHNpdGVzfQoKICAgICAgICBmb3Igc3BlYyBpbiBhcmdzLmFkZDoKICAgICAgICAgICAgcGFydHMgPSBzcGVjLnNwbGl0KCI6IiwgMikKICAgICAgICAgICAgZG9tLCBwcm9qLCByZWFzb24gPSBwYXJ0c1swXSwgcGFydHNbMV0sIHBhcnRzWzJdCiAgICAgICAgICAgIGVudHJ5ID0gYnlfZG9tLmdldChkb20pCiAgICAgICAgICAgIGlmIGVudHJ5IGlzIE5vbmU6CiAgICAgICAgICAgICAgICBlbnRyeSA9IHsiZG9tYWluIjogZG9tLCAicHJvamVjdCI6IHByb2osICJyZWFzb24iOiByZWFzb259CiAgICAgICAgICAgICAgICBzaXRlcy5hcHBlbmQoZW50cnkpCiAgICAgICAgICAgICAgICBieV9kb21bZG9tXSA9IGVudHJ5CiAgICAgICAgICAgIGVsc2U6CiAgICAgICAgICAgICAgICBlbnRyeVsicmVhc29uIl0gPSByZWFzb24KICAgICAgICAgICAgICAgIGVudHJ5WyJwcm9qZWN0Il0gPSBwcm9qCiAgICAgICAgICAgIGlmICJmcm96ZW4iIGluIHJlYXNvbjoKICAgICAgICAgICAgICAgIGVudHJ5WyJmcm96ZW4iXSA9IFRydWUKICAgICAgICAgICAgZm9yIGt2IGluIHJlYXNvbi5zcGxpdCgpOgogICAgICAgICAgICAgICAgaWYga3Yuc3RhcnRzd2l0aCgicm9sZT0iKToKICAgICAgICAgICAgICAgICAgICBlbnRyeVsicm9sZSJdID0ga3ZbNTpdCgogICAgICAgIGZvciBzcGVjIGluIGFyZ3MubWFyazoKICAgICAgICAgICAgcGFydHMgPSBzcGVjLnNwbGl0KCI6IiwgMikKICAgICAgICAgICAgZG9tLCBzdGF0dXMgPSBwYXJ0c1swXSwgcGFydHNbMV0KICAgICAgICAgICAgbm90ZSA9IHBhcnRzWzJdIGlmIGxlbihwYXJ0cykgPiAyIGVsc2UgIiIKICAgICAgICAgICAgZW50cnkgPSBieV9kb20uZ2V0KGRvbSkKICAgICAgICAgICAgaWYgZW50cnkgaXMgTm9uZToKICAgICAgICAgICAgICAgIHNpdGVzLmFwcGVuZCh7ImRvbWFpbiI6IGRvbSwgInByb2plY3QiOiBhcmdzLnByb2plY3QsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJyZWFzb24iOiBub3RlIG9yICLvvIjml6Dor7TmmI7vvIkiLCAic3RhdHVzIjogc3RhdHVzfSkKICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgIGVudHJ5WyJzdGF0dXMiXSA9IHN0YXR1cwogICAgICAgICAgICAgICAgaWYgbm90ZToKICAgICAgICAgICAgICAgICAgICBlbnRyeVsibm90ZSJdID0gbm90ZQoKICAgICAgICBmb3Igc3BlYyBpbiBhcmdzLm5vdGU6CiAgICAgICAgICAgIGRvbSwgZXh0cmEgPSBzcGVjLnNwbGl0KCI6IiwgMSkKICAgICAgICAgICAgZW50cnkgPSBieV9kb20uZ2V0KGRvbSkKICAgICAgICAgICAgaWYgZW50cnkgaXMgbm90IE5vbmU6CiAgICAgICAgICAgICAgICBlbnRyeVsicmVhc29uIl0gPSAoZW50cnkuZ2V0KCJyZWFzb24iLCAiIikgKyAiICIgKyBleHRyYSkuc3RyaXAoKQoKICAgICAgICBvYmpbInVwZGF0ZWQiXSA9IHRpbWUuc3RyZnRpbWUoIiVZLSVtLSVkIikKICAgICAgICBzdCwgZCA9IHNhdmUob2JqLCBzaGEpCiAgICAgICAgaWYgc3QgaW4gKDIwMCwgMjAxKToKICAgICAgICAgICAgcHJpbnQoIuKchSDlt7Lmm7TmlrAgcHJvdGVjdGVkLXNpdGVzLmpzb24iKQogICAgICAgICAgICBicmVhawogICAgICAgIGlmIHN0ID09IDQwOToKICAgICAgICAgICAgcHJpbnQoIiAg4oa7IDQwOe+8iOacieS6uuWImuaOqOi/h++8ieKHkiDph43or7vlkIjlubblho3mjqgiKQogICAgICAgICAgICB0aW1lLnNsZWVwKDIpCiAgICAgICAgICAgIGNvbnRpbnVlCiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgi4p2MIOaOqOWksei0pe+8miVzICVzIiAlIChzdCwgc3RyKGQpWzozMDBdKSkKICAgIGVsc2U6CiAgICAgICAgcmFpc2UgU3lzdGVtRXhpdCgi4p2MIOi/nue7reWGsueqge+8jOaUvuW8gyIpCgogICAgb2JqLCBfID0gbG9hZCgpCiAgICBtaW5lID0gW2UgZm9yIGUgaW4gb2JqWyJwcm90ZWN0ZWRfc2l0ZXMiXSBpZiBlLmdldCgicHJvamVjdCIpID09IGFyZ3MucHJvamVjdF0KICAgIHByaW50KCLwn5+iIOWkjeaguO+8miVzIOmhueebriAlZCDmnaEiICUgKGFyZ3MucHJvamVjdCwgbGVuKG1pbmUpKSkKICAgIGZvciBlIGluIG1pbmU6CiAgICAgICAgcHJpbnQoIiAgICUtMTRzICUtMTBzICVzIiAlIChlLmdldCgiZG9tYWluIiksIGUuZ2V0KCJzdGF0dXMiLCAiYWxpdmUiKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHN0cihlLmdldCgicmVhc29uIikpWzo3MF0pKQoKCmlmIF9fbmFtZV9fID09ICJfX21haW5fXyI6CiAgICBtYWluKCkK
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""update_protected.py —— 更新共享仓库的 protected-sites.json（**只动本项目的条目**）
+
+🔴 protected-sites.json 是**所有 agent 共用**的文件 ⇒
+    · 只改自己项目的条目（--project shun）
+    · **先读 sha 再 PUT**（409 = 别人刚推过 ⇒ 重读合并，别覆盖）
+    · 推完回源复核
+
+用法：
+    python3 tools/update_protected.py --project shun \
+        --add 2aixd037sd8fk:shun:现役内容站（含 APK + 字幕/词库/音频） \
+        --mark w94oj2uij89x0:DELETED:本次发版的中间站（已被取代）
+"""
+import argparse
+import base64
+import json
+import os
+import sys
+import time
+import urllib.error
+import urllib.request
+
+OWNER = "tlv-creator"
+REPO = "nhk-easy-news"
+PATH = "protected-sites.json"
+API = "https://api.github.com/repos/%s/%s/contents/%s" % (OWNER, REPO, PATH)
+
+
+def api(method, url, token, payload=None):
+    req = urllib.request.Request(url, method=method)
+    req.add_header("Authorization", "Bearer " + token)
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("User-Agent", "mavis-shun-protected")
+    data = None
+    if payload is not None:
+        data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, data, timeout=60) as r:
+            return r.status, json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8") or "{}"
+        try:
+            return e.code, json.loads(body)
+        except Exception:
+            return e.code, {"raw": body[:200]}
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--project", required=True)
+    ap.add_argument("--add", action="append", default=[],
+                    help="domain:project:reason（可带 :frozen / :role=xxx）")
+    ap.add_argument("--mark", action="append", default=[],
+                    help="domain:STATUS:note")
+    ap.add_argument("--note", action="append", default=[],
+                    help="domain:要追加到 reason 里的说明")
+    args = ap.parse_args()
+    token = os.environ.get("GH_TOKEN", "")
+    if not token:
+        raise SystemExit("❌ 没有 GH_TOKEN")
+
+    def load():
+        st, d = api("GET", API, token)
+        if st != 200:
+            raise SystemExit("❌ 读不到 %s：%s" % (PATH, str(d)[:200]))
+        text = base64.b64decode(d["content"]).decode("utf-8")
+        return json.loads(text), d["sha"]
+
+    def save(obj, sha):
+        payload = {"message": "chore(protected): 更新 %s 的站点清单" % args.project,
+                   "content": base64.b64encode(
+                       json.dumps(obj, ensure_ascii=False, indent=1).encode("utf-8")
+                   ).decode("ascii")}
+        if sha:
+            payload["sha"] = sha
+        st, d = api("PUT", API, token, payload)
+        return st, d
+
+    for attempt in range(4):
+        obj, sha = load()
+        sites = obj.setdefault("protected_sites", [])
+        by_dom = {e.get("domain"): e for e in sites}
+
+        for spec in args.add:
+            parts = spec.split(":", 2)
+            dom, proj, reason = parts[0], parts[1], parts[2]
+            entry = by_dom.get(dom)
+            if entry is None:
+                entry = {"domain": dom, "project": proj, "reason": reason}
+                sites.append(entry)
+                by_dom[dom] = entry
+            else:
+                entry["reason"] = reason
+                entry["project"] = proj
+            if "frozen" in reason:
+                entry["frozen"] = True
+            for kv in reason.split():
+                if kv.startswith("role="):
+                    entry["role"] = kv[5:]
+
+        for spec in args.mark:
+            parts = spec.split(":", 2)
+            dom, status = parts[0], parts[1]
+            note = parts[2] if len(parts) > 2 else ""
+            entry = by_dom.get(dom)
+            if entry is None:
+                sites.append({"domain": dom, "project": args.project,
+                              "reason": note or "（无说明）", "status": status})
+            else:
+                entry["status"] = status
+                if note:
+                    entry["note"] = note
+
+        for spec in args.note:
+            dom, extra = spec.split(":", 1)
+            entry = by_dom.get(dom)
+            if entry is not None:
+                entry["reason"] = (entry.get("reason", "") + " " + extra).strip()
+
+        obj["updated"] = time.strftime("%Y-%m-%d")
+        st, d = save(obj, sha)
+        if st in (200, 201):
+            print("✅ 已更新 protected-sites.json")
+            break
+        if st == 409:
+            print("  ↻ 409（有人刚推过）⇒ 重读合并再推")
+            time.sleep(2)
+            continue
+        raise SystemExit("❌ 推失败：%s %s" % (st, str(d)[:300]))
+    else:
+        raise SystemExit("❌ 连续冲突，放弃")
+
+    obj, _ = load()
+    mine = [e for e in obj["protected_sites"] if e.get("project") == args.project]
+    print("🟢 复核：%s 项目 %d 条" % (args.project, len(mine)))
+    for e in mine:
+        print("   %-14s %-10s %s" % (e.get("domain"), e.get("status", "alive"),
+                                     str(e.get("reason"))[:70]))
+
+
+if __name__ == "__main__":
+    main()

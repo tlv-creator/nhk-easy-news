@@ -1,1 +1,134 @@
-ewogImVwaXNvZGVzIjogWwogIHsKICAgImVwIjogMTMsCiAgICJ0YWciOiAiZXAxMyIsCiAgICJ0aXRsZSI6ICJIb3cgdG8gbWFrZSBhIGdvb2QgcmVsYXRpb25zaGlwIHdpdGggcGVvcGxlIiwKICAgImRlc2MiOiAi44CQTjUtTjTjgJFFcDI3OCBIb3cgdG8gbWFrZSBhIGdvb2QgcmVsYXRpb25zaGlwIHdpdGggcGVvcGxlIC8gSmFwYW5lc2UgUG9kY2FzdCBmb3IgQmVnaW5uZXJzIiwKICAgImR1ciI6IDEwMTcuMSwKICAgImF1ZGlvIjogImVwMTMubTRhIiwKICAgIm4iOiAxMjQsCiAgICJubyI6ICIyNzgiCiAgfSwKICB7CiAgICJlcCI6IDEsCiAgICJ0YWciOiAiZXAwMSIsCiAgICJ0aXRsZSI6ICJOZXcgRnJpZW5kcywgT2xkIEZyaWVuZHMiLAogICAiZGVzYyI6ICLjgJBONS1ONOOAkUVwMjc3IE5ldyBGcmllbmRzLCBPbGQgRnJpZW5kcyAvIEphcGFuZXNlIFBvZGNhc3QgZm9yIEJlZ2lubmVycyIsCiAgICJkdXIiOiA4ODEuNiwKICAgImF1ZGlvIjogImVwMDEubTRhIiwKICAgIm4iOiAxMzEsCiAgICJubyI6ICIyNzciCiAgfSwKICB7CiAgICJlcCI6IDIsCiAgICJ0YWciOiAiZXAwMiIsCiAgICJ0aXRsZSI6ICJXaGF0IHdvdWxkIHlvdSBkbyBpZiBBSSB0b29rIHlvdXIgam9iPyIsCiAgICJkZXNjIjogIuOAkE41LU4044CRRXAyNzYgV2hhdCB3b3VsZCB5b3UgZG8gaWYgQUkgdG9vayB5b3VyIGpvYj8gLyBKYXBhbmVzZSBQb2RjYXN0IGZvciBCZWdpbm5lcnMiLAogICAiZHVyIjogNjQwLjUsCiAgICJhdWRpbyI6ICJlcDAyLm00YSIsCiAgICJuIjogOTUsCiAgICJubyI6ICIyNzYiCiAgfSwKICB7CiAgICJlcCI6IDMsCiAgICJ0YWciOiAiZXAwMyIsCiAgICJ0aXRsZSI6ICJTYXZpbmcgTW9uZXkiLAogICAiZGVzYyI6ICLjgJBONS1ONOOAkUVwMjc1IFNhdmluZyBNb25leSAvIEphcGFuZXNlIFBvZGNhc3QgZm9yIEJlZ2lubmVycyIsCiAgICJkdXIiOiA2MjkuMCwKICAgImF1ZGlvIjogImVwMDMubTRhIiwKICAgIm4iOiA5NywKICAgIm5vIjogIjI3NSIKICB9LAogIHsKICAgImVwIjogNCwKICAgInRhZyI6ICJlcDA0IiwKICAgInRpdGxlIjogIldoaWNoIGdlbmVyYXRpb24gaXMgYmV0dGVyPyIsCiAgICJkZXNjIjogIuOAkE41LU4044CRRXAyNzQgV2hpY2ggZ2VuZXJhdGlvbiBpcyBiZXR0ZXI/IC8gSmFwYW5lc2UgUG9kY2FzdCBmb3IgQmVnaW5uZXJzIiwKICAgImR1ciI6IDg0Mi43LAogICAiYXVkaW8iOiAiZXAwNC5tNGEiLAogICAibiI6IDEzNiwKICAgIm5vIjogIjI3NCIKICB9LAogIHsKICAgImVwIjogNSwKICAgInRhZyI6ICJlcDA1IiwKICAgInRpdGxlIjogIkxldCdzIGdldCBleGNpdGVkISEiLAogICAiZGVzYyI6ICLjgJBONS1ONOOAkUVwMjczIExldCdzIGdldCBleGNpdGVkISEgLyBKYXBhbmVzZSBQb2RjYXN0IGZvciBCZWdpbm5lcnMiLAogICAiZHVyIjogODM2LjcsCiAgICJhdWRpbyI6ICJlcDA1Lm00YSIsCiAgICJuIjogMTI4LAogICAibm8iOiAiMjczIgogIH0sCiAgewogICAiZXAiOiA2LAogICAidGFnIjogImVwMDYiLAogICAidGl0bGUiOiAiT3Rha3UiLAogICAiZGVzYyI6ICLjgJBONS1ONOOAkUVwMjcyIE90YWt1IC8gSmFwYW5lc2UgUG9kY2FzdCBmb3IgQmVnaW5uZXJzIiwKICAgImR1ciI6IDc0Ni4xLAogICAiYXVkaW8iOiAiZXAwNi5tNGEiLAogICAibiI6IDExMywKICAgIm5vIjogIjI3MiIKICB9LAogIHsKICAgImVwIjogNywKICAgInRhZyI6ICJlcDA3IiwKICAgInRpdGxlIjogIldhbGxldCIsCiAgICJkZXNjIjogIuOAkE41LU4044CRRXAyNzEgV2FsbGV0IC8gSmFwYW5lc2UgUG9kY2FzdCBmb3IgQmVnaW5uZXJzIiwKICAgImR1ciI6IDY5Mi42LAogICAiYXVkaW8iOiAiZXAwNy5tNGEiLAogICAibiI6IDEwNiwKICAgIm5vIjogIjI3MSIKICB9LAogIHsKICAgImVwIjogOCwKICAgInRhZyI6ICJlcDA4IiwKICAgInRpdGxlIjogIkJlYXIiLAogICAiZGVzYyI6ICLjgJBONS1ONOOAkUVwMjcwIEJlYXIgLyBKYXBhbmVzZSBQb2RjYXN0IGZvciBCZWdpbm5lcnMiLAogICAiZHVyIjogNjU2LjksCiAgICJhdWRpbyI6ICJlcDA4Lm00YSIsCiAgICJuIjogMTAwLAogICAibm8iOiAiMjcwIgogIH0sCiAgewogICAiZXAiOiA5LAogICAidGFnIjogImVwMDkiLAogICAidGl0bGUiOiAiSG90IFNwcmluZyIsCiAgICJkZXNjIjogIuOAkE41LU4044CRRXAyNjkgSG90IFNwcmluZyAvIEphcGFuZXNlIFBvZGNhc3QgZm9yIEJlZ2lubmVycyIsCiAgICJkdXIiOiA3NTAuNSwKICAgImF1ZGlvIjogImVwMDkubTRhIiwKICAgIm4iOiAxMTksCiAgICJubyI6ICIyNjkiCiAgfSwKICB7CiAgICJlcCI6IDEwLAogICAidGFnIjogImVwMTAiLAogICAidGl0bGUiOiAiQ29sZHMiLAogICAiZGVzYyI6ICLjgJBONS1ONOOAkUVwMjY4IENvbGRzIC8gSmFwYW5lc2UgUG9kY2FzdCBmb3IgQmVnaW5uZXJzIiwKICAgImR1ciI6IDc2OC40LAogICAiYXVkaW8iOiAiZXAxMC5tNGEiLAogICAibiI6IDEwOSwKICAgIm5vIjogIjI2OCIKICB9LAogIHsKICAgImVwIjogMTEsCiAgICJ0YWciOiAiZXAxMSIsCiAgICJ0aXRsZSI6ICJPY2VhbiIsCiAgICJkZXNjIjogIuOAkE41LU4044CRRXAyNjcgT2NlYW4gLyBKYXBhbmVzZSBQb2RjYXN0IGZvciBCZWdpbm5lcnMiLAogICAiZHVyIjogNjg1LjQsCiAgICJhdWRpbyI6ICJlcDExLm00YSIsCiAgICJuIjogMTExLAogICAibm8iOiAiMjY3IgogIH0sCiAgewogICAiZXAiOiAxMiwKICAgInRhZyI6ICJlcDEyIiwKICAgInRpdGxlIjogIlZpZGVvIEdhbWVzIiwKICAgImRlc2MiOiAi44CQTjUtTjTjgJFFcDI2NiBWaWRlbyBHYW1lcyAvIEphcGFuZXNlIFBvZGNhc3QgZm9yIEJlZ2lubmVycyIsCiAgICJkdXIiOiA3MjcuMSwKICAgImF1ZGlvIjogImVwMTIubTRhIiwKICAgIm4iOiAxMTAsCiAgICJubyI6ICIyNjYiCiAgfQogXQp9
+{
+ "episodes": [
+  {
+   "ep": 13,
+   "tag": "ep13",
+   "title": "How to make a good relationship with people",
+   "desc": "【N5-N4】Ep278 How to make a good relationship with people / Japanese Podcast for Beginners",
+   "dur": 1017.1,
+   "audio": "ep13.m4a",
+   "n": 124,
+   "no": "278"
+  },
+  {
+   "ep": 1,
+   "tag": "ep01",
+   "title": "New Friends, Old Friends",
+   "desc": "【N5-N4】Ep277 New Friends, Old Friends / Japanese Podcast for Beginners",
+   "dur": 881.6,
+   "audio": "ep01.m4a",
+   "n": 131,
+   "no": "277"
+  },
+  {
+   "ep": 2,
+   "tag": "ep02",
+   "title": "What would you do if AI took your job?",
+   "desc": "【N5-N4】Ep276 What would you do if AI took your job? / Japanese Podcast for Beginners",
+   "dur": 640.5,
+   "audio": "ep02.m4a",
+   "n": 95,
+   "no": "276"
+  },
+  {
+   "ep": 3,
+   "tag": "ep03",
+   "title": "Saving Money",
+   "desc": "【N5-N4】Ep275 Saving Money / Japanese Podcast for Beginners",
+   "dur": 629.0,
+   "audio": "ep03.m4a",
+   "n": 97,
+   "no": "275"
+  },
+  {
+   "ep": 4,
+   "tag": "ep04",
+   "title": "Which generation is better?",
+   "desc": "【N5-N4】Ep274 Which generation is better? / Japanese Podcast for Beginners",
+   "dur": 842.7,
+   "audio": "ep04.m4a",
+   "n": 136,
+   "no": "274"
+  },
+  {
+   "ep": 5,
+   "tag": "ep05",
+   "title": "Let's get excited!!",
+   "desc": "【N5-N4】Ep273 Let's get excited!! / Japanese Podcast for Beginners",
+   "dur": 836.7,
+   "audio": "ep05.m4a",
+   "n": 128,
+   "no": "273"
+  },
+  {
+   "ep": 6,
+   "tag": "ep06",
+   "title": "Otaku",
+   "desc": "【N5-N4】Ep272 Otaku / Japanese Podcast for Beginners",
+   "dur": 746.1,
+   "audio": "ep06.m4a",
+   "n": 113,
+   "no": "272"
+  },
+  {
+   "ep": 7,
+   "tag": "ep07",
+   "title": "Wallet",
+   "desc": "【N5-N4】Ep271 Wallet / Japanese Podcast for Beginners",
+   "dur": 692.6,
+   "audio": "ep07.m4a",
+   "n": 106,
+   "no": "271"
+  },
+  {
+   "ep": 8,
+   "tag": "ep08",
+   "title": "Bear",
+   "desc": "【N5-N4】Ep270 Bear / Japanese Podcast for Beginners",
+   "dur": 656.9,
+   "audio": "ep08.m4a",
+   "n": 100,
+   "no": "270"
+  },
+  {
+   "ep": 9,
+   "tag": "ep09",
+   "title": "Hot Spring",
+   "desc": "【N5-N4】Ep269 Hot Spring / Japanese Podcast for Beginners",
+   "dur": 750.5,
+   "audio": "ep09.m4a",
+   "n": 119,
+   "no": "269"
+  },
+  {
+   "ep": 10,
+   "tag": "ep10",
+   "title": "Colds",
+   "desc": "【N5-N4】Ep268 Colds / Japanese Podcast for Beginners",
+   "dur": 768.4,
+   "audio": "ep10.m4a",
+   "n": 109,
+   "no": "268"
+  },
+  {
+   "ep": 11,
+   "tag": "ep11",
+   "title": "Ocean",
+   "desc": "【N5-N4】Ep267 Ocean / Japanese Podcast for Beginners",
+   "dur": 685.4,
+   "audio": "ep11.m4a",
+   "n": 111,
+   "no": "267"
+  },
+  {
+   "ep": 12,
+   "tag": "ep12",
+   "title": "Video Games",
+   "desc": "【N5-N4】Ep266 Video Games / Japanese Podcast for Beginners",
+   "dur": 727.1,
+   "audio": "ep12.m4a",
+   "n": 110,
+   "no": "266"
+  }
+ ]
+}

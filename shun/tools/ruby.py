@@ -1,1 +1,120 @@
-IyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwojIC0qLSBjb2Rpbmc6IHV0Zi04IC0qLQoiIiJydWJ5LnB5IOKAlOKAlCDml6XmlofliIbor40gKyDmjK/lgYflkI3vvIjor7vpn7PvvIkKCuWlkee6pu+8iOeFp+W3suWPkeW4g+aVsOaNruWPjeaOqCArIOWunua1i+agoemqjO+8ie+8mgogICAg6L6T5YWl77ya5LiA6KGM5pel5paHIHQKICAgIOi+k+WHuu+8mltb6KGo5bGCLCDor7vpn7NdLCAuLi5d77yMKirlrozmlbTopobnm5YgdCoq77yI6YCQ5a2X5ou85Zue5Y67ID09IHTvvIkKICAgICAgICAgIOivu+mfs+inhOWIme+8mgogICAgICAgICAgICDCtyDlj6rmnInlkKvmsYnlrZfnmoTor43miY3nu5nor7vpn7PvvIjlgYflkI3or43nu5kgIiLvvIkKICAgICAgICAgICAgwrcg6K+76Z+z55SoKirlubPlgYflkI0qKu+8iOW3suWPkeW4g+aVsOaNruaYr+W5s+WBh+WQje+8muOBjeOCh+OBhiAvIOOBu+OCk++8iQogICAgICAgICAgICDCtyDlpI3lkIjor43oi6XjgIzmr4/kuKrlrZfpg73og73ljZXni6zor7vjgIHkuJTmi7zotbfmnaXmraPlpb3mmK/ov5nkuKror43nmoTor7vpn7PjgI0KICAgICAgICAgICAgICDih5IgKirmjInlrZfmi4blvIAqKu+8iOW3suWPkeW4g++8muacrOW9kyDihpIg5pysKOOBu+OCkykv5b2TKOOBqOOBhinjgIHlj4vpgZQg4oaSIOWPiyjjgajjgoIpL+mBlCjjgaDjgaEp77yJCiAgICAgICAgICAgICAg5ZCm5YiZ5pW06K+N57uZ6K+76Z+z77yI5bey5Y+R5biD77ya5LiA57eSIOKGkiDjgYTjgaPjgZfjgofjgIHku4rml6Ug4oaSIOOBjeOCh+OBhuOAgeaXpeacrCDihpIg44Gr44Gj44G944KT77yJCgrliIbor43lmajvvJpTdWRhY2hpUHnvvIhzdWRhY2hpZGljdC1jb3Jl77yJCuWNleWtl+ivu+mfs+ihqO+8muS7juW3suWPkeW4gyAxMiDpm4bnmoQgcnUg5pWw57uE6YeM5oq95Ye65p2l77yINDM4IOS4quaxieWtl++8ieKHkiB3b3JrL2thbmppX3JlYWRpbmdzLmpzb24KIiIiCmltcG9ydCByZQppbXBvcnQgc3lzCgpfS0FOSkkgPSByZS5jb21waWxlKHIiW+S4gC3pv7/jgIXjgIbjg7Xjg7ZdIikKClNFTlRfRU5EID0gIuOAgu+8n++8gSE/IgoKCmRlZiBoYXNfa2Fuamkocyk6CiAgICByZXR1cm4gYm9vbChfS0FOSkkuc2VhcmNoKHMpKQoKCmRlZiBrYXRha2FuYV90b19oaXJhZ2FuYShzKToKICAgIG91dCA9IFtdCiAgICBmb3IgY2ggaW4gczoKICAgICAgICBjb2RlID0gb3JkKGNoKQogICAgICAgIGlmIDB4MzBBMSA8PSBjb2RlIDw9IDB4MzBGNjoKICAgICAgICAgICAgb3V0LmFwcGVuZChjaHIoY29kZSAtIDB4NjApKQogICAgICAgIGVsaWYgY29kZSA9PSAweDMwRkM6ICAgICAgIyDplb/pn7Mg44O8CiAgICAgICAgICAgIG91dC5hcHBlbmQoIuODvCIpCiAgICAgICAgZWxzZToKICAgICAgICAgICAgb3V0LmFwcGVuZChjaCkKICAgIHJldHVybiAiIi5qb2luKG91dCkKCgpkZWYgbW9ycGhlbWVzKHRleHQsIHRva2VuaXplcik6CiAgICAiIiLihpIgWyjooajlsYIsIOivu+mfsyjlubPlgYflkI0pLCDor43mgKcpLCAuLi5dIiIiCiAgICBvdXQgPSBbXQogICAgZm9yIHRvayBpbiB0b2tlbml6ZXIudG9rZW5pemUodGV4dCk6CiAgICAgICAgc3VyZmFjZSA9IHRvay5zdXJmYWNlKCkKICAgICAgICByZWFkaW5nID0ga2F0YWthbmFfdG9faGlyYWdhbmEodG9rLnJlYWRpbmdfZm9ybSgpIG9yIHN1cmZhY2UpCiAgICAgICAgb3V0LmFwcGVuZCgoc3VyZmFjZSwgcmVhZGluZywgdG9rLnBhcnRfb2Zfc3BlZWNoKCkpKQogICAgcmV0dXJuIG91dAoKCmRlZiBfc3BsaXRfYnlfa2Fuamkoc3VyZmFjZSwgcmVhZGluZywga3RhYmxlKToKICAgICIiIuWkjeWQiOivjeaMieWtl+aLhu+8iOadoeS7tu+8muavj+S4quWtl+mDveacieWNleWtl+ivu+mfs++8jOS4lOaLvOi1t+adpSA9PSDmlbTor43or7vpn7PvvIkiIiIKICAgIGtzID0gW2MgZm9yIGMgaW4gc3VyZmFjZSBpZiBfS0FOSkkubWF0Y2goYyldCiAgICBpZiBsZW4oa3MpIDwgMjoKICAgICAgICByZXR1cm4gTm9uZQogICAgcGFydHMsIHJlYWRpbmdzID0gW10sIFtdCiAgICBmb3IgYyBpbiBzdXJmYWNlOgogICAgICAgIGlmIF9LQU5KSS5tYXRjaChjKToKICAgICAgICAgICAgciA9IGt0YWJsZS5nZXQoYykKICAgICAgICAgICAgaWYgbm90IHI6CiAgICAgICAgICAgICAgICByZXR1cm4gTm9uZQogICAgICAgICAgICBwYXJ0cy5hcHBlbmQoYykKICAgICAgICAgICAgcmVhZGluZ3MuYXBwZW5kKHIpCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcGFydHMuYXBwZW5kKGMpCiAgICAgICAgICAgIHJlYWRpbmdzLmFwcGVuZCgiIikKICAgIGlmICIiLmpvaW4ocmVhZGluZ3MpICE9IHJlYWRpbmc6CiAgICAgICAgcmV0dXJuIE5vbmUKICAgIHJldHVybiBbW3AsIHJdIGZvciBwLCByIGluIHppcChwYXJ0cywgcmVhZGluZ3MpXQoKCmRlZiBidWlsZF9ydSh0ZXh0LCB0b2tlbml6ZXIsIGt0YWJsZT1Ob25lKToKICAgICIiIuKGkiBbW+ihqOWxgiwg6K+76Z+zXSwgLi4uXe+8iOivu+mfs+WPque7meWQq+axieWtl+eahOivje+8m+WkjeWQiOivjeaMieWtl+aLhu+8iSIiIgogICAga3RhYmxlID0ga3RhYmxlIG9yIHt9CiAgICBwYWlycyA9IFtdCiAgICBmb3Igc3VyZmFjZSwgcmVhZGluZywgX3BvcyBpbiBtb3JwaGVtZXModGV4dCwgdG9rZW5pemVyKToKICAgICAgICBpZiBub3Qgc3VyZmFjZToKICAgICAgICAgICAgY29udGludWUKICAgICAgICBpZiBub3QgaGFzX2thbmppKHN1cmZhY2UpOgogICAgICAgICAgICBwYWlycy5hcHBlbmQoW3N1cmZhY2UsICIiXSkKICAgICAgICAgICAgY29udGludWUKICAgICAgICBpZiBub3QgcmVhZGluZyBvciByZWFkaW5nID09IHN1cmZhY2U6CiAgICAgICAgICAgIHBhaXJzLmFwcGVuZChbc3VyZmFjZSwgIiJdKQogICAgICAgICAgICBjb250aW51ZQogICAgICAgIHNwID0gX3NwbGl0X2J5X2thbmppKHN1cmZhY2UsIHJlYWRpbmcsIGt0YWJsZSkKICAgICAgICBpZiBzcDoKICAgICAgICAgICAgcGFpcnMuZXh0ZW5kKHNwKQogICAgICAgIGVsc2U6CiAgICAgICAgICAgIHBhaXJzLmFwcGVuZChbc3VyZmFjZSwgcmVhZGluZ10pCiAgICByZXR1cm4gcGFpcnMKCgpkZWYgY292ZXJzKHBhaXJzLCB0ZXh0KToKICAgICIiIuajgOafpSBwYWlycyDmmK/lkKblrozmlbTopobnm5YgdGV4dO+8iOmAkOWtl+aLvOWbnu+8iSIiIgogICAgcmV0dXJuICIiLmpvaW4ocFswXSBmb3IgcCBpbiBwYWlycykgPT0gdGV4dAoKCmRlZiBnZXRfdG9rZW5pemVyKCk6CiAgICBmcm9tIHN1ZGFjaGlweSBpbXBvcnQgZGljdGlvbmFyeQogICAgcmV0dXJuIGRpY3Rpb25hcnkuRGljdGlvbmFyeSgpLmNyZWF0ZSgpCgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIGltcG9ydCBqc29uCiAgICBpbXBvcnQgb3MKICAgIGt0ID0ge30KICAgIHAgPSBvcy5wYXRoLmpvaW4ob3MucGF0aC5kaXJuYW1lKG9zLnBhdGguYWJzcGF0aChfX2ZpbGVfXykpLAogICAgICAgICAgICAgICAgICAgICAiLi4iLCAid29yayIsICJrYW5qaV9yZWFkaW5ncy5qc29uIikKICAgIGlmIG9zLnBhdGguZXhpc3RzKHApOgogICAgICAgIGt0ID0ganNvbi5sb2FkKG9wZW4ocCkpCiAgICB0b2sgPSBnZXRfdG9rZW5pemVyKCkKICAgIGZvciBsaW5lIGluIHN5cy5zdGRpbjoKICAgICAgICBsaW5lID0gbGluZS5yc3RyaXAoIlxuIikKICAgICAgICBpZiBub3QgbGluZToKICAgICAgICAgICAgY29udGludWUKICAgICAgICBwciA9IGJ1aWxkX3J1KGxpbmUsIHRvaywga3QpCiAgICAgICAgb2sgPSAiT0sgIiBpZiBjb3ZlcnMocHIsIGxpbmUpIGVsc2UgIuKdjCAiCiAgICAgICAgcHJpbnQob2ssICIiLmpvaW4oKHhbMF0gKyAoIigiICsgeFsxXSArICIpIiBpZiB4WzFdIGVsc2UgIiIpKSBmb3IgeCBpbiBwcikpCg==
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""ruby.py —— 日文分词 + 振假名（读音）
+
+契约（照已发布数据反推 + 实测校验）：
+    输入：一行日文 t
+    输出：[[表层, 读音], ...]，**完整覆盖 t**（逐字拼回去 == t）
+          读音规则：
+            · 只有含汉字的词才给读音（假名词给 ""）
+            · 读音用**平假名**（已发布数据是平假名：きょう / ほん）
+            · 复合词若「每个字都能单独读、且拼起来正好是这个词的读音」
+              ⇒ **按字拆开**（已发布：本当 → 本(ほん)/当(とう)、友達 → 友(とも)/達(だち)）
+              否则整词给读音（已发布：一緒 → いっしょ、今日 → きょう、日本 → にっぽん）
+
+分词器：SudachiPy（sudachidict-core）
+单字读音表：从已发布 12 集的 ru 数组里抽出来（438 个汉字）⇒ work/kanji_readings.json
+"""
+import re
+import sys
+
+_KANJI = re.compile(r"[一-鿿々〆ヵヶ]")
+
+SENT_END = "。？！!?"
+
+
+def has_kanji(s):
+    return bool(_KANJI.search(s))
+
+
+def katakana_to_hiragana(s):
+    out = []
+    for ch in s:
+        code = ord(ch)
+        if 0x30A1 <= code <= 0x30F6:
+            out.append(chr(code - 0x60))
+        elif code == 0x30FC:      # 长音 ー
+            out.append("ー")
+        else:
+            out.append(ch)
+    return "".join(out)
+
+
+def morphemes(text, tokenizer):
+    """→ [(表层, 读音(平假名), 词性), ...]"""
+    out = []
+    for tok in tokenizer.tokenize(text):
+        surface = tok.surface()
+        reading = katakana_to_hiragana(tok.reading_form() or surface)
+        out.append((surface, reading, tok.part_of_speech()))
+    return out
+
+
+def _split_by_kanji(surface, reading, ktable):
+    """复合词按字拆（条件：每个字都有单字读音，且拼起来 == 整词读音）"""
+    ks = [c for c in surface if _KANJI.match(c)]
+    if len(ks) < 2:
+        return None
+    parts, readings = [], []
+    for c in surface:
+        if _KANJI.match(c):
+            r = ktable.get(c)
+            if not r:
+                return None
+            parts.append(c)
+            readings.append(r)
+        else:
+            parts.append(c)
+            readings.append("")
+    if "".join(readings) != reading:
+        return None
+    return [[p, r] for p, r in zip(parts, readings)]
+
+
+def build_ru(text, tokenizer, ktable=None):
+    """→ [[表层, 读音], ...]（读音只给含汉字的词；复合词按字拆）"""
+    ktable = ktable or {}
+    pairs = []
+    for surface, reading, _pos in morphemes(text, tokenizer):
+        if not surface:
+            continue
+        if not has_kanji(surface):
+            pairs.append([surface, ""])
+            continue
+        if not reading or reading == surface:
+            pairs.append([surface, ""])
+            continue
+        sp = _split_by_kanji(surface, reading, ktable)
+        if sp:
+            pairs.extend(sp)
+        else:
+            pairs.append([surface, reading])
+    return pairs
+
+
+def covers(pairs, text):
+    """检查 pairs 是否完整覆盖 text（逐字拼回）"""
+    return "".join(p[0] for p in pairs) == text
+
+
+def get_tokenizer():
+    from sudachipy import dictionary
+    return dictionary.Dictionary().create()
+
+
+if __name__ == "__main__":
+    import json
+    import os
+    kt = {}
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                     "..", "work", "kanji_readings.json")
+    if os.path.exists(p):
+        kt = json.load(open(p))
+    tok = get_tokenizer()
+    for line in sys.stdin:
+        line = line.rstrip("\n")
+        if not line:
+            continue
+        pr = build_ru(line, tok, kt)
+        ok = "OK " if covers(pr, line) else "❌ "
+        print(ok, "".join((x[0] + ("(" + x[1] + ")" if x[1] else "")) for x in pr))
