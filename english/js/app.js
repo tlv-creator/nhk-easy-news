@@ -61,6 +61,7 @@
       if (!idx[sid]) {
         idx[sid] = {
           sid: sid, name: '', cls: '', className: '',
+          rosterCls: '', rosterClsName: '', inRoster: false,
           /* 单词 */
           wSec: 0, wPairs: 0, wClicks: 0, wSegs: 0, wUnits: {}, wPages: {}, wLast: '',
           wActiveDays: 0, wActivityCount: 0,
@@ -74,22 +75,30 @@
       return idx[sid];
     }
 
-    /* 名册：提供姓名 + 班级（权威来源） */
+    /* 名册：提供**姓名**（唯一权威）+ 在册标记
+       🔴 班级**不**在这里定死 —— 名册的 5 个班（JR1/CW3/WL_CW/XQ1/CWZT1/WL1）
+          与日志实际用的 class_key（JR1/CW3/WL_CW/XQ1/LISTEN/CET4）**不是一套**
+          （例：26235106 名册是 CWZT1，但她的词汇日志写在 WL_CW「物流财务合上课班」）
+          ⇒ 分类必须以**日志自己的 class_key/class_name** 为准（= 记录发生时的真实归属）
+          ⇒ 名册只负责「这个人叫什么、是不是在册」 */
     S.roster.forEach(function (r) {
       var it = slot(String(r.id));
       it.name = r.name || '';
-      it.cls = r.class_key || '';
-      it.className = r.class_name || (TH.CLASS_NAME[r.class_key] || r.class_key || '');
+      it.rosterCls = r.class_key || '';
+      it.rosterClsName = r.class_name || (TH.CLASS_NAME[r.class_key] || r.class_key || '');
+      it.inRoster = true;
     });
 
     /* 单词：平时练习 */
     var practice = P.parsePracticeLogs(S.vocabLogs, S.unitFilter);
     practice.forEach(function (r) {
       var it = slot(r.sid);
+      /* 🔴 班级以**日志自己**的 class_key/class_name 为准 */
+      if (r.clsKey) { it.cls = r.clsKey; it.className = r.clsName || it.className; }
       it.wSec += r.sec; it.wPairs += r.pairs; it.wClicks += r.clicks; it.wSegs += r.segs;
       for (var u in r.units) it.wUnits[u] = (it.wUnits[u] || 0) + r.units[u];
       for (var p in r.pages) it.wPages[p] = (it.wPages[p] || 0) + r.pages[p];
-      if (!it.wLast || String(r.last) > String(it.wLast)) it.wLast = r.last;
+      if (!it.wLast || tsNum(r.last) > tsNum(it.wLast)) it.wLast = r.last;
     });
     /* 单词：活跃天数 / 行为条数（从原始日志算，口径与老师端一致） */
     var actDays = {};
@@ -110,22 +119,25 @@
     var listen = P.parseListenLogs(S.listenLogs);
     listen.forEach(function (r) {
       var it = slot(r.sid);
+      /* 🔴 班级以日志自己的 class_key/class_name 为准 */
+      if (r.clsKey) { it.cls = r.clsKey; it.className = r.clsName || it.className; }
       it.lCnt += r.cnt; it.lMin += r.minutes; it.lDays = Object.keys(r.days).length;
       for (var c in r.cats) it.lCats[c] = (it.lCats[c] || 0) + r.cats[c];
       it.lRows = r.rows;
-      if (!it.lLast || String(r.last) > String(it.lLast)) it.lLast = r.last;
+      if (!it.lLast || tsNum(r.last) > tsNum(it.lLast)) it.lLast = r.last;
     });
 
     /* 四级（阅读 + 翻译 + 理解题） */
     var cet = P.parseCet4Logs(S.cet4Logs);
     cet.forEach(function (r) {
       var it = slot(r.sid);
+      if (r.clsKey) { it.cls = r.clsKey; it.className = r.clsName || it.className; }
       it.cBrowse += r.browse_sec;
       it.cTrans += r.trans_n; it.cHit += r.trans_hit; it.cDen += r.trans_den;
       it.cQuiz += r.quiz_n; it.cOk += r.quiz_ok; it.cQDen += r.quiz_den;
       it.cDays = Object.keys(r.days).length;
       it.cIssues = r.issues;
-      if (!it.cLast || String(r.last) > String(it.cLast)) it.cLast = r.last;
+      if (!it.cLast || tsNum(r.last) > tsNum(it.cLast)) it.cLast = r.last;
     });
 
     S.byStudent = idx;
@@ -337,7 +349,8 @@
         };
       }
       var r = byCls[k];
-      if (it.name) r.roster++;                    /* 在册 = 名册里有名字 */
+      /* 在册 = 名册里**这个班**有人（名册的班是权威口径） */
+      if (it.inRoster && it.rosterCls === k) r.roster++;
       if (hasAny(it)) r.active++;
       r.wSec += it.wSec; r.wSegs += it.wSegs;
       r.lCnt += it.lCnt; r.lMin += it.lMin;

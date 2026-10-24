@@ -52,7 +52,10 @@
       if (unitFilter && String(unit) !== String(unitFilter)) return;
       var it = map[l.student_id] || (map[l.student_id] = {
         sid: l.student_id, cls: l.class_name || '', sec: 0, pairs: 0, clicks: 0, wall: 0,
-        segs: 0, units: {}, pages: {}, last: '', mode: {}
+        segs: 0, units: {}, pages: {}, last: '', mode: {},
+        /* 🔴 班级以**日志自己**的 class_key / class_name 为准
+           （名册的班 ≠ 日志的班：26235106 名册 CWZT1，日志 WL_CW） */
+        clsKey: l.class_key || '', clsName: l.class_name || ''
       });
       it.sec += sec; it.pairs += pairs; it.clicks += clicks; it.wall += wall; it.segs += segs;
       it.units[unit] = (it.units[unit] || 0) + 1;
@@ -96,7 +99,8 @@
         sid: l.student_id, cls: l.class_name || '',
         browse_sec: 0, trans_n: 0, trans_hit: 0, trans_den: 0,
         quiz_n: 0, quiz_ok: 0, quiz_den: 0,
-        days: {}, last: '', issues: {}
+        days: {}, last: '', issues: {},
+        clsKey: l.class_key || '', clsName: l.class_name || ''
       });
       if (p.kind === '浏览') {
         it.browse_sec += p.sec;
@@ -124,13 +128,10 @@
         ⇒ 口径必须与现役听力站一致，否则两个老师端数字对不上。 */
   function parseListenLog(row) {
     var out = { category: '', content: '', note: '', minutes: 0, date: '', time: '' };
-    var ts = String(row.timestamp || '');
-    /* 真实库里 timestamp 是 '2026/10/24 14:23:07' 形态 */
-    var tm = /(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})[ T](\d{1,2}):(\d{2})/.exec(ts);
-    if (tm) {
-      out.date = tm[1] + '-' + ('0' + tm[2]).slice(-2) + '-' + ('0' + tm[3]).slice(-2);
-      out.time = ('0' + tm[4]).slice(-2) + ':' + tm[5];
-    }
+    /* 🔴 用统一的 parseTs（库里有两种 timestamp 形态，手写正则会漏一种） */
+    var ts = parseTs(row.timestamp);
+    out.date = ts.date;
+    out.time = ts.time;
     var action = row.action || '';
     var m = /^【听力】(.*?)\s*\|\s*([\s\S]*)$/.exec(action);
     var category = m ? m[1] : '';
@@ -158,7 +159,8 @@
       if (!p.category && !p.content) return;
       var it = map[l.student_id] || (map[l.student_id] = {
         sid: l.student_id, cls: l.class_name || '',
-        cnt: 0, minutes: 0, days: {}, cats: {}, last: '', rows: []
+        cnt: 0, minutes: 0, days: {}, cats: {}, last: '', rows: [],
+        clsKey: l.class_key || '', clsName: l.class_name || ''
       });
       it.cnt++;
       it.minutes += p.minutes;
@@ -179,6 +181,52 @@
   function unitLabel(unit) {
     return { 1: '第一课', 2: '第二课', 3: '第三课' }[unit] || ('U' + unit);
   }
+
+  /* 🔴🔴 时间戳**在库里有两种形态**（实测出来的，不是猜的）：
+       ① '2026/9/23 21:33:25'      ← 词汇站/听力站写的（斜杠，年在前）
+       ② '9/28/2026, 1:22:00 PM'   ← 某个站用 new Date().toLocaleString() 写的
+          （英文 locale，**月在前、12 小时制、带 AM/PM**）
+     ⇒ 只认 ① 的正则会让 ② 原样透传 ⇒ 老师看到两种格式混排
+     ⇒ 而且 ② 的**排序是错的**（字符串比大小：'9/28/2026' vs '2026/9/23'
+        → '9' > '2' ⇒ 9 月的会被当成"更新"）⇒ 排序和"最近"都会错
+     ⇒ 统一解析成 {date:'2026-09-28', time:'13:22', ts:Date}
+  */
+  function parseTs(raw) {
+    var s = String(raw == null ? '' : raw).trim();
+    var out = { date: '', time: '', num: NaN };
+    if (!s) return out;
+
+    /* 形态 ②：英文 locale —— '9/28/2026, 1:22:00 PM' / '9/28/2026, 1:22:00 AM' */
+    var m2 = /^(\d{1,2})\/(\d{1,2})\/(\d{4}),?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?/i.exec(s);
+    if (m2) {
+      var hh = parseInt(m2[4], 10);
+      var ap = (m2[7] || '').toUpperCase();
+      if (ap === 'PM' && hh < 12) hh += 12;
+      if (ap === 'AM' && hh === 12) hh = 0;
+      out.date = m2[3] + '-' + ('0' + m2[1]).slice(-2) + '-' + ('0' + m2[2]).slice(-2);
+      out.time = ('0' + hh).slice(-2) + ':' + m2[5];
+      out.num = new Date(out.date + 'T' + out.time).getTime();
+      return out;
+    }
+
+    /* 形态 ①：斜杠，年在前 —— '2026/9/23 21:33:25' 或 '2026/09/28 13:22:00' */
+    var m1 = /(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?/.exec(s);
+    if (m1) {
+      out.date = m1[1] + '-' + ('0' + m1[2]).slice(-2) + '-' + ('0' + m1[3]).slice(-2);
+      if (m1[4] != null) out.time = ('0' + m1[4]).slice(-2) + ':' + m1[5];
+      out.num = new Date(out.date + 'T' + (out.time || '00:00')).getTime();
+      return out;
+    }
+
+    return out;   /* 认不出来 ⇒ 空（宁可空也不要错） */
+  }
+
+  /* 统一显示：'2026-09-28 13:22' */
+  function fmtTs(raw) {
+    var p = parseTs(raw);
+    if (!p.date) return String(raw == null ? '' : raw).trim();
+    return p.date + (p.time ? ' ' + p.time : '');
+  }
   function pct(num, den) {
     if (!den) return '';
     return Math.round(num * 1000 / den) / 10 + '%';
@@ -195,6 +243,8 @@
     parseCet4Logs: parseCet4Logs,
     parseListenLog: parseListenLog,
     parseListenLogs: parseListenLogs,
+    parseTs: parseTs,
+    fmtTs: fmtTs,
     fmtSec: fmtSec,
     unitLabel: unitLabel,
     pct: pct,
