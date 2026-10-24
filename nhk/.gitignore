@@ -1,0 +1,20 @@
+# 沙箱重置后重新生成的东西，不进仓库
+work/out/
+work/syn_out/
+work/raw/
+work/asr/
+work/zh/
+work/*.jsonl
+work/mock_ai_calls.jsonl
+data/episodes/
+data/audio/
+data/asr/
+data/zh/
+deploy_site/
+apk/out/
+__pycache__/
+*.pyc
+.nohup.out
+
+# 音频不进仓库（59MB）⇒ setup_env.sh 从线上站取回
+site/app/media/

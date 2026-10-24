@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#2f6f4f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>NHKやさしいことばニュース · 日中对照精读</title>
+<link rel="stylesheet" href="style.css?v=v41">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<script>
+/* 🔴 平台部署时注入的 PV 统计脚本会 POST 到 agent.minimax.cn
+   （payload 里带 node_id / session_id / biz_id）→ 用户每打开一次 App，
+   设备就向外部发一条带标识的记录。
+   这里在那个脚本执行**之前**就把 sendBeacon / fetch 拦掉：
+   ① App 内的 WebView 也被 Java 层的 shouldInterceptRequest 断掉一次（双保险）
+   ② 浏览器直接打开本站时，靠这段生效 —— 用户设备不向外部发任何统计请求。
+   ⚠️ 必须放在 <head> 最前面：平台注入的脚本在它之后执行 → 拦得住。 */
+(function () {
+  var BLOCK = 'agent.minimax.cn';
+  function hit(u) { try { return typeof u === 'string' && u.indexOf(BLOCK) >= 0; } catch (e) { return false; } }
+  try {
+    var sb = navigator.sendBeacon && navigator.sendBeacon.bind(navigator);
+    if (sb) navigator.sendBeacon = function (u, d) { if (hit(u)) return true; return sb(u, d); };
+  } catch (e) {}
+  try {
+    var f = window.fetch && window.fetch.bind(window);
+    if (f) window.fetch = function (u, o) {
+      if (hit(u)) { try { return Promise.resolve(new Response('', { status: 200 })); } catch (e2) { return Promise.resolve({ ok: true, status: 200 }); } }
+      return f(u, o);
+    };
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <button id="btnBack" class="icon-btn hidden" aria-label="返回">‹</button>
+    <div class="titles">
+      <span class="show-tag" id="showTag">📺 NHKやさしいことばニュース</span>
+      <h1 id="epTitle">NHKやさしいことばニュース</h1>
+      <p id="epSub">慢速音声 · 逐句漢字注音 · 簡體中文對照</p>
+    </div>
+    <button id="btnSearch" class="icon-btn hidden" aria-label="搜索">⌕</button>
+    <button id="btnAa" class="icon-btn hidden" aria-label="字體大小">Aa</button>
+    <button id="btnMenu" class="icon-btn" aria-label="菜单">☰</button>
+  </header>
+
+  <!-- ============ 首页 ============ -->
+  <section id="viewHome" class="view">
+    <!-- 继续学：取代原来那块重复三遍信息的大标题 -->
+    <div class="resume">
+      <div class="resume-head">
+        <span class="resume-tag">繼續</span>
+        <span class="resume-name" id="resumeName">還沒開始看</span>
+      </div>
+      <div class="resume-sub" id="resumeSub">每日更新的慢速新聞 · 逐句漢字注音 + 簡體中文對照 · 離線也能學</div>
+      <div class="resume-bar"><i id="resumeBar" style="width:0%"></i></div>
+      <div class="resume-foot">
+        <span class="resume-pct" id="resumePct">隨便點下面一集就能開始</span>
+        <button id="btnContinue" class="btn-primary">▶ 繼續</button>
+      </div>
+    </div>
+
+    <!-- 三个快捷入口 -->
+    <div class="quick-links">
+      <button class="quick" id="btnStudy"><span>📖 我的收藏</span><b id="qVocab">0</b></button>
+      <button class="quick" id="btnThemeQuick"><span>🎨 主題</span><b id="qTheme">櫻花</b></button>
+    </div>
+
+    <div class="section-head">
+      <h2>新聞一覽</h2>
+      <span class="muted" id="epCount"></span>
+    </div>
+    <div class="ep-search hidden" id="epSearchBar">
+      <input id="epSearch" type="search" placeholder="搜日期 / 標題 / 關鍵字，例如「探査」" autocomplete="off">
+      <button id="btnEpSearchClose" class="icon-btn" aria-label="关闭搜索">×</button>
+    </div>
+    <div id="epList" class="ep-list"></div>
+
+  </section>
+
+  <!-- ============ 学习页：生词表 + 句型表 ============ -->
+  <section id="viewStudy" class="view hidden">
+    <div class="study-head">
+      <div class="tabs" id="studyTabs">
+        <button class="tab" data-tab="p">句型表</button>
+        <button class="tab on" data-tab="f">我的收藏</button>
+      </div>
+      <input id="studySearch" type="search" placeholder="搜索词 / 读音 / 释义 / 句型">
+      <span class="muted" id="studyCount"></span>
+    </div>
+    <div class="study-hint">點字幕裡的<b class="w">任意一句</b>，會彈出詳細講解：逐詞拆解、語法說明、整句結構。彈窗裡點某個詞，還能看單詞釋義並收藏。</div>
+
+    <!-- 复习卡片 -->
+    <div class="rv-wrap hidden" id="rvWrap">
+      <div class="rv-top">
+        <span class="rv-count" id="rvCount">0 / 0</span>
+        <div class="rv-bar"><i id="rvBar"></i></div>
+        <button class="rv-btn ghost" id="rvExit">結束</button>
+      </div>
+      <div class="rv-card" id="rvCard">
+        <div class="rv-front" id="rvFront">
+          <div class="rv-ja" id="rvJa">—</div>
+          <div class="rv-read" id="rvRead"></div>
+          <button class="rv-say" id="rvSay">🔊 朗讀這個詞</button>
+          <div class="rv-hint">👆 点一下卡片看意思</div>
+        </div>
+        <div class="rv-back hidden" id="rvBack">
+          <div class="rv-zh" id="rvZh"></div>
+          <div class="rv-ex" id="rvEx"></div>
+          <div class="rv-acts">
+            <button class="rv-btn bad" id="rvBad">✗ 还不认识</button>
+            <button class="rv-btn good" id="rvGood">✓ 认识</button>
+          </div>
+        </div>
+      </div>
+      <div class="rv-done hidden" id="rvDone">
+        <div class="rv-done-t" id="rvDoneT">全部复习完啦！</div>
+        <div class="rv-done-s" id="rvDoneS"></div>
+        <button class="rv-btn ghost" id="rvAgain">再复习一遍</button>
+      </div>
+    </div>
+
+    <div id="studyList" class="study-list"></div>
+    <div class="section-head" id="vocabHead">
+      <h2>生詞本</h2>
+      <span class="muted" id="vocabCount">0 條</span>
+    </div>
+    <div id="vocabPanel" class="vocab-panel">
+      <p class="empty">在播放頁點擊台詞右側的「＋」即可收藏生詞，方便複習。</p>
+    </div>
+  </section>
+
+  <!-- ============ 播放器 ============ -->
+  <section id="viewPlayer" class="view hidden">
+    <div class="audio-stat" id="audioStat"></div>
+    <button id="retBar" class="ret-bar hidden"></button>
+
+    <!-- 搜索条：点顶栏 ⌕ 才展开，不占地方 -->
+    <div class="search-bar hidden" id="searchBar">
+      <input id="search" type="search" placeholder="搜索台詞 / 關鍵字" autocomplete="off">
+      <button id="btnSearchClose" class="icon-btn" aria-label="关闭搜索">×</button>
+    </div>
+
+    <!-- 版本切换：易懂版（慢速）／普通版（原速），两套文本两套音声 -->
+    <div class="verbar" id="verBar">
+      <button class="vb on" data-ver="easy">易懂版 · 慢速</button>
+      <button class="vb" data-ver="web">普通版 · 原速</button>
+      <span class="vb-hint" id="vbHint"></span>
+    </div>
+
+    <!-- 字幕流：主屏幕的主体 -->
+    <div class="transcript" id="transcript"></div>
+
+    <!-- 底部播放条 -->
+    <div class="playbar">
+      <div class="pb-main">
+        <button id="btnPlay" class="cbtn play" title="播放/暫停">▶</button>
+        <span id="tCur" class="t">00:00</span>
+        <input id="seek" type="range" min="0" max="10000" value="0" step="1">
+        <span id="tDur" class="t">00:00</span>
+      </div>
+      <div class="pb-tools">
+        <button class="tbtn" data-act="prev10" title="後退 10 秒">«10</button>
+        <button class="tbtn" data-act="next10" title="前進 10 秒">10»</button>
+        <button class="tbtn loop" data-act="loop" title="單句循環">單句循環</button>
+        <button class="tbtn" data-act="mode">雙語</button>
+        <button class="tbtn fs" id="btnFsUp" title="字體變大">A＋</button>
+        <button class="tbtn dl" id="btnDl" data-act="dl" title="把本集音頻存到手機">⬇ 下載</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<audio id="audio" preload="metadata" playsinline></audio>
+<div id="toast" class="toast"></div>
+
+<!-- 生词 / 句型 弹窗 -->
+<div id="pop" class="pop hidden">
+  <div class="pop-card">
+    <button id="popClose" class="icon-btn pop-x" aria-label="关闭">×</button>
+    <div id="popBody"></div>
+  </div>
+</div>
+
+<!-- 設定面板 -->
+<div id="sheetMask" class="mask hidden"></div>
+<div id="sheet" class="sheet hidden">
+  <div class="sheet-row" style="display:block">
+    <span style="display:block;margin-bottom:8px">主題（挑一個不傷眼的）</span>
+    <div class="theme-grid" id="themeGrid"></div>
+    <div class="theme-note" id="themeNote"></div>
+  </div>
+  <div class="sheet-row">
+    <span>我的收藏（生詞本）</span>
+    <button id="btnMyVocab" class="tbtn">查看</button>
+  </div>
+  <div class="sheet-row">
+    <span>字幕字體</span>
+    <input id="fontSize" type="range" min="18" max="46" value="30" step="1">
+    <span id="fontSizeVal" class="muted">30</span>
+  </div>
+  <div class="sheet-row">
+    <span>彈窗字體</span>
+    <input id="popFontSize" type="range" min="14" max="30" value="17" step="1">
+    <span id="popFontSizeVal" class="muted">17</span>
+  </div>
+  <div class="sheet-row">
+    <span>播放方式</span>
+    <button id="btnAudioMode" class="tbtn">自動</button>
+  </div>
+  <div class="sheet-row">
+    <span>行內標生詞 / 句型</span>
+    <button id="btnTags" class="tbtn">關</button>
+  </div>
+  <div class="sheet-row">
+    <span>自動滾動</span>
+    <input id="autoScroll" type="checkbox" checked>
+  </div>
+  <div class="sheet-row" id="rowSpSync">
+    <span>普通版 音字同步</span>
+    <input id="spSync" type="checkbox" checked>
+  </div>
+  <div class="sheet-row sheet-note" id="spSyncNote">
+    開：普通版字幕跟著原速音走（顯示電視播報稿，一句一句高亮）。
+    關：普通版顯示報紙原文，只作對照閱讀（不高亮、不自動滾動）。
+  </div>
+  <div class="sheet-row">
+    <span>寬鬆行距</span>
+    <button id="btnSpacious" class="tbtn">寬鬆：關</button>
+  </div>
+  <div class="sheet-row">
+    <span>加入本句生詞</span>
+    <button class="tbtn" data-act="addWord">＋ 生詞</button>
+  </div>
+  <div class="sheet-row">
+    <span>清空觀看記錄</span>
+    <button id="btnClear" class="tbtn">清除</button>
+  </div>
+  <div class="sheet-row" id="rowApk">
+    <span>下載 Android App</span>
+    <a id="lnkApk" class="tbtn" href="NHK.apk" download>下載 APK</a>
+  </div>
+  <div class="sheet-row" id="rowSiteAddr">
+    <span>網站地址</span>
+    <input id="inpSiteAddr" type="text" inputmode="url" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="https://…">
+    <button id="btnSetSite" class="tbtn">套用</button>
+  </div>
+  <div class="sheet-row sheet-note">換了網址，你的收藏、生詞本、觀看進度會自動搬過去，不會丟。</div>
+  <div class="sheet-row sheet-note">音頻已自建 CDN，點任何一句都能直接聽，不需要 B 站、也不需要自己架代理。首次播放某一集會從伺服器下載，之後瀏覽器會緩存。</div>
+  <div class="sheet-row">
+    <span>內置資源（離線）</span>
+    <button id="btnSrcLocal" class="tbtn">切換</button>
+  </div>
+  <div class="sheet-row">
+    <span>日語語音包</span>
+    <span id="ttsStatus" class="muted">檢測中…</span>
+    <button id="btnTtsGuide" class="tbtn">安裝方法</button>
+  </div>
+  <div class="sheet-row">
+    <span>音頻緩存</span>
+    <span id="audioCacheVal" class="muted">—</span>
+    <button id="btnClearAudio" class="tbtn">全部刪除</button>
+  </div>
+  <div class="sheet-row sheet-note">緩存下來的音頻存在手機裡，沒網也能聽；按「全部刪除」一次清空，不佔空間。</div>
+  <div class="sheet-row sheet-note" id="sheetNote"></div>
+  <button id="btnSheetClose" class="btn-primary">關閉</button>
+</div>
+
+<!-- 外壳文件带版本号：换版时浏览器/Service Worker 一定拿到新的一份 -->
+<script src="data/episodes.js?v=v48"></script>
+<!-- ⚠️ vocab.js(2.3MB) + lexicon.js(1.5MB) 不在首屏加载：只有「点词查释义」和「弹窗逐词拆解」才需要。
+     改成进播放页时后台预热（app.js 的 ensureWordData），首屏从 4MB 降到 175KB。 -->
+<script src="data/patterns.js?v=v48"></script>
+<script src="data/syntax.js?v=v48"></script>
+<script src="data/reading.js?v=v48"></script>
+<script src="data/chains.js?v=v48"></script>
+<script src="data/cdn.js?v=v48"></script>
+<!-- 运行时配置（AI 中转地址等）。🔴 这里绝不能放任何 key/token，会随站点公开。 -->
+<script src="config.js?v=v1"></script>
+<script src="app.js?v=v43"></script>
+
+<!-- 平台 PV 统计脚本已移除：其右下角悬浮条会盖住底栏工具条（單句循環/A＋/⬇下載） -->
+
+<!-- 平台悬浮球已移除：会遮挡底栏工具条 -->
+
+<!-- 🔴🔴 2026-10-24 运行时兜底：**mcode 每次部署都会重新注入**平台统计脚本 + 悬浮球
+     （源码里删一次没用 —— 手册 §6.4 早就记过这个坑）。
+     注入的三样东西：
+       ① 带 data-minimax-analytics 标记的统计脚本 → POST 到 agent.minimax.cn（PV 统计）
+       ② id 为 minimax-floating-ball 的 div      → 右下角悬浮球
+       ③ 它的初始化 JS：点球会 window.open('https://agent.minimax.cn/','_blank')
+          ⇒ 在 App 的 WebView 里点它 = **把用户整个甩出 App**
+     ⇒ 源码里剥（strip_inject.py）+ 运行时再兜一次（这段）⇒ 两层都做。
+     ⚠️ head 最前面那段拦截器（var BLOCK = 'agent.minimax.cn'）**必须保留** ——
+        它才是真正挡住上报的那一层（实测：0 条 minimax.cn 请求）。
+     ⚠️ 这段脚本跑在平台注入的脚本**之前**（它在 body 末尾，平台的追加在更后面）
+        ⇒ DOMContentLoaded 时先把球摘掉 ⇒ 平台的初始化函数拿到 null 会自己 return（它有判空）
+        ⇒ 不会产生 JS 错误。
+     🔴 注释里**不许写**「script 标签 + data-minimax-analytics」这种完整写法 ——
+        剥除脚本的正则会把它当成真注入块，一路吃到下一个结束标签 ⇒ 误删！
+        （2026-10-24 踩过：兜底脚本被自己的注释吃掉） -->
+<style id="platformInjectGuard">
+/* 平台悬浮球：永久隐藏（内联兜底 ⇒ 即使 style.css 没加载也挡得住） */
+#minimax-floating-ball{ display:none !important; }
+</style>
+<script id="platformInjectGuardJs">
+(function () {
+  // 🔴 球 id 拆成两段拼出来：**不能出现连续的 'minimax-floating-ball' 字面量**
+  //    —— 剥除脚本的 CSS 正则会在全文找「选择器 + {…}」，
+  //    连续字面量会让它把**这段 JS** 当成 CSS 规则改坏（2026-10-24 踩过）。
+  var BALL_ID = 'minimax-' + 'floating-ball';
+  function kill() {
+    var b = document.getElementById(BALL_ID);
+    if (b && b.parentNode) b.parentNode.removeChild(b);
+    var a = document.querySelector('script[data-minimax-analytics]');
+    if (a && a.parentNode) a.parentNode.removeChild(a);
+  }
+  function arm() {
+    kill();
+    try {
+      var mo = new MutationObserver(function () {
+        if (document.getElementById(BALL_ID) ||
+            document.querySelector('script[data-minimax-analytics]')) {
+          kill();
+        } else {
+          mo.disconnect();          // 没有注入 ⇒ 不用再盯着
+        }
+      });
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+      setTimeout(function () { mo.disconnect(); }, 8000);   // 8 秒后不再观察
+    } catch (e) { }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', arm);
+  } else {
+    arm();
+  }
+})();
+</script>
+
+
+<script data-minimax-analytics="minimax-website-analytics-v1">(function(){
+"use strict";
+var t="eyJ2IjoxLCJraWQiOiJwcmUtY24tMjAyNjA4MTUtdjEiLCJiaXpfaWQiOiJNYXZpcyIsIm5vZGVfaWQiOiI0NTU3ODI0ODYwOTQzMjgiLCJpc3N1ZWRfYXQiOjE3OTI4MjgwMzI5NjV9.d3ZrR2M_L6of5ERwvVsmxF1kwA4XNdbIup1ST1xOfOA",u="https://agent.minimax.cn/minimax-cloud/api/v1/website-traffic/page-views",last="";
+function path(){
+var h=window.location.hash||"",p=h.indexOf("#!")===0?h.slice(2):h.indexOf("#/")===0?h.slice(1):(window.location.pathname||"/");
+p=p.split(/[?#]/,1)[0]||"/";
+if(p.charAt(0)!=="/")p="/"+p;
+p=p.replace(/\/+/g,"/").replace(/%([0-9a-fA-F]{2})/g,function(_,x){var c=String.fromCharCode(parseInt(x,16));return /[A-Za-z0-9._~-]/.test(c)?c:"%"+x.toUpperCase();});
+if(p.length>1)p=p.replace(/\/+$/,"");
+return p||"/";
+}
+function send(){
+var p=path();if(p===last)return;last=p;
+var b="v=1&t="+encodeURIComponent(t)+"&p="+encodeURIComponent(p),ok=false;
+try{if(navigator.sendBeacon){ok=navigator.sendBeacon(u,new Blob([b],{type:"application/x-www-form-urlencoded;charset=UTF-8"}));}}catch(e){}
+if(!ok){try{fetch(u,{method:"POST",body:b,keepalive:true,mode:"no-cors",credentials:"omit",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"}});}catch(e){}}
+}
+["pushState","replaceState"].forEach(function(n){var f=history[n];if(!f)return;history[n]=function(){var r=f.apply(this,arguments);setTimeout(send,0);return r;};});
+window.addEventListener("popstate",send);window.addEventListener("hashchange",send);send();
+})();</script>
+</body>
+</html>
