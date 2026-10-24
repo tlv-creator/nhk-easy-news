@@ -1,9 +1,9 @@
 {
- "ver": 22,
+ "ver": 23,
  "verName": "1.2.3",
  "site": "https://h28zxss2zpgag.space.mcode.cn",
  "audio": "https://qtjgfga76bu4o.space.mcode.cn/media/",
- "apk": "https://h28zxss2zpgag.space.mcode.cn/shun.apk",
- "updated": "2026-10-24T02:33:56Z",
- "note": "v1.2.3: sentence-structure breakdown + one-tap copy sentence + fixed line breaks; audio source v3 (13 eps)"
+ "apk": "https://tlv-creator.github.io/nhk-easy-news/shun/apk/shun.apk.zip",
+ "updated": "2026-10-24T02:47:10Z",
+ "note": "v1.2.3: sentence-structure breakdown + one-tap copy sentence + fixed line breaks; APK now on a permanent GitHub-Pages URL"
 }
