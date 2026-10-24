@@ -12,18 +12,17 @@
 --   ⇒ 我自己也被同一扇门绊了一跤（误删 10 条真实记录，已逐字恢复）。
 --
 -- 【收紧成什么样】
---   anon 只能删一种行：**student_id = '__rls_probe__'**（探针行，清理用）
---   ⇒ 四个班（JR1 / CW3 / WL_CW / XQ1，含 JR1|u1、JR1|u2）**anon 删不动了**
---   ⇒ LISTEN / CET4 / CET4TEST 也**一并收紧**（四级站明确要求：
---     学生端不需要删除权，「清空」是老师端的功能、老师端走 authenticated，本来就能删）
+--   anon 能删的只有两类行：
+--     ① student_id = '__rls_probe__'（探针行，清理用，任何班都行）
+--     ② class_key = 'LISTEN'（**只给每日听力记录站**：老师的「删一条 / 清空全部」走 anon REST）
+--   ⇒ 词汇站四个班（JR1 / CW3 / WL_CW / XQ1，含 JR1|u1、JR1|u2）**anon 删不动了** ✅
+--   ⇒ CET4 **也 anon 删不动** ✅（四级站明确要求：学生端不需要删除权，
+--      「清空」是老师端的功能、老师端走 authenticated，本来就能删）
 --   ⇒ 教师侧（authenticated，p_teach_all_*）不受影响，照常能删任何行。
 --
--- ⚠ 已知副作用（**不是 bug，是取舍**，听力站那边已同步）：
---   听力站的「老师删一条 / 清空全部」用的是 **anon** 调 REST
---   （api.js: rest('vocab_history_logs?class_key=eq.' + LOG_KEY, {method:'DELETE'})）
---   ⇒ 收紧后那两个按钮会**变成假成功**（RLS 挡 DELETE 时 PostgREST 返回 200 + 空数组）
---   ⇒ 他们的正解是教师侧挪到 authenticated / service_role；真要「先保住功能」，
---      把下面 〔可选〕那段解开（**替换**上面那条，不是追加 —— PERMISSIVE 之间是 OR）。
+-- ⚠ 唯一的取舍（**不是 bug，是取舍**）：
+--   LISTEN 这一班 anon 仍可整班删 ⇒ 听力站那边已加护栏（显示条数 + 要求手打「清空」）
+--   ⇒ 等他们把教师侧搬到 service_role / authenticated，把 `or class_key = 'LISTEN'` 去掉即可。
 --
 -- 【为什么用 DO 块先删光再重建】
 --   老师之前可能跑过不同版本的脚本，policy 名字不一样
@@ -52,13 +51,12 @@ end $$;
 
 create policy p_anon_delete_logs on public.vocab_history_logs
     for delete to anon, authenticated
-    using (student_id = '__rls_probe__');
+    using (student_id = '__rls_probe__' or class_key = 'LISTEN');
 
--- 〔可选·仅当听力站明确说「先保住功能」时解开〕
--- ⚠ 下面是**替换**上面那条 policy，不是追加 —— PERMISSIVE 之间是 OR，追加等于没收紧。
--- create policy p_anon_delete_logs on public.vocab_history_logs
---     for delete to anon, authenticated
---     using (student_id = '__rls_probe__' or class_key = 'LISTEN');
+-- ⚠ LISTEN 这条例外是**给每日听力记录站的**（老师的「删一条 / 清空全部」走 anon REST，
+--   收掉它那两个按钮就成了「假成功」⇒ 功能直接废）。
+--   ⇒ 等他们把教师侧搬到 service_role / authenticated 之后，把 `or class_key = 'LISTEN'` 去掉即可。
+--   ⇒ CET4 **不开口子**（四级站明确要求：学生端不需要删除权，老师端走 authenticated）。
 
 -- ── 2) vocab_online_status：同样收紧 DELETE ───────────────────────
 --    （词汇站的在线状态行同样不该被 anon 批量删；听力/四级的照旧可删）
@@ -80,6 +78,8 @@ end $$;
 create policy p_anon_delete_online on public.vocab_online_status
     for delete to anon, authenticated
     using (student_id = '__rls_probe__');
+-- （每日听力记录站现在的代码里零引用这张表 ⇒ 收严不影响他们；
+--   四级站也要求收紧 ⇒ 这张表 anon 只能删探针行）
 
 -- ── 3) 清掉这轮排查可能留下的探针行（真数据不动）────────────────
 delete from public.vocab_history_logs where student_id = '__rls_probe__';
