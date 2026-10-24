@@ -24,7 +24,11 @@
     LOG_KEY: 'CET4',                 // 活动记录 class_key
     SALT: 'vocab-unit23-teacher-2026', // 公开 salt（与词汇站一致）；密码本身不在前端
     QKEY: 'cet4.logqueue',           // 断网时的本地待发队列
-    DEMO_DATE: '2026-10-24'
+    DEMO_DATE: '2026-10-24',
+    // 🔴 自测号（老师 / 教研 / 设备调试用）
+    TEST_SID: '9999999999',          // 固定学号，姓名随意
+    TEST_NAME: '测试同学',
+    TEST_PREFIX: '__test__'          // 日志里 student_id 加这个前缀 ⇒ 一眼认出、一条正则过滤
   };
 
   var hasLS = (function () {
@@ -293,11 +297,30 @@
     return step();
   }
 
+  /* ================= 自测号 =================
+     🔴 老师/教研自测专用：不占名册、不进老师看板统计。
+     ① 学号固定 9999999999，姓名随意（登录页有按钮一键填好）
+     ② 日志里 student_id 存成 __test__9999999999 ⇒ 一眼认得出
+     ③ 老师看板 / 明细 / CSV 一律过滤掉它 ⇒ 自测一百遍也不污染班级数据
+     ⚠️ 这个号谁都能进（anon key 公开在前端）⇒ 它的记录只作自测用，不作教学证据 */
+  function isTestId(id) {
+    return String(id || '').indexOf(CFG.TEST_PREFIX) === 0;
+  }
+
   /* ================= 登录 ================= */
   function studentLogin(id, name) {
     var sid = String(id || '').trim();
     var typed = String(name || '').trim().replace(/ /g, '');
     if (!sid || !typed) return Promise.resolve({ ok: false, msg: '请把学号和姓名都填上' });
+    // 🔴 自测号：最先判断（演示模式也走这条 ⇒ demo 里自测同样带标记、不进看板）
+    if (sid === CFG.TEST_SID) {
+      return Promise.resolve({
+        ok: true, token: 'test:' + sid,
+        name: CFG.TEST_NAME, student_id: CFG.TEST_PREFIX + sid,
+        class_key: 'CET4TEST', class_name: '自测账号',
+        is_test: true, display_id: sid
+      });
+    }
     if (isDemo()) {
       return Promise.resolve({
         ok: true, token: 'demo:' + sid,
@@ -387,14 +410,16 @@
       });
 
       var from = opts.from || '', to = opts.to || '', cls = opts.class_key || '';
-      var filtered = logs.filter(function (l) {
+      // 🔴 自测号（__test__ 前缀）的记录不进老师看板 —— 它不是班里的学生
+      var realLogs = logs.filter(function (l) { return !isTestId(l.student_id); });
+      var filtered = realLogs.filter(function (l) {
         if (from && l.ts_date && l.ts_date < from) return false;
         if (to && l.ts_date && l.ts_date > to) return false;
         if (cls && l.class_key !== cls) return false;
         return true;
       });
 
-      return { ok: true, roster: roster, logs: filtered, allLogs: logs };
+      return { ok: true, roster: roster, logs: filtered, allLogs: realLogs };
     });
   }
 
@@ -1006,6 +1031,9 @@
     getIndex: getIndex,
     getIssue: getIssue,
     studentLogin: studentLogin,
+    isTestId: isTestId,
+    testSid: CFG.TEST_SID,
+    testName: CFG.TEST_NAME,
     teacherLogin: teacherLogin,
     teacherData: teacherData,
     addLog: addLog,

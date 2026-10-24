@@ -426,7 +426,9 @@
     var b = document.createElement('b');
     b.textContent = me.name || '';
     w.appendChild(b);
-    w.appendChild(document.createTextNode(' ' + (me.student_id || '') + ' · ' + (me.class_name || '')));
+    // 🔴 自测号：显示原始学号，别把内部前缀露给用户
+    w.appendChild(document.createTextNode(' ' + (me.display_id || me.student_id || '') +
+      (me.is_test ? '（自测）' : '') + ' · ' + (me.class_name || '')));
   }
   function logout() {
     me = null;
@@ -444,7 +446,11 @@
     CET4.studentLogin(sid, nm).then(function (r) {
       $('btnLogin').disabled = false;
       if (!r || !r.ok) { setMsg($('loginMsg'), (r && r.msg) || '登录失败', 'err'); return; }
-      me = { token: r.token, name: r.name, student_id: r.student_id, class_key: r.class_key, class_name: r.class_name };
+      me = {
+        token: r.token, name: r.name, student_id: r.student_id,
+        class_key: r.class_key, class_name: r.class_name,
+        is_test: !!r.is_test, display_id: r.display_id || r.student_id
+      };
       try { localStorage.setItem(SKEY, JSON.stringify(me)); } catch (e) { /* ignore */ }
       setMsg($('loginMsg'), '');
       showHome();
@@ -869,6 +875,16 @@
 
   /* ---------------- 事件绑定 ---------------- */
   $('btnLogin').addEventListener('click', doLogin);
+  // 🔴 自测号一键进入（老师 / 教研 / 设备调试用）
+  //    不占名册、记录不进老师看板统计 ⇒ 自测多少次都不污染班级数据
+  var btnTest = $('btnTestLogin');
+  if (btnTest) {
+    btnTest.addEventListener('click', function () {
+      $('sid').value = CET4.testSid || '9999999999';
+      $('sname').value = CET4.testName || '测试同学';
+      doLogin();
+    });
+  }
   $('sid').addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
   $('sname').addEventListener('keydown', function (e) { if (e.key === 'Enter') doLogin(); });
   $('btnLogout').addEventListener('click', function () {

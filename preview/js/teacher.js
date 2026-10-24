@@ -12,6 +12,16 @@
 
   var SKEY = 'cet4.teacher.session';
 
+  // 🔴 自测号（老师/教研自用）不进老师看板。
+  //    权威判据在 api.js 的 isTestId（单一权威），这里只调用，不另立一套标准。
+  var API = global.CET4;
+  function isTestId(id) {
+    return !!(API && API.isTestId && API.isTestId(id));
+  }
+  function notTest(l) {
+    return !isTestId(l && l.student_id);
+  }
+
   /* =====================================================================
      一、纯函数区（自检脚本 node 直接调用）
      ===================================================================== */
@@ -56,7 +66,7 @@
      --------------------------------------------------------------------- */
   function transStats(logs, today) {
     var recs = (logs || []).filter(function (l) {
-      return l.kind === '翻译练习' && (today ? l.ts_date === today : true);
+      return l.kind === '翻译练习' && notTest(l) && (today ? l.ts_date === today : true);
     });
     var withComp = recs.filter(function (l) { return l.comp >= 0; });
     var compSum = 0, compN = 0;
@@ -102,6 +112,9 @@
   }
 
   function aggregate(logs, roster, today, allLogs) {
+    // 🔴 自测号的记录一律先剔掉（看板 / 明细 / CSV 全干净）
+    logs = (logs || []).filter(notTest);
+    allLogs = (allLogs || logs || []).filter(notTest);
     var byId = {}, order = [];
     (roster || []).forEach(function (s) {
       var id = String(s.id);
@@ -642,7 +655,7 @@
       map[k].n++;
     });
     var today = CET4.todayStr();
-    (data.allLogs || []).forEach(function (l) {
+    (data.allLogs || []).filter(notTest).forEach(function (l) {
       var m = map[l.class_key];
       if (!m) return;
       if (l.ts_date === today) {

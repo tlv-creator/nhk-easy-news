@@ -172,6 +172,24 @@ html.hc button.on, html.hc button.primary { background: #000; color: #fff; }
 .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
 .actions > * { flex: 1 1 160px; min-width: 0; }
 
+/* 自测号入口：默认收起（真实学生不需要看见） */
+.testbox {
+  margin-top: 16px;
+  border: 1px solid var(--line2);
+  border-radius: var(--r);
+  padding: 10px 12px;
+}
+.testbox > summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: .92rem;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+}
+.testbox p { margin: 8px 0 0; font-size: .86rem; line-height: 1.6; }
+.testbox .actions { margin-top: 10px; }
+
 /* ---------------- 表单 ---------------- */
 label.f { display: block; margin: 12px 0 4px; font-weight: 700; font-size: .9rem; }
 label.f .hint { font-weight: 400; color: var(--ink3); font-size: .85em; margin-left: 6px; }
