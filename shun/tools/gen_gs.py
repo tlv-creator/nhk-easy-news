@@ -93,9 +93,10 @@ USER_TMPL = """给下面这句日语做「句子结构详解」。严格按这�
    - "[]"    连接词 / 副词（独立成块，如「反対に」「でも」「そして」）
    - "［］"  从句（让步 / 条件 / 宾语从句 / 修饰从句 / 原因从句）
    - "〈〉"  主句里的宾语内容 / 主语内容（含形式名词化「〜こと/の/もの」）
-     🔴 「〈〉」里只能放**名词性或动词性**的内容。纯接续词/副词/助词
-        （如「どう」「では」「最近」这种单独成块的）不要用「〈〉」——
+     🔴 「〈〉」里只能放**名词性或动词性**的内容。纯接续词/副词/**助词**
+        （如「どう」「では」「最近」「は」「が」这种单独成块的）不要用「〈〉」——
         要么并进相邻的块，要么用 "[]"。
+        🔴 助词（は/が/を/に/で/も/の）**绝不能单独成块** ⇒ 并进它前面的名词。
    - "（）"  谓语（主句谓语、补助动词、句末语气）
    role 要和括号配套：[]→连接/副词，［］→…从句，〈〉→…内容，（）→…谓语。role 用 8 字以内的中文短语。
 4. 🔴 **skel 写「可复用的句型公式」**，不是这一句的具体词：
@@ -150,8 +151,8 @@ BATCH_TMPL = """给下面 {n} 句日语分别做「句子结构详解」。**每
 3. frame 的块按出现顺序；blocks 与 frame 一一对应（blocks[i].s == frame[i].s）。
 4. b 只能是 "[]" "［］" "〈〉" "（）"：
    [] = 连接词/副词；［］ = 从句；〈〉 = 宾语内容/主语内容；（） = 谓语。
-   🔴 「〈〉」只能放**名词性或动词性**的内容；纯接续词/副词（如「どう」「では」单独成块）
-      请并进相邻块或用 "[]"。
+   🔴 「〈〉」只能放**名词性或动词性**的内容；纯接续词/副词/助词（如「どう」「では」「は」单独成块）
+      请并进相邻块或用 "[]"。助词**绝不能单独成块**。
 5. role 与括号配套，8 字以内中文短语。
 6. 🔴 skel 是**可复用的句型公式**（用「〜」表示槽位，不许空括号、不许照抄具体词）；
    chain 是层层修饰的箭头串（可带括号，括号内文字逐字来自原句）。
@@ -233,8 +234,13 @@ def extract_json(text):
 
 
 # ── 校验（事实量） ────────────────────────────────────────────
+# 🔴 归一化的唯一权威在 tools/gs_text.py（gen_gs 与 clean_gs 共用）
+#    铁律：**等长**（gs 的字符位置是在原句上算的 ⇒ 长度一变位置全错）
+from gs_text import norm as _norm_raw  # noqa: E402
+
+
 def norm(s):
-    return (s or "").replace("　", " ").strip()
+    return _norm_raw(s).strip()
 
 
 # ── janome 词性（独立于模型的事实源） ──────────────────────────
@@ -377,6 +383,15 @@ BRACKET_PAIRS = [("［", "］"), ("【", "】"), ("〈", "〉"), ("（", "）"),
                  ("[", "]"), ("(", ")"), ("<", ">")]
 
 
+def _strip(s):
+    """剥掉括号后是否是空（纯括号项）。"""
+    t = (s or "").strip()
+    for a, b in BRACKET_PAIRS:
+        if t == a + b:
+            return ""
+    return t
+
+
 def strip_brackets(s):
     """剥掉一层括号（chain / skel 允许带括号，比对时要剥）。
 
@@ -398,6 +413,8 @@ def strip_brackets(s):
 def check(gs, ja):
     """返回 (ok, reason)。判据全部落在「事实」上。"""
     del WARN[:]
+    # 🔴 原句也归一化（等长 ⇒ 后面 ja.find() 出来的位置仍是原句坐标）
+    ja = norm(ja)
     if not isinstance(gs, dict):
         return False, "不是 dict"
     frame = gs.get("frame")
@@ -559,6 +576,12 @@ def check(gs, ja):
     chain = gs.get("chain")
     if not isinstance(chain, list) or not chain:
         return False, "chain 空"
+    # 🔴 chain 里可能有**纯括号项**（「[]」「（）」）—— 剥完括号是空的
+    #    ⇒ 它不是「原文片段」⇒ 删掉（形状修复，不是幻觉）。
+    chain = [c for c in chain if _strip(c)]
+    if not chain:
+        return False, "chain 剥掉空括号后为空"
+    gs["chain"] = chain
     for j, c in enumerate(chain):
         cs = norm(c)
         if not cs:
@@ -639,6 +662,66 @@ def repair_shape(raw, ja):
     return raw
 
 
+def annotate_positions(gs, ja):
+    """给 gs 的每个原文片段标注**字符位置** [start, end]。
+
+    🔴 为什么需要：只有「原文片段」时，前端只能用 indexOf 定位 ——
+       句子里同一个词出现多次时（如「も」「を」）会定位到第一处 ⇒ 指错地方。
+    ⇒ 按**出现顺序**推进地定位（frame 块本来就按原句顺序）⇒ 位置是准的。
+    ⇒ 这层是**确定性计算**（不依赖模型），所以放形状修复里。
+
+    标注位置：
+      · frame[i].p   —— 块在原句里的 [start, end)
+      · blocks[i].p  —— 同上（与 frame[i] 相同）
+      · blocks[i].parts[j].p —— 成分在**块内**的 [start, end)（相对整句）
+      · chain[i].p   —— 在原句里的位置
+    """
+    if not isinstance(gs, dict):
+        return gs
+    cursor = 0
+    for i, f in enumerate(gs.get("frame") or []):
+        t = norm(f.get("s"))
+        if not t:
+            continue
+        pos = ja.find(t, cursor)
+        if pos < 0:
+            pos = ja.find(t)
+        if pos >= 0:
+            f["p"] = [pos, pos + len(t)]
+            cursor = pos + len(t)
+    for i, b in enumerate(gs.get("blocks") or []):
+        fr = gs.get("frame") or []
+        if i < len(fr) and isinstance(fr[i], dict) and fr[i].get("p"):
+            b["p"] = list(fr[i]["p"])
+        bt = norm(b.get("s"))
+        bp = b.get("p")
+        inner_cursor = bp[0] if bp else 0
+        for j, pt in enumerate(b.get("parts") or []):
+            pt2 = norm(pt.get("s"))
+            if not pt2:
+                continue
+            p2 = ja.find(pt2, inner_cursor)
+            if p2 < 0:
+                p2 = ja.find(pt2, bp[0] if bp else 0)
+            if p2 >= 0:
+                pt["p"] = [p2, p2 + len(pt2)]
+                inner_cursor = p2 + len(pt2)
+    for i, c in enumerate(gs.get("chain") or []):
+        t = strip_brackets(c)      # chain 项常带括号 ⇒ 要剥掉再找
+        if not t:
+            continue
+        pos = ja.find(t)
+        if pos >= 0:
+            gs["chain"][i] = c
+            # chain 是 list[str] ⇒ 位置另存
+            if not isinstance(gs.get("chain_p"), list):
+                gs["chain_p"] = []
+            while len(gs["chain_p"]) <= i:
+                gs["chain_p"].append(None)
+            gs["chain_p"][i] = [pos, pos + len(t)]
+    return gs
+
+
 # ── 主流程 ────────────────────────────────────────────────────
 def gen_one(ja, tries=3):
     for i in range(tries):
@@ -648,6 +731,7 @@ def gen_one(ja, tries=3):
             raw = repair_shape(raw, ja)
             ok, reason = check(raw, ja)
             if ok:
+                annotate_positions(raw, ja)
                 raw["src"] = "llm"
                 return raw, None
             last = reason
@@ -696,6 +780,7 @@ def gen_batch(jas, tries=2):
             out[ja] = (None, "check 抛错: %s" % e)
             continue
         if ok:
+            annotate_positions(item, ja)
             item["src"] = "llm-batch"
             out[ja] = (item, None)
         else:
