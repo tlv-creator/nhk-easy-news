@@ -94,7 +94,11 @@
     practice.forEach(function (r) {
       var it = slot(r.sid);
       /* 🔴 班级以**日志自己**的 class_key/class_name 为准 */
-      if (r.clsKey) { it.cls = r.clsKey; it.className = r.clsName || it.className; }
+      /* 🔴 班级以日志自己的 **class_name** 为准（不是 class_key！）
+         class_key 是**分站标识**：JR1/CW3/WL_CW/XQ1（词汇）/ LISTEN（听力）/ CET4（四级）
+         ⇒ 拿 class_key 当班号，听力会归成一个叫「LISTEN」的班
+         ⇒ 真正的班在 class_name（'26财务管理3班' / '26财务管理（中本贯通）1班' …） */
+      if (r.clsName) { it.className = r.clsName; it.cls = r.clsName; }
       it.wSec += r.sec; it.wPairs += r.pairs; it.wClicks += r.clicks; it.wSegs += r.segs;
       for (var u in r.units) it.wUnits[u] = (it.wUnits[u] || 0) + r.units[u];
       for (var p in r.pages) it.wPages[p] = (it.wPages[p] || 0) + r.pages[p];
@@ -120,7 +124,11 @@
     listen.forEach(function (r) {
       var it = slot(r.sid);
       /* 🔴 班级以日志自己的 class_key/class_name 为准 */
-      if (r.clsKey) { it.cls = r.clsKey; it.className = r.clsName || it.className; }
+      /* 🔴 班级以日志自己的 **class_name** 为准（不是 class_key！）
+         class_key 是**分站标识**：JR1/CW3/WL_CW/XQ1（词汇）/ LISTEN（听力）/ CET4（四级）
+         ⇒ 拿 class_key 当班号，听力会归成一个叫「LISTEN」的班
+         ⇒ 真正的班在 class_name（'26财务管理3班' / '26财务管理（中本贯通）1班' …） */
+      if (r.clsName) { it.className = r.clsName; it.cls = r.clsName; }
       it.lCnt += r.cnt; it.lMin += r.minutes; it.lDays = Object.keys(r.days).length;
       for (var c in r.cats) it.lCats[c] = (it.lCats[c] || 0) + r.cats[c];
       it.lRows = r.rows;
@@ -131,7 +139,11 @@
     var cet = P.parseCet4Logs(S.cet4Logs);
     cet.forEach(function (r) {
       var it = slot(r.sid);
-      if (r.clsKey) { it.cls = r.clsKey; it.className = r.clsName || it.className; }
+      /* 🔴 班级以日志自己的 **class_name** 为准（不是 class_key！）
+         class_key 是**分站标识**：JR1/CW3/WL_CW/XQ1（词汇）/ LISTEN（听力）/ CET4（四级）
+         ⇒ 拿 class_key 当班号，听力会归成一个叫「LISTEN」的班
+         ⇒ 真正的班在 class_name（'26财务管理3班' / '26财务管理（中本贯通）1班' …） */
+      if (r.clsName) { it.className = r.clsName; it.cls = r.clsName; }
       it.cBrowse += r.browse_sec;
       it.cTrans += r.trans_n; it.cHit += r.trans_hit; it.cDen += r.trans_den;
       it.cQuiz += r.quiz_n; it.cOk += r.quiz_ok; it.cQDen += r.quiz_den;
@@ -349,8 +361,8 @@
         };
       }
       var r = byCls[k];
-      /* 在册 = 名册里**这个班**有人（名册的班是权威口径） */
-      if (it.inRoster && it.rosterCls === k) r.roster++;
+      /* 在册 = 名册里**这个班**有人（按班名匹配：名册的 class_name） */
+      if (it.inRoster && (it.rosterClsName === k || it.rosterCls === k)) r.roster++;
       if (hasAny(it)) r.active++;
       r.wSec += it.wSec; r.wSegs += it.wSegs;
       r.lCnt += it.lCnt; r.lMin += it.lMin;
@@ -375,7 +387,9 @@
       '<th class="num">理解题正确率</th></tr></thead><tbody>';
     rows.forEach(function (r) {
       html += '<tr>' +
-        '<td>' + esc(r.name) + '<br><span class="u">' + esc(r.key) + '</span></td>' +
+        /* 🔴 班名下面那行：只有当它和班名**不同**时才显示（否则重复两遍） */
+        '<td>' + esc(r.name) +
+        (r.key && r.key !== r.name ? '<br><span class="u">' + esc(r.key) + '</span>' : '') + '</td>' +
         '<td class="num">' + r.roster + '</td>' +
         '<td class="num">' + r.active + '</td>' +
         '<td class="num">' + P.fmtSec(r.wSec) + '</td>' +
