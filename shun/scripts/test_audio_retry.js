@@ -29,7 +29,7 @@ function ok(cond, name, extra) {
   else { fail++; fails.push(name + (extra !== undefined ? '  → ' + extra : '')); console.log('  ❌ ' + name + (extra !== undefined ? '  → ' + extra : '')); }
 }
 
-const hits = { flaky: 0, dead: 0, hang: 0, ok: 0, tried: [] };
+const hits = { flaky: 0, dead: 0, dead2: 0, gone: 0, hang: 0, ok: 0, tried: [] };
 
 const srv = http.createServer((req, res) => {
   const u = req.url.split('?')[0];
@@ -50,6 +50,10 @@ const srv = http.createServer((req, res) => {
   }
   /* 场景 B：一直 503 */
   if (u.startsWith('/dead/')) { hits.dead++; res.writeHead(503); return res.end('always down'); }
+  /* 🔴 场景 E：**另一个也 503 的地址**（备用源也挂 ⇒ 用户断网的真实场景） */
+  if (u.startsWith('/dead2/')) { hits.dead2++; res.writeHead(503); return res.end('backup down too'); }
+  /* 🔴 场景 F：**404**（源站被删）⇒ 与 503 是两种不同故障 */
+  if (u.startsWith('/gone/')) { hits.gone++; res.writeHead(404); return res.end('gone'); }
   /* 场景 C：挂起（不返回）—— 连 error 事件都不触发，只能靠看门狗 */
   if (u.startsWith('/hang/')) { hits.hang++; return; }
   /* 🔴 场景 D：**换源目标**（正常返回音频）⇒ 用来验证「主源挂了能自动换源」
@@ -210,6 +214,41 @@ async function openEp1(page, waitMs) {
     ok(hits.ok >= 1, '**自动换源**去请求备用地址了', '实际 ' + hits.ok);
     ok(st.ready >= 1 && st.dur > 60, '换源后音频真的解码出来了', JSON.stringify(st));
     ok(st.toast === '', '换源成功后**不报错**', st.toast);
+    ok(errors.length === 0, '无 JS 错误', errors.slice(0, 2).join(' | '));
+    await page.close();
+  }
+
+  /* 🔴 场景 E：**主源 503 + 备用源也 503** ⇒ 必须最终如实报「没声音」
+   *   （用户断网 / 两个站都挂时的真实场景 —— 主线点名要补的那条）
+   *   ⇒ 关键：**不能静默失败**（播放器条亮着但声音不动 = 最阴的故障） */
+  console.log('\n【E】主源 503 + 备用源也 503 ⇒ 必须最终如实报「没声音」');
+  hits.dead = 0; hits.dead2 = 0;
+  {
+    const main = `http://127.0.0.1:${PORT}/dead/`;
+    const backup = `http://127.0.0.1:${PORT}/dead2/`;
+    const { page, errors } = await newPage(browser, main, [backup]);
+    const st = await openEp1(page, 14000);
+    ok(hits.dead >= 1, '主源被请求过', '实际 ' + hits.dead);
+    ok(hits.dead2 >= 1, '**备用源也被请求过**（换源真的发生了）', '实际 ' + hits.dead2);
+    ok(st.toast.indexOf('没声音') >= 0, '**最终如实提示「没声音」**（没有静默失败）', JSON.stringify(st));
+    ok(hits.dead + hits.dead2 <= 8, '请求次数有上限（不会无限刷）', '实际 ' + (hits.dead + hits.dead2));
+    ok(errors.length === 0, '无 JS 错误', errors.slice(0, 2).join(' | '));
+    await page.close();
+  }
+
+  /* 🔴 场景 F：**主源 404（源站被删）+ 备用源 503**
+   *   ⇒ 「源站被删」与「源站活着但报错」是**两种不同故障** ⇒ 换源逻辑对两者的反应可能不同
+   *   ⇒ 断言语义同场景 E：换源真的发生 + 最终如实报「没声音」+ 不静默 */
+  console.log('\n【F】主源 404（源站被删）+ 备用源 503 ⇒ 也要换源并如实报「没声音」');
+  hits.gone = 0; hits.dead2 = 0;
+  {
+    const main = `http://127.0.0.1:${PORT}/gone/`;
+    const backup = `http://127.0.0.1:${PORT}/dead2/`;
+    const { page, errors } = await newPage(browser, main, [backup]);
+    const st = await openEp1(page, 14000);
+    ok(hits.gone >= 1, '主源(404)被请求过', '实际 ' + hits.gone);
+    ok(hits.dead2 >= 1, '**404 也会触发换源**（不是只有 503 才换）', '实际 ' + hits.dead2);
+    ok(st.toast.indexOf('没声音') >= 0, '最终如实提示「没声音」', JSON.stringify(st));
     ok(errors.length === 0, '无 JS 错误', errors.slice(0, 2).join(' | '));
     await page.close();
   }
