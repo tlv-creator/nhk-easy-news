@@ -295,9 +295,9 @@
       "role": "content",
       "reason": "✅ **hub v1.17 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
       "written_in": "hub.html 的 SITE 块",
-      "frozen": true,
-      "status": "alive",
-      "note": "🔴 域名冻结：**永不 redeploy**（redeploy = 换域名 = 引导页死链）。发新版要「新建站 + 改引导页 + 再删旧的」。"
+      "frozen": false,
+      "status": "DELETED",
+      "note": "🔴 域名冻结：**永不 redeploy**（redeploy = 换域名 = 引导页死链）。发新版要「新建站 + 改引导页 + 再删旧的」。 【已删除】"
     },
     {
       "domain": "bo8u69hdw58t4",
