@@ -415,12 +415,22 @@
   {
    "domain": "vadhlp76u4vr7",
    "project": "scenes（日常场景会话）v1.2",
+   "reason": "v1.2 中间站（同日部署产生，scenes.html 已切到 3pqlt9tq6lrij）⇒ 待清理",
+   "status": "SUPERSEDED",
+   "frozen": false,
+   "role": "content_site",
+   "canonical": "https://tlv-creator.github.io/nhk-easy-news/scenes.html",
+   "note": "🔴 2026-10-24 临时站，无引用 ⇒ 确认后可删"
+  },
+  {
+   "domain": "3pqlt9tq6lrij",
+   "project": "scenes（日常场景会话）v1.2",
    "reason": "🔴 本项目**现役站**（v1.2：语法拆解重做 + 换 App 入口）；永久引导页 scenes.html 指着它 ⇒ 永不删、永不 redeploy",
    "status": "alive",
    "frozen": true,
    "role": "content_site",
    "canonical": "https://tlv-creator.github.io/nhk-easy-news/scenes.html",
-   "note": "🔴 2026-10-24 v1.2；站 https://vadhlp76u4vr7.space.mcode.cn ；含 jpstudy-apk.zip（md5 d4b5cf2967ca1db0174e6f6aceffb676）"
+   "note": "🔴 2026-10-24 v1.2；站 https://3pqlt9tq6lrij.space.mcode.cn ；含 jpstudy-apk.zip（md5 d4b5cf2967ca1db0174e6f6aceffb676）"
   }
  ],
  "how_to_check_before_deleting": {
