@@ -216,10 +216,23 @@
       "reason": "每日听力记录的**国内加速镜像** —— 🔴 **清站前必查：删了 = 老师/学生手里的链接当场死**（同一个域名已经因为被清站扫掉而消失过一次）",
       "written_in": "仓库 listening/version.json 的 mirror 字段",
       "frozen": true,
-      "note": "🟢 canonical（**学生真正用的**）= https://tlv-creator.github.io/nhk-easy-news/listening/（GitHub Pages，永久，清站碰不到）。🔴 **frozen=true = 永不删 + 永不 redeploy**：mcode 域名每次 redeploy 都会换 ⇒ 老师手里保存的加速链接会死。真要重建：先 `python3 tools/update_listen_mirror.py <新域名>` 改引用，**再**部署新站。",
+      "note": "🟢 canonical（**学生真正用的**）= https://tlv-creator.github.io/nhk-easy-news/listening/（GitHub Pages，永久）。🔴 2026-10-24：旧镜像的 js **不带行令牌** ⇒ 老师跑完收尾 SQL 后，**走旧镜像的学生就删不了自己的记录** ⇒ 已换成新镜像 xqrp2rqkvxqwf。🟢 本域**保留不删**（frozen）：老师/学生手里可能存着这个链接，删了当场死；内容已旧，只作保底。⇒ 新的加速地址见 xqrp2rqkvxqwf 条目。",
       "role": "mirror",
       "canonical": "https://tlv-creator.github.io/nhk-easy-news/listening/",
-      "action_if_rebuilt": "python3 tools/update_listen_mirror.py <新域名>"
+      "action_if_rebuilt": "python3 tools/update_listen_mirror.py <新域名>",
+      "status": "SUPERSEDED",
+      "replaced_by": "xqrp2rqkvxqwf"
+    },
+    {
+      "domain": "xqrp2rqkvxqwf",
+      "project": "listening（每日听力记录）",
+      "reason": "每日听力记录的**国内加速镜像（现行）** —— 2026-10-24 从 irk7ibwekq8se 换过来（旧的 js 不带行令牌 ⇒ 收尾 SQL 后删不了自己的记录）",
+      "written_in": "仓库 listening/version.json + listening/app/version.json 的 mirror 字段、listening/index.html 的「国内加速通道」链接",
+      "frozen": true,
+      "role": "mirror",
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/listening/",
+      "replaces": "irk7ibwekq8se",
+      "note": "🔴 frozen=true = 永不删 + 永不 redeploy（域名一换，存过链接的人当场死）。要更新内容：先 `python3 tools/update_listen_mirror.py <新域名>` 改引用，再部署新站。"
     },
     {
       "domain": "rqud34vh5k65y",
