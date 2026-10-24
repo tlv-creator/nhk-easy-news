@@ -66,8 +66,18 @@ REAL_CLASS_KEYS = {'LISTEN', 'CET4', 'CET4TEST', 'JR1', 'CW3', 'WL_CW', 'XQ1',
 #   ⇒ **探针行必须也带令牌**，否则收紧后的 policy 会把探针行挡住 ⇒ 验收脚本假红
 #   （前端的 randomToken()：crypto.getRandomValues 16 字节 → 32 位十六进制）
 import os as _os
-TK = _os.urandom(16).hex()          # 32 位十六进制
+TK = _os.urandom(16).hex()          # 32 位十六进制（原始令牌）
+import hashlib as _hl
+TK_HASH = _hl.sha256(TK.encode('utf-8')).hexdigest()   # 64 位十六进制（SHA-256 版令牌）
 TK_HEADERS = {'x-student-id': PROBE_SID, 'x-row-token': TK}
+
+# 🔴🔴 探针行要能扛住**两种**令牌制（同伴 2026-10-24 正在从「原文」切到「SHA-256」）
+#   变体①：action 里存**原文** ⇒ policy 比较 action like '%#tk=' || 请求头 || '%'
+#   变体②：action 里存 **sha256(原文)** ⇒ policy 比较 action like '%#tk=' || sha256(请求头) || '%'
+#   变体③：请求头直接送 sha256 ⇒ policy 比较 action like '%#tk=' || 请求头 || '%'
+#   ⇒ **一行里同时带两个后缀** ⇒ 上面三种变体下这一行都能被删掉
+#   ⇒ 换句话说：清理不会漏垃圾 ⇒ 我的验收脚本不会在老师真表里留残渣
+TK_ACTION = '__rls_probe__ | #tk=' + TK + ' | #tk=' + TK_HASH
 assert PROBE_CK not in REAL_CLASS_KEYS, '整班删形状的探针 key 不能是真实班级'
 assert PROBE_SID not in REAL_CLASS_KEYS
 
@@ -133,6 +143,17 @@ def ok(what):
     print('  ✅ %s' % what)
 
 
+PHASE_FAILS = []
+
+def phase_fail(what, detail):
+    """阶段未完成（不是脚本坏了）⇒ 单独记，汇总时分开说"""
+    global CHECKS
+    PHASE_FAILS.append('%s —— %s' % (what, detail))
+    print('  ⚠️ %s' % what)
+    print('     %s' % detail)
+    CHECKS += 1
+
+
 def fail(what, detail):
     global CHECKS
     CHECKS += 1
@@ -140,12 +161,12 @@ def fail(what, detail):
     print('  ❌ %s —— %s' % (what, detail))
 
 
-def log_row(class_key, sid=PROBE_SID, tk=None):
+def log_row(class_key, sid=PROBE_SID, tk=None, action=None):
     # 🔴 action 末尾必须带 `#tk=<令牌>`（与听力站前端同形）⇒ 收紧后的 policy 才认这条探针行
     tk = tk or TK
+    act = action if action is not None else ('__rls_probe__ | #tk=' + tk)
     return {'class_key': class_key, 'class_name': '__rls_probe__', 'student_id': sid,
-            'timestamp': '2026-10-24 12:00:00', 'duration_sec': 0,
-            'action': '__rls_probe__ | #tk=' + tk}
+            'timestamp': '2026-10-24 12:00:00', 'duration_sec': 0, 'action': act}
 
 
 def online_row(class_key, sid=PROBE_SID):
@@ -153,12 +174,12 @@ def online_row(class_key, sid=PROBE_SID):
             'status_text': '__rls_probe__', 'login_time': '12:00:00'}
 
 
-def insert_log(class_key, sid=PROBE_SID):
+def insert_log(class_key, sid=PROBE_SID, action=None):
     """插入探针行 ⇒ 返回 (成功?, 该行 id, 说明)"""
     global ANY_WRITE_OK
     rest('DELETE', '/vocab_history_logs?class_key=eq.%s&student_id=eq.%s' % (class_key, sid),
          prefer='return=representation')
-    st, _, raw = rest('POST', '/vocab_history_logs', log_row(class_key, sid),
+    st, _, raw = rest('POST', '/vocab_history_logs', log_row(class_key, sid, action=action),
                       prefer='return=representation')
     if st not in (200, 201):
         return False, None, '写入被挡 http=%s %s' % (st, raw[:100])
@@ -331,10 +352,21 @@ def main():
 
     # ── 2) T1 三条删除路径
     print('\n━━ 2) T1 三条删除路径（写 → 删 → 回读确认真的没了）━━')
-    # 真实 LISTEN 里有多少行（**不许把真实数据删掉**）
-    st, _, raw = rest('GET', '/vocab_history_logs?select=id&class_key=eq.LISTEN', prefer='count=exact')
-    real_listen = len(rows_of(raw))
-    print('  （LISTEN 现有 %d 行真实记录）' % real_listen)
+    # 真实 LISTEN 里有哪些行（**不许把真实数据删掉**）
+    # 🔴🔴 记的是 **id 集合**，不是条数：
+    #   157 个学生正在实时交作业 ⇒ 条数**只增不减** ⇒ 「前后条数一样」这个判据会**随机假红**
+    #   ⇒ 正确判据：**跑之前就存在的 id，跑完之后必须还在**（我一行真记录都没删）
+    #   ⇒ 新增的行（学生新交的）**不算违规**
+    st, _, raw = rest('GET', '/vocab_history_logs?select=id,student_id&class_key=eq.LISTEN')
+    _before_rows = rows_of(raw)
+    real_ids = set()
+    for r in _before_rows:
+        sid = str(r.get('student_id', ''))
+        if sid.startswith('__rls'):        # 探针行不算「真实数据」
+            continue
+        real_ids.add(r.get('id'))
+    real_listen = len(_before_rows)
+    print('  （LISTEN 现有 %d 行；其中真实记录 %d 条，已记下 id 集合）' % (real_listen, len(real_ids)))
 
     # 🔴 双凭证：学号 + 行令牌（听力站 2026-10-24 方案）
     #   ⇒ 删除请求必须带 x-student-id + x-row-token 两个头
@@ -409,13 +441,95 @@ def main():
         rest('DELETE', '/vocab_history_logs?class_key=eq.JR1&student_id=eq.%s' % PROBE_SID,
              prefer='return=representation')
 
-    # 真实 LISTEN 行数复核（确认上面三条没有伤到真实数据）
-    st, _, raw = rest('GET', '/vocab_history_logs?select=id&class_key=eq.LISTEN', prefer='count=exact')
-    after_listen = len(rows_of(raw))
-    if after_listen == real_listen:
-        ok('真实 LISTEN 数据未被破坏（前后都是 %d 行）' % real_listen)
+    # ── T1-d / T1-e：LISTEN 的 anon 口子**开没开** + 令牌路径通不通 ──────────
+    # 🔴🔴 为什么判别行不能用探针 student_id：
+    #   探针例外（student_id='__rls_probe__'）是**无条件可删**的
+    #   ⇒ 拿它去测「LISTEN 口子开没开」会被这个例外掩盖 ⇒ **结论会说谎**
+    #     （收紧前后整班删都能成功 ⇒ 旧脚本会一直报「尚未收紧」）
+    #   ⇒ 判别行用 student_id='__rls_probe2__' ⇒ 探针例外碰不到它
+    PHASE_SID = '__rls_probe2__'
+    PHASE = 'UNKNOWN'
+    good, rid, why = insert_log('LISTEN', PHASE_SID, action=TK_ACTION)
+    if not good:
+        fail('T1-d 前置（写判别行）', why)
     else:
-        fail('真实 LISTEN 数据', '前 %d 行 → 后 %d 行 ⇒ 验收脚本动了真实数据' % (real_listen, after_listen))
+        # T1-d 阶段判定：带学号、**不带令牌**
+        #   旧政策（LISTEN 开着）⇒ 删得掉；新政策（锁死）⇒ 删不掉
+        st, body, raw = del_log('id=eq.%s&class_key=eq.LISTEN' % rid,
+                                headers={'x-student-id': PHASE_SID})
+        st2, rows2, _ = read_log('LISTEN', PHASE_SID)
+        if rows2:
+            PHASE = 'LOCKED'
+            ok('T1-d LISTEN 的 anon 删除口子**已锁死** ✅（带学号但不带令牌 ⇒ 删不掉）'
+               '⇒ 公开 anon 密钥再也删不了听力数据')
+        else:
+            PHASE = 'OPEN'
+            phase_fail('T1-d LISTEN 的 anon 删除口子**还开着** ⚠️',
+                 'http=%s 但行没了 ⇒ 任何拿到 anon key 的人都能删 LISTEN 的行（整班也能）'
+                 '⇒ **收尾 SQL 还没跑 / 没生效**（这是「阶段未完成」，不是脚本坏了）' % st)
+        # 判别行可能还在（LOCKED 阶段）⇒ 用令牌路径清掉它（顺带就是 T1-e 的断言）
+        if rows2:
+            st, body, raw = del_log('id=eq.%s&class_key=eq.LISTEN' % rid,
+                                    headers={'x-student-id': PHASE_SID, 'x-row-token': TK})
+            st2, rows2, _ = read_log('LISTEN', PHASE_SID)
+            if rows2:
+                st, body, raw = del_log('id=eq.%s&class_key=eq.LISTEN' % rid,
+                                        headers={'x-student-id': PHASE_SID, 'x-row-token': TK_HASH})
+                st2, rows2, _ = read_log('LISTEN', PHASE_SID)
+            if rows2:
+                fail('T1-e 令牌路径不通 + 判别行清不掉',
+                     '学号 + 令牌（原文/SHA-256 两种都试过）仍删不掉 ⇒ '
+                     '① 学生「删自己那一条」是废的；② 这一行会留在老师真表里 ⇒ '
+                     '请老师在 SQL Editor 跑：delete from public.vocab_history_logs '
+                     "where student_id = '%s';" % PHASE_SID)
+            else:
+                ok('T1-e 令牌路径通（学号 + x-row-token）⇒ 学生「删自己那一条」能用 ✅'
+                   '（判别行已顺带清干净）')
+
+    # T1-e' 令牌路径独立再验一次（两种政策下都该成立）
+    good2, rid2, why2 = insert_log('LISTEN', PHASE_SID, action=TK_ACTION)
+    if not good2:
+        fail("T1-e' 前置（写判别行）", why2)
+    else:
+        st, body, raw = del_log('id=eq.%s&class_key=eq.LISTEN' % rid2,
+                                headers={'x-student-id': PHASE_SID, 'x-row-token': TK})
+        st2, rows2, _ = read_log('LISTEN', PHASE_SID)
+        if rows2:
+            st, body, raw = del_log('id=eq.%s&class_key=eq.LISTEN' % rid2,
+                                    headers={'x-student-id': PHASE_SID, 'x-row-token': TK_HASH})
+            st2, rows2, _ = read_log('LISTEN', PHASE_SID)
+        if rows2:
+            fail("T1-e' 令牌路径不通", '带学号 + 令牌（原文/SHA-256 两种）仍删不掉')
+        else:
+            ok("T1-e' 令牌路径独立复验通过 ✅")
+        # 清理：把可能残留的判别行按 student_id 删干净（不留垃圾）
+        rest('DELETE', '/vocab_history_logs?student_id=eq.%s' % PHASE_SID,
+             prefer='return=representation',
+             headers={'x-student-id': PHASE_SID, 'x-row-token': TK})
+        st3, rows3, _ = read_log('LISTEN', PHASE_SID)
+        if rows3:
+            fail('清理', '判别行还剩 %d 行 ⇒ 留在老师真表里了' % len(rows3))
+        else:
+            ok('清理：判别行一根不剩（老师真表零污染）')
+
+    # 真实 LISTEN 复核（确认上面那些删除没有伤到真实数据）
+    # 🔴 判据落「**跑之前的 id 还在不在**」，不落「条数一样吗」
+    #   ⇒ 学生实时交作业 ⇒ 条数会涨 ⇒ 那不是「动了真实数据」
+    #   ⇒ 真正要抓的是「**我删掉了原本就在的真记录**」
+    st, _, raw = rest('GET', '/vocab_history_logs?select=id,student_id&class_key=eq.LISTEN')
+    _after_rows = rows_of(raw)
+    after_ids = set()
+    for r in _after_rows:
+        if str(r.get('student_id', '')).startswith('__rls'):
+            continue
+        after_ids.add(r.get('id'))
+    lost = real_ids - after_ids
+    if lost:
+        fail('真实 LISTEN 数据', '**跑之前的 %d 条真记录里有 %d 条不见了**（id=%s）⇒ 验收脚本动了真实数据'
+             % (len(real_ids), len(lost), sorted(lost)[:5]))
+    else:
+        ok('真实 LISTEN 数据未被破坏（跑之前的 %d 条真记录一条不少；期间学生新交了 %d 条，不算违规）'
+           % (len(real_ids), len(after_ids) - len(real_ids)))
 
     # ── 3) T2 反向验证（修 v2 的空集合 bug）
     print('\n━━ 3) T2 反向验证（不在白名单的 class_key 必须写不进 / 读不到 / 删不掉）━━')
@@ -563,11 +677,18 @@ def main():
     # ── 7) 汇总
     print('\n━━ 6) 汇总 ━━')
     print('  断言数：%d' % CHECKS)
+    if PHASE_FAILS:
+        print('  ⚠️ 阶段未完成 %d 条（**不是脚本坏了** ⇒ 收尾还没做完）：' % len(PHASE_FAILS))
+        for f in PHASE_FAILS:
+            print('     - %s' % f)
     if FAILS:
-        print('  ❌ 失败 %d 条：' % len(FAILS))
+        print('  ❌ 真失败 %d 条：' % len(FAILS))
         for f in FAILS:
             print('     - %s' % f)
-        print('\n结果：红（%d 条没过）' % len(FAILS))
+        print('\n结果：红（真失败 %d 条 + 阶段未完成 %d 条）' % (len(FAILS), len(PHASE_FAILS)))
+        return 1
+    if PHASE_FAILS:
+        print('\n结果：🟡 断言全过，但**收尾还没做完**（阶段未完成 %d 条）' % len(PHASE_FAILS))
         return 1
     if CHECKS == 0:
         print('\n❌ 零断言 ⇒ 判失败（脚本坏了，不是没问题）')
