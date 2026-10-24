@@ -402,10 +402,11 @@
     {
       "domain": "0een4722dqi6v",
       "project": "nhk",
-      "status": "SUPERSEDED",
-      "reason": "NHK 上一版内容站",
-      "note": "2026-10-24 已被 2pybu8mvjo0iu 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
-      "frozen": false
+      "status": "DELETED",
+      "reason": "NHK 上一版内容站（引导页已切到 2pybu8mvjo0iu）",
+      "note": "2026-10-24 主线会话为腾站点配额把它删了（删前五层扫描零引用、已问 peer；删后 curl 404 ✅）⇒ 保留墓碑，别再当活站。",
+      "frozen": false,
+      "deleted_at": "2026-10-24"
     },
     {
       "domain": "2pybu8mvjo0iu",
@@ -476,6 +477,30 @@
       "project": "shun",
       "frozen": true,
       "note": "🔴 Shun v1.2.4 内容站（现役，2026-10-24）⇒ 永久引导页 shun.json/shun.html 指向它 ⇒ 永删不得 + 不可 redeploy（redeploy = 换域名 = 老链接全死）。内含 13 集字幕/词库/gs + shun.apk + media/ 13 集音频。"
+    },
+    {
+      "domain": "8hkjjsc53f7pl",
+      "project": "nhk",
+      "reason": "旧 NHK 站（那批无引用的旧站之一）",
+      "status": "DELETED",
+      "deleted_at": "2026-10-24",
+      "note": "2026-10-24 主线会话为腾站点配额删掉（删前五层扫描：代码 / 永久页 / APK dex+assets / 全工作区 grep 均零引用）⇒ 删后 curl 404 ✅ ⇒ 留墓碑，别再当活站。"
+    },
+    {
+      "domain": "yr5vvggmm4j8h",
+      "project": "nhk",
+      "reason": "旧 NHK 站（那批无引用的旧站之一）",
+      "status": "DELETED",
+      "deleted_at": "2026-10-24",
+      "note": "2026-10-24 主线会话为腾站点配额删掉（删前五层扫描：代码 / 永久页 / APK dex+assets / 全工作区 grep 均零引用）⇒ 删后 curl 404 ✅ ⇒ 留墓碑，别再当活站。"
+    },
+    {
+      "domain": "l19g3oybpz9z3",
+      "project": "nhk",
+      "reason": "旧 NHK 站（那批无引用的旧站之一）",
+      "status": "DELETED",
+      "deleted_at": "2026-10-24",
+      "note": "2026-10-24 主线会话为腾站点配额删掉（删前五层扫描：代码 / 永久页 / APK dex+assets / 全工作区 grep 均零引用）⇒ 删后 curl 404 ✅ ⇒ 留墓碑，别再当活站。"
     }
   ],
   "how_to_check_before_deleting": {

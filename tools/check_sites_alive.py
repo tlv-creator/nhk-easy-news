@@ -144,9 +144,19 @@ def main():
                   % (i, type(e).__name__))
             return 2
     todo = []
+    superseded = []
     for e in entries:
         dom = e.get("domain")
         if not dom:
+            continue
+        if str(e.get("status", "")).upper() == "SUPERSEDED":
+            # 🔴🔴 2026-10-24 补丁（主线会话）：
+            #   **SUPERSEDED = 「旧站，已被取代，可删」的墓碑** ⇒ 它**不判死活**
+            #   实测清单里 SUPERSEDED 8 条：**4 条还活着(200)、4 条已死(404)** ⇒
+            #   拿「期望它活」去判 ⇒ 4 条假红；拿「期望它死」去判 ⇒ 4 条假红
+            #   ⇒ 它两个都不是 ⇒ **既不判活也不判死**，只当历史条目
+            #   （对照：DELETED = 「我们说它已经删了」⇒ 期望它死，活着反而要报红）
+            superseded.append(dom)
             continue
         if str(e.get("status", "")).upper() == "DELETED":
             # 🔴🔴 **洞① patch（2026-10-24）**：原来 mode=None ⇒ **连 HEAD 都不发**
@@ -157,6 +167,9 @@ def main():
             todo.append((dom, e, "check_dead"))
         else:
             todo.append((dom, e, "check"))
+    if superseded:
+        print('  \u26aa 另有 %d 条标 SUPERSEDED（被新站取代 \u21d2 墓碑条目，不判死活）：%s'
+              % (len(superseded), ' '.join(sorted(superseded))))
     if args.local and not args.check_dead:
         # 本地模式 = 「拿本地清单检查活站」⇒ **故意不查 DELETED 条目**
         todo = [t for t in todo if t[2] == "check"]
