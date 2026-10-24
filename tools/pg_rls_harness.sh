@@ -159,6 +159,33 @@ end $$;
 reset role;
 SQL
 
+echo
+echo "════ ⑦ 开关测试：drop 掉「词汇站那两条 select」后，词汇站的读真的关掉了吗？════"
+psql_as_pg -d rlstest >/dev/null 2>&1 <<'SQL'
+-- 🔴🔴 必须**先造出新的行**再测开关！
+--    前面的删除测试已经把 LISTEN 的行全删光了 ⇒ 直接读就是 0 行
+--    ⇒ 「读不到」和「行不存在」长得一模一样 ⇒ **那是我自己造的假绿**
+set role anon;
+insert into public.vocab_history_logs (class_key,class_name,student_id,timestamp,duration_sec,action)
+  values ('LISTEN','开关测试','__sw__','t',0,'sw') on conflict do nothing;
+insert into public.vocab_history_logs (class_key,class_name,student_id,timestamp,duration_sec,action)
+  values ('JR1','开关测试','__sw__','t',0,'sw') on conflict do nothing;
+reset role;
+drop policy if exists p_anon_select_logs_vocab on public.vocab_history_logs;
+drop policy if exists p_anon_select_online_vocab on public.vocab_online_status;
+SQL
+psql_as_pg -d rlstest 2>&1 <<'SQL'
+set role anon;
+select '  drop 后：LISTEN 可读行数 = ' || count(*) from public.vocab_history_logs where class_key='LISTEN';
+select '  drop 后：JR1 可读行数    = ' || count(*) from public.vocab_history_logs where class_key='JR1';
+reset role;
+SQL
+echo "  （期望：LISTEN > 0、JR1 = 0 ⇒ 开关真的管用；两条判据相同的话这里 JR1 会 > 0）"
+
+echo
+echo "════ ⑧ 恢复（重新施加 SQL，把开关默认状态装回去）════"
+psql_as_pg -d rlstest -f "$SQL_FILE" > "$PGROOT/reapply.log" 2>&1 && echo "  ✅ 已恢复" || echo "  ❌ 恢复失败"
+
 psql_as_pg -d rlstest -c "delete from public.vocab_history_logs where student_id='__probe__';" >/dev/null 2>&1
 as_pg "$PGBIN/pg_ctl -D $PGDATA -m fast stop" >/dev/null 2>&1
 echo "（测试库已停）"

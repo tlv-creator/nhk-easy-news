@@ -55,16 +55,28 @@
 --
 -- =====================================================================
 -- 【开关：要不要让 anon 读到「词汇站那 2418 行」】
---   下面有两条 select policy：
---     p_anon_select_logs       → class_key ~ '^(LISTEN|CET4|CET4TEST)$'              ← 听力站 + 四级站
---     p_anon_select_logs_vocab → class_key ~ '^[A-Z][A-Z0-9_]*(\|u[0-9]+)?$'  ← 词汇站教师端 CSV 导出用
---   · 默认**两条都建** ⇒ 谁都不坏（词汇站那个导出页面照样能用）
---   · 如果老师平时用 VocabLog（CloudBase 那版）看数据、不用词汇站页面里那个「所有班级导出」
---     ⇒ 想把词汇站那 2418 行对 anon 关掉，执行这一句即可（**只关读取，不影响学生写入**）：
+--   🔴 多条 PERMISSIVE policy 之间是 **OR** ⇒ 「drop 一条」只有在**别的条判据不同**时才真的关得上
+--   ⇒ 所以这里刻意分成**判据不同**的两条（history_logs 与 online_status 各一对）：
+--
+--     p_anon_select_logs        → class_key ~ '^(LISTEN|CET4|CET4TEST)$'   ← 听力站 + 四级站
+--     p_anon_select_logs_vocab  → class_key ~ '^[A-Z][A-Z0-9_]*(\|u[0-9]+)?$'
+--     p_anon_select_online        → class_key ~ '^(LISTEN|CET4|CET4TEST)$'
+--     p_anon_select_online_vocab  → class_key ~ '^[A-Z][A-Z0-9_]*(\|u[0-9]+)?$'
+--
+--   · 默认**四条都建** ⇒ 谁都不坏（词汇站那个导出页面照样能用）
+--   · 要把词汇站那 2418 行对 anon 关掉，执行这两句（**只关读取，学生写入不受影响**）：
 --
 --       drop policy if exists p_anon_select_logs_vocab on public.vocab_history_logs;
+--       drop policy if exists p_anon_select_online_vocab on public.vocab_online_status;
 --
---   ⇒ 关掉后：词汇站学生照常交记录（insert 不变），只有那个页面的导出变空。
+--   ⇒ 关掉后：词汇站学生**照常交记录**；变空的是
+--      ① 词汇站页面里「所有班级导出」的日志与在线状态
+--      ② 老师端词汇站看板（它就是用 anon 读这两张表的）
+--   ⇒ ⚠️ 关不掉的是 **vocab_submissions**（那张表**没有 class_key 列** ⇒ 没法按班收窄）
+--      ⇒ 它只能整体关：drop policy if exists p_anon_select_subs on public.vocab_submissions;
+--      ⇒ 代价：词汇站学生端「我交没交过卷」会读不到（页面退化成允许再交一次）＋ 老师端交卷导出也空
+--   ⇒ **自检**：bash tools/pg_rls_harness.sh tools/fix_history_logs_rls.sql
+--      里面有「开关测试」：先造新行 ⇒ drop 掉 vocab 那两条 ⇒ 验 LISTEN 仍可读、JR1 不可读
 -- =====================================================================
 
 begin;
@@ -181,6 +193,13 @@ create policy p_anon_update_online
 
 drop policy if exists p_anon_select_online on public.vocab_online_status;
 create policy p_anon_select_online
+    on public.vocab_online_status
+    for select to anon
+    using (class_key ~ '^(LISTEN|CET4|CET4TEST)$');
+
+-- 🔴 同样要**判据不同**，否则 drop 开关是空操作（PERMISSIVE 之间是 OR）
+drop policy if exists p_anon_select_online_vocab on public.vocab_online_status;
+create policy p_anon_select_online_vocab
     on public.vocab_online_status
     for select to anon
     using (class_key ~ '^[A-Z][A-Z0-9_]*(\|u[0-9]+)?$');
