@@ -173,6 +173,8 @@
     }).then(function (r) {
       $('btnSave').disabled = false;
       if (!r || !r.ok) { setMsg($('addMsg'), (r && r.msg) || '提交失败', 'err'); return; }
+      // 记下这条的 id（验收脚本用它去本机取原始令牌；产品本身用不到）
+      try { window.__lastLogId = r.id; } catch (e) { }
       $('addMask').hidden = true;
       toast('记好了 ✓');
       refresh();

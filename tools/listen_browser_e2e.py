@@ -280,6 +280,16 @@ with sync_playwright() as p:
     br = p.chromium.launch(executable_path=CHROME,
                            args=["--no-sandbox", "--ignore-certificate-errors", "--ignore-ssl-errors"])
     pg = br.new_page(viewport={"width": 414, "height": 900})
+    # 🔴 抓学生端删除请求的头（验证发的是**原始令牌**而不是哈希）
+    _captured = {}
+
+    def _on_req(req):
+        try:
+            if 'vocab_history_logs' in req.url and req.method == 'DELETE':
+                _captured.update({k.lower(): v for k, v in req.headers.items()})
+        except Exception:
+            pass
+    pg.on("request", _on_req)
     errs = []
     pg.on("pageerror", lambda e: errs.append(str(e)))
     pg.on("console", lambda m: errs.append("c:" + m.text) if m.type == "error" else None)
@@ -323,6 +333,20 @@ with sync_playwright() as p:
     pg.click("#btnSave"); pg.wait_for_timeout(3500)
     ck("②b 学生再交一条（留给老师端看）", (MARK + "（给老师看）") in pg.inner_text("#myLogs"),
        pg.inner_text("#addMsg"))
+
+    # 🔴🔴 关键漏判补上：前端发的 x-row-token 必须是**原始令牌**（32 位 hex），
+    #    **不能是库里那份 SHA-256 摘要**（64 位 hex）⇒ 发错了 RLS 就算对了也匹配不上
+    try:
+        _raw = pg.evaluate("() => { try { return localStorage.getItem('listen.tk.' + window.__lastLogId) || ''; } catch (e) { return ''; } }")
+    except Exception:
+        _raw = ''
+    _sent = _captured.get('x-row-token', '')
+    ck("🔴 学生删除请求带的 x-row-token 是**原始令牌**（不是哈希）",
+       bool(_sent) and len(_sent) == 32 and all(ch in '0123456789abcdef' for ch in _sent.lower()),
+       "请求头 %r（长度 %d）" % (_sent[:12] + '…' if _sent else '', len(_sent)))
+    ck("🔴 请求头里的令牌 == 本机存的原始令牌（不是库里那份摘要）",
+       bool(_sent) and bool(_raw) and _sent == _raw,
+       "头 %r / 本机 %r" % (_sent[:10], _raw[:10]))
 
     print("\n-- 教师端 --")
     print("   （清空全部前会恢复测试前快照：%d 行）" % len(SNAP))
