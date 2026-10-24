@@ -438,6 +438,8 @@
           kind: p.kind, issue_date: p.date,
           num: p.num, den: p.den, sec: p.sec,
           comp: p.comp, band: p.band, miss: p.miss, errs: p.errs,
+          // 🔴 AI 精批的专有字段（不带的话 ⇒ 老师端「AI 定档分布」永远是 0）
+          aiBand: p.aiBand, aiScore: p.aiScore,
           duration_sec: r.duration_sec || 0
         };
       });
@@ -643,6 +645,8 @@
         ts_date: l.ts_date, time: l.time, action: l.action,
         kind: p.kind, issue_date: p.date, num: p.num, den: p.den, sec: p.sec,
         comp: p.comp, band: p.band, miss: p.miss, errs: p.errs,
+        // 🔴 同上：demo 路径也必须带 AI 字段
+        aiBand: p.aiBand, aiScore: p.aiScore,
         duration_sec: l.duration_sec || 0
       };
     });
