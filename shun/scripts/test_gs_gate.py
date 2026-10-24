@@ -155,6 +155,42 @@ ok("英文标题卡 ⇒ 词性集合为空", gen_gs.pos_of("Let's get excited!")
    str(gen_gs.pos_of("Let's get excited!")))
 ok("纯日语 ⇒ 词性非空", len(gen_gs.pos_of("こんにちは")) > 0)
 
+print("\n=== 位置标注（确定性，不依赖模型）===")
+pos = json.loads(json.dumps(mk()))
+gen_gs.annotate_positions(pos, JA)
+for i, f in enumerate(pos["frame"]):
+    a, b = f["p"]
+    ok("frame[%d] 位置切出来就是原文" % i, JA[a:b] == f["s"], JA[a:b])
+ok("block 的位置与对应 frame 一致",
+   pos["blocks"][1].get("p") == pos["frame"][1].get("p"))
+ok("part 的位置切出来就是原文",
+   JA[pos["blocks"][0]["parts"][0]["p"][0]:pos["blocks"][0]["parts"][0]["p"][1]] == "でも")
+ok("chain 的位置切出来就是原文（剥括号后）",
+   pos.get("chain_p") and JA[pos["chain_p"][0][0]:pos["chain_p"][0][1]] == "毎日同じように",
+   str(pos.get("chain_p")))
+
+# 重复词：位置必须区分开
+REP_JA = "これもあれも友達です"
+rep = {"frame": [{"s": "これも", "b": "[]", "role": "连接"},
+                 {"s": "あれも", "b": "[]", "role": "连接"},
+                 {"s": "友達です", "b": "（）", "role": "谓语"}],
+       "blocks": [{"s": "これも", "inner": "", "parts": [{"s": "も", "note": "n"}], "mean": "m"},
+                  {"s": "あれも", "inner": "", "parts": [{"s": "も", "note": "n"}], "mean": "m"},
+                  {"s": "友達です", "inner": "", "parts": [{"s": "友達", "note": "n"}], "mean": "m"}],
+       "chain": ["友達です"], "skel": "（友達です）", "skelMean": "m", "whole": "w"}
+gen_gs.annotate_positions(rep, REP_JA)
+p0 = rep["blocks"][0]["parts"][0]["p"]
+p1 = rep["blocks"][1]["parts"][0]["p"]
+ok("重复词「も」定位到不同位置", p0 != p1 and REP_JA[p0[0]:p0[1]] == "も" and REP_JA[p1[0]:p1[1]] == "も",
+   "%s vs %s" % (p0, p1))
+
+print("\n=== chain 里的纯括号项必须被剔除 ===")
+brk = mk(chain=["［毎日同じように］", "[]", "（）", "〈ワクワクするのは〉"])
+fixed_brk = json.loads(json.dumps(brk))
+gen_gs.check(fixed_brk, JA)
+ok("chain 里的纯括号项被剔掉了", fixed_brk["chain"] == ["［毎日同じように］", "〈ワクワクするのは〉"],
+   str(fixed_brk["chain"]))
+
 print("\n=== skel 里的语法术语 vs 普通中文 ===")
 ok("skel 里的「主语」这类术语 ⇒ 放行",
    gen_gs.check(mk(chain=["［毎日同じように］"], skel="［主语］（難しい）"), JA)[0],
