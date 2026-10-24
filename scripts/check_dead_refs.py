@@ -176,6 +176,41 @@ def scan_dex(apk, dead):
     return out, allm
 
 
+# 🔴🔴🔴 **清单字段的「类型」也是判据**（2026-10-24 跨会话互抓后补）
+#   JSON 里「看起来像布尔/数组」的字段最容易悄悄变形：
+#     · "frozen": "false"（字符串）⇒ Python 真值为 True ⇒ **误判成「受保护」**
+#     · protected_sites 写成 dict ⇒ 迭代出 key 字符串 ⇒ e.get 直接崩
+#   ⇒ 读的时候**两种形态都认**；**类型不对就报错不放行**（宁可崩，不要默默当默认值）
+def _flag(v):
+    """布尔字段归一：bool / "1" / "true" / "yes" / 1 都算真；字符串 "false" 算假。"""
+    if isinstance(v, bool):
+        return v
+    if isinstance(v, str):
+        return v.strip().lower() in ('1', 'true', 'yes', 'y', 'on')
+    if isinstance(v, (int, float)):
+        return bool(v)
+    return False
+
+
+def _sites(obj):
+    """清单里的 protected_sites：必须是数组、每条必须是对象。类型不对 ⇒ 抛错（调用方必须不放行）。"""
+    lst = obj.get('protected_sites') if isinstance(obj, dict) else None
+    if not isinstance(lst, list):
+        raise ValueError('protected_sites 不是数组（实际 %s）' % type(lst).__name__)
+    for e in lst:
+        if not isinstance(e, dict):
+            raise ValueError('protected_sites 里有非对象条目：%r' % (e,))
+    return lst
+
+
+def _sites_safe(obj):
+    """同上，但类型不对就返回空列表（用于「只做提示、不参与放行判定」的次要分支）。"""
+    try:
+        return _sites(obj)
+    except ValueError:
+        return []
+
+
 def load_protected():
     """拉永久「不可删清单」—— **拉不到返回 None**（调用方必须拒绝放行）
 
@@ -188,9 +223,14 @@ def load_protected():
     except Exception as e:
         print('     （拉取失败：%s）' % e)
         return None
+    try:
+        _sites_l = _sites(d)
+    except ValueError as _ve:
+        print('     （清单结构不对：%s ⇒ 保护失效 ⇒ 调用方必须不放行）' % _ve)
+        return None
     out = {}
     deleted = []
-    for s in d.get('protected_sites', []):
+    for s in _sites_l:
         dom = (s.get('domain') or '').strip()
         if not dom:
             continue
@@ -198,7 +238,7 @@ def load_protected():
         #   `status: "DELETED"` 是**永久事实**（它死了）—— 但「死了」恰恰意味着
         #   「不需要保护」⇒ 否则清单会把自己的历史条目变成**永久黑名单**，
         #   **每删一个站就多一条**（当晚已积累 2 条：9chr6us9mlatt / lnh1i27d4m3vn）
-        if (s.get('status') or '').strip().upper() == 'DELETED':
+        if str(s.get('status') or '').strip().upper() == 'DELETED':
             deleted.append(dom)
             continue
         out[dom] = s
@@ -234,9 +274,9 @@ def main():
             _pj = json.loads(urllib.request.urlopen(PROTECTED_URL, timeout=25).read().decode('utf-8'))
         except Exception:
             _pj = {}
-        for s in _pj.get('protected_sites', []):
+        for s in _sites_safe(_pj):
             dom = (s.get('domain') or '').strip()
-            if dom in dead and (s.get('status') or '').strip().upper() == 'DELETED':
+            if dom in dead and str(s.get('status') or '').strip().upper() == 'DELETED':
                 print('  ℹ️ %s 在清单里但已标 DELETED ⇒ 不受保护（可删）' % dom)
         blocked = [(d, prot[d]) for d in dead if d in prot]
         if blocked:

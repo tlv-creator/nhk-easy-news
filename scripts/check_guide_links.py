@@ -29,6 +29,41 @@ def fetch(url, timeout=25):
         return r.status, r.read()
 
 
+# 🔴🔴🔴 **清单字段的「类型」也是判据**（2026-10-24 跨会话互抓后补）
+#   JSON 里「看起来像布尔/数组」的字段最容易悄悄变形：
+#     · "frozen": "false"（字符串）⇒ Python 真值为 True ⇒ **误判成「受保护」**
+#     · protected_sites 写成 dict ⇒ 迭代出 key 字符串 ⇒ e.get 直接崩
+#   ⇒ 读的时候**两种形态都认**；**类型不对就报错不放行**（宁可崩，不要默默当默认值）
+def _flag(v):
+    """布尔字段归一：bool / "1" / "true" / "yes" / 1 都算真；字符串 "false" 算假。"""
+    if isinstance(v, bool):
+        return v
+    if isinstance(v, str):
+        return v.strip().lower() in ('1', 'true', 'yes', 'y', 'on')
+    if isinstance(v, (int, float)):
+        return bool(v)
+    return False
+
+
+def _sites(obj):
+    """清单里的 protected_sites：必须是数组、每条必须是对象。类型不对 ⇒ 抛错（调用方必须不放行）。"""
+    lst = obj.get('protected_sites') if isinstance(obj, dict) else None
+    if not isinstance(lst, list):
+        raise ValueError('protected_sites 不是数组（实际 %s）' % type(lst).__name__)
+    for e in lst:
+        if not isinstance(e, dict):
+            raise ValueError('protected_sites 里有非对象条目：%r' % (e,))
+    return lst
+
+
+def _sites_safe(obj):
+    """同上，但类型不对就返回空列表（用于「只做提示、不参与放行判定」的次要分支）。"""
+    try:
+        return _sites(obj)
+    except ValueError:
+        return []
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--file', help='扫本地 html（默认扫线上）')
@@ -103,11 +138,16 @@ def main():
     if _pl is None:
         print('\n❌ 拉不到保护清单（%s）⇒ **不放行**（查不到就不能放行）' % _err)
         return 1
+    try:
+        _pl_sites = _sites(_pl)
+    except ValueError as _ve:
+        print('\n❌ 清单结构不对（%s）⇒ **不放行**（类型不对就不能当默认值）' % _ve)
+        return 1
     _frozen = set()
-    for _s in _pl.get('protected_sites', []):
-        if (_s.get('status') or '').strip().upper() == 'DELETED':
+    for _s in _pl_sites:
+        if str(_s.get('status') or '').strip().upper() == 'DELETED':
             continue
-        if _s.get('frozen') or _s.get('role') == 'content' or _s.get('frozen') is True:
+        if _flag(_s.get('frozen')) or _s.get('role') == 'content':
             _frozen.add((_s.get('domain') or '').strip())
     _hosts = set()
     for _l in links:
