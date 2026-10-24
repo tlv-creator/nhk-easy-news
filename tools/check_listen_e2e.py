@@ -12,6 +12,9 @@
     python3 tools/check_listen_e2e.py            # 闭环验收（会写一行探针再删掉）
     python3 tools/check_listen_e2e.py --read-only # 只读体检（不写任何东西）
 
+🔴 推这个文件到共享仓库请用 **tools/push_shared_files.py**（compare-and-swap）：
+   整份 PUT 会把同伴刚推的改动覆盖掉 —— 2026-10-24 我和 peer 各踩一次。
+
 退出码：0 = 全通 ｜1 = 有环节不通
 """
 import json, os, sys, time, urllib.request, urllib.error
