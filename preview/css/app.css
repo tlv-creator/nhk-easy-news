@@ -194,6 +194,7 @@ html.hc button.on, html.hc button.primary { background: #000; color: #fff; }
 .te-n { font-size: .85rem; white-space: nowrap; }
 
 /* 语法问题块（机器查出的常见错误类型） */
+.res-gram .res-i > span:first-child { white-space: nowrap; min-width: 4.2em; }
 .res-gram { margin-top: 14px; border-top: 1px solid var(--line2); padding-top: 12px; }
 .gram-h { font-weight: 700; font-size: .95rem; margin-bottom: 8px; }
 .gram-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }

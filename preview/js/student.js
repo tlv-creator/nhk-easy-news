@@ -358,6 +358,8 @@
   function boot() {
     if (CET4.isDemo()) $('demoBanner').hidden = false;
     CET4.prefs.applyAll();
+    // 🔴 预取四级词库：不然学生第一次交卷会看到「不完整的语法结果」（词库还在路上）
+    loadLexicon();
     bindPrefs();
     var saved = null;
     try { saved = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) { saved = null; }
@@ -646,11 +648,13 @@
   var lexPromise = null;
   function loadLexicon() {
     if (lexPromise) return lexPromise;
+    lexLoading = true;
     lexPromise = fetch('data/cet4_lexicon.json').then(function (r) { return r.json(); })
       .then(function (lex) {
         if (global.CET4Grammar) global.CET4Grammar.setLexicon(lex);
+        lexLoading = false;
         return lex;
-      }).catch(function () { return null; });
+      }).catch(function () { lexLoading = false; return null; });
     return lexPromise;
   }
 
@@ -675,11 +679,16 @@
     return { errors: all, types: types, typeList: typeList, total: all.length };
   }
 
+  var lexLoading = false;
   function renderGrammar(g) {
     var box = $('resGram');
     if (!box) return;
     if (!g) { box.innerHTML = ''; box.hidden = true; return; }
     box.hidden = false;
+    if (lexLoading) {
+      box.innerHTML = '<div class="res-note-i">正在加载更细的检查（四级词库还在路上）…</div>';
+      return;
+    }
     if (!g.total) {
       box.innerHTML = '<div class="res-note-i ok">✓ 没查到常见语法问题（只查了机器能查的那几类，仍以参考译文为准）</div>';
       return;
@@ -695,7 +704,7 @@
     var more = g.errors.length > 12 ? '<div class="res-note-i">…… 还有 ' + (g.errors.length - 12) + ' 处没列出来</div>' : '';
     box.innerHTML = '<div class="gram-h">语法问题（机器查的常见错误，可能有误报）</div>'
       + '<div class="gram-tags">' + head + '</div>' + list + more
-      + '<div class="res-note-i">这些是**常见错误类型**的提示，不是判卷；最终以参考译文和老师的判断为准。</div>';
+      + '<div class="res-note-i">这些是<b>常见错误类型</b>的提示，不是判卷；最终以参考译文和老师的判断为准。</div>';
   }
 
   function doCheck() {
