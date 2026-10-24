@@ -1,9 +1,9 @@
 {
   "ver": 21,
-  "verName": "1.4",
+  "verName": "1.6",
   "apkVer": 20,
   "site": "https://2pybu8mvjo0iu.space.mcode.cn",
   "apk": "https://2pybu8mvjo0iu.space.mcode.cn/NHK.apk",
-  "note": "44期 · v1.20 APK（apkVer=20，版本判据改用 apkVer，不再恒真）· 词典/词库补回（线上曾 404）· cdn.js 清掉 23 个死链 · 有原速音 16 期",
+  "note": "44期 · v1.20 APK（apkVer=20，版本判据改用 apkVer，不再恒真）· 词典/词库补回（上一版曾 404，点词释义是坏的）· cdn.js 清掉 23 个死链 · 有原速音 16 期",
   "updated": "2026-10-24"
 }
