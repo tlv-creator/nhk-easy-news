@@ -19,10 +19,16 @@ warn() { printf '\n\033[1;33m! %s\033[0m\n' "$*"; }
 die()  { printf '\n\033[1;31m✗ %s\033[0m\n' "$*"; exit 1; }
 
 # 引导页当前站（唯一权威 = version.json）
+# 🔴 沙箱里 TLS 偶发被断（EOF）⇒ 重试 3 次，别把网络抖动当成「引导页没了」
 current_site() {
-  curl -s -m 20 -H 'Cache-Control: no-cache' \
-    https://tlv-creator.github.io/nhk-easy-news/version.json \
-    | python3 -c "import json,sys; print((json.load(sys.stdin).get('site') or '').rstrip('/'))" 2>/dev/null
+  for i in 1 2 3; do
+    out=$(curl -s -m 25 -H 'Cache-Control: no-cache' \
+      https://tlv-creator.github.io/nhk-easy-news/version.json 2>/dev/null \
+      | python3 -c "import json,sys; print((json.load(sys.stdin).get('site') or '').rstrip('/'))" 2>/dev/null)
+    [ -n "$out" ] && { echo "$out"; return 0; }
+    sleep 2
+  done
+  echo ""
 }
 current_apkver() {
   curl -s -m 20 -H 'Cache-Control: no-cache' \
@@ -35,6 +41,28 @@ cmd_prepare() {
   [ -f "$PROJ/site/app/index.html" ] || die "site/app 不在（先 setup_env.sh + fetch_nhk.py --restore-site）"
   [ -f "$PROJ/site/app/app.js" ]     || die "site/app/app.js 不在"
   [ -f "$PROJ/site/app/data/episodes.js" ] || die "site/app/data/episodes.js 不在"
+
+  say "①b 重复部署闸门（🔴 定时任务跑两次 = 双部署 = 配额翻倍）"
+  CUR=$(current_site)
+  if [ -n "$CUR" ]; then
+    # 🔴 比**两份**：期数表 + 最新一期的字幕文件
+    #    （只比期数表不够：只改了字幕的话会误判成「没变化」）
+    NEWID=$(python3 -c "
+import json,re
+s=open('$PROJ/site/app/data/episodes.js',encoding='utf-8').read()
+eps=json.loads(re.search(r'window\.__EPISODES__=(\[.*\])',s,re.S).group(1))
+print(eps[0]['id'] if eps else '')")
+    LOCAL=$(md5sum "$PROJ/site/app/data/episodes.js" | awk '{print $1}')
+    LOCAL2=$(md5sum "$PROJ/site/app/subs/$NEWID.js" 2>/dev/null | awk '{print $1}')
+    REMOTE=$(curl -s -m 60 "$CUR/data/episodes.js" | md5sum | awk '{print $1}')
+    REMOTE2=$(curl -s -m 60 "$CUR/subs/$NEWID.js" | md5sum | awk '{print $1}')
+    if [ -n "$REMOTE" ] && [ "$LOCAL" = "$REMOTE" ] && [ "$LOCAL2" = "$REMOTE2" ]; then
+      die "内容与现役站完全一样（$CUR）⇒ **没有新内容，不要重复部署**"
+    fi
+    echo "  内容有变化 ✅（期数表 ${LOCAL:0:8}/${REMOTE:0:8}，最新期字幕 ${LOCAL2:0:8}/${REMOTE2:0:8}）"
+  else
+    warn "读不到引导页当前站 ⇒ 跳过重复部署检查"
+  fi
 
   say "② 本地测试"
   (cd "$PROJ" && python3 test_local.py) || die "本地测试没过 ⇒ 不许发版"
