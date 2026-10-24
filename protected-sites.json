@@ -411,6 +411,16 @@
    "written_in": "引导页 version.json 的 site 字段",
    "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
    "frozen": false
+  },
+  {
+   "domain": "vadhlp76u4vr7",
+   "project": "scenes（日常场景会话）v1.2",
+   "reason": "🔴 本项目**现役站**（v1.2：语法拆解重做 + 换 App 入口）；永久引导页 scenes.html 指着它 ⇒ 永不删、永不 redeploy",
+   "status": "alive",
+   "frozen": true,
+   "role": "content_site",
+   "canonical": "https://tlv-creator.github.io/nhk-easy-news/scenes.html",
+   "note": "🔴 2026-10-24 v1.2；站 https://vadhlp76u4vr7.space.mcode.cn ；含 jpstudy-apk.zip（md5 d4b5cf2967ca1db0174e6f6aceffb676）"
   }
  ],
  "how_to_check_before_deleting": {
