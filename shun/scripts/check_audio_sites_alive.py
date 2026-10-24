@@ -59,6 +59,29 @@ def probe(base, tag):
         return False, str(e)[:60]
 
 
+def _ep_set(v):
+    """missing_eps 可能是**数组**也可能是**JSON 字符串** ⇒ 两种都认。
+
+    🔴 踩过的坑：清单里写的是字符串 '["ep13"]'
+       ⇒ 若直接 set(v) ⇒ 变成 {'[','"','e','p','1','3',']'} ⇒ 豁免**静默失效**
+       ⇒ 闸门于是报假红（而真相是「豁免已登记」）
+    ⇒ 所以：**同一个值两种形态都要认**，且解析失败必须显式报错，不能静默当空。
+    """
+    if v is None or v == "":
+        return set()
+    if isinstance(v, (list, tuple, set)):
+        return set(str(i) for i in v)
+    if isinstance(v, str):
+        t = v.strip()
+        if t.startswith("["):
+            try:
+                arr = json.loads(t)
+                return set(str(i) for i in arr)
+            except Exception as e:  # noqa: BLE001
+                raise SystemExit("❌ 清单里 missing_eps 解析失败（%s）：%r" % (e, v))
+        return {t}
+    raise SystemExit("❌ 清单里 missing_eps 类型不认识：%r" % (v,))
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--site", default="", help="只查这一个 media 目录")
@@ -86,8 +109,7 @@ def main():
     if not args.site:
         prot, _ = get_protected()
         for dom, x in (prot or {}).items():
-            known["https://%s.space.mcode.cn/media/" % dom] = set(
-                x.get("missing_eps") or [])
+            known["https://%s.space.mcode.cn/media/" % dom] = _ep_set(x.get("missing_eps"))
     bad = []
     for base in bases:
         print("=== %s" % base)
