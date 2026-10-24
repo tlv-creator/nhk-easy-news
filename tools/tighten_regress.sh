@@ -32,7 +32,7 @@ as_pg "$PGBIN/pg_ctl -D $PGDATA -o \"-p $PORT -k $PGROOT -c listen_addresses=''\
 psql_as_pg -d postgres >/dev/null 2>&1 -f "$HERE/t_sql_createdb.sql"
 
 echo "════ ① 建表 + 授权 + 开 RLS + 老师侧既有边界 ════"
-psql_as_pg -d rlstest2 -f "$HERE/tools/tighten_regress_sql.sql" >/dev/null 2>&1
+psql_as_pg -d rlstest2 -f "$HERE/tools/tighten_regress_setup.sql" >/dev/null 2>&1
 echo "  ✅ 建好（表 / GRANT / ENABLE ROW LEVEL SECURITY / p_teach_all_*）"
 
 n=2
@@ -59,9 +59,8 @@ echo
 
 echo
 echo "════ 全部断言跑完（② 老师侧能删 / ③ anon 删不掉 / ④ LISTEN 三条路径）════"
-for f in t_sql_teacher.sql t_sql_anon.sql t_sql_paths.sql t_sql_policies.sql t_sql_debug.sql; do
-  psql_as_pg -d rlstest2 -f "$HERE/$f" 2>&1 | grep -E "剩余|路径|影响行数|看得到|policy:|DELETE 权限" || true
-done
+psql_as_pg -d rlstest2 -f "$HERE/tools/tighten_regress_tests.sql" 2>&1 \
+  | grep -E "^===|剩余|路径|影响行数|看得到|policy:|DELETE 权限" || true
 
 as_pg "$PGBIN/pg_ctl -D $PGDATA -m fast stop" >/dev/null 2>&1
 echo "（测试库已停）"
