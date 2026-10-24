@@ -62,7 +62,7 @@
 -- =====================================================================
 -- 【开关：要不要让 anon 读到「词汇站那 2418 行」】
 --   下面有两条 select policy：
---     p_anon_select_logs       → class_key ~ '^[A-Z][A-Z0-9_]*(\|u[0-9]+)?$'       ← 听力站 + 四级站
+--     p_anon_select_logs       → class_key ~ '^(LISTEN|CET4|CET4TEST)$'              ← 听力站 + 四级站
 --     p_anon_select_logs_vocab → class_key ~ '^[A-Z][A-Z0-9_]*(\|u[0-9]+)?$'  ← 词汇站教师端 CSV 导出用
 --   · 默认**两条都建** ⇒ 谁都不坏（词汇站那个导出页面照样能用）
 --   · 如果老师平时用 VocabLog（CloudBase 那版）看数据、不用词汇站页面里那个「所有班级导出」
@@ -121,7 +121,7 @@ drop policy if exists p_anon_select_logs on public.vocab_history_logs;
 create policy p_anon_select_logs
     on public.vocab_history_logs
     for select to anon
-    using (class_key ~ '^[A-Z][A-Z0-9_]*(\|u[0-9]+)?$');
+    using (class_key ~ '^(LISTEN|CET4|CET4TEST)$');
 
 drop policy if exists p_anon_select_logs_vocab on public.vocab_history_logs;
 create policy p_anon_select_logs_vocab
