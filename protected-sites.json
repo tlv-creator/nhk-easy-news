@@ -468,6 +468,12 @@
       "reason": "✅ Shun 现役内容站 v1.2.3（APK + 13 集字幕/词库 + 音频 media/）—— 引导页 shun.json 指着它",
       "role": "content",
       "note": "🔴 内容站每发一版换随机域名 ⇒ 本条目**每发一版就要更新**（否则会变成指向死站的记录，比没有还糟）。APK 下载地址也在本站（shun.apk）；音频在独立音频站 qtjgfga76bu4o（frozen）。"
+    },
+    {
+      "domain": "3be4wt47jrt60",
+      "project": "shun",
+      "frozen": true,
+      "note": "🔴 Shun v1.2.4 内容站（现役，2026-10-24）⇒ 永久引导页 shun.json/shun.html 指向它 ⇒ 永删不得 + 不可 redeploy（redeploy = 换域名 = 老链接全死）。内含 13 集字幕/词库/gs + shun.apk + media/ 13 集音频。"
     }
   ],
   "how_to_check_before_deleting": {
