@@ -4,5 +4,7 @@
  "permanent_entry": "https://tlv-creator.github.io/nhk-easy-news/listening/",
  "student": "https://tlv-creator.github.io/nhk-easy-news/listening/app/student.html",
  "teacher": "https://tlv-creator.github.io/nhk-easy-news/listening/app/teacher.html",
- "updated": "2026-10-23 03:18:14"
+ "updated": "2026-10-24 14:33:28",
+ "app_version": "20261024b-token",
+ "note": "学生删除改为「学号 + 行令牌」双凭证（收尾 SQL 用 tools/listen_lock_anon_delete.sql）"
 }

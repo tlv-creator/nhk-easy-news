@@ -238,8 +238,13 @@
       x.textContent = '删除';
       x.addEventListener('click', function () {
         if (!confirm('删除这条记录？')) return;
-        LISTEN.rpc('listen_delete_log', { p_token: me.token, p_id: l.id })
-          .then(function () { toast('已删除'); refresh(); })
+        // 🔴 p_tk = 这一行的令牌（RLS 靠它判「只能删自己那一条」）
+        LISTEN.rpc('listen_delete_log', { p_token: me.token, p_id: l.id, p_tk: l.tk })
+          .then(function (r) {
+            // 🔴 0 行 = **没删掉**（RLS 挡着）⇒ 不能显示「已删除」（那是假成功）
+            if (!r || !r.ok) { toast((r && r.msg) || '没有真正删除这条记录，请稍后再试'); return; }
+            toast('已删除'); refresh();
+          })
           .catch(function (e) { toast(e.message || '删除失败'); });
       });
       row.appendChild(x);

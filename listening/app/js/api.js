@@ -260,7 +260,10 @@
         if (!s) return { ok: false, msg: '名册里找不到你的学号' };
         var cat = String(args.p_category || '').trim();
         var note = String(args.p_note || '').trim();
-        var action = '【听力】' + (cat || '未分类') + ' | ' + content + (note ? ' | 备注:' + note : '');
+        // 🔴 末尾挂「行令牌」：这是这条记录**唯一**的删除凭证
+        //    （RLS 侧：只有带着同一枚令牌 + 同一个学号，才允许删这一行）
+        var action = '【听力】' + (cat || '未分类') + ' | ' + content
+          + (note ? ' | 备注:' + note : '') + ' | #tk=' + randomToken();
         return rest('vocab_history_logs', {
           method: 'POST', prefer: 'return=representation',
           body: {
@@ -309,12 +312,13 @@
     if (name === 'listen_delete_log') {
       var sid3 = sidOf(args.p_token);
       if (!sid3) return Promise.resolve({ ok: false, msg: '登录已过期，请重新登录' });
+      var tk = String(args.p_tk || '');
       return rest('vocab_history_logs?id=eq.' + Number(args.p_id) +
         '&class_key=eq.' + CFG.LOG_KEY + '&student_id=eq.' + sid3,
         {
           method: 'DELETE', prefer: 'return=representation',
-          // 🔴 RLS 现在按「x-student-id 头」限定只能删自己那一条 ⇒ 这个头必须带上
-          headers: { 'x-student-id': sid3 }
+          // 🔴 RLS 现在按「x-student-id 头 + 行令牌」限定只能删自己那一条 ⇒ 两个头都要带
+          headers: { 'x-student-id': sid3, 'x-row-token': tk }
         })
         // 🔴 RLS 挡 DELETE 时 PostgREST 仍返回 200/204 + 空数组 ⇒ 「看着删了、其实没删」
         //    ⇒ 判定必须落在**返回行数**上，不能看 HTTP 码
@@ -486,6 +490,13 @@
     var note = '';
     var ni = rest2.indexOf(' | 备注:');
     if (ni >= 0) { note = rest2.slice(ni + 5); rest2 = rest2.slice(0, ni); }
+    // 🔴🔴 抽出「行令牌」并**从显示文本里剥掉**
+    //    令牌是这条记录的唯一删除凭证（RLS 用它判「只能删自己那一条」）
+    //    ⇒ 必须藏起来：老师看表格 / 导出 CSV / 学生看列表，都不该出现这串东西
+    var tk = '';
+    var tm = /#tk=([A-Za-z0-9]{16,64})/.exec(rest2);
+    if (tm) { tk = tm[1]; rest2 = rest2.replace(tm[0], '').replace(/\s*\|\s*$/, ''); }
+    if (note) { var nm2 = /#tk=([A-Za-z0-9]{16,64})/.exec(note); if (nm2) note = note.replace(nm2[0], '').replace(/\s*\|\s*$/, ''); }
     return {
       id: r.id,
       student_id: r.student_id,
@@ -497,8 +508,27 @@
       minutes: Math.round((r.duration_sec || 0) / 60),
       content: rest2,
       category: category === '未分类' ? '' : category,
-      note: note
+      note: note,
+      tk: tk
     };
+  }
+
+  /* 生成「行令牌」：这条记录的唯一删除凭证
+     🔴 必须是**不可猜**的随机串（RLS 靠它判「只能删自己那一条」）
+     ⇒ 浏览器自带的 crypto.getRandomValues；没有就退化成多段 Math.random（弱，仅兜底） */
+  function randomToken() {
+    try {
+      var c = (global.crypto || global.msCrypto);
+      var a = new Uint8Array(16);
+      c.getRandomValues(a);
+      var s = '';
+      for (var i = 0; i < a.length; i++) s += ('0' + a[i].toString(16)).slice(-2);
+      return s;
+    } catch (e) {
+      var t = '';
+      for (var j = 0; j < 4; j++) t += Math.floor(Math.random() * 0x100000000).toString(36);
+      return t;
+    }
   }
 
   /* ================= 演示后端（本地假数据） ================= */

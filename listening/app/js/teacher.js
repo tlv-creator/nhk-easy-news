@@ -282,7 +282,11 @@
       b.addEventListener('click', function () {
         if (!confirm('删除 ' + (l.name || '') + ' 在 ' + l.date + ' 的这条记录？')) return;
         LISTEN.rpc('listen_teacher_delete', { p_token: tok, p_id: l.id, p_tid: cred.tid, p_thash: cred.hash })
-          .then(function () { toast('已删除'); load(); })
+          .then(function (r) {
+            // 🔴 0 行 = **没删掉**（权限被挡）⇒ 不能显示「已删除」（那是假成功）
+            if (!r || !r.ok) { toast((r && r.msg) || '没有真正删除这条记录，请稍后再试'); return; }
+            toast('已删除'); load();
+          })
           .catch(function (e) { toast(e.message || '删除失败'); });
       });
       tdX.appendChild(b);
