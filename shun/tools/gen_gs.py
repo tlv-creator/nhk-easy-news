@@ -490,7 +490,22 @@ def check(gs, ja):
             #    （块「ません」→ parts「ない」+「ません」；块「工作了」→ parts「工作」）
             #    ⇒ 强求块内会误杀 ⇒ 只抓「原句里根本没有」和「张冠李戴（离块太远）」。
             if ps not in ja:
-                return False, "blocks[%d].parts[%d].s 不在原句: %r" % (i, j, ps)
+                # 🔴 模型爱把「成分原文」写成「原句片段 + 助词」（原句「世界は」⇒ 写「世界が」）。
+                #    这是**用户会看到的错原文** ⇒ 不能放过。
+                #    但也不该整句作废 ⇒ 自动剥掉尾部助词（剥完必须在原句里）。
+                fixed = None
+                for suf in ("こと", "が", "を", "に", "で", "は", "も", "の", "ね", "よ"):
+                    if ps.endswith(suf) and len(ps) > len(suf):
+                        cand = ps[:-len(suf)]
+                        if cand in ja:
+                            fixed = cand
+                            break
+                if fixed:
+                    WARN.append("blocks[%d].parts[%d].s 剥掉助词修正: %r → %r" % (i, j, ps, fixed))
+                    ps = fixed
+                    p["s"] = fixed
+                else:
+                    return False, "blocks[%d].parts[%d].s 不在原句: %r" % (i, j, ps)
             # ⚠️ 「离块太远」只做**软警告**：
             #    同一个词在句里出现多次时（「を」「も」…）位置判定不可靠 ⇒ 误杀率高
             #    ⇒ 真幻觉（原文里根本没有）已由上面的「不在原句」抓住。
@@ -523,6 +538,10 @@ def check(gs, ja):
             # ⇒ 剥掉尾部助词再查一次。
             stripped = re.sub(r"[がをにではもねよ、。]+$", "", fb)
             if stripped and stripped in ja:
+                continue
+            # 省略号（…/・）是模型表示「此处省略」的记号 ⇒ 剥掉再查
+            stripped2 = stripped.replace("…", "").replace("・", "").strip()
+            if stripped2 and stripped2 in ja:
                 continue
             # 🔴 **语法术语**（主语/谓语/从句…）是占位说明不是原文 ⇒ 跳过。
             #    ⚠️ 不能用「纯中文就放过」—— 那会把「提高」这种普通词也放过（假绿）。

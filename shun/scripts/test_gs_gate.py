@@ -7,6 +7,7 @@
     · 反向：每个已知坏形态必须**红**，且红的原因是**那一维**
 🔴 反向验证的前提是「反例真的造出来了」⇒ 每个反例都断言「它确实触发了预期判据」。
 """
+import json
 import os
 import sys
 
@@ -170,6 +171,23 @@ ok("「＋」是分隔符不是内容",
    str(gen_gs.GRP_RE.findall("［〜ことが］＋（できません）")))
 r, why = red(mk(chain=["［毎日同じように］"], skel="［1991年から］［今しか］"))
 ok("skel 里两个相邻括号组各自校验（不跨界）", r, why)
+
+print("\n=== parts 成分原文的助词自动修正 ===")
+# 原句是「世界は」，模型写成「世界が」⇒ 剥掉「が」后必须在原句里
+WORLD_JA = "この35年で世界は本当に変わりましたよね。"
+world = {
+    "frame": [{"s": "世界は本当に変わりました", "b": "〈〉", "role": "主句内容"}],
+    "blocks": [{"s": "世界は本当に変わりました", "inner": "",
+                "parts": [{"s": "世界が", "note": "主语"}], "mean": "世界变了"}],
+    "chain": ["世界は本当に変わりました"], "skel": "〈世界は…〉",
+    "skelMean": "世界", "whole": "世界真的变了",
+}
+ok("parts 的「世界が」（原句是「世界は」）⇒ 自动修正后通过",
+   gen_gs.check(world, WORLD_JA)[0], gen_gs.check(world, WORLD_JA)[1])
+fixed_w = gen_gs.repair_shape(json.loads(json.dumps(world)), WORLD_JA)
+ok("  修正后 parts[0].s == 「世界」",
+   fixed_w["blocks"][0]["parts"][0]["s"] == "世界",
+   fixed_w["blocks"][0]["parts"][0]["s"])
 
 print("\n=== 形状修复：模型常见的偏差要能掰回来 ===")
 
