@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四级精读日报 · 教师看板</title>
+<meta name="description" content="四级精读日报教师看板：活跃人数、浏览时长、做题数、正确率、明细与导出。">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<div class="preview-bar">
+<b>预览版</b> —— 这一版是「翻译速练 2 句 + 当场出档位」的新功能试用。
+正式版入口不变：<code>https://tlv-creator.github.io/nhk-easy-news/cet4.html</code>
+</div>
+<style>
+.preview-bar{
+  font-size:16px;line-height:1.7;color:#000;background:#fff;
+  border:1px solid rgba(0,0,0,.25);border-left:4px solid #000;
+  border-radius:8px;padding:10px 12px;margin:12px 0;
+}
+.preview-bar b{font-size:17px}
+.preview-bar code{background:#eee;padding:1px 5px;border-radius:4px;word-break:break-all}
+</style>
+
+<body>
+
+<!-- ===================== 顶栏 ===================== -->
+<div class="topbar wide">
+  <div class="topbar-in">
+    <h1>四级精读日报 · 教师看板</h1>
+    <span class="who" id="who"></span>
+    <div class="tools">
+      <button type="button" class="sm ghost" id="btnAa">字号</button>
+      <button type="button" class="sm ghost" id="btnHc">高对比：关</button>
+      <button type="button" class="sm ghost" id="btnLogout" hidden>退出</button>
+    </div>
+  </div>
+  <div class="pref-panel" id="prefPanel" hidden>
+    <div class="prow">
+      <span class="pl">字号</span>
+      <button type="button" class="sm" id="btnZoomOut">字小</button>
+      <input type="range" id="zoom" min="100" max="160" step="10" value="100" aria-label="字号调节">
+      <button type="button" class="sm" id="btnZoomIn">字大</button>
+      <span class="muted" id="zoomVal">100%</span>
+    </div>
+    <div class="prow"><span class="pl">高对比</span><span class="muted">纯黑白，表格更清楚</span></div>
+  </div>
+</div>
+
+<div class="wrap wide">
+  <div class="banner" id="demoBanner" hidden>演示模式：不连数据库 · 下面全是假数据</div>
+</div>
+
+<!-- ===================== 登录 ===================== -->
+<div id="viewLogin" hidden>
+  <div class="wrap">
+    <div class="card">
+      <div class="card-h"><span class="pill">教师</span><h2>登录看板</h2></div>
+      <p class="lead">工号 + 密码。密码在服务器端比对，前端不保存明文。</p>
+      <label class="f" for="tid">工号</label>
+      <input type="text" id="tid" autocomplete="off" placeholder="如 T001">
+      <label class="f" for="tpwd">密码</label>
+      <input type="password" id="tpwd" autocomplete="current-password" placeholder="请输入密码">
+      <div class="actions">
+        <button type="button" class="big primary" id="btnLogin">登录看板</button>
+      </div>
+      <div class="msg" id="loginMsg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 看板 ===================== -->
+<div id="viewDash" hidden>
+  <div class="wrap wide">
+    <div class="msg" id="dashMsg"></div>
+
+    <div class="stats" id="tstats"></div>
+
+    <div class="card">
+      <div class="card-h"><span class="pill">筛选</span><h2>时间区间 / 班级</h2></div>
+      <div class="filterbar">
+        <div class="tabs" id="rangeBar" style="margin:0">
+          <button type="button" data-days="0">今天</button>
+          <button type="button" data-days="6">近 7 天</button>
+          <button type="button" data-days="29">近 30 天</button>
+          <button type="button" data-days="-1">全部</button>
+        </div>
+        <input type="date" id="fFrom" aria-label="起始日期">
+        <input type="date" id="fTo" aria-label="结束日期">
+        <select id="fClass" aria-label="班级筛选"><option value="">全部班级</option></select>
+        <input type="search" id="fSearch" placeholder="搜学号 / 姓名 / 班级" aria-label="搜索">
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button type="button" id="tabDetail" class="on">学生明细</button>
+      <button type="button" id="tabRaw">原始记录</button>
+      <button type="button" id="tabZero">今天没来的学生</button>
+      <button type="button" id="tabCls">班级概况</button>
+    </div>
+
+    <!-- 学生明细 -->
+    <div id="paneDetail">
+      <div class="card">
+        <div class="card-h">
+          <span class="pill">明细</span><h2>每个学生的进度</h2>
+          <span class="muted" id="sumCount"></span>
+        </div>
+        <div class="tablewrap">
+          <table id="tblSum">
+            <thead>
+              <tr>
+                <th>学号</th><th>姓名</th><th>班级</th><th>最近学习时间</th>
+                <th>累计时长</th><th>累计做题</th><th>累计正确率</th><th>已完成期数</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="actions">
+          <button type="button" class="primary" id="btnCsvSum">导出学生明细 CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 原始记录 -->
+    <div id="paneRaw" hidden>
+      <div class="card">
+        <div class="card-h">
+          <span class="pill">原始</span><h2>每一条记录</h2>
+          <span class="muted" id="logCount"></span>
+        </div>
+        <div class="tablewrap">
+          <table id="tblLog">
+            <thead>
+              <tr><th>时间</th><th>学号</th><th>姓名</th><th>班级</th><th>类型</th><th>内容</th><th>时长/得分</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="actions">
+          <button type="button" class="primary" id="btnCsvLog">导出原始记录 CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 今天没来的学生 -->
+    <div id="paneZero" hidden>
+      <div class="card">
+        <div class="card-h">
+          <span class="pill">缺席</span><h2>今天没来的学生</h2>
+          <span class="muted" id="zeroCount"></span>
+        </div>
+        <div class="tablewrap">
+          <table id="tblZero">
+            <thead><tr><th>学号</th><th>姓名</th><th>班级</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 班级概况 -->
+    <div id="paneCls" hidden>
+      <div class="card">
+        <div class="card-h"><span class="pill">班级</span><h2>今天各班情况</h2></div>
+        <div class="tablewrap">
+          <table id="tblCls">
+            <thead><tr><th>班级</th><th>人数</th><th>今日活跃</th><th>今日浏览时长</th><th>今日做题</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <p class="footer">口径：浏览时长按「30 秒内有交互」的有效时长计；做题数 = 翻译采分点检查 + 理解题提交次数。</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/api.js"></script>
+<script src="js/teacher.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四级精读日报 · 预览版</title>
+<meta name="description" content="四级精读日报：每天一篇短文，背生词、做翻译、做理解题。所有答案点开才出现。">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<div class="preview-bar">
+<b>预览版</b> —— 这一版是「翻译速练 2 句 + 当场出档位」的新功能试用。
+正式版入口不变：<code>https://tlv-creator.github.io/nhk-easy-news/cet4.html</code>
+</div>
+<style>
+.preview-bar{
+  font-size:16px;line-height:1.7;color:#000;background:#fff;
+  border:1px solid rgba(0,0,0,.25);border-left:4px solid #000;
+  border-radius:8px;padding:10px 12px;margin:12px 0;
+}
+.preview-bar b{font-size:17px}
+.preview-bar code{background:#eee;padding:1px 5px;border-radius:4px;word-break:break-all}
+</style>
+<div class="topbar">
+  <div class="topbar-in">
+    <h1>四级精读日报 · 预览</h1>
+    <span class="who" id="who"></span>
+    <div class="tools">
+      <button type="button" class="sm ghost" id="btnAa">字号</button>
+      <button type="button" class="sm ghost" id="btnHc">高对比：关</button>
+    </div>
+  </div>
+  <div class="pref-panel" id="prefPanel" hidden>
+    <div class="prow">
+      <span class="pl">字号</span>
+      <button type="button" class="sm" id="btnZoomOut">字小</button>
+      <input type="range" id="zoom" min="100" max="160" step="10" value="100" aria-label="字号调节">
+      <button type="button" class="sm" id="btnZoomIn">字大</button>
+      <span class="muted" id="zoomVal">100%</span>
+    </div>
+    <div class="prow"><span class="pl">高对比</span><span class="muted">纯黑白，反白更清楚</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="banner" id="demoBanner" hidden>演示模式：不连数据库</div>
+
+  <header class="hero">
+    <span class="badge">CET-4 · 每天一期 · 读 → 背 → 译 → 测</span>
+    <h1>四级精读日报 · 预览</h1>
+    <p>短文 140–220 词 · 8–12 个生词 · 5 句翻译 · 4–6 道理解题</p>
+    <p id="todayLine" class="muted"></p>
+  </header>
+
+  <div class="entry">
+    <a class="entry-btn dark" href="student.html">
+      <b>学生入口</b>
+      <span>学号 + 姓名登录，做今天这一期</span>
+    </a>
+    <a class="entry-btn" href="teacher.html">
+      <b>老师入口</b>
+      <span>看板、明细、缺席名单、导出 CSV</span>
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-h"><span class="pill">说明</span><h2>怎么用</h2></div>
+    <p class="lead">
+      每天一期，顺序固定：<b>读短文 → 背生词 → 写 5 句翻译 → 检查采分点 → 做理解题</b>。
+      所有参考答案、采分点说明和题目解析<b>默认都收起来</b>，点开才看——先自己想，再对照。
+    </p>
+    <p class="lead">
+      设备是黑白墨水屏吗？右上角有<b>字号</b>和<b>高对比</b>开关，正文字号最低 19px，不会越调越小。
+    </p>
+    <p class="lead" style="margin-bottom:0">
+      离线也能看：<a href="student.html?demo=1">演示模式（不连数据库）</a> ·
+      <a href="teacher.html?demo=1">老师端演示</a>
+    </p>
+  </div>
+
+  <p class="footer">四级精读日报 · 纯静态前端 · 数据存在老师自己的 Supabase 库里</p>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/api.js"></script>
+<script>
+/* 入口页只做一件小事：尽量显示「今天第几期 + 主题」；取不到就不显示，不报错。 */
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  if (CET4.isDemo()) $('demoBanner').hidden = false;
+  CET4.prefs.applyAll();
+  var panel = $('prefPanel');
+  function paintHc() {
+    var on = CET4.prefs.hcOn();
+    $('btnHc').textContent = on ? '高对比：开' : '高对比：关';
+    $('btnHc').classList.toggle('on', on);
+  }
+  $('btnAa').addEventListener('click', function () { panel.hidden = !panel.hidden; });
+  $('btnHc').addEventListener('click', function () { CET4.prefs.setHc(!CET4.prefs.hcOn()); paintHc(); });
+  $('zoom').addEventListener('input', function () {
+    var z = CET4.prefs.setZoom(parseInt(this.value, 10));
+    $('zoomVal').textContent = z + '%';
+  });
+  $('btnZoomIn').addEventListener('click', function () {
+    var z = CET4.prefs.setZoom(CET4.prefs.zoom() + 10);
+    $('zoom').value = z; $('zoomVal').textContent = z + '%';
+  });
+  $('btnZoomOut').addEventListener('click', function () {
+    var z = CET4.prefs.setZoom(CET4.prefs.zoom() - 10);
+    $('zoom').value = z; $('zoomVal').textContent = z + '%';
+  });
+  paintHc();
+  $('zoom').value = CET4.prefs.zoom();
+  $('zoomVal').textContent = CET4.prefs.zoom() + '%';
+
+  CET4.getIndex().then(function (idx) {
+    if (!idx || !idx.issues || !idx.issues.length) return;
+    var last = idx.issues[idx.issues.length - 1];
+    $('todayLine').textContent = '今天第 ' + last.seq + ' 期 · ' + (last.topic || '') + ' · ' + (last.title || '');
+  }).catch(function () { /* 取不到就算了 */ });
+})();
+</script>
+</body>
+</html>

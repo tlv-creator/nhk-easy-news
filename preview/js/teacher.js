@@ -1,0 +1,582 @@
+/* =====================================================================
+   四级精读日报 · 老师端看板
+   ---------------------------------------------------------------------
+   看板：今日活跃 / 累计参与 / 今日浏览时长 / 今日做题数 / 平均正确率
+   明细：学号 姓名 班级 最近学习时间 累计时长 累计做题 累计正确率 已完成期数
+   缺席：今天没来的学生
+   导出：CSV（带 UTF-8 BOM，Excel 打开中文不乱码）
+   🔴 只读 class_key='CET4' 的日志行，绝不删改老师词汇站的任何行
+   ===================================================================== */
+(function (global) {
+  'use strict';
+
+  var SKEY = 'cet4.teacher.session';
+
+  /* =====================================================================
+     一、纯函数区（自检脚本 node 直接调用）
+     ===================================================================== */
+  function esc(s) {
+    return String(s === null || s === undefined ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function fmtMin(sec) {
+    var m = Math.floor((sec || 0) / 60);
+    var s = Math.round((sec || 0) % 60);
+    return m > 0 ? (m + ' 分 ' + s + ' 秒') : (s + ' 秒');
+  }
+  function pct(ok, total) {
+    if (!total) return '—';
+    return Math.round(ok / total * 100) + '%';
+  }
+
+  function filterLogs(logs, opt) {
+    opt = opt || {};
+    var from = opt.from || '', to = opt.to || '', cls = opt.class_key || '';
+    return (logs || []).filter(function (l) {
+      if (from && l.ts_date && l.ts_date < from) return false;
+      if (to && l.ts_date && l.ts_date > to) return false;
+      if (cls && l.class_key !== cls) return false;
+      return true;
+    });
+  }
+
+  // 每人汇总 + 看板指标
+  function aggregate(logs, roster, today, allLogs) {
+    var byId = {}, order = [];
+    (roster || []).forEach(function (s) {
+      var id = String(s.id);
+      byId[id] = {
+        student_id: id, name: s.name, class_key: s.class_key, class_name: s.class_name,
+        browse_sec: 0, exercises: 0, quiz_ok: 0, quiz_total: 0,
+        trans_hit: 0, trans_total: 0, issues: {}, last_ts: '', count: 0, unknown: false
+      };
+      order.push(id);
+    });
+    function slot(id, l) {
+      var b = byId[id];
+      if (!b) {
+        b = {
+          student_id: id, name: (l && l.name) || id,
+          class_key: (l && l.class_key) || '', class_name: (l && l.class_name) || '',
+          browse_sec: 0, exercises: 0, quiz_ok: 0, quiz_total: 0,
+          trans_hit: 0, trans_total: 0, issues: {}, last_ts: '', count: 0, unknown: true
+        };
+        byId[id] = b;
+        order.push(id);
+      }
+      return b;
+    }
+    function fold(b, l) {
+      b.count++;
+      if (l.kind === '浏览') {
+        b.browse_sec += l.sec || l.duration_sec || 0;
+        if (l.issue_date) b.issues[l.issue_date] = 1;
+      } else if (l.kind === '翻译练习') {
+        b.exercises++; b.trans_hit += l.num || 0; b.trans_total += l.den || 0;
+      } else if (l.kind === '理解题') {
+        b.exercises++; b.quiz_ok += l.num || 0; b.quiz_total += l.den || 0;
+      }
+      var ts = (l.ts_date || '') + ' ' + (l.time || '');
+      if (ts > b.last_ts) b.last_ts = ts;
+    }
+
+    (logs || []).forEach(function (l) { fold(slot(String(l.student_id), l), l); });
+
+    var students = order.map(function (id) { return byId[id]; }).map(function (b) {
+      return {
+        student_id: b.student_id, name: b.name, class_key: b.class_key, class_name: b.class_name,
+        browse_sec: b.browse_sec, browse_min: Math.round(b.browse_sec / 60),
+        exercises: b.exercises,
+        quiz_ok: b.quiz_ok, quiz_total: b.quiz_total,
+        accuracy: pct(b.quiz_ok, b.quiz_total),
+        trans_hit: b.trans_hit, trans_total: b.trans_total,
+        issues_done: Object.keys(b.issues).length,
+        last_ts: b.last_ts || '—',
+        last_date: b.last_ts ? b.last_ts.slice(0, 10) : '',
+        count: b.count
+      };
+    });
+
+    // 今日指标：按日志时间戳算（跟「今天没来」口径一致）
+    var todaySet = {}, rangeSet = {}, todayBrowse = 0, todayEx = 0;
+    var todayQuizOk = 0, todayQuizTotal = 0;
+    (allLogs || logs || []).forEach(function (l) {
+      if (today && l.ts_date === today) {
+        todaySet[String(l.student_id)] = 1;
+        if (l.kind === '浏览') todayBrowse += l.sec || l.duration_sec || 0;
+        if (l.kind === '翻译练习' || l.kind === '理解题') todayEx++;
+        if (l.kind === '理解题') { todayQuizOk += l.num || 0; todayQuizTotal += l.den || 0; }
+      }
+    });
+    (logs || []).forEach(function (l) { rangeSet[String(l.student_id)] = 1; });
+
+    var quizOk = 0, quizTotal = 0;
+    (logs || []).forEach(function (l) {
+      if (l.kind === '理解题') { quizOk += l.num || 0; quizTotal += l.den || 0; }
+    });
+
+    var absent = (roster || []).filter(function (s) { return !todaySet[String(s.id)]; })
+      .map(function (s) {
+        return { student_id: String(s.id), name: s.name, class_key: s.class_key, class_name: s.class_name };
+      });
+
+    return {
+      students: students,
+      absent: absent,
+      totals: {
+        roster: (roster || []).length,
+        today_active: Object.keys(todaySet).length,
+        range_active: Object.keys(rangeSet).length,
+        today_browse_sec: todayBrowse,
+        today_exercises: todayEx,
+        accuracy: pct(quizOk, quizTotal),
+        quiz_ok: quizOk, quiz_total: quizTotal,
+        today_accuracy: pct(todayQuizOk, todayQuizTotal),
+        total_logs: (logs || []).length
+      }
+    };
+  }
+
+  // CSV（带 UTF-8 BOM）
+  function toCSV(rows) {
+    var csv = (rows || []).map(function (r) {
+      return (r || []).map(function (c) {
+        c = (c === null || c === undefined) ? '' : String(c);
+        return /[",\n\r]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c;
+      }).join(',');
+    }).join('\r\n');
+    return '﻿' + csv;
+  }
+
+  global.CET4T = {
+    esc: esc, fmtMin: fmtMin, pct: pct,
+    filterLogs: filterLogs, aggregate: aggregate, toCSV: toCSV
+  };
+
+  /* =====================================================================
+     二、DOM 部分
+     ===================================================================== */
+  if (!global.document || !global.document.getElementById) return;
+
+  /* 🔴 找不到元素时返回一个**哑对象**而不是 null：
+     真实事故：student.js 引用了 3 个页面里不存在的 id（issueTopic 等）
+     ⇒ renderIssue() 第一行就 TypeError ⇒ 整个内容区全空（学生端直接不能用）
+     ⇒ 哑对象让渲染继续跑完，同时把问题记到 console，闸门会另外拦。 */
+  var $ = function (id) {
+    var el = document.getElementById(id);
+    if (!el) { try { console.warn('[cet4] 页面缺少元素 #' + id); } catch (e) { } }
+    return el || { textContent: '', innerHTML: '', value: '', classList: { add: function () { }, remove: function () { }, toggle: function () { }, contains: function () { return false; } }, hidden: true, style: {}, setAttribute: function () { }, getAttribute: function () { return null; }, appendChild: function () { }, addEventListener: function () { }, querySelector: function () { return null; }, querySelectorAll: function () { return []; }, focus: function () { }, scrollIntoView: function () { }, dataset: {} };
+  };
+  var tok = null;
+  var data = { roster: [], logs: [], allLogs: [] };
+  var rangeDays = 6;                 // 默认近 7 天
+  var tab = 'detail';
+
+  function toast(msg) {
+    var t = $('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(t._tm);
+    t._tm = setTimeout(function () { t.hidden = true; }, 2600);
+  }
+  function setMsg(el, msg, kind) {
+    if (!el) return;
+    el.textContent = msg || '';
+    el.className = 'msg' + (kind ? ' ' + kind : '');
+  }
+
+  /* ---------------- 字号 / 高对比 ---------------- */
+  function paintHc() {
+    var on = CET4.prefs.hcOn();
+    var b = $('btnHc');
+    b.textContent = on ? '高对比：开' : '高对比：关';
+    b.classList.toggle('on', on);
+  }
+  function syncTopH() {
+    var tb = document.querySelector('.topbar');
+    if (!tb) return;
+    document.documentElement.style.setProperty('--top-h', tb.offsetHeight + 'px');
+  }
+  function bindPrefs() {
+    var panel = $('prefPanel');
+    $('btnAa').addEventListener('click', function () { panel.hidden = !panel.hidden; });
+    $('btnHc').addEventListener('click', function () {
+      CET4.prefs.setHc(!CET4.prefs.hcOn());
+      paintHc();
+    });
+    $('zoom').addEventListener('input', function () {
+      var z = CET4.prefs.setZoom(parseInt(this.value, 10));
+      $('zoomVal').textContent = z + '%';
+      syncTopH();
+    });
+    $('btnZoomIn').addEventListener('click', function () {
+      var z = CET4.prefs.setZoom(CET4.prefs.zoom() + 10);
+      $('zoom').value = z; $('zoomVal').textContent = z + '%'; syncTopH();
+    });
+    $('btnZoomOut').addEventListener('click', function () {
+      var z = CET4.prefs.setZoom(CET4.prefs.zoom() - 10);
+      $('zoom').value = z; $('zoomVal').textContent = z + '%'; syncTopH();
+    });
+    paintHc();
+    $('zoom').value = CET4.prefs.zoom();
+    $('zoomVal').textContent = CET4.prefs.zoom() + '%';
+  }
+
+  /* ---------------- 启动 ---------------- */
+  function boot() {
+    if (CET4.isDemo()) $('demoBanner').hidden = false;
+    CET4.prefs.applyAll();
+    bindPrefs();
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) { saved = null; }
+    if (saved && saved.token) {
+      tok = saved.token;
+      $('viewLogin').hidden = true;
+      $('viewDash').hidden = false;
+      $('btnLogout').hidden = false;
+      setWho();
+      applyRangeButtons();
+      load();
+    } else {
+      $('viewLogin').hidden = false;
+      $('viewDash').hidden = true;
+      applyRangeButtons();
+    }
+  }
+  function setWho() {
+    var w = $('who');
+    w.textContent = '';
+    var b = document.createElement('b');
+    b.textContent = '教师';
+    w.appendChild(b);
+  }
+
+  /* ---------------- 登录 ---------------- */
+  $('btnLogin').addEventListener('click', function () {
+    var id = $('tid').value.trim();
+    var pwd = $('tpwd').value;
+    if (!id || !pwd) { setMsg($('loginMsg'), '请把工号和密码都填上', 'err'); return; }
+    $('btnLogin').disabled = true;
+    CET4.teacherLogin(id, pwd).then(function (r) {
+      $('btnLogin').disabled = false;
+      if (!r || !r.ok) { setMsg($('loginMsg'), (r && r.msg) || '登录失败', 'err'); return; }
+      tok = r.token;
+      try { localStorage.setItem(SKEY, JSON.stringify({ token: tok, name: r.name })); } catch (e) { }
+      setMsg($('loginMsg'), '');
+      $('viewLogin').hidden = true;
+      $('viewDash').hidden = false;
+      $('btnLogout').hidden = false;
+      setWho();
+      applyRangeButtons();
+      load();
+    }).catch(function (e) {
+      $('btnLogin').disabled = false;
+      setMsg($('loginMsg'), (e && e.message) || '登录失败', 'err');
+    });
+  });
+  $('btnLogout').addEventListener('click', function () {
+    tok = null;
+    try { localStorage.removeItem(SKEY); } catch (e) { }
+    $('viewDash').hidden = true;
+    $('viewLogin').hidden = false;
+    $('btnLogout').hidden = true;
+  });
+
+  /* ---------------- 筛选 ---------------- */
+  function applyRangeButtons() {
+    Array.prototype.forEach.call($('rangeBar').children, function (b) {
+      var d = parseInt(b.getAttribute('data-days'), 10);
+      b.classList.toggle('on', d === rangeDays);
+    });
+  }
+  Array.prototype.forEach.call($('rangeBar').children, function (b) {
+    b.addEventListener('click', function () {
+      rangeDays = parseInt(b.getAttribute('data-days'), 10);
+      if (rangeDays === -1) { $('fFrom').value = ''; $('fTo').value = ''; }
+      else {
+        var d = new Date(); d.setDate(d.getDate() - rangeDays);
+        $('fFrom').value = CET4.fmtDate(d);
+        $('fTo').value = CET4.todayStr();
+      }
+      applyRangeButtons();
+      load();
+    });
+  });
+  function onManualDate() {
+    rangeDays = -2;
+    applyRangeButtons();
+    load();
+  }
+  $('fFrom').addEventListener('change', onManualDate);
+  $('fTo').addEventListener('change', onManualDate);
+  $('fClass').addEventListener('change', load);
+  $('fSearch').addEventListener('input', render);
+
+  function rangeParams() {
+    var from = $('fFrom').value || '';
+    var to = $('fTo').value || '';
+    if (!from && !to && rangeDays >= 0) {
+      var d = new Date(); d.setDate(d.getDate() - rangeDays);
+      from = CET4.fmtDate(d);
+      to = CET4.todayStr();
+    }
+    return { from: from, to: to, class_key: $('fClass').value || '' };
+  }
+
+  /* ---------------- 取数 ---------------- */
+  function load() {
+    if (!tok) return;
+    setMsg($('dashMsg'), '正在读取…');
+    var p = rangeParams();
+    CET4.teacherData(tok, p).then(function (r) {
+      if (!r || !r.ok) { setMsg($('dashMsg'), (r && r.msg) || '读取失败', 'err'); return; }
+      data = r;
+      setMsg($('dashMsg'), '');
+      fillClasses(r.roster);
+      render();
+    }).catch(function (e) { setMsg($('dashMsg'), (e && e.message) || '读取失败', 'err'); });
+  }
+
+  var filledClasses = false;
+  function fillClasses(roster) {
+    if (filledClasses) return;
+    var sel = $('fClass');
+    sel.textContent = '';
+    var o0 = document.createElement('option');
+    o0.value = ''; o0.textContent = '全部班级';
+    sel.appendChild(o0);
+    var seen = {};
+    (roster || []).forEach(function (s) {
+      if (!s.class_key || seen[s.class_key]) return;
+      seen[s.class_key] = 1;
+      var o = document.createElement('option');
+      o.value = s.class_key;
+      o.textContent = s.class_name || s.class_key;
+      sel.appendChild(o);
+    });
+    filledClasses = true;
+  }
+
+  /* ---------------- 渲染 ---------------- */
+  function matchSearch(s) {
+    var q = $('fSearch').value.trim().toLowerCase();
+    if (!q) return true;
+    return String(s.student_id).toLowerCase().indexOf(q) >= 0 ||
+      String(s.name || '').toLowerCase().indexOf(q) >= 0 ||
+      String(s.class_name || '').toLowerCase().indexOf(q) >= 0;
+  }
+
+  function render() {
+    var p = rangeParams();
+    var logs = CET4T.filterLogs(data.allLogs || data.logs || [], p);
+    var agg = CET4T.aggregate(logs, data.roster || [], CET4.todayStr(), data.allLogs || data.logs || []);
+    renderStats(agg);
+    renderStudents(agg.students.filter(matchSearch));
+    renderLogs(logs.filter(function (l) {
+      var q = $('fSearch').value.trim().toLowerCase();
+      if (!q) return true;
+      return String(l.student_id).toLowerCase().indexOf(q) >= 0 ||
+        String(l.name || '').toLowerCase().indexOf(q) >= 0 ||
+        String(l.class_name || '').toLowerCase().indexOf(q) >= 0;
+    }));
+    renderAbsent(agg.absent.filter(matchSearch));
+    renderClasses(data.roster || []);
+  }
+
+  function renderStats(agg) {
+    var t = agg.totals;
+    var box = $('tstats');
+    box.textContent = '';
+    [
+      ['今日活跃人数', t.today_active + ' 人', '名册 ' + t.roster + ' 人'],
+      ['累计参与人数', t.range_active + ' 人', '本区间有记录'],
+      ['今日总浏览时长', CET4T.fmtMin(t.today_browse_sec), '30 秒内有交互才计'],
+      ['今日总做题数', t.today_exercises + ' 次', '翻译 + 理解题'],
+      ['平均正确率', t.accuracy, '今日 ' + t.today_accuracy]
+    ].forEach(function (p) {
+      var d = document.createElement('div');
+      d.className = 'stat';
+      var n = document.createElement('div');
+      n.className = 'n';
+      n.textContent = p[1];
+      d.appendChild(n);
+      var k = document.createElement('div');
+      k.className = 'k';
+      k.textContent = p[0];
+      d.appendChild(k);
+      var k2 = document.createElement('div');
+      k2.className = 'k';
+      k2.textContent = p[2];
+      d.appendChild(k2);
+      box.appendChild(d);
+    });
+  }
+
+  function renderStudents(rows) {
+    var tb = $('tblSum').querySelector('tbody');
+    tb.textContent = '';
+    rows = rows.slice().sort(function (a, b) {
+      if (b.browse_sec !== a.browse_sec) return b.browse_sec - a.browse_sec;
+      return String(a.student_id).localeCompare(String(b.student_id));
+    });
+    $('sumCount').textContent = '共 ' + rows.length + ' 人';
+    if (!rows.length) {
+      var tr0 = document.createElement('tr'), td0 = document.createElement('td');
+      td0.colSpan = 8; td0.className = 'empty'; td0.textContent = '这个区间没有记录';
+      tr0.appendChild(td0); tb.appendChild(tr0); return;
+    }
+    var today = CET4.todayStr();
+    rows.forEach(function (s) {
+      var tr = document.createElement('tr');
+      if (s.last_date === today) tr.className = 'today';
+      [s.student_id, s.name, s.class_name || s.class_key, s.last_ts,
+        CET4T.fmtMin(s.browse_sec), s.exercises, s.accuracy, s.issues_done].forEach(function (v, i) {
+        var td = document.createElement('td');
+        if (i === 4 || i === 5 || i === 7) td.className = 'num';
+        td.textContent = v;
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+  }
+
+  function renderLogs(logs) {
+    var tb = $('tblLog').querySelector('tbody');
+    tb.textContent = '';
+    var CAP = 500;
+    var rows = logs.slice(0, CAP);
+    $('logCount').textContent = '共 ' + logs.length + ' 条' +
+      (logs.length > CAP ? '（表格只显示最近 ' + CAP + ' 条，导出 CSV 是全量）' : '');
+    if (!rows.length) {
+      var tr0 = document.createElement('tr'), td0 = document.createElement('td');
+      td0.colSpan = 7; td0.className = 'empty'; td0.textContent = '这个区间没有记录';
+      tr0.appendChild(td0); tb.appendChild(tr0); return;
+    }
+    var today = CET4.todayStr();
+    rows.forEach(function (l) {
+      var tr = document.createElement('tr');
+      if (l.ts_date === today) tr.className = 'today';
+      [l.ts_date + ' ' + (l.time || ''), l.student_id, l.name || '', l.class_name || l.class_key,
+        l.kind || '', l.action || ''].forEach(function (v, i) {
+        var td = document.createElement('td');
+        if (i === 5) td.className = 'wrapcell';
+        td.textContent = v;
+        tr.appendChild(td);
+      });
+      var tdS = document.createElement('td');
+      tdS.className = 'num';
+      tdS.textContent = l.kind === '浏览' ? (l.sec || 0) + ' 秒' : (l.den ? l.num + '/' + l.den : '—');
+      tr.appendChild(tdS);
+      tb.appendChild(tr);
+    });
+  }
+
+  function renderAbsent(rows) {
+    var tb = $('tblZero').querySelector('tbody');
+    tb.textContent = '';
+    $('zeroCount').textContent = '共 ' + rows.length + ' 人';
+    if (!rows.length) {
+      var tr0 = document.createElement('tr'), td0 = document.createElement('td');
+      td0.colSpan = 3; td0.className = 'empty'; td0.textContent = '今天全班都有记录';
+      tr0.appendChild(td0); tb.appendChild(tr0); return;
+    }
+    rows.forEach(function (s) {
+      var tr = document.createElement('tr');
+      [s.student_id, s.name, s.class_name || s.class_key].forEach(function (v) {
+        var td = document.createElement('td');
+        td.textContent = v;
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+  }
+
+  function renderClasses(roster) {
+    var tb = $('tblCls').querySelector('tbody');
+    tb.textContent = '';
+    var map = {};
+    (roster || []).forEach(function (s) {
+      var k = s.class_key || s.class_name;
+      if (!map[k]) map[k] = { key: k, name: s.class_name || k, n: 0, active: 0, sec: 0, ex: 0 };
+      map[k].n++;
+    });
+    var today = CET4.todayStr();
+    (data.allLogs || []).forEach(function (l) {
+      var m = map[l.class_key];
+      if (!m) return;
+      if (l.ts_date === today) {
+        m.active = 1;
+        if (l.kind === '浏览') m.sec += l.sec || 0;
+        if (l.kind === '翻译练习' || l.kind === '理解题') m.ex++;
+      }
+    });
+    Object.keys(map).forEach(function (k) {
+      var m = map[k];
+      var tr = document.createElement('tr');
+      [m.name, m.n, m.active ? m.active + ' 人' : '0 人', CET4T.fmtMin(m.sec), m.ex + ' 次'].forEach(function (v, i) {
+        var td = document.createElement('td');
+        if (i === 1 || i === 4) td.className = 'num';
+        td.textContent = v;
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+  }
+
+  /* ---------------- 标签页 ---------------- */
+  function setTab(t) {
+    tab = t;
+    $('paneDetail').hidden = (t !== 'detail');
+    $('paneRaw').hidden = (t !== 'raw');
+    $('paneZero').hidden = (t !== 'zero');
+    $('paneCls').hidden = (t !== 'cls');
+    $('tabDetail').classList.toggle('on', t === 'detail');
+    $('tabRaw').classList.toggle('on', t === 'raw');
+    $('tabZero').classList.toggle('on', t === 'zero');
+    $('tabCls').classList.toggle('on', t === 'cls');
+  }
+  $('tabDetail').addEventListener('click', function () { setTab('detail'); });
+  $('tabRaw').addEventListener('click', function () { setTab('raw'); });
+  $('tabZero').addEventListener('click', function () { setTab('zero'); });
+  $('tabCls').addEventListener('click', function () { setTab('cls'); });
+
+  /* ---------------- 导出 CSV ---------------- */
+  function download(name, rows) {
+    var blob = new Blob([CET4T.toCSV(rows)], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+
+  $('btnCsvSum').addEventListener('click', function () {
+    var p = rangeParams();
+    var logs = CET4T.filterLogs(data.allLogs || [], p);
+    var agg = CET4T.aggregate(logs, data.roster || [], CET4.todayStr(), data.allLogs || []);
+    var head = ['学号', '姓名', '班级', '最近学习时间', '累计时长(秒)', '累计做题(次)', '累计正确率', '已完成期数', '累计浏览分钟'];
+    var rows = [head].concat(agg.students.map(function (s) {
+      return [s.student_id, s.name, s.class_name || s.class_key, s.last_ts,
+        s.browse_sec, s.exercises, s.accuracy, s.issues_done, s.browse_min];
+    }));
+    download('四级精读_学生明细_' + CET4.todayStr() + '.csv', rows);
+  });
+
+  $('btnCsvLog').addEventListener('click', function () {
+    var p = rangeParams();
+    var logs = CET4T.filterLogs(data.allLogs || [], p);
+    var head = ['时间', '学号', '姓名', '班级', '类型', '记录内容', '时长(秒)'];
+    var rows = [head].concat(logs.map(function (l) {
+      return [l.ts_date + ' ' + (l.time || ''), l.student_id, l.name || '', l.class_name || l.class_key,
+        l.kind || '', l.action || '', l.sec || 0];
+    }));
+    download('四级精读_原始记录_' + CET4.todayStr() + '.csv', rows);
+  });
+
+  window.addEventListener('resize', syncTopH);
+  window.addEventListener('load', syncTopH);
+  boot();
+})(typeof window !== 'undefined' ? window : globalThis);

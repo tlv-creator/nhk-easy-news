@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四级精读日报 · 学生</title>
+<meta name="description" content="四级精读日报：每天一篇短文，背生词、做翻译、做理解题。">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- ===================== 顶栏 ===================== -->
+<div class="preview-bar">
+<b>预览版</b> —— 这一版是「翻译速练 2 句 + 当场出档位」的新功能试用。
+正式版入口不变：<code>https://tlv-creator.github.io/nhk-easy-news/cet4.html</code>
+</div>
+<style>
+.preview-bar{
+  font-size:16px;line-height:1.7;color:#000;background:#fff;
+  border:1px solid rgba(0,0,0,.25);border-left:4px solid #000;
+  border-radius:8px;padding:10px 12px;margin:12px 0;
+}
+.preview-bar b{font-size:17px}
+.preview-bar code{background:#eee;padding:1px 5px;border-radius:4px;word-break:break-all}
+</style>
+<div class="topbar">
+  <div class="topbar-in">
+    <h1>四级精读日报 · 预览</h1>
+    <span class="who" id="who"></span>
+    <div class="tools">
+      <button type="button" class="sm ghost" id="btnAa">字号</button>
+      <button type="button" class="sm ghost" id="btnHc">高对比：关</button>
+      <button type="button" class="sm ghost" id="btnLogout" hidden>退出</button>
+    </div>
+  </div>
+  <div class="pref-panel" id="prefPanel" hidden>
+    <div class="prow">
+      <span class="pl">字号</span>
+      <button type="button" class="sm" id="btnZoomOut">字小</button>
+      <input type="range" id="zoom" min="100" max="160" step="10" value="100" aria-label="字号调节">
+      <button type="button" class="sm" id="btnZoomIn">字大</button>
+      <span class="muted" id="zoomVal">100%</span>
+    </div>
+    <div class="prow"><span class="pl">高对比</span><span class="muted">纯黑白，反白更清楚</span></div>
+  </div>
+</div>
+
+<!-- ===================== 演示横幅 ===================== -->
+<div class="wrap">
+  <div class="banner" id="demoBanner" hidden>演示模式：不连数据库 · 随便填学号姓名即可</div>
+</div>
+
+<!-- ===================== 进度条 ===================== -->
+<div class="progress" id="progress" hidden>
+  <div class="progress-in">
+    <div class="pg-text">
+      <div class="pg-top">
+        <span class="pg-num"><span class="cur" id="pgCur">0</span> <span class="muted" id="pgTotal">/ 5 句</span></span>
+        <span class="pg-label" id="pgLabel">尚未开始自译 · 先做译前准备</span>
+      </div>
+      <div class="pg-bar"><div class="pg-fill" id="pgFill"></div></div>
+    </div>
+    <button type="button" class="sm ghost pg-reset" id="btnResetTop">重置</button>
+  </div>
+</div>
+
+<!-- ===================== 登录 ===================== -->
+<div id="viewLogin" hidden>
+  <div class="wrap">
+    <div class="card">
+      <div class="card-h"><span class="pill">学生</span><h2>登录</h2></div>
+      <p class="lead">用<b>学号 + 姓名</b>登录。姓名要和老师名册上的写法一致（不用打空格）。</p>
+      <label class="f" for="sid">学号</label>
+      <input type="text" id="sid" autocomplete="off" inputmode="numeric" placeholder="如 20260001">
+      <label class="f" for="sname">姓名</label>
+      <input type="text" id="sname" autocomplete="off" placeholder="如 张三">
+      <div class="actions">
+        <button type="button" class="big primary" id="btnLogin">登录，开始今天的一期</button>
+      </div>
+      <div class="msg" id="loginMsg"></div>
+      <p class="muted" style="font-size:.82rem;margin-top:10px">
+        忘记学号或姓名对不上？问老师要名册。<a href="index.html">回首页</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== 主内容 ===================== -->
+<div id="viewHome" hidden>
+  <div class="wrap">
+
+    <div class="msg" id="loadMsg"></div>
+
+    <!-- 封面 -->
+    <header class="hero">
+      <span class="badge" id="issueMeta"></span>
+      <p class="hero-topic" id="issueTopic"></p>
+      <h1 id="issueTitle">四级精读日报</h1>
+      <p id="issueSub"></p>
+      <p><a id="issueSrc" target="_blank" rel="noopener" hidden>看原文出处</a></p>
+    </header>
+
+    <!-- ===== 一、今日短文 ===== -->
+    <div class="card">
+      <div class="card-h"><span class="pill">第一步</span><h2>今日短文</h2></div>
+      <p class="lead">先通读一遍英文，标出不懂的词。中文对照默认收起，先自己猜。</p>
+      <div class="article" id="artEn"></div>
+      <div class="actions">
+        <button type="button" class="ghost" id="btnZh">显示中文对照</button>
+      </div>
+      <div class="article-zh" id="artZh" hidden></div>
+    </div>
+
+    <!-- ===== 生词 ===== -->
+    <div class="card">
+      <div class="card-h"><span class="pill">第二步</span><h2>生词</h2></div>
+      <p class="lead">默认只给单词和词性。点卡片看释义、例句和提示——展开过一次记住了，下次打开还是展开的。</p>
+      <div class="vocab-grid" id="vocabGrid"></div>
+      <div class="actions">
+        <button type="button" class="primary" id="btnReadDone">读完了，开始练习</button>
+      </div>
+    </div>
+
+    <!-- ===== 翻译练习 ===== -->
+    <h2 class="sec-title" id="secTrans">翻译练习</h2>
+    <h3 class="sec-title2" id="transTitle"></h3>
+    <p class="sec-sub" id="transBrief"></p>
+
+    <!-- 练习模式：课堂速练 2 句 / 考场全练 5 句 -->
+    <div class="mode-switch" id="modeSwitch" role="group" aria-label="练习模式">
+      <button type="button" class="mbtn on" data-mode="quick">课堂速练 · 2 句</button>
+      <button type="button" class="mbtn" data-mode="full">考场全练 · 5 句</button>
+      <span class="mode-note" id="modeNote">课上 10 分钟能做完的一组</span>
+    </div>
+
+    <!-- 采分表达表 -->
+    <div class="card">
+      <div class="card-h"><span class="pill">STEP 1</span><h2>采分表达表</h2></div>
+      <p class="lead">点卡片展开用法说明。翻译前先扫一遍，考场上就知道每句该往什么词上靠。</p>
+      <div class="actions">
+        <button type="button" class="ghost" id="btnExpandAll">展开全部采分表达</button>
+        <span class="muted">共 <span id="expCount">0</span> 个</span>
+      </div>
+      <div class="exp-grid" id="expGrid"></div>
+    </div>
+
+    <!-- 逐句自译 -->
+    <div class="card">
+      <div class="card-h"><span class="pill">STEP 2</span><h2>逐句写下你的译文</h2></div>
+      <p class="lead">按真实考试节奏：<b>先通篇写完再对照</b>。中途看参考答案会打断语感训练，得不偿失。</p>
+      <div class="timer-bar">
+        <span class="t-left" id="timerLeft">10:00</span>
+        <span class="t-label">限时</span>
+        <button type="button" class="sm ghost" id="btnTimer">暂停</button>
+        <button type="button" class="sm ghost" id="btnTimerReset">重新计时</button>
+      </div>
+      <p class="muted" id="draftCount"></p>
+      <div id="draftWrap"></div>
+      <div class="actions">
+        <button type="button" class="primary" id="btnCheck">交卷 · 看我的档位</button>
+        <button type="button" class="ghost" id="btnReset">清空重写</button>
+      </div>
+      <div class="msg" id="checkMsg"></div>
+      <div class="result" id="result">
+        <div class="res-head">
+          <div class="res-band">
+            <div class="rb-lbl">机器初判 · 只看信息完整度</div>
+            <div class="rb-band" id="resBand">—</div>
+            <div class="rb-comp" id="resComp"></div>
+          </div>
+          <div class="res-txt" id="resTxt"></div>
+        </div>
+        <div class="res-std" id="resStd"></div>
+        <div class="res-list" id="resList"></div>
+        <div class="res-ai">
+          <button type="button" class="ghost sm" id="btnAI">AI 批改（按四级五档标准定档）</button>
+          <span class="muted" id="aiHint">要联网调用，一次约 ¥0.0002</span>
+          <div class="ai-out" id="aiOut"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 采分点自查 -->
+    <div class="card">
+      <div class="card-h"><span class="pill">STEP 3</span><h2>采分点自查清单</h2></div>
+      <p class="lead">点「提交并检查采分点」后，这里会自动标出<b>命中</b>（反白）和<b>漏掉</b>（虚线框）。逐条对着自己的译文查，比通读三遍有效。</p>
+      <div class="kw-grid" id="kwGrid"></div>
+    </div>
+
+    <!-- 逐句对照讲评 -->
+    <div class="card">
+      <div class="card-h"><span class="pill">STEP 4</span><h2>逐句对照讲评</h2></div>
+      <p class="lead">点开任意一句，看参考译文与采分点拆解。讲评时先自己说译法，再对照参考。</p>
+      <div class="seg-grid" id="segGrid"></div>
+    </div>
+
+    <!-- 中式英语坑 -->
+    <div class="card">
+      <div class="card-h"><span class="pill">STEP 5</span><h2>中式英语坑</h2></div>
+      <p class="lead">本篇最容易踩的坑，点开看错例和正解，然后在自己的译文里逐一排查。</p>
+      <div class="dis-grid" id="pitGrid"></div>
+    </div>
+
+    <!-- ===== 理解题 ===== -->
+    <h2 class="sec-title" id="secQuiz">理解题</h2>
+    <p class="sec-sub">共 <span id="quizCount">0</span> 题 · 选完不判对错，点「查看答案」再看解析</p>
+    <div id="quizWrap"></div>
+    <div class="actions">
+      <button type="button" class="big primary" id="btnQuizSubmit">提交本节答案</button>
+    </div>
+    <div class="msg" id="quizMsg"></div>
+
+    <p class="footer">
+      本次有效阅读 <span id="studyTime">约 0 秒</span>（30 秒内有交互才计）· <a href="index.html">回首页</a>
+    </p>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/api.js"></script>
+<script src="js/scoring.js"></script>
+<script src="js/student.js"></script>
+</body>
+</html>

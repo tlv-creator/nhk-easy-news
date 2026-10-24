@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>四级精读日报 · 使用说明</title>
+<style>
+  html{--fs:19px;--ink:#000;--ink2:#3a3a3a;--line:#c8c8c8;--line2:#8a8a8a;--bg:#fff}
+  html.hc{--ink:#000;--ink2:#000;--line:rgba(0,0,0,.55);--bg:#fff}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+       font-size:var(--fs);line-height:1.85;color:var(--ink);background:var(--bg);
+       max-width:720px;margin:0 auto;padding:26px 18px 70px}
+  h1{font-size:1.7rem;margin:0 0 6px;line-height:1.4}
+  h2{font-size:1.25rem;margin:34px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--ink)} /* eink-ok: 大标题分隔线（结构线，全页 2 条之一） */
+  h3{font-size:1.05rem;margin:20px 0 6px}
+  p{margin:10px 0}
+  ol,ul{padding-left:1.4em;margin:10px 0}
+  li{margin:8px 0}
+  code{background:#eee;padding:2px 6px;border-radius:4px;font-size:.88em;word-break:break-all}
+  html.hc code{background:#fff;border:1px solid var(--line2)}
+  .box{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:14px 0;background:var(--bg)}
+  html.hc .box{border:2px solid var(--line)}
+  .box b{font-size:1.05rem}
+  .kv{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0;font-size:.95rem}
+  .kv span{border-bottom:1px dotted var(--ink2)}
+  .steps{counter-reset:s;list-style:none;padding-left:0}
+  .steps li{counter-increment:s;padding-left:44px;position:relative;margin:14px 0}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:2px;
+    width:30px;height:30px;line-height:30px;text-align:center;
+    border:2px solid var(--line2);border-radius:50%;font-weight:700;font-size:1rem}
+  .warn{border-left:4px solid var(--ink);padding:10px 14px;margin:14px 0;background:#f6f6f6} /* eink-ok: 提示框左侧竖条=提醒标记，是设计要求 */
+  html.hc .warn{background:#fff}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.95rem}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:#eee}
+  html.hc th{background:#fff}
+  a{color:var(--ink)}
+  .small{font-size:.9rem;color:var(--ink2)}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:.9rem;color:var(--ink2)}
+  #minimax-floating-ball{display:none !important}
+</style>
+</head>
+<body>
+
+<h1>📘 四级精读日报 · 使用说明</h1>
+<p class="small">给任课老师 · 2026-10-24</p>
+
+<div class="box">
+<b>一句话</b><br>
+每天早上自动更新一期：<b>一段四级难度的当日短文 + 生词卡 + 一道翻译练习（5 句汉译英）+ 4–6 道理解题</b>。
+学生登录后做，<b>所有答案默认藏着，点一下才出来</b>。做完自动记进云端，老师在看板上看全班情况。
+</div>
+
+<h2>一、两个入口</h2>
+<table>
+  <tr><th>入口</th><th>给谁</th><th>怎么进</th></tr>
+  <tr><td><a href="./index.html">学生入口</a></td><td>学生</td><td>学号 + 姓名</td></tr>
+  <tr><td><a href="./teacher.html">老师入口</a></td><td>老师</td><td>工号 + 密码</td></tr>
+</table>
+<div class="box">
+<b>⚠️ 发给学生的永远是同一个地址</b><br>
+本站的托管域名每次更新都会变，<b>不要把带域名的链接发到班群</b>。
+请发这个永久地址：<br>
+<code>https://tlv-creator.github.io/nhk-easy-news/cet4.html</code><br>
+<span class="small">这个页面指向当前站点，以后换了域名也不用重新发。</span>
+</div>
+
+<h2>二、学生怎么用</h2>
+<ol class="steps">
+  <li><b>登录</b>：输入学号和姓名（跟老师给的名单一致）。登录一次后当天不用重复登。</li>
+  <li><b>读短文</b>：今天的短文是当天的真实新闻改写成的，长度和难度对标四级。
+      点「显示中文对照」可以看中文；下面 8–12 张生词卡，<b>点一下卡片</b>才出释义和例句。</li>
+  <li><b>做翻译</b>：5 句汉译英。先看「采分表达表」知道要写哪些固定表达，
+      然后逐句写完，<b>点「提交并检查采分点」</b>，系统会告诉你哪几个表达写到了、哪几个漏了
+      （标绿=写到了，标黄=漏了）。最后点开「逐句对照讲评」看参考译文和拆解。</li>
+  <li><b>做理解题</b>：4–6 道单选。选完<b>点「查看答案」</b>才出对错和解析。</li>
+</ol>
+
+<div class="warn">
+<b>答案为什么要藏着？</b><br>
+四级翻译按「采分点」给分：阅卷人手里有一张固定清单，你写对几个点就给几分。
+如果直接看答案，练的就不是「自己想」了。所以参考答案、采分点说明、题目解析<b>全部默认收起</b>。
+</div>
+
+<h2>三、老师能看什么</h2>
+<p>老师入口进���后，看板上有：</p>
+<table>
+  <tr><th>指标</th><th>含义</th></tr>
+  <tr><td>今日活跃</td><td>今天有多少人登录并动过手</td></tr>
+  <tr><td>累计参与</td><td>从建站到现在一共多少人用过</td></tr>
+  <tr><td>累计浏览时长</td><td>每个学生<b>有效阅读</b>的秒数（发呆超过 30 秒不计入）</td></tr>
+  <tr><td>累计做题量</td><td>翻译练习 + 理解题的提交次数</td></tr>
+  <tr><td>采分点覆盖率</td><td>学生写出的译文命中了百分之多少的采分表达（<b>最值得看的一个数</b>）</td></tr>
+  <tr><td>今天没来的</td><td>名册里今天一条记录都没有的学生</td></tr>
+</table>
+<p>明细表可按班级筛选，可<b>导出 CSV（Excel 打开中文不乱码）</b>。</p>
+
+<h2>四、每天怎么更新</h2>
+<div class="box">
+内容<b>每天早上 6:30 自动更新</b>，不用老师管：<br>
+① 抓当天的真实英语新闻 → ② 改写成四级难度的短文（140–220 词）→ ③ 出 5 句翻译练习和理解题
+→ ④ 过一遍硬校验（词数、采分点能否命中、选项长度是否公平、原文出处能否逐字搜到）→ ⑤ 入库。<br>
+<span class="small">任何一项校验不过，那一期就<b>不会发出去</b>——宁可当天没内容，也不发一份有硬伤的。</span>
+</div>
+
+<h2>五、常见问题</h2>
+<table>
+  <tr><th>现象</th><th>怎么办</th></tr>
+  <tr><td>学生说「登录不上」</td><td>先确认学号和姓名都填了（姓名要和名单完全一致）。<br>仍不行：老师端「今天没来的」里如果能看到他，说明学号是别人代登的。</td></tr>
+  <tr><td>点「查看答案」没反应</td><td>多半是网络还没连上 Supabase。刷新一次；<b>断网时仍能做练习</b>，只是记录暂时传不上去，联网后会自动补传。</td></tr>
+  <tr><td>手机上看不清</td><td>每个页面右上角有<b>字号调节</b>和<b>高对比开关</b>（黑白电子墨水屏用）。</td></tr>
+  <tr><td>右下角有个小圆球挡着按钮</td><td>那是托管平台自己加的，样式已隐藏；如果仍能看到，点它右上角的 × 关掉。</td></tr>
+  <tr><td>想看某一期的旧内容</td><td>顶部「往期」列表可以翻。</td></tr>
+</table>
+
+<h2>六、给老师的技术备注</h2>
+<ul>
+  <li><b>数据在哪</b>：都在老师自己那个 Supabase 库里，和词汇站、听力站共用一套。
+      本项目用 <code>__cet4_</code> 前缀单独存放，<b>和词汇站的看板完全隔离</b>（已实测验证）。</li>
+  <li><b>为什么链接不会失效</b>：内容存在数据库里，网站本身不需要重新部署 ⇒ 域名不会因为「今天没内容」而变。</li>
+  <li><b>每日内容</b>：每天一期，滚动往前翻。历史内容都留着。</li>
+  <li><b>数据是真实的吗</b>：交付前会用独立脚本绕开前端、直接拉数据库重算一遍，和看板数字逐行比对。</li>
+</ul>
+
+<footer>
+四级精读日报 · 内容每天自动更新 · 学生入口与老师入口同址不同页<br>
+<span class="small">本说明页同样做成网页，方便直接转发给学生和家长。</span>
+</footer>
+
+</body>
+</html>
