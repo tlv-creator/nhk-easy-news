@@ -33,6 +33,8 @@ def check(cond, msg):
 
 
 def rest(path, method="GET", body=None, prefer=None):
+    if method == "GET" and not prefer:
+        prefer = "count=exact"      # 🔴 不加这个，Content-Range 是 "*/*"（总数未知）⇒ 判据不成立
     url = "%s/rest/v1/%s" % (SB, path)
     data = json.dumps(body).encode() if body is not None else None
     h = {"apikey": KEY, "Authorization": "Bearer " + KEY, "Content-Type": "application/json"}
@@ -70,7 +72,9 @@ def main():
     check(st == 200, "SELECT HTTP %s（要 200）" % st)
     check("42501" not in rs and "row-level security" not in str(rs),
           "没有 RLS 报错（42501 = 被 policy 挡）")
-    check(cr.startswith("*/0") is False, "不是 0 行（content-range=%r）—— 0 行 = 读被挡或真的没记录" % cr)
+    # 🔴 判据必须落在**真实总数**上：`*/0` = anon 看到 0 行（= 被 policy 挡了，或真的没记录）
+    total = cr.split("/")[-1] if "/" in cr else cr
+    check(total not in ("0", "*"), "anon 能看到 LISTEN 的行（content-range=%r，总数=%s）" % (cr, total))
 
     # ② 名册（老师端看板的底）
     st2, rs2, cr2 = rows("vocab_states?select=class_key&class_key=eq.__roster_v1")
