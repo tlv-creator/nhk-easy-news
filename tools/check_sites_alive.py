@@ -115,6 +115,8 @@ def main():
     ap.add_argument("--local", help="用本地清单文件代替线上地址")
     ap.add_argument("--json", action="store_true", help="输出 JSON")
     ap.add_argument("--timeout", type=int, default=8)
+    ap.add_argument("--check-dead", action="store_true",
+                    help="连标了 DELETED 的条目也检查（默认否 ⇒ 不改变原行为）")
     args = ap.parse_args()
 
     if args.local:
@@ -128,17 +130,35 @@ def main():
             return 2
     print("清单来源：%s" % src)
 
+    # 🔴🔴 类型归一（2026-10-24 patch，Shun 会话报的洞②）：
+    #   「清单被写成 dict」⇒ 迭代出来是 key 字符串 ⇒ e.get() 直接 AttributeError 崩
+    #   ⇒ 这里**显式校验**，坏清单必须**报错不放行**（不能崩、也不能静默当空）
     entries = data.get("protected_sites", [])
+    if not isinstance(entries, list):
+        print("❌ protected_sites 必须是数组，实际是 %s ⇒ **不放行**"
+              % type(entries).__name__)
+        return 2
+    for i, e in enumerate(entries):
+        if not isinstance(e, dict):
+            print("❌ protected_sites 第 %d 条不是对象（%s）⇒ **不放行**"
+                  % (i, type(e).__name__))
+            return 2
     todo = []
     for e in entries:
         dom = e.get("domain")
         if not dom:
             continue
         if str(e.get("status", "")).upper() == "DELETED":
-            todo.append((dom, e, None))          # 期望死的
+            # 🔴🔴 **洞① patch（2026-10-24）**：原来 mode=None ⇒ **连 HEAD 都不发**
+            #   ⇒ 站还活着（200）也只打印「⚪ 期望它死」⇒ **静默假绿**
+            #   ⇒ 而且与发布四步冲突：「① 先标 DELETED → ② 再删 → ③ 轮询 404」
+            #      ⇒ 标了 DELETED 的那一刻它就从存活检查里消失 ⇒ 中间那段它还活着也没人管
+            # ⇒ 现在**照样发 HEAD**，只是**期望它 404**
+            todo.append((dom, e, "check_dead"))
         else:
             todo.append((dom, e, "check"))
-    if args.local:
+    if args.local and not args.check_dead:
+        # 本地模式 = 「拿本地清单检查活站」⇒ **故意不查 DELETED 条目**
         todo = [t for t in todo if t[2] == "check"]
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
@@ -151,6 +171,7 @@ def main():
 
     results.sort(key=lambda r: (r[2] == "check", r[0]))
     dead = []
+    still_alive = []      # 🔴 清单标 DELETED 但站还活着（清单该更新）
     if args.json:
         print(json.dumps([{"domain": d, "project": e.get("project"), "code": c, "kind": k,
                            "url": u, "source": src} for d, e, m, c, k, u in results],
@@ -169,6 +190,20 @@ def main():
                     # 被中间层挡/限流（403/429/501）⇒ **不算死**，但要让人看见
                     print("  %-18s %-22s ⚠️  被挡/限流 %s（不是站点死，需人工看）%s"
                           % (d, (e.get("project") or "")[:22], c, u))
+            elif mode == "check_dead":
+                # 🔴 清单标了 DELETED ⇒ **期望它死** ⇒ 还活着就是「清单该更新」
+                if k == "alive":
+                    print("  %-18s %-22s 🔴 清单标 DELETED 但**站还活着**（清单该更新）"
+                          % (d, (e.get("project") or "")[:22]))
+                    still_alive.append(d)
+                elif k == "dead":
+                    print("  %-18s %-22s ✅ 已删除（符合预期）" % (d, (e.get("project") or "")[:22]))
+                elif k == "neterr":
+                    print("  %-18s %-22s ⚠️  网络错误（不等于还活着）%s"
+                          % (d, (e.get("project") or "")[:22], u))
+                else:
+                    print("  %-18s %-22s ⚠️  被挡/限流 %s（需人工确认是否真删）"
+                          % (d, (e.get("project") or "")[:22], c))
             else:
                 print("  %-18s %-22s %s" % (d, (e.get("project") or "")[:22], "⚪ 已标记 DELETED（期望它死）"))
 
@@ -177,6 +212,11 @@ def main():
         print("🔴 这几个域名现在是死的：**清单该更新，或者站被误删了**")
         for d in dead:
             print("     -", d)
+    if still_alive:
+        print("🔴 这几个**清单已标 DELETED 但站还活着** ⇒ 清单该更新（别当已删）")
+        for d in still_alive:
+            print("     -", d)
+    if dead or still_alive:
         return 1
     print("✅ 全部活着")
     return 0
