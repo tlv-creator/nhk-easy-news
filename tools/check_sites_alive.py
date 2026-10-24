@@ -143,30 +143,45 @@ def main():
             print("❌ protected_sites 第 %d 条不是对象（%s）⇒ **不放行**"
                   % (i, type(e).__name__))
             return 2
+    # 🔴🔴🔴 2026-10-24 补丁（主线会话）：**status 取值必须穷举** ——
+    #   **假红的根源就是「默认分支」**：老实现只认 DELETED，其余（含 SUPERSEDED）一律当「现役」
+    #   ⇒ 新增一个取值时它会被**默默当成现役** ⇒ 判错 ⇒ 假红/假绿，而且**没人会发现**
+    #   ⇒ 现在：**不认识的取值直接报错不放行**（宁可停下来问人，别默默按默认走）
+    #   已知取值只有四个：
+    #     DELETED    = 我们说它已经删了   ⇒ 期望它死   ⇒ 还活着 ⇒ 🔴 清单该更新
+    #     SUPERSEDED = 旧站被取代、可删   ⇒ **不判死活** ⇒ 墓碑（实测 8 条里 4 活 4 死）
+    #     ALIVE      = 显式写出来的「现役」⇒ 期望它活着（语义 ≡ 没有 status）
+    #     （没有 status）= 现役          ⇒ 期望它活着
+    KNOWN = {"": "check", "ALIVE": "check", "DELETED": "check_dead", "SUPERSEDED": "skip"}
     todo = []
     superseded = []
-    for e in entries:
+    for i, e in enumerate(entries):
         dom = e.get("domain")
         if not dom:
             continue
-        if str(e.get("status", "")).upper() == "SUPERSEDED":
-            # 🔴🔴 2026-10-24 补丁（主线会话）：
-            #   **SUPERSEDED = 「旧站，已被取代，可删」的墓碑** ⇒ 它**不判死活**
-            #   实测清单里 SUPERSEDED 8 条：**4 条还活着(200)、4 条已死(404)** ⇒
-            #   拿「期望它活」去判 ⇒ 4 条假红；拿「期望它死」去判 ⇒ 4 条假红
-            #   ⇒ 它两个都不是 ⇒ **既不判活也不判死**，只当历史条目
-            #   （对照：DELETED = 「我们说它已经删了」⇒ 期望它死，活着反而要报红）
+        raw = e.get("status", None)
+        if raw is None:
+            st = ""
+        elif isinstance(raw, str):
+            st = raw.strip().upper()
+        else:
+            print("❌ protected_sites 第 %d 条（%s）的 status **类型不对**：%s"
+                  % (i, dom, type(raw).__name__))
+            print("   status 要么不写，要么写字符串（DELETED / SUPERSEDED / ALIVE）")
+            print("   ⇒ **不放行**（类型不对的字段不能被默默当成现役）")
+            return 2
+        if st not in KNOWN:
+            print("❌ protected_sites 第 %d 条（%s）的 status=%r 不认识"
+                  % (i, dom, raw))
+            print("   只认这四个：DELETED（期望它死）/ SUPERSEDED（墓碑，不判死活）"
+                  "/ ALIVE（现役）/ 没有 status（现役）")
+            print("   ⇒ **不放行**（新状态不能被默默当成现役 ⇒ 那样只会出假红）")
+            return 2
+        mode = KNOWN[st]
+        if mode == "skip":
             superseded.append(dom)
             continue
-        if str(e.get("status", "")).upper() == "DELETED":
-            # 🔴🔴 **洞① patch（2026-10-24）**：原来 mode=None ⇒ **连 HEAD 都不发**
-            #   ⇒ 站还活着（200）也只打印「⚪ 期望它死」⇒ **静默假绿**
-            #   ⇒ 而且与发布四步冲突：「① 先标 DELETED → ② 再删 → ③ 轮询 404」
-            #      ⇒ 标了 DELETED 的那一刻它就从存活检查里消失 ⇒ 中间那段它还活着也没人管
-            # ⇒ 现在**照样发 HEAD**，只是**期望它 404**
-            todo.append((dom, e, "check_dead"))
-        else:
-            todo.append((dom, e, "check"))
+        todo.append((dom, e, mode))
     if superseded:
         print('  \u26aa 另有 %d 条标 SUPERSEDED（被新站取代 \u21d2 墓碑条目，不判死活）：%s'
               % (len(superseded), ' '.join(sorted(superseded))))
