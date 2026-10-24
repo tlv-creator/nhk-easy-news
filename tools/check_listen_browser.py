@@ -15,6 +15,7 @@
     BASE_URL 默认 = 线上永久入口
 """
 import sys, os, re, json, time, urllib.request, urllib.error
+from datetime import datetime
 from playwright.sync_api import sync_playwright
 
 BASE = (sys.argv[1] if len(sys.argv) > 1 else
@@ -27,6 +28,72 @@ CHROME = "/root/.cache/ms-playwright/chromium-1243/chrome-linux/chrome"
 
 fails = []
 
+PROBE_SID = "__rls_probe_browser__"
+
+
+def snapshot():
+    """破坏性操作（清空全部）前**必须快照** ⇒ 测完原样恢复"""
+    r = api("GET", "vocab_history_logs?select=*&class_key=eq.LISTEN&order=id")
+    return r if isinstance(r, list) else []
+
+
+def restore(rows):
+    """把快照写回去（id 让它自增；本表没有外键引用 id ⇒ 安全）"""
+    n = 0
+    for r in rows:
+        body = {k: v for k, v in r.items() if k != "id"}
+        if not body.get("class_key"):
+            continue
+        res = api("POST", "vocab_history_logs", body)
+        if isinstance(res, dict) and res.get("__http"):
+            print("      🔴 恢复失败：", res)
+        else:
+            n += 1
+    return n
+
+
+def fingerprint(rows):
+    """行内容指纹（忽略 id ⇒ 恢复后 id 会变）"""
+    import hashlib
+    proj = sorted("%s|%s|%s|%s|%s" % (r.get("class_key"), r.get("class_name"), r.get("student_id"),
+                                       r.get("timestamp"), r.get("action")) for r in rows)
+    return hashlib.md5("\n".join(proj).encode("utf-8")).hexdigest()
+
+
+def goto(pg, url, tries=3):
+    """🔴 网络会抖 ⇒ goto 必须重试；且**不用 networkidle**（它等「网络安静」，一挂就假超时）"""
+    import time as _t
+    last = None
+    for i in range(tries):
+        try:
+            pg.goto(url, wait_until="domcontentloaded", timeout=60000)
+            return True
+        except Exception as e:
+            last = e; print("   ↻ 第 %d 次打开失败，重试：%s" % (i + 1, str(e)[:80])); _t.sleep(3)
+    raise last
+
+
+def api(method, path, body=None):
+    """🔴 回读也要抗抖动：网络抖一次就报「产品坏了」是最冤的假红"""
+    import time as _t
+    last = None
+    for i in range(3):
+        try:
+            return _api_once(method, path, body)
+        except Exception as e:
+            last = e; _t.sleep(2)
+    raise last
+
+
+def _api_once(method, path, body=None):
+    h = {"apikey": AK, "Authorization": "Bearer " + AK, "Content-Type": "application/json"}
+    data = json.dumps(body, ensure_ascii=False).encode() if body is not None else None
+    r = urllib.request.Request(SU + "/rest/v1/" + path, data=data, headers=h, method=method)
+    with urllib.request.urlopen(r, timeout=40) as resp:
+        t = resp.read().decode("utf-8", "replace")
+        return json.loads(t) if t.strip().startswith(("[", "{")) else t
+
+
 
 def ck(n, c, e=""):
     print(("  PASS " if c else "  FAIL ") + n + (("  | " + str(e)[:200]) if e and not c else ""))
@@ -35,7 +102,7 @@ def ck(n, c, e=""):
     return c
 
 
-def api(method, path, body=None):
+def api_raw(method, path, body=None):
     h = {"apikey": AK, "Authorization": "Bearer " + AK, "Content-Type": "application/json"}
     data = json.dumps(body, ensure_ascii=False).encode() if body is not None else None
     r = urllib.request.Request(SU + "/rest/v1/" + path, data=data, headers=h, method=method)
@@ -45,6 +112,20 @@ def api(method, path, body=None):
             return json.loads(t) if t.strip().startswith(("[", "{")) else t
     except urllib.error.HTTPError as e:
         return {"__http": e.code, "__body": e.read().decode("utf-8", "replace")[:200]}
+
+
+def roster_student():
+    """从库里取这个学生的真 class_name（🔴 手写 class_name ⇒ 会被老师的班级过滤筛掉 ⇒ 假红）"""
+    r = api("GET", "vocab_states?select=state_val&class_key=eq.__roster_v1")
+    try:
+        rows = r if isinstance(r, list) else []
+        for row in rows:
+            for st in json.loads(row.get("state_val") or "[]"):
+                if str(st.get("id")) == SID:
+                    return st.get("class_name") or "", st.get("class_key") or ""
+    except Exception:
+        pass
+    return "", ""
 
 
 def db_rows():
@@ -58,13 +139,23 @@ def db_mine():
 
 
 def cleanup():
+    """🔴🔴 只删**测试行** ⇒ 绝不能按 class_key 整表删
+       （上一版整表删 ⇒ 把班上 35 条真实记录一起删了 ⇒ 那是我的事故）"""
     rows = db_rows()
+    n = 0
     for r in rows:
-        api("DELETE", "vocab_history_logs?id=eq.%s&class_key=eq.LISTEN" % r["id"])
-    return len(rows)
+        blob = "%s %s" % (r.get("action") or "", r.get("student_id") or "")
+        if MARK in blob or "探针" in blob or "rls" in blob.lower() or r.get("student_id") == PROBE_SID:
+            api("DELETE", "vocab_history_logs?id=eq.%s&class_key=eq.LISTEN" % r["id"])
+            n += 1
+    return n
 
 
 print("=== 每日听力记录站 · 浏览器级闭环（%s）===" % BASE)
+# 🔴 快照必须取在**任何测试动作之前** ⇒ 它就是「测试前的真实状态」
+SNAP = snapshot()
+FP_BEFORE = fingerprint(SNAP)
+print("   测试前 LISTEN 状态：%d 行（指纹 %s）" % (len(SNAP), FP_BEFORE[:10]))
 print("-- 清理历史测试数据：清掉 %d 条" % cleanup())
 
 with sync_playwright() as p:
@@ -77,7 +168,8 @@ with sync_playwright() as p:
     pg.on("dialog", lambda d: d.accept())          # confirm() 一律确认
 
     print("\n-- 学生端 --")
-    pg.goto(BASE + "/student.html", wait_until="networkidle", timeout=90000)
+    goto(pg, BASE + "/student.html")
+    pg.wait_for_selector("#sid", timeout=30000)
     pg.fill("#sid", SID); pg.fill("#sname", NAME)
     pg.click("#btnLogin"); pg.wait_for_timeout(3000)
     ck("学生登录进主页", pg.is_visible("#viewHome"), pg.inner_text("#loginMsg"))
@@ -103,25 +195,44 @@ with sync_playwright() as p:
         ck("② 学生删自己的 → 库里真的少了（回读，不看 HTTP 码）", len(rows2) < n_before,
            "删前 %d → 删后 %d" % (n_before, len(rows2)))
 
+    # ②b 再交一条，**留给老师看**（UI 提交的才有真 class_name / 真日期 ⇒ 老师端默认筛选能命中）
+    pg.click("#btnAdd"); pg.wait_for_timeout(400)
+    pg.fill("#fContent", MARK + "（给老师看）")
+    pg.click("#minChips button:nth-child(3)")
+    pg.click("#catChips button:nth-child(1)")
+    pg.click("#btnSave"); pg.wait_for_timeout(3500)
+    ck("②b 学生再交一条（留给老师端看）", (MARK + "（给老师看）") in pg.inner_text("#myLogs"),
+       pg.inner_text("#addMsg"))
+
     print("\n-- 教师端 --")
+    print("   （清空全部前会恢复测试前快照：%d 行）" % len(SNAP))
     pg2 = br.new_page(viewport={"width": 1280, "height": 900})
     pg2.on("pageerror", lambda e: errs.append("T:" + str(e)))
     pg2.on("dialog", lambda d: d.accept())
-    pg2.goto(BASE + "/teacher.html", wait_until="networkidle", timeout=90000)
+    goto(pg2, BASE + "/teacher.html")
+    pg2.wait_for_selector("#tid", timeout=30000)
     pg2.fill("#tid", "2013"); pg2.fill("#tpwd", "781108")
     pg2.click("#btnLogin"); pg2.wait_for_timeout(4000)
     ck("教师登录进看板", pg2.is_visible("#viewDash"), pg2.inner_text("#loginMsg"))
 
     # 造一条给老师删
-    api("POST", "vocab_history_logs", {"class_key": "LISTEN", "class_name": "浏览器闭环测试",
-                                        "student_id": SID, "timestamp": "2099/01/01 00:00:00",
+    # 🔴 日期必须落在老师端的默认日期区间内（默认区间末端 = 今天）
+    #    ⇒ 用 2099 会让明细表「理应为空」⇒ 那是**我的样本错**，不是产品坏
+    _n = datetime.now()
+    _ts = "%d/%d/%d %02d:%02d:00" % (_n.year, _n.month, _n.day, _n.hour, _n.minute)
+    _cname, _ckey = roster_student()
+    api("POST", "vocab_history_logs", {"class_key": "LISTEN", "class_name": _cname or "互联网金融",
+                                        "student_id": SID, "timestamp": _ts,
                                         "duration_sec": 600, "action": "【听力】测试 | " + MARK})
     pg2.click("#tabLog") if pg2.query_selector("#tabLog") else None
     pg2.wait_for_timeout(2500)
     # 🔴 判据不能是「行数 > 0」：读被挡时表格也会渲染一行「没有记录」⇒ 假绿
     # ⇒ 必须看**内容**（我那条记录的内容真的出现在表里）
-    ck("明细表里能看到刚才那条（看内容，不看行数）", MARK in pg2.inner_text("#tblLog"),
-       "表格文本前 120 字: %r" % pg2.inner_text("#tblLog")[:120])
+    _tbl = pg2.inner_text("#tblLog")
+    ck("明细表里能看到学生刚交的那条（看内容，不看行数）", (MARK + "（给老师看）") in _tbl,
+       "表格文本前 160 字: %r" % _tbl[:160])
+    ck("明细表里能看到探针那条（真 class_name 才不被班级过滤筛掉）", MARK in _tbl,
+       "表格文本前 160 字: %r" % _tbl[:160])
 
     n_before = len(db_rows())
     delbtns = pg2.query_selector_all("#tblLog tbody button")
@@ -150,10 +261,25 @@ with sync_playwright() as p:
     pg2.screenshot(path="/workspace/listen-log/build/shots/e2e_teacher.png", full_page=True)
     br.close()
 
-print("\n-- 清理 --")
+print("\n-- 恢复快照（把清空测试弄掉的真实记录放回去）--")
+restored = restore(SNAP)
+after = snapshot()
+ck("真实记录已恢复（行数一致）", len(after) == len(SNAP), "测试前 %d → 恢复后 %d" % (len(SNAP), len(after)))
+ck("真实记录内容一致（指纹相同）", fingerprint(after) == FP_BEFORE,
+   "指纹 %s vs %s" % (FP_BEFORE[:10], fingerprint(after)[:10]))
+ck("测试行没混进来", not any(MARK in (r.get("action") or "") for r in after),
+   [r.get("action") for r in after if MARK in (r.get("action") or "")][:3])
+
+print("\n-- 清理（只删测试行）--")
 n = cleanup()
 left = db_rows()
-ck("测试数据已删干净", len(left) == 0, left)
+ck("测试数据已删干净（真实记录不受影响）", not any(MARK in (r.get("action") or "") for r in left),
+   "库里还剩 %d 行（真实记录）" % len(left))
+# 🔴 必须用**同一个取数函数**比（db_rows 只 select 3 列，snapshot select 全部列
+#    ⇒ 两套列的指纹当然不同 ⇒ 那是我的判据写错，不是数据出问题）
+_final = snapshot()
+ck("🔴 最终：LISTEN 与测试前**逐字一致**（行数+指纹）", len(_final) == len(SNAP) and fingerprint(_final) == FP_BEFORE,
+   "测试前 %d 行/指纹 %s → 现在 %d 行/指纹 %s" % (len(SNAP), FP_BEFORE[:10], len(_final), fingerprint(_final)[:10]))
 real = [e for e in errs if "favicon" not in e.lower()]
 ck("无 JS 报错", len(real) == 0, real[:3])
 

@@ -381,12 +381,22 @@
 
   /* ---------------- 清空 ---------------- */
   $('btnClear').addEventListener('click', function () {
-    if (!confirm('确定清空全部听力记录吗？此操作不可撤销。')) return;
-    if (!confirm('再确认一次：所有学生的记录都会被删掉。')) return;
+    // 🔴 护栏：① 先说清「要删几条」  ② 要**手打「清空」**两个字  ③ 删完回读确认
+    //    （2026-10-24 我自己的验收脚本点了一次这个按钮 ⇒ 把班上真记录清空了 ⇒ 教训）
+    var n = (data.logs || []).length;
+    var students = {};
+    (data.logs || []).forEach(function (l) { students[l.student_id || l.name || '?'] = 1; });
+    var cnt = Object.keys(students).length;
+    var msg = '将清空全部听力记录：\n\n共 ' + n + ' 条，涉及 ' + cnt + ' 名学生。\n此操作不可撤销。\n\n' +
+              '请在下面输入「清空」两个字来确认：';
+    var typed = window.prompt(msg, '');
+    if (typed === null || typed === undefined) { toast('已取消，什么都没删'); return; }
+    if (String(typed).trim() !== '清空') { toast('未输入「清空」，已取消，什么都没删'); return; }
     LISTEN.rpc('listen_teacher_clear', { p_token: tok })
       .then(function (r) {
+        // 🔴 deleted===0 ⇒ 服务器**没删掉**（RLS 挡着）⇒ 绝不能显示「已清空」
         if (!r || !r.ok) { toast((r && r.msg) || '清空失败'); return; }
-        toast('已清空');
+        toast('已清空 ' + (r.deleted || 0) + ' 条');
         load();
       })
       .catch(function (e) { toast(e.message || '清空失败'); });

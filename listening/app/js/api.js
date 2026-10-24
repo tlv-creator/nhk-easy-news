@@ -249,8 +249,15 @@
       var sid3 = sidOf(args.p_token);
       if (!sid3) return Promise.resolve({ ok: false, msg: '登录已过期，请重新登录' });
       return rest('vocab_history_logs?id=eq.' + Number(args.p_id) +
-        '&class_key=eq.' + CFG.LOG_KEY + '&student_id=eq.' + sid3, { method: 'DELETE' })
-        .then(function () { return { ok: true, deleted: 1 }; });
+        '&class_key=eq.' + CFG.LOG_KEY + '&student_id=eq.' + sid3,
+        { method: 'DELETE', prefer: 'return=representation' })
+        // 🔴 RLS 挡 DELETE 时 PostgREST 仍返回 200/204 + 空数组 ⇒ 「看着删了、其实没删」
+        //    ⇒ 判定必须落在**返回行数**上，不能看 HTTP 码
+        .then(function (rows) {
+          var n = Array.isArray(rows) ? rows.length : 0;
+          if (!n) return { ok: false, msg: '服务器没有真正删除这条记录，请稍后再试或联系老师' };
+          return { ok: true, deleted: n };
+        });
     }
 
     /* ---- 教师登录：密码在服务端比哈希 ---- */
@@ -347,14 +354,25 @@
     if (name === 'listen_teacher_delete') {
       if (!isTeacherToken(args.p_token)) return Promise.resolve({ ok: false, msg: '登录已过期，请重新登录' });
       return rest('vocab_history_logs?id=eq.' + Number(args.p_id) + '&class_key=eq.' + CFG.LOG_KEY,
-        { method: 'DELETE' }).then(function () { return { ok: true, deleted: 1 }; });
+        { method: 'DELETE', prefer: 'return=representation' })
+        .then(function (rows) {
+          var n = Array.isArray(rows) ? rows.length : 0;
+          if (!n) return { ok: false, msg: '服务器没有真正删除这条记录，请稍后再试' };
+          return { ok: true, deleted: n };
+        });
     }
 
     /* ---- 教师清空全部 ---- */
     if (name === 'listen_teacher_clear') {
       if (!isTeacherToken(args.p_token)) return Promise.resolve({ ok: false, msg: '登录已过期，请重新登录' });
-      return rest('vocab_history_logs?class_key=eq.' + CFG.LOG_KEY, { method: 'DELETE' })
-        .then(function () { return { ok: true, deleted: 0 }; });
+      return rest('vocab_history_logs?class_key=eq.' + CFG.LOG_KEY,
+        { method: 'DELETE', prefer: 'return=representation' })
+        .then(function (rows) {
+          var n = Array.isArray(rows) ? rows.length : 0;
+          // 🔴 0 行 = **没删掉**（RLS 挡着）⇒ 绝不能回 ok:true（那是「假成功」）
+          if (!n) return { ok: false, msg: '服务器没有真正清空（可能被数据库权限挡住了），请稍后再试' };
+          return { ok: true, deleted: n };
+        });
     }
 
     return Promise.resolve({ ok: false, msg: '未知操作：' + name });
