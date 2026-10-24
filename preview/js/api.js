@@ -1035,6 +1035,27 @@
   ]
 };
 
+// demo 生词的四级分级（🔴 与真实内容**同一套判据**：2016 版四六级大纲词汇表）
+  //    真实内容的标签是发布时写进 JSON 的（vocab[].cet4）⇒ 这里只补 demo 这份内置数据
+  (function () {
+    var DEMO_CET4 = {
+    "enterprise": "beyond",
+    "attach": "core",
+    "policies": "core",
+    "exceed": "core",
+    "account for": "beyond",
+    "steadily": "secondary",
+    "investment": "core",
+    "artificial intelligence": "beyond",
+    "financing": "core",
+    "competitiveness": "beyond"
+  };
+    (DEMO_ISSUE.vocab || []).forEach(function (v) {
+      var k = String(v.w || '').toLowerCase();
+      if (DEMO_CET4[k]) v.cet4 = DEMO_CET4[k];
+    });
+  })();
+
   function demoIssue() { return DEMO_ISSUE; }
 
   /* ================= 导出 ================= */
