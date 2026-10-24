@@ -451,6 +451,12 @@
       "role": "audio-source",
       "frozen": true,
       "note": "🔴 **写死在 Shun APK 的 assets/app.js（AUDIO_BASE_LOCAL）+ 引导页 shun.json 的 audio 字段** ⇒ redeploy 就换域名 ⇒ APK 里的写死值立刻死 ⇒ 永久冻结。内容要更新只能新建站 + 改所有引用方 + 改完再删旧的。删了 = Shun 网页版没声音 + 新集播不了。⚠️ 2026-10-24 起因：旧音频站 da4lxn2phccck **漏传了 ep13** ⇒ Ep278 没声音。"
+    },
+    {
+      "domain": "h28zxss2zpgag",
+      "project": "shun",
+      "reason": "✅ Shun 现役内容站（v1.2.3：APK + 13 集字幕/词库 + 音频 media/）—— 引导页 shun.json 指着它",
+      "role": "content"
     }
   ],
   "how_to_check_before_deleting": {
