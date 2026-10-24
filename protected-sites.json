@@ -232,6 +232,19 @@
       "role": "mirror",
       "canonical": "https://tlv-creator.github.io/nhk-easy-news/listening/",
       "replaces": "irk7ibwekq8se",
+      "note": "🟡 2026-10-24 换新镜像（ul366v9i8nx0s）：这一版是 **sha256 令牌改造之前**的前端 ⇒ 老师跑完收尾 SQL 后，走这一版的学生**删不了自己的记录**（政策比对 sha256，前端发的是明文令牌）。🟢 **保留不删**（frozen）：老师/学生手里可能存着这个链接，删了当场死；内容已旧，只作保底。",
+      "status": "SUPERSEDED",
+      "replaced_by": "ul366v9i8nx0s"
+    },
+    {
+      "domain": "ul366v9i8nx0s",
+      "project": "listening（每日听力记录）",
+      "reason": "每日听力记录的**国内加速镜像（现行 · sha256 令牌版）** —— 2026-10-24 从 xqrp2rqkvxqwf 换过来（那一版的前端是令牌改造前的）",
+      "written_in": "仓库 listening/version.json + listening/app/version.json 的 mirror 字段、listening/index.html 的「国内加速通道」链接",
+      "frozen": true,
+      "role": "mirror",
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/listening/",
+      "replaces": "xqrp2rqkvxqwf",
       "note": "🔴 frozen=true = 永不删 + 永不 redeploy（域名一换，存过链接的人当场死）。要更新内容：先 `python3 tools/update_listen_mirror.py <新域名>` 改引用，再部署新站。"
     },
     {
