@@ -205,10 +205,16 @@
   function logBrowse(date, sec) {
     return '【CET4】浏览 ' + date + ' | 时长: ' + Math.max(0, Math.round(sec || 0)) + '秒';
   }
-  function logTrans(date, hit, total, comp, band, miss) {
+  function logTrans(date, hit, total, comp, band, miss, errs) {
     var s = '【CET4】翻译练习 ' + date + ' | 命中: ' + hit + '/' + total;
     if (comp != null && comp !== '') s += ' | 完整度: ' + comp + '%';
     if (band) s += ' | 档位: ' + band;
+    // 🔴 语法错误类型（老师端靠它统计「全班最常见的错误类型」）
+    if (errs && errs.length) {
+      s += ' | 错: ' + errs.slice(0, 6).map(function (x) {
+        return String(x).replace(/[，,|｜\n]/g, ' ').trim();
+      }).filter(Boolean).join(',');
+    }
     // 漏掉的采分表达（中文短语，逗号分隔）—— 老师端靠它算「全班最弱的采分点」
     // ⚠️ 最多记 5 个，再多 action 会很长
     if (miss && miss.length) {
@@ -223,7 +229,7 @@
   }
   // 反解 action：老师端统计全靠它
   function parseLog(action) {
-    var out = { kind: '', date: '', num: 0, den: 0, sec: 0, comp: -1, band: '', miss: [] };
+    var out = { kind: '', date: '', num: 0, den: 0, sec: 0, comp: -1, band: '', miss: [], errs: [] };
     var m = /^【CET4】(浏览|翻译练习|理解题)\s*(\d{4}-\d{2}-\d{2})\s*\|\s*(时长|命中|答对):\s*(\d+)(?:\/(\d+))?(秒)?/.exec(action || '');
     if (!m) return out;
     out.kind = m[1];
@@ -239,6 +245,12 @@
     var mm = /\|\s*漏:\s*([^\n|]+)/.exec(action || '');
     if (mm) {
       out.miss = mm[1].split(',').map(function (x) { return x.trim(); })
+        .filter(function (x) { return !!x; });
+    }
+    // 语法错误类型（老日志没有这个字段 ⇒ 保持空数组，兼容）
+    var em = /\|\s*错:\s*([^\n|]+)/.exec(action || '');
+    if (em) {
+      out.errs = em[1].split(',').map(function (x) { return x.trim(); })
         .filter(function (x) { return !!x; });
     }
     return out;
@@ -404,7 +416,7 @@
           action: r.action || '',
           kind: p.kind, issue_date: p.date,
           num: p.num, den: p.den, sec: p.sec,
-          comp: p.comp, band: p.band, miss: p.miss,
+          comp: p.comp, band: p.band, miss: p.miss, errs: p.errs,
           duration_sec: r.duration_sec || 0
         };
       });
@@ -555,11 +567,16 @@
       var comp = Math.round(hit / total * 100);
       var band = comp >= 95 ? DEMO_BANDS[0] : comp >= 85 ? DEMO_BANDS[1]
         : comp >= 70 ? DEMO_BANDS[2] : comp >= 40 ? DEMO_BANDS[3] : DEMO_BANDS[4];
+      // 🔴 带语法错误类型 ⇒ 老师看板的「全班最常见的语法错误类型」有数据可看
+      var DEMO_ERRS = [['时态', '冠词'], ['时态'], ['冠词', '主谓一致'], ['单复数'],
+        ['时态', '冠词', '介词搭配'], ['拼写'], ['动词形式'], ['时态', '主谓一致', '单复数']];
+      var errs = DEMO_ERRS[Math.floor(rnd() * DEMO_ERRS.length)];
+      if (rnd() < 0.25) errs = [];          // 有些学生一条都没错
       logs.push({
         id: logs.length + 1, student_id: st.id, name: st.name,
         class_key: st.class_key, class_name: st.class_name,
         ts_date: today, time: pad(9 + Math.floor(rnd() * 8)) + ':' + pad(Math.floor(rnd() * 60)),
-        action: logTrans(today, hit, total, comp, band, miss),
+        action: logTrans(today, hit, total, comp, band, miss, errs),
         duration_sec: 0
       });
     }

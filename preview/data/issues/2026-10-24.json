@@ -20,70 +20,80 @@
       "pos": "n.",
       "cn": "栖息地",
       "ex": "The snow leopard habitat now covers 2.08 million square kilometers.",
-      "note": "四级核心词；注意与 hotel（旅馆）区分"
+      "note": "四级核心词；注意与 hotel（旅馆）区分",
+      "cet4": "beyond"
     },
     {
       "w": "population",
       "pos": "n.",
       "cn": "种群；人口",
       "ex": "The population has doubled to about 5,000.",
-      "note": "指动物数量时说 population of + 动物；the number of 后面接复数"
+      "note": "指动物数量时说 population of + 动物；the number of 后面接复数",
+      "cet4": "core"
     },
     {
       "w": "protection",
       "pos": "n.",
       "cn": "保护",
       "ex": "Systematic protection began in 2013.",
-      "note": "protect 名词化，常搭 protection of / under protection"
+      "note": "protect 名词化，常搭 protection of / under protection",
+      "cet4": "core"
     },
     {
       "w": "distribution",
       "pos": "n.",
       "cn": "分布（区域）",
       "ex": "China has the largest distribution area of the species.",
-      "note": "distribution area 指物种分布区；distribute 是动词"
+      "note": "distribution area 指物种分布区；distribute 是动词",
+      "cet4": "core"
     },
     {
       "w": "official",
       "pos": "n.",
       "cn": "官员",
       "ex": "Officials say the population has doubled.",
-      "note": "名词复数 officials 表「官方人士」；形容词义「官方的」"
+      "note": "名词复数 officials 表「官方人士」；形容词义「官方的」",
+      "cet4": "core"
     },
     {
       "w": "release",
       "pos": "v.",
       "cn": "放归野外；释放",
       "ex": "Eight snow leopards were released into the wild.",
-      "note": "be released into the wild 是野生动物放归的固定说法"
+      "note": "be released into the wild 是野生动物放归的固定说法",
+      "cet4": "core"
     },
     {
       "w": "strict",
       "pos": "adj.",
       "cn": "严格的",
       "ex": "More than 800,000 square kilometers is under strict protection.",
-      "note": "strict protection / strict control，都是高频搭配"
+      "note": "strict protection / strict control，都是高频搭配",
+      "cet4": "core"
     },
     {
       "w": "conflict",
       "pos": "n.",
       "cn": "冲突（尤指人兽冲突）",
       "ex": "Conflicts between people and animals remain serious.",
-      "note": "human-wildlife conflict 四级外刊高频；conflict with sb"
+      "note": "human-wildlife conflict 四级外刊高频；conflict with sb",
+      "cet4": "core"
     },
     {
       "w": "species",
       "pos": "n.",
       "cn": "物种",
       "ex": "The species is called the king of the mountains.",
-      "note": "单复数同形，谓语用单数；本义「种类」"
+      "note": "单复数同形，谓语用单数；本义「种类」",
+      "cet4": "beyond"
     },
     {
       "w": "monitor",
       "pos": "v.",
       "cn": "监测；监控",
       "ex": "Researchers need to monitor the animals.",
-      "note": "四级常考义；monitor 作名词时是「显示器」"
+      "note": "四级常考义；monitor 作名词时是「显示器」",
+      "cet4": "core"
     }
   ],
   "translation": {

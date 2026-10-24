@@ -169,48 +169,14 @@
       + '<div class="tp"><div class="tp-h">采分点拆解 · ' + (sent.pts || []).length + ' 个</div>' + pts + '</div>';
   }
 
-  // 中式英语坑：默认收起，点开才给错例/正解
-  function pitItemHTML(p, i) {
-    return '<div class="dis"><div class="dis-h"><span class="k">' + (i + 1) + '</span><b>' + esc(p.title) + '</b></div>'
-      + '<p class="pit-body" hidden></p>'
-      + '<button type="button" class="link pit-btn" data-i="' + i + '">看错例和正解</button></div>';
-  }
-  function pitRevealHTML(p) {
-    return '<b>错误：</b>' + esc(p.wrong) + '<br><b>问题：</b>' + esc(p.why) + '<br><b class="fix">正确：</b>' + esc(p.right);
-  }
-
-  // 理解题：默认只给题干 + 4 个选项；对错 / 解析点开才注入
-  function quizItemHTML(item, i, picked) {
-    var opts = (item.opts || []).map(function (o, j) {
-      return '<button type="button" class="opt' + (picked === j ? ' picked' : '') + '" data-q="' + i + '" data-o="' + j + '">'
-        + '<span class="ol">' + 'ABCD'.charAt(j) + '.</span><span class="txt">' + esc(o) + '</span></button>';
-    }).join('');
-    return '<div class="qa" id="qa' + i + '">'
-      + '<div class="q"><span class="no">Q' + (i + 1) + '</span>' + esc(item.q) + '</div>'
-      + '<div class="opts">' + opts + '</div>'
-      + '<div class="actions"><button type="button" class="sm ghost" id="whyBtn' + i + '">查看答案</button>'
-      + '<span class="msg" id="whyMsg' + i + '"></span></div>'
-      + '<div id="whyBox' + i + '"></div>'
-      + '</div>';
-  }
-  function quizRevealHTML(item, picked) {
-    var ans = item.answer;
-    var opts = (item.opts || []).map(function (o, j) {
-      var cls = 'opt', mark = '';
-      if (j === ans) { cls += ' right'; mark = '<span class="mark">（正确答案）</span>'; }
-      else if (j === picked) { cls += ' wrong'; mark = '<span class="mark">（你选的 · 错）</span>'; }
-      return '<button type="button" class="' + cls + '" disabled>' + '<span class="ol">' + 'ABCD'.charAt(j) + '.</span>'
-        + '<span class="txt">' + esc(o) + '</span>' + mark + '</button>';
-    }).join('');
-    return '<div class="qa-why"><b>解析：</b>' + esc(item.why)
-      + '<div class="ev"><b>原文依据：</b>' + esc(item.evidence) + '</div></div>'
-      + '<div class="opts" style="margin-top:10px">' + opts + '</div>';
-  }
-
   // 生词卡：默认只有单词 + 词性
   function vocabCardHTML(v, i, open) {
+    // 🔴 四级词汇标签：core/secondary = 四级；beyond = 超纲（大纲里没有）
+    var lv = v.cet4 || '';
+    var lvHtml = lv ? ('<span class="lv' + (lv === 'beyond' ? ' lv2' : '') + '">'
+      + (lv === 'beyond' ? '超纲' : '四级') + '</span>') : '';
     return '<button type="button" class="vc' + (open ? ' open' : '') + '" data-i="' + i + '" aria-expanded="' + (open ? 'true' : 'false') + '">'
-      + '<span class="w">' + esc(v.w) + '</span><span class="p">' + esc(v.pos) + '</span>'
+      + '<span class="w">' + esc(v.w) + '</span><span class="p">' + esc(v.pos) + '</span>' + lvHtml
       + (open ? '<span class="d"><span class="cn">' + esc(v.cn) + '</span>'
         + '<span class="ex">' + esc(v.ex) + '</span>'
         + (v.note ? '<span class="note">' + esc(v.note) + '</span>' : '') + '</span>' : '')
@@ -248,8 +214,6 @@
     exprCardHTML: exprCardHTML, exprNoteHTML: exprNoteHTML,
     hintsHTML: hintsHTML, draftBlockHTML: draftBlockHTML,
     segItemHTML: segItemHTML, segRevealHTML: segRevealHTML,
-    pitItemHTML: pitItemHTML, pitRevealHTML: pitRevealHTML,
-    quizItemHTML: quizItemHTML, quizRevealHTML: quizRevealHTML,
     vocabCardHTML: vocabCardHTML, articleHTML: articleHTML,
     kwClassOf: kwClassOf, expandAllLabel: expandAllLabel
   };
@@ -272,11 +236,9 @@
   var issue = null;           // 当前这一期
   var practice = null;        // createPractice(exprs)
   var vocabOpen = {};         // {index:true}
+  var beyondOpen = false;     // 超纲词区是否展开
   var exprOpen = {};          // {index:true}
-  var quizPicked = {};        // {qIndex: optIndex}
-  var quizRevealed = {};      // {qIndex:true}
   var segOpen = {};           // {no:true}
-  var pitOpen = {};           // {index:true}
   var manualKw = {};          // 学生自己点的采分点标记
   var browse = { last: 0, sec: 0, sent: 0 };
 
@@ -513,10 +475,7 @@
     }
     $('transTitle').textContent = issue.translation.title || '翻译练习';
     $('transBrief').textContent = issue.translation.brief || '';
-    $('quizCount').textContent = issue.quiz.length;
     rebuildPractice();
-    renderPits();
-    renderQuiz();
     startTimerLoop();
   }
 
@@ -524,23 +483,44 @@
   function renderVocab() {
     var box = $('vocabGrid');
     box.textContent = '';
-    (issue.vocab || []).forEach(function (v, i) {
+    var all = issue.vocab || [];
+    // 🔴 四级词在前，超纲词折叠在后面（用户要求「生词给四级词汇」；
+    //    超纲词不是错，只是「不在大纲里」⇒ 折起来，不混进主列表）
+    var core = [], beyond = [];
+    all.forEach(function (v, i) { (v.cet4 === 'beyond' ? beyond : core).push({ v: v, i: i }); });
+    var beyondBtn = $('btnBeyondVocab');
+    var beyondWrap = $('beyondWrap');
+
+    function card(v, i) {
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'vc' + (vocabOpen[i] ? ' open' : '');
       b.setAttribute('data-i', i);
       b.setAttribute('aria-expanded', vocabOpen[i] ? 'true' : 'false');
-      b.innerHTML = '<span class="w">' + CET4UI.esc(v.w) + '</span><span class="p">' + CET4UI.esc(v.pos) + '</span>'
-        + (vocabOpen[i] ? '<span class="d"><span class="cn">' + CET4UI.esc(v.cn) + '</span>'
-          + '<span class="ex">' + CET4UI.esc(v.ex) + '</span>'
-          + (v.note ? '<span class="note">' + CET4UI.esc(v.note) + '</span>' : '') + '</span>' : '');
+      b.innerHTML = CET4UI.vocabCardHTML(v, i, !!vocabOpen[i]);
       b.addEventListener('click', function () {
         vocabOpen[i] = !vocabOpen[i];
         try { localStorage.setItem('cet4.vocab.' + issue.date, JSON.stringify(vocabOpen)); } catch (e) { }
         renderVocab();
       });
-      box.appendChild(b);
-    });
+      return b;
+    }
+
+    core.forEach(function (o) { box.appendChild(card(o.v, o.i)); });
+
+    if (beyond.length) {
+      if (beyondBtn) {
+        beyondBtn.textContent = (beyondOpen ? '收起超纲词' : '另有 ' + beyond.length + ' 个超纲词（点开看）');
+        beyondBtn.hidden = false;
+      }
+      if (beyondWrap) {
+        beyondWrap.textContent = '';
+        beyond.forEach(function (o) { beyondWrap.appendChild(card(o.v, o.i)); });
+        beyondWrap.hidden = !beyondOpen;
+      }
+    } else if (beyondBtn) {
+      beyondBtn.hidden = true;
+    }
   }
 
   /* ---------------- 采分表达表 ---------------- */
@@ -660,6 +640,64 @@
      🔴 这里报的是「信息完整度」和**档位区间**，不是最终四级分数 ——
         语言错误（语法 / 通顺）机器看不见，所以必须诚实标注。
      --------------------------------------------------------------------- */
+  /* ---------------- 语法检查（本地规则引擎，零成本、离线可用） ----------------
+     · 词库（四级大纲带词性）**按需加载** ⇒ 不占首屏流量
+     · 拿不到词库也能跑（只用不依赖词库的那几条规则） */
+  var lexPromise = null;
+  function loadLexicon() {
+    if (lexPromise) return lexPromise;
+    lexPromise = fetch('data/cet4_lexicon.json').then(function (r) { return r.json(); })
+      .then(function (lex) {
+        if (global.CET4Grammar) global.CET4Grammar.setLexicon(lex);
+        return lex;
+      }).catch(function () { return null; });
+    return lexPromise;
+  }
+
+  /** 逐句跑语法检查 ⇒ {errors, types, typeList} */
+  function checkGrammar() {
+    var G = global.CET4Grammar;
+    if (!G || !practice) return null;
+    var nos = practice.sentNos || [];
+    var all = [], types = {};
+    for (var i = 0; i < nos.length; i++) {
+      var text = String(practice.store[nos[i]] || '');
+      if (!text.trim()) continue;
+      var r = G.check(text);
+      for (var j = 0; j < r.errors.length; j++) {
+        var e = r.errors[j];
+        e.no = nos[i];
+        all.push(e);
+      }
+      for (var t in r.types) { if (r.types.hasOwnProperty(t)) types[t] = (types[t] || 0) + r.types[t]; }
+    }
+    var typeList = Object.keys(types).sort(function (a, b) { return types[b] - types[a]; });
+    return { errors: all, types: types, typeList: typeList, total: all.length };
+  }
+
+  function renderGrammar(g) {
+    var box = $('resGram');
+    if (!box) return;
+    if (!g) { box.innerHTML = ''; box.hidden = true; return; }
+    box.hidden = false;
+    if (!g.total) {
+      box.innerHTML = '<div class="res-note-i ok">✓ 没查到常见语法问题（只查了机器能查的那几类，仍以参考译文为准）</div>';
+      return;
+    }
+    var head = g.typeList.map(function (t) {
+      return '<span class="gtag">' + CET4UI.esc(t) + ' × ' + g.types[t] + '</span>';
+    }).join('');
+    var list = g.errors.slice(0, 12).map(function (e) {
+      return '<div class="res-i no"><span>' + CET4UI.esc(e.type) + '</span>'
+        + '<span>第 ' + e.no + ' 句：' + CET4UI.esc(e.msg)
+        + (e.fix ? '　<b>改法：</b>' + CET4UI.esc(e.fix) : '') + '</span></div>';
+    }).join('');
+    var more = g.errors.length > 12 ? '<div class="res-note-i">…… 还有 ' + (g.errors.length - 12) + ' 处没列出来</div>' : '';
+    box.innerHTML = '<div class="gram-h">语法问题（机器查的常见错误，可能有误报）</div>'
+      + '<div class="gram-tags">' + head + '</div>' + list + more
+      + '<div class="res-note-i">这些是**常见错误类型**的提示，不是判卷；最终以参考译文和老师的判断为准。</div>';
+  }
+
   function doCheck() {
     var res = practice.check();
     paintKw();
@@ -687,6 +725,11 @@
     $('resList').innerHTML = per + miss + notes;
 
     setMsg($('checkMsg'), '机器初判完成：信息完整度 ' + res.completeness + '%（' + CET4Score.bandText(band) + '）', 'ok');
+    // 语法检查：先出结果（不依赖词库的那部分），词库到了再补更细的
+    renderGrammar(checkGrammar());
+    loadLexicon().then(function () {
+      if (practice && practice.checked) renderGrammar(checkGrammar());
+    });
     reportTranslation(res);
     toast('初判完成：信息完整度 ' + res.completeness + '%');
   }
@@ -722,57 +765,11 @@
   }
 
   /* ---------------- 中式英语坑 ---------------- */
-  function renderPits() {
-    var box = $('pitGrid');
-    box.textContent = '';
-    (issue.translation.pitfalls || []).forEach(function (p, i) {
-      var d = document.createElement('div');
-      d.innerHTML = CET4UI.pitItemHTML(p, i);
-      var el = d.firstChild;
-      var btn = el.querySelector('.pit-btn');
-      var body = el.querySelector('.pit-body');
-      btn.addEventListener('click', function () {
-        pitOpen[i] = !pitOpen[i];
-        if (pitOpen[i]) { body.innerHTML = CET4UI.pitRevealHTML(p); body.hidden = false; btn.textContent = '收起'; }
-        else { body.innerHTML = ''; body.hidden = true; btn.textContent = '看错例和正解'; }
-      });
-      box.appendChild(el);
-    });
-  }
-
-  /* ---------------- 理解题 ---------------- */
-  function renderQuiz() {
-    var box = $('quizWrap');
-    box.textContent = '';
-    (issue.quiz || []).forEach(function (q, i) {
-      var d = document.createElement('div');
-      d.innerHTML = CET4UI.quizItemHTML(q, i, quizPicked[i]);
-      var el = d.firstChild;
-      box.appendChild(el);
-      Array.prototype.forEach.call(el.querySelectorAll('.opt'), function (b) {
-        b.addEventListener('click', function () {
-          quizPicked[i] = parseInt(b.getAttribute('data-o'), 10);
-          renderQuiz();
-        });
-      });
-      $('whyBtn' + i).addEventListener('click', function () {
-        quizRevealed[i] = !quizRevealed[i];
-        if (quizRevealed[i]) {
-          $('whyBox' + i).innerHTML = CET4UI.quizRevealHTML(q, quizPicked[i]);
-          $('whyBtn' + i).textContent = '收起答案';
-          setMsg($('whyMsg' + i), quizPicked[i] === undefined ? '这题你还没选，先选再对答案。' : '');
-        } else {
-          $('whyBox' + i).innerHTML = '';
-          $('whyBtn' + i).textContent = '查看答案';
-          setMsg($('whyMsg' + i), '');
-        }
-      });
-    });
-  }
-
   /* ---------------- 记录上报 ---------------- */
   function reportTranslation(res) {
     if (!me || !issue) return;
+    // 🔴 语法错误类型 —— 老师端靠它统计「全班最常见的错误类型」
+    var g = checkGrammar();
     CET4.addLog({
       class_name: me.class_name, student_id: me.student_id,
       duration_sec: 0,
@@ -781,18 +778,10 @@
         res.completeness,
         res.band ? ('第' + res.band.no + '档') : '',
         // 🔴 漏掉的是哪几个采分表达 —— 老师端靠它算「全班最弱的采分点」
-        (res.missing || []).map(function (m) { return m.cn; })
+        (res.missing || []).map(function (m) { return m.cn; }),
+        // 🔴 语法错误类型（老师端靠它算「全班最常见的错误类型」）
+        g ? g.typeList : []
       )
-    }).then(function (r) {
-      if (r && r.ok === false && r.queued) toast('已存到本机，联网后自动补记');
-    });
-  }
-  function reportQuiz(ok, total) {
-    if (!me || !issue) return;
-    CET4.addLog({
-      class_name: me.class_name, student_id: me.student_id,
-      duration_sec: 0,
-      action: CET4.logQuiz(issue.date, ok, total)
     }).then(function (r) {
       if (r && r.ok === false && r.queued) toast('已存到本机，联网后自动补记');
     });
@@ -875,6 +864,13 @@
 
   /* ---------------- 事件绑定 ---------------- */
   $('btnLogin').addEventListener('click', doLogin);
+  var btnBeyond = $('btnBeyondVocab');
+  if (btnBeyond) {
+    btnBeyond.addEventListener('click', function () {
+      beyondOpen = !beyondOpen;
+      renderVocab();
+    });
+  }
   // 🔴 自测号一键进入（老师 / 教研 / 设备调试用）
   //    不占名册、记录不进老师看板统计 ⇒ 自测多少次都不污染班级数据
   var btnTest = $('btnTestLogin');
@@ -950,21 +946,6 @@
     out.innerHTML = '<div class="ai-pending">AI 批改还没接上这一站。'
       + '<br><span class="muted">接上之后：一次调用约 2000 token ≈ ¥0.0002，按需点，不点不花钱。</span></div>';
   });
-  $('btnQuizSubmit').addEventListener('click', function () {
-    if (!issue) return;
-    var qs = issue.quiz || [];
-    var ok = 0, blank = 0;
-    qs.forEach(function (q, i) {
-      if (quizPicked[i] === undefined) blank++;
-      else if (quizPicked[i] === q.answer) ok++;
-    });
-    reportQuiz(ok, qs.length);
-    var msg = '已提交：答对 ' + ok + ' / ' + qs.length + ' 题';
-    if (blank) msg += '（还有 ' + blank + ' 题没选，没选的算错）';
-    setMsg($('quizMsg'), msg, 'ok');
-    toast(msg);
-  });
-
   window.addEventListener('resize', syncTopH);
   window.addEventListener('load', syncTopH);
   boot();

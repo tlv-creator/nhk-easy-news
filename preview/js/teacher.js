@@ -97,8 +97,22 @@
       return a.cn.localeCompare(b.cn);
     }).slice(0, 3);
 
+    // 🔴 语法错误类型分布（老师最想看的一个：全班最常犯哪几类错）
+    var errCount = {};
+    recs.forEach(function (l) {
+      (l.errs || []).forEach(function (t) {
+        if (!t) return;
+        errCount[t] = (errCount[t] || 0) + 1;
+      });
+    });
+    var errTypes = Object.keys(errCount).map(function (t) {
+      return { type: t, n: errCount[t] };
+    }).sort(function (a, b) { return b.n - a.n || a.type.localeCompare(b.type); });
+
     return {
       attempts: recs.length,            // 作答人次
+      err_types: errTypes,              // 语法错误类型（按人次降序）
+      err_total: Object.keys(errCount).length ? Object.keys(errCount).reduce(function (a, k) { return a + errCount[k]; }, 0) : 0,
       students: (function () {
         var s = {};
         recs.forEach(function (l) { s[String(l.student_id)] = 1; });
@@ -162,7 +176,8 @@
         browse_sec: b.browse_sec, browse_min: Math.round(b.browse_sec / 60),
         exercises: b.exercises,
         quiz_ok: b.quiz_ok, quiz_total: b.quiz_total,
-        accuracy: pct(b.quiz_ok, b.quiz_total),
+        // 🔴 理解题已去掉 ⇒ 「正确率」改用**采分点命中率**（转译练习的命中/总数）
+        accuracy: pct(b.trans_hit, b.trans_total),
         trans_hit: b.trans_hit, trans_total: b.trans_total,
         trans_comp: b.trans_comp_n ? Math.round(b.trans_comp_sum / b.trans_comp_n) : -1,
         trans_band: (function () {
@@ -192,9 +207,11 @@
     });
     (logs || []).forEach(function (l) { rangeSet[String(l.student_id)] = 1; });
 
-    var quizOk = 0, quizTotal = 0;
+    var quizOk = 0, quizTotal = 0;          // 旧版理解题记录（保留，不丢老数据）
+    var transHit = 0, transTotal = 0;       // 采分点命中（现在的主口径）
     (logs || []).forEach(function (l) {
       if (l.kind === '理解题') { quizOk += l.num || 0; quizTotal += l.den || 0; }
+      if (l.kind === '翻译练习') { transHit += l.num || 0; transTotal += l.den || 0; }
     });
 
     var absent = (roster || []).filter(function (s) { return !todaySet[String(s.id)]; })
@@ -212,8 +229,8 @@
         range_active: Object.keys(rangeSet).length,
         today_browse_sec: todayBrowse,
         today_exercises: todayEx,
-        accuracy: pct(quizOk, quizTotal),
-        quiz_ok: quizOk, quiz_total: quizTotal,
+        accuracy: pct(transHit, transTotal),          // 采分点命中率（主口径）
+        quiz_ok: quizOk, quiz_total: quizTotal,         // 旧版理解题（留档）
         today_accuracy: pct(todayQuizOk, todayQuizTotal),
         total_logs: (logs || []).length
       }
@@ -534,7 +551,28 @@
         + '（学生端升级到带「漏点」记录的版本后，交卷就会自动记上。）</p></div>';
     }
 
-    box.innerHTML = compHtml + bandHtml + weakHtml;
+    // ④ 🔴 全班最常见的语法错误类型
+    var errHtml;
+    if (t.err_types && t.err_types.length) {
+      var top = t.err_types.slice(0, 5);
+      var maxn = top[0].n || 1;
+      errHtml = '<div class="terr">'
+        + '<div class="terr-h">🔴 全班最常见的 ' + top.length + ' 类语法错误</div>'
+        + top.map(function (e, i) {
+          return '<div class="te"><span class="te-i">' + (i + 1) + '</span>'
+            + '<span class="te-t">' + esc(e.type) + '</span>'
+            + '<span class="te-bar"><i style="width:' + Math.round(e.n / maxn * 100) + '%"></i></span>'
+            + '<span class="te-n">' + e.n + ' 人次</span></div>';
+        }).join('')
+        + '<p class="muted tw-note">口径：所选区间内共 ' + t.err_total
+        + ' 处错误类型（每份答卷每类只算 1 次）。'
+        + '机器查的是常见错误类型，可能有误报 ⇒ 当线索用，别当判卷。</p></div>';
+    } else {
+      errHtml = '<div class="terr"><div class="terr-h">🔴 全班最常见的语法错误类型</div>'
+        + '<p class="lead">还没有错误类型明细。（学生端交卷时自动记录；旧记录没有这个字段。）</p></div>';
+    }
+
+    box.innerHTML = compHtml + bandHtml + weakHtml + errHtml;
   }
 
   function renderStats(agg) {
@@ -546,7 +584,7 @@
       ['累计参与人数', t.range_active + ' 人', '本区间有记录'],
       ['今日总浏览时长', CET4T.fmtMin(t.today_browse_sec), '30 秒内有交互才计'],
       ['今日总做题数', t.today_exercises + ' 次', '翻译 + 理解题'],
-      ['平均正确率', t.accuracy, '今日 ' + t.today_accuracy]
+      ['平均采分点命中率', t.accuracy, '今日 ' + t.today_accuracy]
     ].forEach(function (p) {
       var d = document.createElement('div');
       d.className = 'stat';
@@ -709,7 +747,7 @@
     var p = rangeParams();
     var logs = CET4T.filterLogs(data.allLogs || [], p);
     var agg = CET4T.aggregate(logs, data.roster || [], CET4.todayStr(), data.allLogs || []);
-    var head = ['学号', '姓名', '班级', '最近学习时间', '累计时长(秒)', '累计做题(次)', '累计正确率', '已完成期数', '累计浏览分钟'];
+    var head = ['学号', '姓名', '班级', '最近学习时间', '累计时长(秒)', '累计做题(次)', '累计采分点命中率', '已完成期数', '累计浏览分钟'];
     var rows = [head].concat(agg.students.map(function (s) {
       return [s.student_id, s.name, s.class_name || s.class_key, s.last_ts,
         s.browse_sec, s.exercises, s.accuracy, s.issues_done, s.browse_min];
