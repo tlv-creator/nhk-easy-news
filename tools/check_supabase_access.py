@@ -36,7 +36,9 @@ import urllib.error
 import urllib.request
 
 SB_URL = os.environ.get('SB_URL', 'https://lszwxcmvcvbraqtrtgon.supabase.co')
-SB_KEY = os.environ.get('SB_KEY', 'sb_publishable_3LuLZXWMadqYH3SLYOenig_ECHa51Mo')
+# anon key **不硬编码在文件里**（它虽然本来就是公开的，但每多一份副本就多一处要清理的地方）
+# 用法：export SB_KEY=<你的 anon publishable key>
+SB_KEY = os.environ.get('SB_KEY', '')
 REPO = 'tlv-creator/nhk-easy-news'
 GH = os.environ.get('GH_TOKEN', '')
 
@@ -219,6 +221,10 @@ def probe_write(table):
 
 def main(argv):
     scan_only = '--scan-only' in argv
+    if not SB_KEY:
+        sys.stderr.write('❌ 没设 SB_KEY（Supabase anon publishable key）\n'
+                         '   export SB_KEY=<key>  再跑\n')
+        return 2
     write_probe = '--write-probe' in argv
 
     print('══ ① 扫三个站的前端源码，看它们实际用到哪些「表 × 操作」 ══')
