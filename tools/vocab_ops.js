@@ -39,6 +39,10 @@ var TIMEOUT_MS = 15000;
 /* ---------------- 小工具 ---------------- */
 
 function json(statusCode, obj) {
+  var o = { service: 'vocab-ops' };   // 🔴 身份标记：前端靠它分辨「这是我的端点」还是「ai-proxy 的通用响应」
+  for (var k in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, k)) o[k] = obj[k];
+  }
   return {
     statusCode: statusCode,
     headers: {
@@ -47,7 +51,7 @@ function json(statusCode, obj) {
       'Access-Control-Allow-Headers': 'Content-Type,Authorization',
       'Access-Control-Allow-Methods': 'POST,OPTIONS'
     },
-    body: JSON.stringify(obj)
+    body: JSON.stringify(o)
   };
 }
 

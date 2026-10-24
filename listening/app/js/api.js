@@ -89,12 +89,14 @@
           if (timer) clearTimeout(timer);
           var b = null;
           try { b = t ? JSON.parse(t) : null; } catch (e) { b = null; }
+          // 🔴🔴 先认人：ai-proxy 那个函数对**任何** POST 都会回 {"ok":false,"error":"bad_request"}
+          //    ⇒ 不带 service 标记的响应 = **我的端点还没上线**（路由没加 / 函数没更新）
+          //    ⇒ 必须退回旧的 anon 路径，否则老师的两个按钮直接废
+          var mine = !!(b && b.service === 'vocab-ops');
+          if (!mine) return { state: 'notdeployed', status: r.status, body: b };
           if (r.status === 401) return { state: 'unauthorized', status: 401, body: b };
-          if (r.status === 400) return { state: 'error', status: 400, body: b };
           if (r.ok && b && b.ok === true) return { state: 'ok', status: r.status, body: b };
-          if (r.status === 404 || r.status === 405 || r.status === 501) {
-            return { state: 'notdeployed', status: r.status, body: b };
-          }
+          if (r.status === 400) return { state: 'error', status: 400, body: b };
           if (r.status >= 500) return { state: 'notdeployed', status: r.status, body: b };
           return { state: 'error', status: r.status, body: b };
         });
