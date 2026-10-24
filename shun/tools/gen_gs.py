@@ -42,6 +42,20 @@ BRACKETS = {"[]", "［］", "〈〉", "（）"}
 # 软规则命中记录（不拦人，只记）
 WARN = []
 
+# 🔴 括号组正则（**全角右括号 ］ 一定要在排除集里**）：
+#    漏了它 ⇒ 「［A］［B］」会被当成一个组 ⇒ strip_brackets 剥成 "A］［B"
+#    ⇒ skel 校验报「实词不在原句」（2026-10-24 实测踩到）。
+GRP_RE = re.compile(r"[【\［（(〈][^】\］\)）〉]*[】\］\)）〉]"
+                     r"|[^【\［（(〈】\］\)）〉]+")
+
+# 语法术语白名单：skel 里出现这些词时视为「占位说明」而不是原文（不当幻觉）
+GRAMMAR_TERMS = {
+    "主语", "谓语", "宾语", "主题", "对象", "从句", "修饰", "定语", "状语",
+    "补语", "连接", "副词", "动词", "形容词", "助词", "形式名词", "语气",
+    "主句", "从句", "否定", "疑问", "命令", "劝诱", "意志", "使役", "被动",
+    "可能", "能力", "补助", "敬语", "时", "体", "内容", "接续", "句型",
+}
+
 # 括号 → 允许的角色关键词（role 里出现这些词才算配套）
 ROLE_RULES = {
     "[]": ("连接", "副词", "转折", "并列"),
@@ -357,13 +371,20 @@ BRACKET_PAIRS = [("［", "］"), ("【", "】"), ("〈", "〉"), ("（", "）"),
 
 
 def strip_brackets(s):
-    """剥掉一层括号（chain / skel 允许带括号，比对时要剥）。"""
+    """剥掉一层括号（chain / skel 允许带括号，比对时要剥）。
+
+    🔴 空括号组也要剥：「（）できません」⇒ 剥成「できません」
+       （只判「整体是空括号」不够，前缀是空括号 + 文字的情况很常见）。
+    """
     t = (s or "").strip()
+    for a, b in BRACKET_PAIRS:
+        if t == a + b:
+            return ""          # 空括号组（如「〈〉」）⇒ 视为空
+        if t.startswith(a + b):
+            return t[len(a) + len(b):].strip()
     for a, b in BRACKET_PAIRS:
         if t.startswith(a) and t.endswith(b) and len(t) > 2:
             return t[1:-1].strip()
-        if t == a + b:
-            return ""          # 空括号组（如「〈〉」）⇒ 视为空
     return t
 
 
@@ -423,14 +444,18 @@ def check(gs, ja):
             return False, "frame[%d] %s" % (i, why)
 
     # frame 的块在原句里的位置必须**递增不重叠**（防止模型乱序 / 重复）
-    last_end = -1
+    # 🔴 同一个词可能在句里出现多次（如「も」）⇒ 必须**从上一块的结束位置往后找**，
+    #    固定用 find(第一处) 会把后面的块判成「位置倒退」⇒ 误杀。
+    last_end = 0
     for i, f in enumerate(frame):
         s = norm(f.get("s"))
-        pos = ja.find(s)
+        pos = ja.find(s, last_end) if s else -1
         if pos >= 0:
-            if pos < last_end:
-                return False, "frame[%d] 位置倒退或重叠: %r (pos=%d, last_end=%d)" % (i, s, pos, last_end)
             last_end = pos + len(s)
+        else:
+            pos = ja.find(s)
+            if pos >= 0:
+                return False, "frame[%d] 位置倒退或重叠: %r (pos=%d, last_end=%d)" % (i, s, pos, last_end)
 
     for i, b in enumerate(blocks):
         if not isinstance(b, dict):
@@ -446,7 +471,7 @@ def check(gs, ja):
         #   理由：inner 是「块内骨架」，模型常把助词/连接成分一起写进来
         #   （如块是「お金」，inner 写「【お金が】」—— 「が」在原句但不在块内）
         #   ⇒ 真幻觉（原文里根本没有）仍会被抓到。
-        for piece in re.findall(r"[【\[（(〈][^】\]）)〉]*[】\]）)〉]", inner):
+        for piece in GRP_RE.findall(inner):
             p = piece[1:-1].strip()
             if p and p not in ja:
                 return False, "blocks[%d].inner 成分不在原句: %r" % (i, p)
@@ -466,11 +491,14 @@ def check(gs, ja):
             #    ⇒ 强求块内会误杀 ⇒ 只抓「原句里根本没有」和「张冠李戴（离块太远）」。
             if ps not in ja:
                 return False, "blocks[%d].parts[%d].s 不在原句: %r" % (i, j, ps)
+            # ⚠️ 「离块太远」只做**软警告**：
+            #    同一个词在句里出现多次时（「を」「も」…）位置判定不可靠 ⇒ 误杀率高
+            #    ⇒ 真幻觉（原文里根本没有）已由上面的「不在原句」抓住。
             blk_s = b.get("s", "")
-            pos = ja.find(ps)
+            pos = ja.find(ps, max(0, ja.find(blk_s)))
             bpos = ja.find(blk_s)
             if pos >= 0 and bpos >= 0 and not (bpos - 4 <= pos <= bpos + len(blk_s) + 4):
-                return False, "blocks[%d].parts[%d].s 离块太远: %r" % (i, j, ps)
+                WARN.append("blocks[%d].parts[%d].s 离块偏远: %r" % (i, j, ps))
             if not note:
                 return False, "blocks[%d].parts[%d].note 空" % (i, j)
         if not norm(b.get("mean")):
@@ -482,7 +510,7 @@ def check(gs, ja):
     # skel 是公式：允许「〜」占位，但实词部分必须逐字来自原句
     #   先把「＋ ＝ ／ 、 空格」当成分隔符换成空格，再按「括号组」切出每一片
     skel_parts = re.sub(r"[＋+＝=／/、,\s]+", " ", skel)
-    for piece in re.findall(r"[【\[（(〈][^】\]）)〉]*[】\]）)〉]|[^【\[（(〈】\]）)〉]+", skel_parts):
+    for piece in GRP_RE.findall(skel_parts):
         fb = strip_brackets(piece)
         if not fb:
             continue          # 空括号组（如「〈〉」）⇒ 跳过，不是实词
@@ -495,6 +523,11 @@ def check(gs, ja):
             # ⇒ 剥掉尾部助词再查一次。
             stripped = re.sub(r"[がをにではもねよ、。]+$", "", fb)
             if stripped and stripped in ja:
+                continue
+            # 🔴 **语法术语**（主语/谓语/从句…）是占位说明不是原文 ⇒ 跳过。
+            #    ⚠️ 不能用「纯中文就放过」—— 那会把「提高」这种普通词也放过（假绿）。
+            #    ⇒ 只放过**白名单里的语法术语**。
+            if fb in GRAMMAR_TERMS:
                 continue
             return False, "skel 实词不在原句: %r" % fb
     chain = gs.get("chain")

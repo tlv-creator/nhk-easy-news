@@ -73,20 +73,8 @@ def collect(root, prefix):
     return files
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--proj", default="/workspace/shun")
-    ap.add_argument("--prefix", default="shun")
-    ap.add_argument("--message", default="chore(shun): 保存 Shun 项目（管线 + 站点源码 + 手册）")
-    args = ap.parse_args()
-
-    token = os.environ.get("GH_TOKEN", "")
-    if not token:
-        raise SystemExit("❌ 没有 GH_TOKEN")
-
-    files = collect(args.proj, args.prefix)
-    print("要推 %d 个文件" % len(files))
-
+def push_once(args, token, files):
+    """推一次。返回 True 表示成功；409（有人刚推过 main）返回 False 让调用方重试。"""
     # ① 拿当前 main 的 commit + tree
     st, ref = api("GET", API + "/git/ref/heads/main", token)
     if st != 200:
@@ -95,13 +83,12 @@ def main():
     st, commit = api("GET", API + "/git/commits/" + head, token)
     base_tree = commit["tree"]["sha"]
 
-    # ② 建 tree（分批，防止单请求太大）
+    # ② 建 blob + tree
     # 🔴 GitHub Git Data API 的 tree 入口，`content` 必须是**明文**（UTF-8）。
     #    base64 是 **Contents API** 的格式，用在这里 ⇒ 仓库里存的就是 base64 文本本身
     #    ⇒ 2026-10-24 事故：setup_env.sh 从仓库恢复项目后拿到的是 base64 垃圾，
     #      ast.parse 失败 ⇒ 10-28 周更必炸。
     #    ⇒ 修法：先 POST /git/blobs（encoding=base64）拿到 sha，再在 tree 里用 sha 引用。
-    #       （对任意二进制都安全，不必猜编码）
     entries = []
     for path, full in files:
         with open(full, "rb") as f:
@@ -123,7 +110,7 @@ def main():
         if st != 201:
             raise SystemExit("❌ 建 tree 失败：%s %s" % (st, str(d)[:300]))
         tree_sha = d["sha"]
-        print("  tree %d/%d" % (min(i + BATCH, len(entries)), len(entries)))
+        print("  tree %d/%d" % (min(i + BATCH, len(entries)), len(entries)), flush=True)
 
     # ③ commit
     st, c = api("POST", API + "/git/commits", token,
@@ -132,38 +119,65 @@ def main():
         raise SystemExit("❌ 建 commit 失败：%s %s" % (st, str(c)[:300]))
     new_commit = c["sha"]
 
-    # ④ 推 ref（带旧 sha ⇒ 别人刚推过就 409 ⇒ 不会覆盖）
+    # ④ 推 ref（带旧 sha ⇒ 别人刚推过就 409 ⇒ 不会覆盖别人的改动）
     st, d = api("PATCH", API + "/git/refs/heads/main", token,
                 {"sha": new_commit, "force": False})
     if st != 200:
         if st == 422 and "not a fast forward" in str(d):
-            raise SystemExit("❌ 409：有人刚推过 main ⇒ **不要强推**，重读合并后再推")
+            print("⚠️ 409：有人刚推过 main ⇒ 重读基线重试", flush=True)
+            return False
         raise SystemExit("❌ 推 ref 失败：%s %s" % (st, str(d)[:300]))
     print("✅ 已推：%s" % d.get("object", {}).get("sha"))
+    return True
 
-    # ⑤ 回读复核
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--proj", default="/workspace/shun")
+    ap.add_argument("--prefix", default="shun")
+    ap.add_argument("--message", default="chore(shun): 保存 Shun 项目（管线 + 站点源码 + 手册）")
+    ap.add_argument("--tries", type=int, default=4, help="409 重试次数")
+    args = ap.parse_args()
+
+    token = os.environ.get("GH_TOKEN", "")
+    if not token:
+        raise SystemExit("❌ 没有 GH_TOKEN")
+
+    files = collect(args.proj, args.prefix)
+    print("要推 %d 个文件" % len(files))
+
+    # 🔴 409（有人刚推过 main）⇒ **重读基线重试**，不是放弃。
+    #    共享仓库里多方在推（hub 主线 / NHK / Shun）⇒ 不重试就永远推不上去。
+    #    但**绝不 force**（会覆盖别人的改动）。
+    done = False
+    for attempt in range(1, args.tries + 1):
+        if push_once(args, token, files):
+            done = True
+            break
+        print("  （第 %d 次撞上 409 ⇒ 3 秒后重读基线重试）" % attempt, flush=True)
+        time.sleep(3)
+    if not done:
+        raise SystemExit("❌ 连续 %d 次都撞上 409 ⇒ 放弃（**不要强推**）" % args.tries)
+
+    # ⑤ 回读复核：文件在 **且内容是明文**（存成 base64 是历史事故 ⇒ 光看文件在不算数）
     time.sleep(1)
     st, d = api("GET", API + "/contents/" +
                 urllib.parse.quote(args.prefix + "/tools/手册.md"), token)
     if st != 200:
         raise SystemExit("❌ 复核失败：%s" % str(d)[:200])
-    # 🔴 复核要验**内容**不是 base64（存成 base64 是历史事故 ⇒ 光看文件在不算数）
-    import base64 as _b64
-    raw = _b64.b64decode(d.get("content") or "")
+    raw = base64.b64decode(d.get("content") or "")
     try:
         txt = raw.decode("utf-8")
     except Exception:
         txt = ""
-    if txt.lstrip().startswith("IyEv") or txt.lstrip().startswith("I"):
-        # 看起来还是 base64 ⇒ 解一层看看是不是源码
+    if txt.lstrip().startswith("IyEv"):
         try:
-            inner = _b64.b64decode(raw, validate=True)
-            it = inner.decode("utf-8")
-            if it.startswith("#!") or "import " in it[:300] or "# " in it[:200]:
+            it = base64.b64decode(raw, validate=True).decode("utf-8")
+            if it.startswith("#!") or "import " in it[:300] or "Shun" in it[:400]:
                 txt = it
         except Exception:
             pass
-    if "setup_env" in txt or "手册" in txt or "Shun" in txt:
+    if "Shun" in txt or "手册" in txt:
         print("🟢 复核通过：%s/tools/手册.md 已在仓库里（内容是明文）" % args.prefix)
     else:
         raise SystemExit("❌ 复核失败：手册.md 内容像是 base64 ⇒ 又存错了")

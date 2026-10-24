@@ -105,10 +105,10 @@ neg = {
 ok("parts 拆得比块细（不在块内）⇒ 放行", gen_gs.check(neg, NEG_JA)[0],
    gen_gs.check(neg, NEG_JA)[1])
 
-# parts 的成分离块太远 ⇒ 红（张冠李戴）
+# parts 的成分离块太远 ⇒ 软警告（不拦人：重复词会让位置判定不可靠）
 far = [dict(b) for b in BLOCKS]
-far[0] = dict(far[0], parts=[{"s": "|lat", "note": "x"}])
-ok("parts 离块太远（张冠李戴）⇒ 红", not gen_gs.check(mk(blocks=far), JA)[0],
+far[0] = dict(far[0], parts=[{"s": "は", "note": "x"}])   # 「は」在原句里，但离第一块很远
+ok("parts 离块太远 ⇒ 软警告（不拦人）", gen_gs.check(mk(blocks=far), JA)[0],
    gen_gs.check(mk(blocks=far), JA)[1])
 
 # frame 块位置倒退 ⇒ 红
@@ -153,6 +153,23 @@ print("\n=== 非日语片段不参与词性判据 ===")
 ok("英文标题卡 ⇒ 词性集合为空", gen_gs.pos_of("Let's get excited!") == set(),
    str(gen_gs.pos_of("Let's get excited!")))
 ok("纯日语 ⇒ 词性非空", len(gen_gs.pos_of("こんにちは")) > 0)
+
+print("\n=== skel 里的语法术语 vs 普通中文 ===")
+ok("skel 里的「主语」这类术语 ⇒ 放行",
+   gen_gs.check(mk(chain=["［毎日同じように］"], skel="［主语］（難しい）"), JA)[0],
+   gen_gs.check(mk(chain=["［毎日同じように］"], skel="［主语］（難しい）"), JA)[1])
+r, why = red(mk(chain=["［毎日同じように］"], skel="［提高］（難しい）"))
+ok("skel 里的「提高」这种普通中文 ⇒ 红（不能全放行）", r, why)
+
+print("\n=== 括号组切分（全角右括号 ］ 必须在排除集里）===")
+ok("「［A］［B］」切成两组",
+   gen_gs.GRP_RE.findall("［1991年から］［今しか］") == ["［1991年から］", "［今しか］"],
+   str(gen_gs.GRP_RE.findall("［1991年から］［今しか］")))
+ok("「＋」是分隔符不是内容",
+   gen_gs.GRP_RE.findall("［〜ことが］＋（できません）") == ["［〜ことが］", "＋", "（できません）"],
+   str(gen_gs.GRP_RE.findall("［〜ことが］＋（できません）")))
+r, why = red(mk(chain=["［毎日同じように］"], skel="［1991年から］［今しか］"))
+ok("skel 里两个相邻括号组各自校验（不跨界）", r, why)
 
 print("\n=== 形状修复：模型常见的偏差要能掰回来 ===")
 
