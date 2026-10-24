@@ -506,7 +506,7 @@
    "domain": "testdom.local",
    "project": "shun",
    "reason": "测试",
-   "status": "ALIVE",
+   "status": "DELETED",
    "note": "测试"
   }
  ],
