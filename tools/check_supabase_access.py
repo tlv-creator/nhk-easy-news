@@ -157,6 +157,17 @@ def extract_needs(code):
     keys |= set(re.findall(r"classKey\s*:\s*['\"]([A-Za-z0-9_]+)['\"]", code))
     keys |= set(re.findall(r"['\"]([A-Z][A-Z0-9_]{2,})['\"]\s*:\s*['\"]", code))
     keys = {k for k in keys if not FAKE_KEY.match(k)}
+    # 🔴 代码里出现 `currentClassKey + '|u' + unit` 这种**拼接形态** ⇒ 该站会写出带后缀的 key
+    #    （词汇站就是 `stateKeyFor(unit)`）⇒ 白名单若用精确枚举，这些形态会被挡
+    #    ⇒ 验收脚本必须**把带后缀的形态也测一遍**，否则「枚举型白名单」能蒙混过关
+    suffixes = set(re.findall(r"\+\s*['\"]\|(\w+)['\"]\s*\+", code))
+    for suf in suffixes:
+        for k in list(keys):
+            for n in (1, 2):
+                keys.add('%s|%s%d' % (k, suf, n))
+    if suffixes:
+        print('     （检测到 key 拼接后缀 |%s ⇒ 额外测 %d 个变体）'
+              % ('/'.join(sorted(suffixes)), len(suffixes) * 2 * len(keys)))
     # delete 路径里用到的 class_key（窗口取 URL 附近的）
     del_keys = set()
     for m in re.finditer(r"method:\s*['\"]DELETE['\"]|\.delete\(\)", code):
