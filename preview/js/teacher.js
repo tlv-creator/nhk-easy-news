@@ -42,6 +42,65 @@
   }
 
   // 每人汇总 + 看板指标
+  /* ---------------------------------------------------------------------
+     翻译练习专项统计（2026-10-24 新增）
+     ---------------------------------------------------------------------
+     三个问题：
+       ① 全班平均信息完整度是多少？
+       ② 档位分布长什么样（多少人第 1 档、多少人第 5 档）？
+       ③ 🔴 全班最弱的 3 个采分点是什么？（下一节课该讲什么）
+     ⚠️ 口径（UI 上必须写清，别让老师误读）：
+       · 「信息完整度」= 采分点覆盖率，**不是**四级最终分
+       · 「最弱采分点」的分母 = **今天的翻译作答人次**
+         （速练 2 句模式下每次只判 7 个点，5 句全练判 13 个 ⇒ 只能近似）
+     --------------------------------------------------------------------- */
+  function transStats(logs, today) {
+    var recs = (logs || []).filter(function (l) {
+      return l.kind === '翻译练习' && (today ? l.ts_date === today : true);
+    });
+    var withComp = recs.filter(function (l) { return l.comp >= 0; });
+    var compSum = 0, compN = 0;
+    withComp.forEach(function (l) { compSum += l.comp; compN++; });
+    var avgComp = compN ? Math.round(compSum / compN) : -1;
+
+    // 档位分布
+    var bands = { '第1档': 0, '第2档': 0, '第3档': 0, '第4档': 0, '第5档': 0 };
+    var bandN = 0;
+    recs.forEach(function (l) {
+      if (l.band && bands[l.band] !== undefined) { bands[l.band]++; bandN++; }
+    });
+
+    // 最弱采分点：按中文表达聚合漏掉人次
+    var missCount = {}, missTotal = 0;
+    recs.forEach(function (l) {
+      if (!l.miss || !l.miss.length) return;
+      missTotal++;
+      l.miss.forEach(function (cn) {
+        if (!cn) return;
+        missCount[cn] = (missCount[cn] || 0) + 1;
+      });
+    });
+    var weak = Object.keys(missCount).map(function (cn) {
+      return { cn: cn, n: missCount[cn], pct: missTotal ? Math.round(missCount[cn] / missTotal * 100) : 0 };
+    }).sort(function (a, b) {
+      if (b.n !== a.n) return b.n - a.n;
+      return a.cn.localeCompare(b.cn);
+    }).slice(0, 3);
+
+    return {
+      attempts: recs.length,            // 作答人次
+      students: (function () {
+        var s = {};
+        recs.forEach(function (l) { s[String(l.student_id)] = 1; });
+        return Object.keys(s).length;
+      })(),
+      avg_comp: avgComp,                // 平均信息完整度（-1 = 老日志没有这个字段）
+      with_comp: compN,                 // 有完整度数据的条数
+      bands: bands, band_n: bandN,
+      weak: weak, weak_base: missTotal  // 最弱采分点的分母（答了但有漏点的份数）
+    };
+  }
+
   function aggregate(logs, roster, today, allLogs) {
     var byId = {}, order = [];
     (roster || []).forEach(function (s) {
@@ -49,7 +108,7 @@
       byId[id] = {
         student_id: id, name: s.name, class_key: s.class_key, class_name: s.class_name,
         browse_sec: 0, exercises: 0, quiz_ok: 0, quiz_total: 0,
-        trans_hit: 0, trans_total: 0, issues: {}, last_ts: '', count: 0, unknown: false
+        trans_hit: 0, trans_total: 0, trans_comp_sum: 0, trans_comp_n: 0, issues: {}, last_ts: '', count: 0, unknown: false
       };
       order.push(id);
     });
@@ -60,7 +119,7 @@
           student_id: id, name: (l && l.name) || id,
           class_key: (l && l.class_key) || '', class_name: (l && l.class_name) || '',
           browse_sec: 0, exercises: 0, quiz_ok: 0, quiz_total: 0,
-          trans_hit: 0, trans_total: 0, issues: {}, last_ts: '', count: 0, unknown: true
+          trans_hit: 0, trans_total: 0, trans_comp_sum: 0, trans_comp_n: 0, issues: {}, last_ts: '', count: 0, unknown: true
         };
         byId[id] = b;
         order.push(id);
@@ -74,6 +133,7 @@
         if (l.issue_date) b.issues[l.issue_date] = 1;
       } else if (l.kind === '翻译练习') {
         b.exercises++; b.trans_hit += l.num || 0; b.trans_total += l.den || 0;
+        if (l.comp >= 0) { b.trans_comp_sum += l.comp; b.trans_comp_n++; }
       } else if (l.kind === '理解题') {
         b.exercises++; b.quiz_ok += l.num || 0; b.quiz_total += l.den || 0;
       }
@@ -91,6 +151,14 @@
         quiz_ok: b.quiz_ok, quiz_total: b.quiz_total,
         accuracy: pct(b.quiz_ok, b.quiz_total),
         trans_hit: b.trans_hit, trans_total: b.trans_total,
+        trans_comp: b.trans_comp_n ? Math.round(b.trans_comp_sum / b.trans_comp_n) : -1,
+        trans_band: (function () {
+          var last = null;
+          (logs || []).forEach(function (l) {
+            if (l.kind === '翻译练习' && String(l.student_id) === b.student_id && l.band) last = l.band;
+          });
+          return last || '';
+        })(),
         issues_done: Object.keys(b.issues).length,
         last_ts: b.last_ts || '—',
         last_date: b.last_ts ? b.last_ts.slice(0, 10) : '',
@@ -124,6 +192,7 @@
     return {
       students: students,
       absent: absent,
+      trans: transStats(logs, today),
       totals: {
         roster: (roster || []).length,
         today_active: Object.keys(todaySet).length,
@@ -151,7 +220,8 @@
 
   global.CET4T = {
     esc: esc, fmtMin: fmtMin, pct: pct,
-    filterLogs: filterLogs, aggregate: aggregate, toCSV: toCSV
+    filterLogs: filterLogs, aggregate: aggregate, toCSV: toCSV,
+    transStats: transStats
   };
 
   /* =====================================================================
@@ -373,6 +443,7 @@
     var logs = CET4T.filterLogs(data.allLogs || data.logs || [], p);
     var agg = CET4T.aggregate(logs, data.roster || [], CET4.todayStr(), data.allLogs || data.logs || []);
     renderStats(agg);
+    renderTrans(agg);
     renderStudents(agg.students.filter(matchSearch));
     renderLogs(logs.filter(function (l) {
       var q = $('fSearch').value.trim().toLowerCase();
@@ -383,6 +454,74 @@
     }));
     renderAbsent(agg.absent.filter(matchSearch));
     renderClasses(data.roster || []);
+  }
+
+  /* ---------------- 课堂速练 · 翻译练习 ---------------- */
+  function renderTrans(agg) {
+    var t = agg.trans || {};
+    var box = $('transBox');
+    var scope = $('transScope');
+    box.textContent = '';
+    if (!t.attempts) {
+      scope.textContent = '';
+      box.innerHTML = '<p class="lead">这个区间里还没有翻译练习记录。'
+        + '学生交卷后，这里会出现「全班平均信息完整度」「档位分布」和'
+        + '<b>全班最弱的采分点</b>（下一节课该讲什么）。</p>';
+      return;
+    }
+    scope.textContent = t.students + ' 人交了 ' + t.attempts + ' 次';
+
+    // ① 平均信息完整度
+    var compHtml = t.avg_comp >= 0
+      ? '<div class="tbig"><b>' + t.avg_comp + '%</b><span>平均信息完整度</span>'
+        + '<span class="muted">（' + t.with_comp + ' 人次有数据）</span></div>'
+      : '<div class="tbig"><b>—</b><span>平均信息完整度</span>'
+        + '<span class="muted">（这些记录是旧版，没有完整度字段）</span></div>';
+
+    // ② 档位分布
+    var BAND_NOTE = {
+      '第1档': '准确表达 13–15 分',
+      '第2档': '基本表达 10–12 分',
+      '第3档': '勉强表达 7–9 分',
+      '第4档': '仅表达少部分 4–6 分',
+      '第5档': '支离破碎 1–3 分'
+    };
+    var bands = t.bands || {};
+    var bandHtml = '<div class="tband-wrap"><div class="tband-lbl">档位分布</div><div class="tband-row">';
+    ['第1档', '第2档', '第3档', '第4档', '第5档'].forEach(function (b) {
+      var n = bands[b] || 0;
+      var pctw = t.band_n ? Math.round(n / t.band_n * 100) : 0;
+      bandHtml += '<div class="tband">'
+        + '<div class="tb-n">' + n + '</div>'
+        + '<div class="tb-bar"><i style="width:' + pctw + '%"></i></div>'
+        + '<div class="tb-l">' + b + '</div>'
+        + '<div class="tb-s">' + BAND_NOTE[b] + '</div>'
+        + '</div>';
+    });
+    bandHtml += '</div></div>';
+
+    // ③ 🔴 全班最弱的采分点
+    var weakHtml;
+    if (t.weak && t.weak.length) {
+      weakHtml = '<div class="tweak">'
+        + '<div class="tweak-h">🔴 全班最弱的 ' + t.weak.length + ' 个采分点</div>'
+        + '<div class="tweak-list">'
+        + t.weak.map(function (w, i) {
+          return '<div class="tw"><span class="tw-i">' + (i + 1) + '</span>'
+            + '<span class="tw-cn">' + esc(w.cn) + '</span>'
+            + '<span class="tw-n">' + w.n + ' 人漏掉（' + w.pct + '%）</span></div>';
+        }).join('')
+        + '</div>'
+        + '<p class="muted tw-note">口径：今天 ' + t.weak_base
+        + ' 份有漏点的答卷里，有多少人漏掉了这一条。'
+        + '漏得多 ⇒ 下一节课优先讲它。</p></div>';
+    } else {
+      weakHtml = '<div class="tweak"><div class="tweak-h">🔴 全班最弱的采分点</div>'
+        + '<p class="lead">还没有漏点明细。'
+        + '（学生端升级到带「漏点」记录的版本后，交卷就会自动记上。）</p></div>';
+    }
+
+    box.innerHTML = compHtml + bandHtml + weakHtml;
   }
 
   function renderStats(agg) {

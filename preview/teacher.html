@@ -8,13 +8,13 @@
 <link rel="stylesheet" href="css/app.css">
 </head>
 <div class="preview-bar">
-<b>预览版</b> —— 这一版是「翻译速练 2 句 + 当场出档位」的新功能试用。
+<b>预览版</b> —— 这一版是「翻译速练 2 句 + 当场出档位 + 老师看板」的新功能试用。
 正式版入口不变：<code>https://tlv-creator.github.io/nhk-easy-news/cet4.html</code>
 </div>
 <style>
 .preview-bar{
   font-size:16px;line-height:1.7;color:#000;background:#fff;
-  border:1px solid rgba(0,0,0,.25);border-left:4px solid #000;
+  border:1px solid rgba(0,0,0,.25);border-left:4px solid rgba(0,0,0,.5);
   border-radius:8px;padding:10px 12px;margin:12px 0;
 }
 .preview-bar b{font-size:17px}
@@ -89,6 +89,13 @@
         <select id="fClass" aria-label="班级筛选"><option value="">全部班级</option></select>
         <input type="search" id="fSearch" placeholder="搜学号 / 姓名 / 班级" aria-label="搜索">
       </div>
+    </div>
+
+    <!-- 课堂速练 · 翻译练习（跟着上面的筛选联动） -->
+    <div class="card" id="transCard">
+      <div class="card-h"><span class="pill">课堂速练</span><h2>翻译练习 · 全班情况</h2>
+        <span class="muted" id="transScope"></span></div>
+      <div id="transBox"></div>
     </div>
 
     <div class="tabs">

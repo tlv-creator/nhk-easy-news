@@ -201,10 +201,17 @@
   function logBrowse(date, sec) {
     return '【CET4】浏览 ' + date + ' | 时长: ' + Math.max(0, Math.round(sec || 0)) + '秒';
   }
-  function logTrans(date, hit, total, comp, band) {
+  function logTrans(date, hit, total, comp, band, miss) {
     var s = '【CET4】翻译练习 ' + date + ' | 命中: ' + hit + '/' + total;
     if (comp != null && comp !== '') s += ' | 完整度: ' + comp + '%';
     if (band) s += ' | 档位: ' + band;
+    // 漏掉的采分表达（中文短语，逗号分隔）—— 老师端靠它算「全班最弱的采分点」
+    // ⚠️ 最多记 5 个，再多 action 会很长
+    if (miss && miss.length) {
+      s += ' | 漏: ' + miss.slice(0, 5).map(function (x) {
+        return String(x).replace(/[，,|｜\n]/g, ' ').trim();
+      }).filter(Boolean).join(',');
+    }
     return s;
   }
   function logQuiz(date, ok, total) {
@@ -212,7 +219,7 @@
   }
   // 反解 action：老师端统计全靠它
   function parseLog(action) {
-    var out = { kind: '', date: '', num: 0, den: 0, sec: 0, comp: -1, band: '' };
+    var out = { kind: '', date: '', num: 0, den: 0, sec: 0, comp: -1, band: '', miss: [] };
     var m = /^【CET4】(浏览|翻译练习|理解题)\s*(\d{4}-\d{2}-\d{2})\s*\|\s*(时长|命中|答对):\s*(\d+)(?:\/(\d+))?(秒)?/.exec(action || '');
     if (!m) return out;
     out.kind = m[1];
@@ -220,11 +227,16 @@
     out.num = parseInt(m[4], 10) || 0;
     out.den = m[5] ? (parseInt(m[5], 10) || 0) : 0;
     out.sec = m[6] ? out.num : 0;
-    // 翻译练习的新字段（向后兼容：老日志没有这两项）
+    // 翻译练习的新字段（向后兼容：老日志没有这些）
     var cm = /\|\s*完整度:\s*(\d+)%/.exec(action || '');
     if (cm) out.comp = parseInt(cm[1], 10);
     var bm = /\|\s*档位:\s*([^\n|]+)/.exec(action || '');
     if (bm) out.band = bm[1].trim();
+    var mm = /\|\s*漏:\s*([^\n|]+)/.exec(action || '');
+    if (mm) {
+      out.miss = mm[1].split(',').map(function (x) { return x.trim(); })
+        .filter(function (x) { return !!x; });
+    }
     return out;
   }
 
@@ -369,6 +381,7 @@
           action: r.action || '',
           kind: p.kind, issue_date: p.date,
           num: p.num, den: p.den, sec: p.sec,
+          comp: p.comp, band: p.band, miss: p.miss,
           duration_sec: r.duration_sec || 0
         };
       });
@@ -424,14 +437,24 @@
   };
 
   /* ================= 演示模式数据 ================= */
-  var DEMO_ROSTER = [
-    { id: '20260001', name: '示例·甲', class_key: 'DEMO1', class_name: '演示一班' },
-    { id: '20260002', name: '示例·乙', class_key: 'DEMO1', class_name: '演示一班' },
-    { id: '20260003', name: '示例·丙', class_key: 'DEMO1', class_name: '演示一班' },
-    { id: '20260004', name: '示例·丁', class_key: 'DEMO2', class_name: '演示二班' },
-    { id: '20260005', name: '示例·戊', class_key: 'DEMO2', class_name: '演示二班' },
-    { id: '20260006', name: '示例·己', class_key: 'DEMO3', class_name: '演示三班' }
-  ];
+  // 演示名册：36 人 / 3 个班 —— 规模接近真实（老师名册 157 人），
+  // 否则看板的「平均完整度 / 档位分布 / 最弱采分点」样本太少，看不出效果。
+  var DEMO_ROSTER = (function () {
+    var SURN = '赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜';
+    var GIVEN = ['子涵', '欣怡', '浩然', '梓萱', '宇轩', '思远', '雨桐', '若曦', '嘉懿', '一鸣',
+      '静姝', '皓轩', '沐宸', '知微', '书瑶', '清越', '逸凡', '砚清', '婉宁', '致远'];
+    var out = [], i, j;
+    for (i = 0; i < 36; i++) {
+      j = i % 3 + 1;
+      out.push({
+        id: '2026' + (1000 + i),
+        name: '示例·' + SURN.charAt(i % SURN.length) + GIVEN[i % GIVEN.length],
+        class_key: 'DEMO' + j,
+        class_name: '演示' + ['一', '二', '三'][j - 1] + '班'
+      });
+    }
+    return out;
+  })();
 
   function demoRoster() { return DEMO_ROSTER.slice(); }
 
@@ -482,6 +505,39 @@
         action: action, duration_sec: kind === '浏览' ? parseInt(/(\d+)秒/.exec(action)[1], 10) : 0
       });
     }
+
+    // ---- 今天：课堂速练的翻译记录（带完整度 / 档位 / 漏点）----
+    // ⚠️ 档位字符串在这里是**直接给的**，不做映射 ——
+    //    映射的唯一权威是 scoring.js（学生端算出来的），这里只是让演示数据看着像真的。
+    var DEMO_EXPRS = ((DEMO_ISSUE.translation && DEMO_ISSUE.translation.exprs) || [])
+      .map(function (e) { return e.cn; });
+    var DEMO_BANDS = ['第1档', '第2档', '第3档', '第4档', '第5档'];
+    var today = fmtDate(new Date());
+    for (var j = 0; j < DEMO_ROSTER.length; j++) {
+      if (rnd() > 0.80) continue;             // 约 80% 的人今天做了
+      var st = DEMO_ROSTER[j];
+      var total = 7;                          // 速练 2 句 ≈ 7 个采分点
+      // 漏 0~3 个为主，偶尔漏一大半（模拟「整句没写」的学生）
+      var nMiss = (rnd() < 0.14) ? 4 + Math.floor(rnd() * 2) : Math.floor(rnd() * 4);
+      if (nMiss > total) nMiss = total;
+      var miss = [];
+      var guard = 0;
+      while (miss.length < nMiss && DEMO_EXPRS.length && guard++ < 20) {
+        var pick = DEMO_EXPRS[Math.floor(rnd() * DEMO_EXPRS.length)];
+        if (miss.indexOf(pick) < 0) miss.push(pick);
+      }
+      var hit = total - miss.length;
+      var comp = Math.round(hit / total * 100);
+      var band = comp >= 95 ? DEMO_BANDS[0] : comp >= 85 ? DEMO_BANDS[1]
+        : comp >= 70 ? DEMO_BANDS[2] : comp >= 40 ? DEMO_BANDS[3] : DEMO_BANDS[4];
+      logs.push({
+        id: logs.length + 1, student_id: st.id, name: st.name,
+        class_key: st.class_key, class_name: st.class_name,
+        ts_date: today, time: pad(9 + Math.floor(rnd() * 8)) + ':' + pad(Math.floor(rnd() * 60)),
+        action: logTrans(today, hit, total, comp, band, miss),
+        duration_sec: 0
+      });
+    }
     return logs;
   }
 
@@ -495,6 +551,7 @@
         class_key: l.class_key, class_name: l.class_name,
         ts_date: l.ts_date, time: l.time, action: l.action,
         kind: p.kind, issue_date: p.date, num: p.num, den: p.den, sec: p.sec,
+        comp: p.comp, band: p.band, miss: p.miss,
         duration_sec: l.duration_sec || 0
       };
     });

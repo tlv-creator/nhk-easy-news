@@ -773,7 +773,9 @@
       action: CET4.logTrans(
         issue.date, res.hits, res.total,
         res.completeness,
-        res.band ? ('第' + res.band.no + '档') : ''
+        res.band ? ('第' + res.band.no + '档') : '',
+        // 🔴 漏掉的是哪几个采分表达 —— 老师端靠它算「全班最弱的采分点」
+        (res.missing || []).map(function (m) { return m.cn; })
       )
     }).then(function (r) {
       if (r && r.ok === false && r.queued) toast('已存到本机，联网后自动补记');
