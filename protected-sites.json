@@ -506,7 +506,8 @@
    "domain": "testdom.local",
    "project": "shun",
    "reason": "测试",
-   "status": "DELETED"
+   "status": "SUPERSEDED",
+   "note": "测试"
   }
  ],
  "how_to_check_before_deleting": {
