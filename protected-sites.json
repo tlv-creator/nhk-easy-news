@@ -3,7 +3,7 @@
  "_why": "mcode 每次部署都换随机域名，站点很容易在清理时被误删。但有些站是**别的 APK 编译进去的兜底依赖**，删了用户的 App 就会白屏。本清单是所有 agent 清理站点前必须查的。",
  "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删。🔴 **frozen:true = 这个站永不 redeploy** —— redeploy 会换随机域名，而 APK / cdn 表 / 引导页里已经写死了它 ⇒ 域名一换，用户的 App 就白屏或没声音。⇒ **要更新它的内容，只能新建一个站 + 改所有引用方 + 改完再删旧的**。",
  "_owner": "NHK / hub / Shun 等各项目 agent 共用",
- "updated": "2026-10-23",
+ "updated": "2026-10-24",
  "protected_sites": [
   {
    "domain": "vkwwuh9wgkzo0",
@@ -355,6 +355,23 @@
    "reason": "🔴 2026-10-23 发 Ep278 时的中间站（数据没刷新），已被 2aixd037sd8fk 取代；**待删**",
    "status": "SUPERSEDED",
    "note": "🔴 2026-10-23 发 Ep278 时的中间站（数据没刷新）—— **站还活着，待人工删**"
+  },
+  {
+   "domain": "crafpejxghpyk",
+   "project": "scenes（日常场景会话）",
+   "reason": "🔴 本项目现役站（v1.1：语法拆解 + 一键复制 + 去平台注入）；**永久引导页 scenes.html 指着它** ⇒ 永不删、永不 redeploy",
+   "status": "alive",
+   "frozen": true,
+   "role": "content_site",
+   "canonical": "https://tlv-creator.github.io/nhk-easy-news/scenes.html",
+   "note": "🔴 2026-10-24 v1.1；引导页 https://tlv-creator.github.io/nhk-easy-news/scenes.html ；站点内含 jpstudy-apk.zip（md5 e3d0f6010a00b8ee0c223d31ba5984b0）"
+  },
+  {
+   "domain": "n7f88eaaksyjt",
+   "project": "scenes（日常场景会话）",
+   "reason": "上一版站（v1.0），已被 crafpejxghpyk 取代；**待用户确认新版后再删**",
+   "status": "SUPERSEDED",
+   "note": "🔴 2026-10-24 被 v1.1 取代。引导页已切到 crafpejxghpyk。删前先跑 scripts/check_dead_refs.py"
   }
  ],
  "how_to_check_before_deleting": {
