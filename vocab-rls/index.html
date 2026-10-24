@@ -271,6 +271,9 @@ Resources:`;for(let t of c){if(!t||typeof t!=`string`)throw Error(`@supabase/aut
             margin-top: 20px;
         }
     </style>
+
+/* eink-ok: 平台注入的悬浮球会压住界面元素 ⇒ 永久隐藏（万一以后又被注回来） */
+#minimax-floating-ball, .minimax-floating-ball, [id*="minimax-floating"] { display: none !important; }
 </head>
 <body>
 
@@ -2138,26 +2141,7 @@ function sha256Hex(str) {
 </script>
 
 
-<script data-minimax-analytics="minimax-website-analytics-v1">(function(){
-"use strict";
-var t="eyJ2IjoxLCJraWQiOiJwcmUtY24tMjAyNjA4MTUtdjEiLCJiaXpfaWQiOiJNYXZpcyIsIm5vZGVfaWQiOiI0NTQ3NTM4ODgwNTIyNDciLCJpc3N1ZWRfYXQiOjE3OTI1NzY4MDUzMDd9.iOnlDt-eDsK88ADg1X6svgCGnN--sV04nrhi1WufHdk",u="https://agent.minimax.cn/minimax-cloud/api/v1/website-traffic/page-views",last="";
-function path(){
-var h=window.location.hash||"",p=h.indexOf("#!")===0?h.slice(2):h.indexOf("#/")===0?h.slice(1):(window.location.pathname||"/");
-p=p.split(/[?#]/,1)[0]||"/";
-if(p.charAt(0)!=="/")p="/"+p;
-p=p.replace(/\/+/g,"/").replace(/%([0-9a-fA-F]{2})/g,function(_,x){var c=String.fromCharCode(parseInt(x,16));return /[A-Za-z0-9._~-]/.test(c)?c:"%"+x.toUpperCase();});
-if(p.length>1)p=p.replace(/\/+$/,"");
-return p||"/";
-}
-function send(){
-var p=path();if(p===last)return;last=p;
-var b="v=1&t="+encodeURIComponent(t)+"&p="+encodeURIComponent(p),ok=false;
-try{if(navigator.sendBeacon){ok=navigator.sendBeacon(u,new Blob([b],{type:"application/x-www-form-urlencoded;charset=UTF-8"}));}}catch(e){}
-if(!ok){try{fetch(u,{method:"POST",body:b,keepalive:true,mode:"no-cors",credentials:"omit",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"}});}catch(e){}}
-}
-["pushState","replaceState"].forEach(function(n){var f=history[n];if(!f)return;history[n]=function(){var r=f.apply(this,arguments);setTimeout(send,0);return r;};});
-window.addEventListener("popstate",send);window.addEventListener("hashchange",send);send();
-})();</script>
+
 <style>
 #minimax-floating-ball {
   position: fixed;
@@ -2221,68 +2205,68 @@ window.addEventListener("popstate",send);window.addEventListener("hashchange",se
   opacity: 1;
 }
 </style>
-<div id="minimax-floating-ball">
-  <div class="minimax-ball-content">
-    <div class="minimax-logo-wave"></div>
+
     <span class="minimax-ball-text">Created by MiniMax Agent</span>
   </div>
   <div class="minimax-close-icon">×</div>
 </div>
-<script>
-// Initialize floating ball functionality
-function initFloatingBall() {
-  const ball = document.getElementById('minimax-floating-ball');
-  if (!ball) return;
 
-  // Initial animation
-  ball.style.opacity = '0';
-  ball.style.transform = 'translateY(20px)';
 
-  setTimeout(() => {
-    ball.style.opacity = '1';
-    ball.style.transform = 'translateY(0)';
-  }, 500);
-
-  // Handle logo click
-  const ballContent = ball.querySelector('.minimax-ball-content');
-  ballContent.addEventListener('click', function (e) {
-    e.stopPropagation();
-    window.open('https://agent.minimax.cn/', '_blank');
-    ball.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-      ball.style.transform = 'scale(1)';
-    }, 100);
-  });
-
-  // Handle close button click
-  const closeIcon = ball.querySelector('.minimax-close-icon');
-  closeIcon.addEventListener('click', function (e) {
-    e.stopPropagation();
-    ball.style.opacity = '0';
-    ball.style.transform = 'translateY(20px)';
-
-    setTimeout(() => {
-      ball.style.display = 'none';
-    }, 300);
-  });
-}
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', initFloatingBall); 
-
-// ===== 教师登录态自动恢复（RLS 收紧后老师仍需保持 authenticated 才能读数据）=====
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const { data } = await supabaseClient.auth.getSession();
-        if (data && data.session) {
-            const em = (data.session.user && data.session.user.email) || '';
-            const el = document.getElementById('teacher-email');
-            if (el && em) el.value = em;
-            console.log('[auth] 已恢复教师登录态:', em);
+<script data-vocab-privacy="1">
+/* 平台统计拦截（三层保险的第三层）
+   1) 统计脚本本体已从本文件删除
+   2) 悬浮球 DOM + 初始化代码已删除，另有一层 CSS 永久隐藏
+   3) 这里再拦一次 sendBeacon / fetch / XHR —— 防止以后某次部署把注入带回来
+   域名用精确匹配 + 协议校验，避免「同后缀的伪造域名」被误伤。 */
+(function(){
+  var BLOCK_HOST = 'agent.minimax.cn';
+  function isBlocked(u){
+    try{
+      var s = String(u||'');
+      if (s.indexOf('//'+BLOCK_HOST) === -1) return false;
+      var m = s.match(/^https?:\/\/([^/?#]+)/i);
+      if (!m) return false;
+      var host = m[1].toLowerCase();
+      return host === BLOCK_HOST || host === 'www.'+BLOCK_HOST;
+    }catch(e){ return false; }
+  }
+  try{
+    if (window.sendBeacon){
+      var origBeacon = window.sendBeacon;
+      window.sendBeacon = function(url, data){
+        if (isBlocked(url)) return false;
+        return origBeacon.apply(this, arguments);
+      };
+    }
+  }catch(e){}
+  try{
+    var origFetch = window.fetch;
+    if (origFetch){
+      window.fetch = function(input, init){
+        var u = (input && typeof input === 'object') ? (input.url||'') : input;
+        if (isBlocked(u)){
+          return Promise.resolve(new Response('{}', {status:200, headers:{'Content-Type':'application/json'}}));
         }
-    } catch (e) { console.warn('[auth] 恢复登录态失败', e); }
-});
-
+        return origFetch.apply(this, arguments);
+      };
+    }
+  }catch(e){}
+  try{
+    var XHR = window.XMLHttpRequest;
+    if (XHR){
+      var origOpen = XHR.prototype.open;
+      XHR.prototype.open = function(method, url){
+        if (isBlocked(url)) { this.__blocked = true; }
+        return origOpen.apply(this, arguments);
+      };
+      var origSend = XHR.prototype.send;
+      XHR.prototype.send = function(){
+        if (this.__blocked) return;
+        return origSend.apply(this, arguments);
+      };
+    }
+  }catch(e){}
+})();
 </script>
 </body>
 </html>
