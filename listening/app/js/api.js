@@ -16,7 +16,15 @@
     KEY: 'sb_publishable_3LuLZXWMadqYH3SLYOenig_ECHa51Mo',
     ROSTER_KEY: '__roster_v1',   // 名册存放的键（老站只查 JR1/CW3/WL_CW/XQ1，看不到这个）
     LOG_KEY: 'LISTEN',           // 听力记录的 class_key（老站也看不到）
-    SALT: 'vocab-unit23-teacher-2026'  // 公开 salt（与词汇站一致）；密码本身不在前端
+    SALT: 'vocab-unit23-teacher-2026',  // 公开 salt（与词汇站一致）；密码本身不在前端
+    // 🔴 教师侧「删一条 / 清空全部」的服务端特权端点（挂在 CloudBase 的 ai-proxy 上）
+    //    端点内部用 service_role 执行删除，并在**服务端**校验老师口令摘要
+    //    ⇒ 前端只负责把摘要送过去；这两个地址是公开的，但**摘要是凭据**
+    //    ⇒ 两个候选：老师把路由加在 /ai 后面 或 单独开一个 /vocab-ops，两个都试
+    OPS_URLS: [
+      'https://vocab-test-d2gkep01q257d3351.service.tcloudbase.com/ai/vocab-ops',
+      'https://vocab-test-d2gkep01q257d3351.service.tcloudbase.com/vocab-ops'
+    ]
   };
 
   function isDemo() {
@@ -30,6 +38,11 @@
     if (opts.body !== undefined) headers['Content-Type'] = 'application/json';
     if (opts.prefer) headers['Prefer'] = opts.prefer;
     if (opts.range) headers['Range'] = opts.range;
+    if (opts.headers) {
+      for (var hk in opts.headers) {
+        if (Object.prototype.hasOwnProperty.call(opts.headers, hk)) headers[hk] = opts.headers[hk];
+      }
+    }
     return fetch(CFG.SU + '/rest/v1/' + path, {
       method: opts.method || 'GET',
       headers: headers,
@@ -45,6 +58,52 @@
     }, function () {
       throw new Error('连不上服务器，请检查网络后重试');
     });
+  }
+
+  /* ================= 教师侧特权操作（走云函数端点） =================
+     端点（CloudBase ai-proxy 挂载）内部用 service_role 执行删除，
+     并在**服务端**用 check_teacher_login 校验老师口令摘要。
+     ⇒ 前端不再用 anon key 直接删整班。
+
+     返回四态，**这四态的含义不能混**：
+       ok           端点执行成功（body.deleted = 真实删掉的行数）
+       unauthorized 端点在线但老师凭据不对 ⇒ **绝不退回 anon 路径**（退回＝绕过校验）
+       error        端点在线但请求有问题（400 等）⇒ 如实报错
+       notdeployed  端点还没上线（404/405/5xx/网络错）⇒ 允许退回旧的 anon 路径（过渡期）
+  */
+  function opsPost(payload) {
+    var urls = CFG.OPS_URLS.slice();
+    function tryOne(i) {
+      if (i >= urls.length) {
+        return Promise.resolve({ state: 'notdeployed', status: 0, body: null });
+      }
+      var ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function () { try { ctrl.abort(); } catch (e) { /* ignore */ } }, 12000) : null;
+      return fetch(urls[i], {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: ctrl ? ctrl.signal : undefined
+      }).then(function (r) {
+        return r.text().then(function (t) {
+          if (timer) clearTimeout(timer);
+          var b = null;
+          try { b = t ? JSON.parse(t) : null; } catch (e) { b = null; }
+          if (r.status === 401) return { state: 'unauthorized', status: 401, body: b };
+          if (r.status === 400) return { state: 'error', status: 400, body: b };
+          if (r.ok && b && b.ok === true) return { state: 'ok', status: r.status, body: b };
+          if (r.status === 404 || r.status === 405 || r.status === 501) {
+            return { state: 'notdeployed', status: r.status, body: b };
+          }
+          if (r.status >= 500) return { state: 'notdeployed', status: r.status, body: b };
+          return { state: 'error', status: r.status, body: b };
+        });
+      }, function () {
+        if (timer) clearTimeout(timer);
+        return tryOne(i + 1);
+      });
+    }
+    return tryOne(0);
   }
 
   /* ================= 分页读取 =================
@@ -250,7 +309,11 @@
       if (!sid3) return Promise.resolve({ ok: false, msg: '登录已过期，请重新登录' });
       return rest('vocab_history_logs?id=eq.' + Number(args.p_id) +
         '&class_key=eq.' + CFG.LOG_KEY + '&student_id=eq.' + sid3,
-        { method: 'DELETE', prefer: 'return=representation' })
+        {
+          method: 'DELETE', prefer: 'return=representation',
+          // 🔴 RLS 现在按「x-student-id 头」限定只能删自己那一条 ⇒ 这个头必须带上
+          headers: { 'x-student-id': sid3 }
+        })
         // 🔴 RLS 挡 DELETE 时 PostgREST 仍返回 200/204 + 空数组 ⇒ 「看着删了、其实没删」
         //    ⇒ 判定必须落在**返回行数**上，不能看 HTTP 码
         .then(function (rows) {
@@ -265,13 +328,17 @@
       var tid = String(args.p_id || '').trim();
       var tpass = String(args.p_pass || '');
       if (!tid || !tpass) return Promise.resolve({ ok: false, msg: '请把工号和密码都填上' });
+      var thash = '';
       return sha256hex(CFG.SALT + '|' + tid + '|' + tpass)
         .then(function (h) {
+          thash = h;
           return rest('rpc/check_teacher_login', { method: 'POST', body: { p_id: tid, p_hash: h } });
         })
         .then(function (r) {
           if (r === true || (r && r.ok === true)) {
-            return { ok: true, token: 'tea:' + Math.random().toString(36).slice(2), name: '教师' };
+            // 🔴 把摘要一起交出去：它是「服务端特权端点」的凭据
+            //    （端点自己会用 check_teacher_login 再校验一遍，前端这层只是省一次往返）
+            return { ok: true, token: 'tea:' + Math.random().toString(36).slice(2), name: '教师', hash: thash, tid: tid };
           }
           return { ok: false, msg: '工号或密码不正确' };
         })
@@ -353,26 +420,55 @@
     /* ---- 教师删一条 ---- */
     if (name === 'listen_teacher_delete') {
       if (!isTeacherToken(args.p_token)) return Promise.resolve({ ok: false, msg: '登录已过期，请重新登录' });
-      return rest('vocab_history_logs?id=eq.' + Number(args.p_id) + '&class_key=eq.' + CFG.LOG_KEY,
-        { method: 'DELETE', prefer: 'return=representation' })
-        .then(function (rows) {
-          var n = Array.isArray(rows) ? rows.length : 0;
+      var dtid = String(args.p_tid || ''), dhash = String(args.p_thash || '');
+      if (!dtid || !dhash) return Promise.resolve({ ok: false, msg: '请重新登录后再操作' });
+      return opsPost({
+        action: 'delete_log', teacher_id: dtid, teacher_hash: dhash,
+        id: Number(args.p_id), class_key: CFG.LOG_KEY
+      }).then(function (op) {
+        if (op.state === 'ok') {
+          var n = op.body && typeof op.body.deleted === 'number' ? op.body.deleted : 0;
           if (!n) return { ok: false, msg: '服务器没有真正删除这条记录，请稍后再试' };
-          return { ok: true, deleted: n };
-        });
+          return { ok: true, deleted: n, via: 'ops' };
+        }
+        // 🔴 unauthorized 绝不能退回 anon 路径（那等于绕过老师凭据校验）
+        if (op.state === 'unauthorized') return { ok: false, msg: '登录已过期，请重新登录' };
+        if (op.state === 'error') return { ok: false, msg: '服务器没有真正删除这条记录，请稍后再试' };
+        // 端点还没上线 ⇒ 退回旧的 anon 路径（过渡期；收紧 SQL 收掉 LISTEN 例外后就没了）
+        return rest('vocab_history_logs?id=eq.' + Number(args.p_id) + '&class_key=eq.' + CFG.LOG_KEY,
+          { method: 'DELETE', prefer: 'return=representation' })
+          .then(function (rows) {
+            var n = Array.isArray(rows) ? rows.length : 0;
+            if (!n) return { ok: false, msg: '服务器没有真正删除这条记录，请稍后再试' };
+            return { ok: true, deleted: n, via: 'anon' };
+          });
+      });
     }
 
     /* ---- 教师清空全部 ---- */
     if (name === 'listen_teacher_clear') {
       if (!isTeacherToken(args.p_token)) return Promise.resolve({ ok: false, msg: '登录已过期，请重新登录' });
-      return rest('vocab_history_logs?class_key=eq.' + CFG.LOG_KEY,
-        { method: 'DELETE', prefer: 'return=representation' })
-        .then(function (rows) {
-          var n = Array.isArray(rows) ? rows.length : 0;
-          // 🔴 0 行 = **没删掉**（RLS 挡着）⇒ 绝不能回 ok:true（那是「假成功」）
+      var ctid = String(args.p_tid || ''), chash = String(args.p_thash || '');
+      if (!ctid || !chash) return Promise.resolve({ ok: false, msg: '请重新登录后再操作' });
+      return opsPost({
+        action: 'clear_class', teacher_id: ctid, teacher_hash: chash, class_key: CFG.LOG_KEY
+      }).then(function (op) {
+        if (op.state === 'ok') {
+          var n = op.body && typeof op.body.deleted === 'number' ? op.body.deleted : 0;
+          // 🔴 0 行 = **没删掉**（权限被挡）⇒ 绝不能回 ok:true（那是「假成功」）
           if (!n) return { ok: false, msg: '服务器没有真正清空（可能被数据库权限挡住了），请稍后再试' };
-          return { ok: true, deleted: n };
-        });
+          return { ok: true, deleted: n, via: 'ops' };
+        }
+        if (op.state === 'unauthorized') return { ok: false, msg: '登录已过期，请重新登录' };
+        if (op.state === 'error') return { ok: false, msg: '服务器没有真正清空（可能被数据库权限挡住了），请稍后再试' };
+        return rest('vocab_history_logs?class_key=eq.' + CFG.LOG_KEY,
+          { method: 'DELETE', prefer: 'return=representation' })
+          .then(function (rows) {
+            var n = Array.isArray(rows) ? rows.length : 0;
+            if (!n) return { ok: false, msg: '服务器没有真正清空（可能被数据库权限挡住了），请稍后再试' };
+            return { ok: true, deleted: n, via: 'anon' };
+          });
+      });
     }
 
     return Promise.resolve({ ok: false, msg: '未知操作：' + name });

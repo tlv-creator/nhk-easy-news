@@ -20,6 +20,12 @@ from playwright.sync_api import sync_playwright
 
 BASE = (sys.argv[1] if len(sys.argv) > 1 else
         "https://tlv-creator.github.io/nhk-easy-news/listening/app").rstrip("/")
+# 🔴 两种模式，判据不一样：
+#   过渡期（默认）：anon 还能整班删 LISTEN（老师的按钮还靠 anon 兜底）
+#   --locked      ：收尾 SQL 已跑 ⇒ **anon 整班删必须被拒**，老师按钮必须走服务端端点
+LOCKED = "--locked" in sys.argv
+if LOCKED:
+    sys.argv = [a for a in sys.argv if a != "--locked"]
 SU = "https://lszwxcmvcvbraqtrtgon.supabase.co"
 AK = os.environ.get("SB_KEY", "sb_publishable_3LuLZXWMadqYH3SLYOenig_ECHa51Mo")
 SID, NAME = "26270133", "王曦娴"
@@ -29,6 +35,34 @@ CHROME = "/root/.cache/ms-playwright/chromium-1243/chrome-linux/chrome"
 fails = []
 
 PROBE_SID = "__rls_probe_browser__"
+
+# 🔴 收尾 SQL 跑完后，anon 删不动任何真记录 ⇒ 测试行也删不掉了
+#    ⇒ 清理必须走**老师的特权端点**（不然测试行会留在生产库里）
+OPS_URLS = [
+    "https://vocab-test-d2gkep01q257d3351.service.tcloudbase.com/ai/vocab-ops",
+    "https://vocab-test-d2gkep01q257d3351.service.tcloudbase.com/vocab-ops",
+]
+
+
+def teacher_hash():
+    import hashlib
+    return hashlib.sha256("vocab-unit23-teacher-2026|2013|781108".encode("utf-8")).hexdigest()
+
+
+def ops_delete(log_id):
+    """走老师的特权端点删一条（收尾 SQL 之后的唯一合法路径）"""
+    body = json.dumps({"action": "delete_log", "teacher_id": "2013",
+                       "teacher_hash": teacher_hash(), "id": log_id,
+                       "class_key": "LISTEN"}).encode("utf-8")
+    last = None
+    for u in OPS_URLS:
+        try:
+            req = urllib.request.Request(u, data=body, headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=25) as r:
+                return json.loads(r.read().decode("utf-8"))
+        except Exception as e:
+            last = e
+    return {"ok": False, "error": "endpoint_unreachable: %s" % (last,)}
 
 
 def snapshot():
@@ -146,8 +180,16 @@ def cleanup():
     for r in rows:
         blob = "%s %s" % (r.get("action") or "", r.get("student_id") or "")
         if MARK in blob or "探针" in blob or "rls" in blob.lower() or r.get("student_id") == PROBE_SID:
-            api("DELETE", "vocab_history_logs?id=eq.%s&class_key=eq.LISTEN" % r["id"])
-            n += 1
+            if LOCKED:
+                # 收尾后 anon 删不动 ⇒ 走老师端点
+                res = ops_delete(r["id"])
+                if not (res and res.get("ok")):
+                    print("      ⚠️ 端点删除失败：", res)
+                else:
+                    n += 1
+            else:
+                api("DELETE", "vocab_history_logs?id=eq.%s&class_key=eq.LISTEN" % r["id"])
+                n += 1
     return n
 
 
@@ -242,6 +284,27 @@ with sync_playwright() as p:
         n_after = len(db_rows())
         ck("③ 教师删一条 → 库里真的少了（回读）", n_after < n_before,
            "删前 %d → 删后 %d" % (n_before, n_after))
+
+    # ④-b 🔴 关键判据：拿 anon key **直接 curl** 整班删，必须被拒
+    #      （PostgREST 挡 DELETE 也返回 200/204 ⇒ 必须回读，不能看返回码）
+    #      ⇒ 放在「清空全部」**之前**（那时库里还有行，判据才不是空跑）
+    if LOCKED:
+        _n0 = len(db_rows())
+        api("DELETE", "vocab_history_logs?class_key=eq.LISTEN")
+        _n1 = len(db_rows())
+        ck("④-b anon 直接 curl 整班删 → **被拒**（行还在）", _n1 == _n0,
+           "删前 %d → 删后 %d（行少了 ⇒ 洞没关上）" % (_n0, _n1))
+        _rows = db_rows()
+        if _rows:
+            _id = _rows[0].get("id")
+            api("DELETE", "vocab_history_logs?id=eq.%s&class_key=eq.LISTEN" % _id)
+            _n2 = len(db_rows())
+            ck("④-c anon 直接 curl 删单条 → **被拒**（行还在）", _n2 == _n1,
+               "删前 %d → 删后 %d" % (_n1, _n2))
+        else:
+            ck("④-c anon 直接 curl 删单条（跳过：本来就没数据）", False, "没有可测的行")
+    else:
+        print("   （过渡期：anon 整班删还开着，这是预期的；收尾 SQL 跑完后加 --locked 重跑）")
 
     # ④ 清空全部
     n_before = len(db_rows())

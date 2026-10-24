@@ -5,7 +5,9 @@
   'use strict';
 
   var SKEY = 'listen.teacher.session';
+  var CKEY = 'listen.teacher.cred';   // 🔴 老师口令摘要放 sessionStorage（关掉标签页就没了）
   var tok = null;
+  var cred = { tid: '', hash: '' };
   var data = { classes: [], students: [], logs: [], totals: {} };
   var rangeDays = 6;          // 近7天
   var tab = 'detail';
@@ -59,6 +61,7 @@
     try { saved = JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) { saved = null; }
     if (saved && saved.token) {
       tok = saved.token;
+      try { cred = JSON.parse(sessionStorage.getItem(CKEY) || 'null') || { tid: '', hash: '' }; } catch (e) { cred = { tid: '', hash: '' }; }
       $('viewLogin').hidden = true;
       $('viewDash').hidden = false;
       setWho();
@@ -89,6 +92,10 @@
         if (!r || !r.ok) { setMsg($('loginMsg'), (r && r.msg) || '登录失败', 'err'); return; }
         tok = r.token;
         try { localStorage.setItem(SKEY, JSON.stringify({ token: tok, name: r.name })); } catch (e) { /* ignore */ }
+        // 🔴 服务端特权端点要用的凭据（工号 + 口令摘要）
+        //    ⇒ 放 sessionStorage：刷新还在，关掉标签页就没了（localStorage 里的长期令牌没有这个权限）
+        try { sessionStorage.setItem(CKEY, JSON.stringify({ tid: r.tid || '', hash: r.hash || '' })); } catch (e) { /* ignore */ }
+        cred = { tid: r.tid || '', hash: r.hash || '' };
         setMsg($('loginMsg'), '');
         $('viewLogin').hidden = true;
         $('viewDash').hidden = false;
@@ -274,7 +281,7 @@
       b.textContent = '删除';
       b.addEventListener('click', function () {
         if (!confirm('删除 ' + (l.name || '') + ' 在 ' + l.date + ' 的这条记录？')) return;
-        LISTEN.rpc('listen_teacher_delete', { p_token: tok, p_id: l.id })
+        LISTEN.rpc('listen_teacher_delete', { p_token: tok, p_id: l.id, p_tid: cred.tid, p_thash: cred.hash })
           .then(function () { toast('已删除'); load(); })
           .catch(function (e) { toast(e.message || '删除失败'); });
       });
@@ -392,7 +399,7 @@
     var typed = window.prompt(msg, '');
     if (typed === null || typed === undefined) { toast('已取消，什么都没删'); return; }
     if (String(typed).trim() !== '清空') { toast('未输入「清空」，已取消，什么都没删'); return; }
-    LISTEN.rpc('listen_teacher_clear', { p_token: tok })
+    LISTEN.rpc('listen_teacher_clear', { p_token: tok, p_tid: cred.tid, p_thash: cred.hash })
       .then(function (r) {
         // 🔴 deleted===0 ⇒ 服务器**没删掉**（RLS 挡着）⇒ 绝不能显示「已清空」
         if (!r || !r.ok) { toast((r && r.msg) || '清空失败'); return; }
