@@ -1,9 +1,9 @@
 {
-  "ver": 21,
-  "verName": "1.6",
+  "ver": 22,
+  "verName": "1.7",
   "apkVer": 20,
-  "site": "https://2pybu8mvjo0iu.space.mcode.cn",
-  "apk": "https://2pybu8mvjo0iu.space.mcode.cn/NHK.apk",
-  "note": "44期 · v1.20 APK（apkVer=20，版本判据改用 apkVer，不再恒真）· 词典/词库补回（上一版曾 404，点词释义是坏的）· cdn.js 清掉 23 个死链 · 有原速音 16 期",
+  "site": "https://blb9mns852mft.space.mcode.cn",
+  "apk": "https://blb9mns852mft.space.mcode.cn/NHK.apk",
+  "note": "44期 · v1.20 APK（apkVer=20）· 普通版新增「音字同步」开关：16 期支持跟音（電視播報稿）· 词典补回 · cdn 死链清零",
   "updated": "2026-10-24"
 }
