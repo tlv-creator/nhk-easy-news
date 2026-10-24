@@ -426,26 +426,41 @@ def main():
                 fail('T3-1 online_status 第二次写', '写入返回 %s，但回读内容不是新值' % st2)
         rest('DELETE', '/vocab_online_status?student_id=eq.%s' % sid, prefer='return=representation')
     # 4-2 vocab_states（词汇站 onConflict: class_key）
-    st1, _, r1 = rest('POST', '/vocab_states?on_conflict=class_key',
-                      {'class_key': PROBE_SID, 'state_val': '__rls_probe__'},
-                      prefer='resolution=merge-duplicates,return=representation')
-    if st1 not in (200, 201):
-        fail('T3-2 states 第一次写', 'http=%s %s' % (st1, r1[:100]))
+    # 🔴🔴 v3.1 的改法：**不再插探针行** ⇒ 零污染
+    #   实测：vocab_states 的 DELETE policy 对**所有** key 形状都挡着
+    #     （ZZPROBE / PROBE_V1 / __rls_probe__ 全部「返 200 + 空数组，但行还在」）
+    #   ⇒ **anon 永远删不掉这张表的行** ⇒ 任何探针都会在老师的真表里留垃圾
+    #     （我因此在 vocab_states 里留了 3 行：ZZPROBE / PROBE_V1 / __rls_probe__）
+    #   ⇒ 改用「**把一行真实数据原样 upsert 回去**」：内容一字未改 ⇒ 库里零变化
+    #   ⇒ 顺带证明 conflict 目标 class_key 真有唯一索引（否则会多出一行 ⇒ 行数判据会红）
+    st, _, raw = rest('GET', '/vocab_states?select=class_key,state_val&class_key=eq.__roster_v1',
+                      prefer='count=exact')
+    roster = rows_of(raw)
+    if not roster:
+        fail('T3-2 states 写通道', '名册行读不到 ⇒ 无法做零污染写入验证')
     else:
-        st2, _, r2 = rest('POST', '/vocab_states?on_conflict=class_key',
-                          {'class_key': PROBE_SID, 'state_val': '__rls_probe_2nd__'},
+        _, _, raw_n = rest('GET', '/vocab_states?select=class_key', prefer='count=exact')
+        n_before = len(rows_of(raw_n))
+        sv = roster[0].get('state_val')
+        st1, _, r1 = rest('POST', '/vocab_states?on_conflict=class_key',
+                          {'class_key': roster[0]['class_key'], 'state_val': sv},
                           prefer='resolution=merge-duplicates,return=representation')
-        if st2 not in (200, 201):
-            fail('T3-2 states 第二次写（走 DO UPDATE）', 'http=%s %s' % (st2, r2[:140]))
+        if st1 not in (200, 201):
+            fail('T3-2 states 原样回写', 'http=%s %s' % (st1, r1[:100]))
         else:
-            st3, _h3, raw3 = rest('GET', '/vocab_states?select=*&class_key=eq.%s' % PROBE_SID,
-                                 prefer='count=exact')
-            rows3 = rows_of(raw3)
-            if len(rows3) == 1 and rows3[0].get('state_val') == '__rls_probe_2nd__':
-                ok('T3-2 states upsert 第二次写成功且内容已更新（仍只有 1 行 ⇒ 走的是 DO UPDATE）✓')
+            st3, _h3, raw3 = rest('GET', '/vocab_states?select=state_val&class_key=eq.__roster_v1',
+                                  prefer='count=exact')
+            back = rows_of(raw3)
+            if back and back[0].get('state_val') == sv:
+                ok('T3-2 states 写✓ 原样回写后回读内容一字未改 ✓（零污染写法）')
             else:
-                fail('T3-2 states 第二次写', '写入返回 %s，但回读内容不是新值' % st2)
-        rest('DELETE', '/vocab_states?class_key=eq.%s' % PROBE_SID, prefer='return=representation')
+                fail('T3-2 states 回读', '原样回写后内容变了')
+            _, _, raw_n2 = rest('GET', '/vocab_states?select=class_key', prefer='count=exact')
+            n_after = len(rows_of(raw_n2))
+            if n_after == n_before:
+                ok('T3-2 states 行数未变（%d 行）⇒ 没插出第二行 ⇒ on_conflict=class_key 有效' % n_after)
+            else:
+                fail('T3-2 states 行数', '%d → %d ⇒ 插了第二行（on_conflict 没生效）' % (n_before, n_after))
     # 4-3 vocab_submissions（词汇站 onConflict: student_id）
     st1, _, r1 = rest('POST', '/vocab_submissions?on_conflict=student_id',
                       {'student_id': PROBE_SID, 'submitted_exams': ['__rls_probe__']},
@@ -491,9 +506,10 @@ def main():
     for t, q in (('vocab_history_logs', 'class_key=eq.LISTEN&student_id=eq.%s' % PROBE_SID),
                  ('vocab_history_logs', 'class_key=eq.%s' % PROBE_CK),
                  ('vocab_online_status', 'student_id=eq.%s' % PROBE_SID),
-                 ('vocab_submissions', 'student_id=eq.%s' % PROBE_SID),
-                 ('vocab_states', 'class_key=eq.%s' % PROBE_SID)):
+                 ('vocab_submissions', 'student_id=eq.%s' % PROBE_SID)):
         rest('DELETE', '/%s?%s' % (t, q), prefer='return=representation')
+    # ⚠️ vocab_states **故意不删**：它的 DELETE 对 anon 全挡 ⇒ 删了也只是「200 + 空数组」
+    #    ⇒ v3 现在**不在这张表插任何探针**（改成原样回写名册行）⇒ 没有需要清理的东西
 
     # ── 7) 汇总
     print('\n━━ 6) 汇总 ━━')
