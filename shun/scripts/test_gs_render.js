@@ -35,8 +35,9 @@ function grab(name) {
 const escSrc = `
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 `;
-const src = escSrc + grab('gsBrkClass') + grab('gsFrameHtml') + grab('gsBlocksHtml') + grab('gsHtml') +
-  '\nmodule.exports={gsHtml,gsBrkClass,gsFrameHtml,gsBlocksHtml};';
+const src = escSrc + grab('gsBrkClass') + grab('gsBrkText') + grab('gsFrameHtml') +
+  grab('gsBlocksHtml') + grab('gsHtml') +
+  '\nmodule.exports={gsHtml,gsBrkClass,gsBrkText,gsFrameHtml,gsBlocksHtml};';
 
 const sandbox = { module: { exports: {} }, console };
 vm.createContext(sandbox);
@@ -95,6 +96,13 @@ ok('4 个角色标签', (h.match(/class="gs-rl gs-r/g) || []).length === 4,
   ok('角色标签有「' + r + '」', h.indexOf(r) >= 0);
 });
 ok('四种括号都有对应 class', ['gs-bk0', 'gs-bk1', 'gs-bk2', 'gs-bk3'].every(c => h.indexOf(c) >= 0));
+
+console.log('\n=== 括号字符必须显示（它是语义标记）===');
+ok('框架块有左括号', /class="gs-op">\[<\/span>/.test(h), h.slice(0, 200));
+ok('框架块有右括号', /class="gs-op">\]<\/span>/.test(h));
+ok('有全角括号 ［］', h.indexOf('［') >= 0 && h.indexOf('］') >= 0);
+ok('有全角括号 〈〉', h.indexOf('〈') >= 0 && h.indexOf('〉') >= 0);
+ok('有全角括号 （）', h.indexOf('（') >= 0 && h.indexOf('）') >= 0);
 
 console.log('\n=== 逐块拆解 ===');
 ok('4 个块卡片', (h.match(/class="gs-bkcard"/g) || []).length === 4,
