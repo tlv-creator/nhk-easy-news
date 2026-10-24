@@ -1,6 +1,7 @@
 -- ⚠️ 本文件 = tools/fix_history_logs_rls.sql **v2** 的副本（内容完全一致）
 --    存在的唯一理由：防止老师点错文件跑了旧版 v1（v1 的 DELETE 只放行探针 ⇒ 删不掉真实数据）
---    另见 tools/fix_listen_rls.sql（听力记录站专用，已并入本文件）
+--    自检：bash tools/pg_rls_harness.sh tools/fix_history_logs_rls.sql   （本地 PostgreSQL 真跑一遍）
+--    反向：bash tools/pg_rls_harness.sh tools/rls_v1_snapshot.sql        （v1 ⇒ 删不掉/upsert 失败）
 -- =====================================================================
 -- =====================================================================
 -- RLS 修复 v2（三站一次 Run）· 2026-10-24
@@ -65,8 +66,18 @@ begin;
 --    只动这 3 张表，**vocab_states 不动**（它是通的）
 -- ─────────────────────────────────────────────────────────────
 do $$
-declare r record;
+declare r record; has_col boolean := false;
 begin
+  -- 🔴 这一段必须**绝不让整笔事务回滚**（teacher 点了 Run 却在输出里只看到一句 error、
+  --    以为跑成功了，其实一条 policy 都没建 ⇒ 最阴的形态）
+  --    ⇒ 先确认 pg_policies 有没有 permissive 列（PG 12+ 才有），再包一层 exception
+  select exists (select 1 from information_schema.columns
+                  where table_schema = 'pg_catalog' and table_name = 'pg_policies'
+                    and column_name = 'permissive') into has_col;
+  if not has_col then
+    raise notice 'pg_policies 没有 permissive 列（PG < 12）⇒ 跳过 restrictive 清理';
+    return;
+  end if;
   for r in
     select tablename, policyname from pg_policies
      where schemaname = 'public'
@@ -76,6 +87,8 @@ begin
     raise notice '已删除 restrictive policy: % . %', r.tablename, r.policyname;
     execute format('drop policy %I on public.%I', r.policyname, r.tablename);
   end loop;
+exception when others then
+  raise notice '⚠️ 清理 restrictive policy 失败（**不影响后面的语句**）：%', sqlerrm;
 end $$;
 
 -- ─────────────────────────────────────────────────────────────
