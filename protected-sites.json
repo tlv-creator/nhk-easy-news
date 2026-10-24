@@ -469,9 +469,22 @@
       "role": "content",
       "reason": "✅ **hub v1.19 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
       "written_in": "hub.html 的 SITE 块",
+      "frozen": false,
+      "status": "DELETED",
+      "note": "🔴 域名冻结（redeploy 层面）：**永不 redeploy 这个域**（redeploy = 换域名 = 引导页死链）。【2026-10-24 已删除】v1.19 站被 v1.20 站取代（fz40043h2tzaw）后删除。⚠️ 本条的 frozen=false **不是**「取消保护」：hub 的站 URL 只写在引导页 hub.html 里（已指向新站），不存在「学生/老师手里存着这个链接」的风险 ⇒ 与词汇站/听力站的 frozen=true 语义不同，那两类站**仍按永不删处理**。",
+      "replaced_by": "fz40043h2tzaw",
+      "deleted_at": "2026-10-24"
+    },
+    {
+      "domain": "fz40043h2tzaw",
+      "project": "hub",
+      "role": "content",
+      "reason": "✅ **hub v1.20 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
+      "written_in": "hub.html 的 SITE 块",
       "frozen": true,
       "status": "alive",
-      "note": "🔴 域名冻结：**永不 redeploy**（redeploy = 换域名 = 引导页死链）。发新版要「新建站 + 改引导页 + 再删旧的」。"
+      "note": "🔴 域名冻结：**永不 redeploy**（redeploy = 换域名 = 引导页死链）。发新版要「新建站 + 改引导页 + 再删旧的」。v1.20 = 瘦身版：只留 魔卡少女樱 + 若草物語（本地）+ 日常场景会话（站外永久入口）。",
+      "current_as_of": "2026-10-24"
     },
     {
       "domain": "qtjgfga76bu4o",
