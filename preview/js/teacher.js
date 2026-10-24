@@ -1,8 +1,8 @@
 /* =====================================================================
    四级精读日报 · 老师端看板
    ---------------------------------------------------------------------
-   看板：今日活跃 / 累计参与 / 今日浏览时长 / 今日做题数 / 平均正确率
-   明细：学号 姓名 班级 最近学习时间 累计时长 累计做题 累计正确率 已完成期数
+   看板：今日活跃 / 累计参与 / 今日浏览时长 / 今日做题数 / 平均采分点命中率
+   明细：学号 姓名 班级 最近学习时间 累计时长 累计做题 累计采分点命中率 已完成期数
    缺席：今天没来的学生
    导出：CSV（带 UTF-8 BOM，Excel 打开中文不乱码）
    🔴 只读 class_key='CET4' 的日志行，绝不删改老师词汇站的任何行
@@ -197,12 +197,14 @@
     // 今日指标：按日志时间戳算（跟「今天没来」口径一致）
     var todaySet = {}, rangeSet = {}, todayBrowse = 0, todayEx = 0;
     var todayQuizOk = 0, todayQuizTotal = 0;
+    var todayTransHit = 0, todayTransTotal = 0;
     (allLogs || logs || []).forEach(function (l) {
       if (today && l.ts_date === today) {
         todaySet[String(l.student_id)] = 1;
         if (l.kind === '浏览') todayBrowse += l.sec || l.duration_sec || 0;
         if (l.kind === '翻译练习' || l.kind === '理解题') todayEx++;
         if (l.kind === '理解题') { todayQuizOk += l.num || 0; todayQuizTotal += l.den || 0; }
+        if (l.kind === '翻译练习') { todayTransHit += l.num || 0; todayTransTotal += l.den || 0; }
       }
     });
     (logs || []).forEach(function (l) { rangeSet[String(l.student_id)] = 1; });
@@ -231,7 +233,7 @@
         today_exercises: todayEx,
         accuracy: pct(transHit, transTotal),          // 采分点命中率（主口径）
         quiz_ok: quizOk, quiz_total: quizTotal,         // 旧版理解题（留档）
-        today_accuracy: pct(todayQuizOk, todayQuizTotal),
+        today_accuracy: pct(todayTransHit, todayTransTotal),   // 今日采分点命中率
         total_logs: (logs || []).length
       }
     };

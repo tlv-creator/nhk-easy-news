@@ -593,7 +593,7 @@
         class_key: l.class_key, class_name: l.class_name,
         ts_date: l.ts_date, time: l.time, action: l.action,
         kind: p.kind, issue_date: p.date, num: p.num, den: p.den, sec: p.sec,
-        comp: p.comp, band: p.band, miss: p.miss,
+        comp: p.comp, band: p.band, miss: p.miss, errs: p.errs,
         duration_sec: l.duration_sec || 0
       };
     });
