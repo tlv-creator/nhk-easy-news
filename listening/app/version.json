@@ -1,10 +1,11 @@
 {
  "app": "每日听力记录",
- "mirror": "https://irk7ibwekq8se.space.mcode.cn",
+ "mirror": "https://xqrp2rqkvxqwf.space.mcode.cn",
  "permanent_entry": "https://tlv-creator.github.io/nhk-easy-news/listening/",
  "student": "https://tlv-creator.github.io/nhk-easy-news/listening/app/student.html",
  "teacher": "https://tlv-creator.github.io/nhk-easy-news/listening/app/teacher.html",
  "updated": "2026-10-24 14:33:28",
  "app_version": "20261024b-token",
- "note": "学生删除改为「学号 + 行令牌」双凭证（收尾 SQL 用 tools/listen_lock_anon_delete.sql）"
+ "note": "学生删除改为「学号 + 行令牌」双凭证（收尾 SQL 用 tools/listen_lock_anon_delete.sql）",
+ "mirror_note": "2026-10-24 换新镜像：旧镜像的 js 不带行令牌 ⇒ 收尾 SQL 一跑，旧镜像上学生删不了自己的记录。旧域 irk7ibwekq8se 保留不删（frozen）。"
 }
