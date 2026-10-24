@@ -33,7 +33,8 @@ else
     tar xzf "$ROOT/shared.tar.gz" -C "$SHARED" --strip-components=1 || die "解压失败"
   fi
   [ -d "$SHARED/nhk" ] || die "共享仓库里没有 nhk/ 目录（项目丢了，需要人工恢复）"
-  cp -r "$SHARED/nhk" "$PROJ" && echo "  已从共享仓库恢复：$PROJ"
+  # 🔴 用 `cp -r src/. dst/` ⇒ 拷**内容**；写成 `cp -r src dst` 会多套一层 nhk/nhk/
+  cp -r "$SHARED/nhk/." "$PROJ/" && echo "  已从共享仓库恢复：$PROJ"
 fi
 mkdir -p "$PROJ"/{work,data,deploy_site}
 mkdir -p "$PROJ/work"/{out,syn_out,raw,asr,zh}
