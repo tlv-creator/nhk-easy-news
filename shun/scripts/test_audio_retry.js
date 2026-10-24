@@ -29,10 +29,11 @@ function ok(cond, name, extra) {
   else { fail++; fails.push(name + (extra !== undefined ? '  → ' + extra : '')); console.log('  ❌ ' + name + (extra !== undefined ? '  → ' + extra : '')); }
 }
 
-const hits = { flaky: 0, dead: 0, hang: 0 };
+const hits = { flaky: 0, dead: 0, hang: 0, ok: 0, tried: [] };
 
 const srv = http.createServer((req, res) => {
   const u = req.url.split('?')[0];
+  hits.all = hits.all || []; hits.all.push(u);
   const AUDIO = path.join(ROOT, 'audio');
   /* 场景 A：第一次 503，之后真的把音频发出去 */
   if (u.startsWith('/flaky/')) {
@@ -51,6 +52,20 @@ const srv = http.createServer((req, res) => {
   if (u.startsWith('/dead/')) { hits.dead++; res.writeHead(503); return res.end('always down'); }
   /* 场景 C：挂起（不返回）—— 连 error 事件都不触发，只能靠看门狗 */
   if (u.startsWith('/hang/')) { hits.hang++; return; }
+  /* 🔴 场景 D：**换源目标**（正常返回音频）⇒ 用来验证「主源挂了能自动换源」
+   *   （不返回这个路由 ⇒ 换源逻辑等于没被测到） */
+  if (u.startsWith('/ok/')) {
+    hits.ok++;
+    hits.tried.push(u);
+    const fa = path.join(AUDIO, path.basename(u));
+    if (!fs.existsSync(fa)) { res.writeHead(404); res.end('404'); return; }
+    res.writeHead(200, {
+      'Content-Type': 'audio/mp4',
+      'Content-Length': fs.statSync(fa).size,
+      'Accept-Ranges': 'bytes'
+    });
+    return fs.createReadStream(fa).pipe(res);
+  }
 
   let p = u; if (p === '/') p = '/index.html';
   const f = path.join(ROOT, 'web', p);
@@ -61,7 +76,7 @@ const srv = http.createServer((req, res) => {
   res.writeHead(404); res.end('nf');
 });
 
-async function newPage(browser, audioBase) {
+async function newPage(browser, audioBase, fallbacks) {
   const page = await browser.newPage({ viewport: { width: 412, height: 915 } });
   const errors = [];
   page.on('pageerror', e => errors.push(String(e)));
@@ -74,6 +89,26 @@ async function newPage(browser, audioBase) {
    *   而本地 audio 目录只有 ep01~ep12 ⇒ 音频必然加载失败 ⇒ 假红。 */
   await page.addInitScript(() => {
     try { localStorage.setItem('shun.ep', JSON.stringify('ep01')); } catch (e) { }
+  });
+  /* 🔴🔴 **必须注入 fallback 链**（2026-10-24）：
+   *   app.js 的换源逻辑会跳到**备用地址** ⇒ 不注入的话它跳到**真实生产站**
+   *   ⇒ 真实站好好的 ⇒「一直 503」场景永远不报错 ⇒ **测试假红/恒绿**
+   *   ⇒ 生产环境不注入（走写死的链）⇒ 这里注入的是**本地地址** */
+  if (fallbacks && fallbacks.length) {
+    await page.addInitScript(fb => { window.__SHUN_AUDIO_FALLBACKS = fb; }, fallbacks);
+  }
+  /* 🔴🔴 **主源：拦截 app.js 并替换 AUDIO_BASE_LOCAL 常量**（2026-10-24）
+   *   为何不用 ?audio= 参数：实测在真实浏览器里 app.js 读到的 AUDIO_BASE
+   *   **不是** URL 参数的值（引导页路径会覆盖它）⇒ 参数式调试不可靠
+   *   为何不用 window 注入点：同理不生效
+   *   ⇒ 而**替换常量**正好对应生产行为（部署时 scripts/set_audio_base.sh 就是这么换站的）
+   *   ⇒ 测的仍是真实代码路径（只是配置项换成了本地地址） */
+  await page.route('**/app.js', async route => {
+    const res = await route.fetch();
+    let body = await res.text();
+    body = body.replace(/var AUDIO_BASE_LOCAL = '[^']*';/,
+      "var AUDIO_BASE_LOCAL = '" + audioBase + "';");
+    await route.fulfill({ status: 200, contentType: 'application/javascript', body });
   });
   await page.goto(`http://127.0.0.1:${PORT}/index.html?audio=${encodeURIComponent(audioBase)}`,
     { waitUntil: 'domcontentloaded' });
@@ -125,7 +160,8 @@ async function openEp1(page, waitMs) {
   console.log('\n【A】第一次请求 503（CDN 冷启动）');
   hits.flaky = 0;
   {
-    const { page, errors } = await newPage(browser, `http://127.0.0.1:${PORT}/flaky/`);
+    const base = `http://127.0.0.1:${PORT}/flaky/`;
+    const { page, errors } = await newPage(browser, base, [base]);
     const st = await openEp1(page, 9000);
     ok(hits.flaky >= 2, '确实重试了（请求次数 ≥ 2）', '实际 ' + hits.flaky);
     ok(st.ready >= 1 && st.dur > 60, '重试后音频真的解码出来了', JSON.stringify(st));
@@ -138,7 +174,8 @@ async function openEp1(page, waitMs) {
   console.log('\n【B】一直 503（真故障）');
   hits.dead = 0;
   {
-    const { page, errors } = await newPage(browser, `http://127.0.0.1:${PORT}/dead/`);
+    const base = `http://127.0.0.1:${PORT}/dead/`;
+    const { page, errors } = await newPage(browser, base, [base]);
     const st = await openEp1(page, 12000);
     ok(hits.dead <= 5, '重试有上限（不会无限刷）', '实际请求 ' + hits.dead);
     ok(st.toast.indexOf('没声音') >= 0, '最终如实提示「没声音」', JSON.stringify(st));
@@ -150,7 +187,8 @@ async function openEp1(page, waitMs) {
   console.log('\n【C】服务端挂起（error 事件不触发）→ 看门狗必须兜住');
   hits.hang = 0;
   {
-    const { page, errors } = await newPage(browser, `http://127.0.0.1:${PORT}/hang/`);
+    const base = `http://127.0.0.1:${PORT}/hang/`;
+    const { page, errors } = await newPage(browser, base, [base]);
     const st = await openEp1(page, 16000);
     ok(hits.hang >= 1, '请求确实发出去了', '实际 ' + hits.hang);
     ok(st.toast.indexOf('没声音') >= 0, '**看门狗兜住了**并如实提示（没有静默失败）', JSON.stringify(st));
@@ -158,9 +196,29 @@ async function openEp1(page, waitMs) {
     await page.close();
   }
 
+  /* 🔴 场景 D：**主源一直 503，但备用源是好的** ⇒ 必须自动换源成功
+   *   （这是 2026-10-24 新加的「备用地址链」的核心语义）
+   *   ⚠️ 原来**没有这条测试** ⇒ 换源逻辑等于没被验证过 */
+  console.log('\n【D】主源 503 + 备用源正常 ⇒ 必须自动换源成功');
+  hits.dead = 0; hits.ok = 0; hits.tried = [];
+  {
+    const main = `http://127.0.0.1:${PORT}/dead/`;
+    const backup = `http://127.0.0.1:${PORT}/ok/`;
+    const { page, errors } = await newPage(browser, main, [backup]);
+    const st = await openEp1(page, 12000);
+    ok(hits.dead >= 1, '主源确实被请求过', '实际 ' + hits.dead);
+    ok(hits.ok >= 1, '**自动换源**去请求备用地址了', '实际 ' + hits.ok);
+    ok(st.ready >= 1 && st.dur > 60, '换源后音频真的解码出来了', JSON.stringify(st));
+    ok(st.toast === '', '换源成功后**不报错**', st.toast);
+    ok(errors.length === 0, '无 JS 错误', errors.slice(0, 2).join(' | '));
+    await page.close();
+  }
+
   await browser.close();
   srv.close();
 
+  console.log('\n[debug] 所有请求路径：');
+  console.log(JSON.stringify(hits.all.filter(x => /m4a|audio|json/.test(x)).slice(0, 30), null, 0));
   console.log('\n═══ ' + pass + ' 通过 / ' + fail + ' 失败 ═══');
   if (fail) { console.log('失败项：\n  ' + fails.join('\n  ')); process.exit(1); }
 })().catch(e => { console.error(e); process.exit(1); });
