@@ -665,7 +665,7 @@
     if (a.err_types && a.err_types.length) {
       errHtml = '<div class="terr"><div class="terr-h">🔴 AI 判出的主要错误类型</div>'
         + '<div class="ttags">' + a.err_types.slice(0, 8).map(function (e) {
-          return '<span class="ttag">' + CET4UI.esc(e.type) + ' <b>' + e.n + '</b></span>';
+          return '<span class="ttag">' + esc(e.type) + ' <b>' + e.n + '</b></span>';
         }).join('') + '</div>'
         + '<p class="lead">按<b>人次</b>算（同一份答卷里同一类错只算 1 次），'
         + '和上面「本地初判」的错误类型是<b>两套口径</b>，不要相加。</p></div>';

@@ -618,12 +618,12 @@
       { b: 4, s: 5, e: ['动词形式', '主谓一致'] },
       { b: 5, s: 3, e: ['拼写', '中式表达', '单复数'] }
     ];
-    for (var ai = 0; ai < st.length; ai++) {
+    for (var ai = 0; ai < DEMO_ROSTER.length; ai++) {
       if (rnd() > 0.45) continue;                 // 只有约 45% 的学生点了 AI
       var pick = AI_BANDS[Math.floor(rnd() * AI_BANDS.length)];
       logs.push({
-        id: logs.length + 1, student_id: st[ai].id, name: st[ai].name,
-        class_key: st[ai].class_key, class_name: st[ai].class_name,
+        id: logs.length + 1, student_id: DEMO_ROSTER[ai].id, name: DEMO_ROSTER[ai].name,
+        class_key: DEMO_ROSTER[ai].class_key, class_name: DEMO_ROSTER[ai].class_name,
         ts_date: today, time: pad(10 + Math.floor(rnd() * 7)) + ':' + pad(Math.floor(rnd() * 60)),
         action: logAI(today, pick.b, pick.s, pick.e),
         duration_sec: 0
