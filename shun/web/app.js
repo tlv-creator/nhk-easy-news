@@ -21,9 +21,33 @@
 
   /* 音频站域名（部署后由 scripts/set_audio_base.sh 写死）
    * 调试时可以用 ?audio=<绝对地址前缀> 临时换源（测试脚本用） */
-  var AUDIO_BASE_LOCAL = 'https://da4lxn2phccck.space.mcode.cn/media/';
+  var AUDIO_BASE_LOCAL = 'https://qtjgfga76bu4o.space.mcode.cn/media/';
+  /* 🔴🔴 **备用音频地址链**（2026-10-24 采纳 hub 课程站线的建议）
+   *   起因：**地址写死 = 站点一挂/被删 ⇒ App 永久哑**，而且用户不知道原因
+   *   ⇒ 同一集**换源重试**（不是只加 ?r= 破缓存 —— 那是重试同一个死地址）
+   *   ⇒ 顺序：引导页给的（最新）→ v3（13 集）→ v2（12 集，永久冻结，兜底）
+   *   ⚠️ v2 没有 ep13 ⇒ ep13 只能靠 v3/引导页 ⇒ 兜底只保 ep01~ep12 */
+  var AUDIO_FALLBACKS = (function () {
+    /* 可注入（**仅测试用**）：window.__SHUN_AUDIO_FALLBACKS
+     *   ⇒ 回归测试要让 fallback 指向本地，否则换源会跳到**真实生产站**
+     *   ⇒ 真实站好好的 ⇒ 「一直 503」场景永远不报错 ⇒ **测试变成恒绿/假红**
+     *   ⇒ 生产环境不注入 ⇒ 走下面的写死链 */
+    var inj = (typeof window !== 'undefined') && window.__SHUN_AUDIO_FALLBACKS;
+    if (Array.isArray(inj) && inj.length) return inj.slice();
+    return [
+      'https://qtjgfga76bu4o.space.mcode.cn/media/',
+      'https://da4lxn2phccck.space.mcode.cn/media/'
+    ];
+  })();
+  // 🔴 2026-10-24：音频兜底站换成 v3（含 13 集）
+  //    旧站 da4lxn2phccck **没有 ep13** ⇒ 引导页拉不到时 Ep278 没声音
+  //    ⇒ 换站必须改**所有**引用方：引导页 shun.json ✅ + 这里（APK 内的兜底）✅
   var AUDIO_BASE = (function () {
     try {
+      /* 🔴 **测试注入点**（2026-10-24）：比 ?audio= 参数可靠
+       *   ⇒ ?audio= 在真实浏览器里**时序上不可靠**（实测 app.js 执行时 search 为空）
+       *   ⇒ 生产不注入 ⇒ 走引导页 / 本地常量 */
+      if (window.__SHUN_AUDIO_BASE) return window.__SHUN_AUDIO_BASE;
       var m = /[?&]audio=([^&]+)/.exec(location.search);
       if (m) return decodeURIComponent(m[1]);
     } catch (e) { }
@@ -92,9 +116,18 @@
   }
 
   /* ---------------- 播放层 ---------------- */
-  function audioUrl() {
+  function audioUrl(base) {
     var tag = S.ep ? (S.ep.audio || (S.ep.tag + '.m4a')) : 'ep01.m4a';
-    return AUDIO_BASE + tag;
+    return (base || AUDIO_BASE) + tag;
+  }
+
+  /* 🔴 换源：当前 base 失败 ⇒ 试下一个（整条链试完才算真失败） */
+  function audioNextBase() {
+    var chain = [AUDIO_BASE].concat(AUDIO_FALLBACKS);
+    for (var i = 0; i < chain.length; i++) {
+      if (chain[i] !== AUDIO_BASE) { AUDIO_BASE = chain[i]; return true; }
+    }
+    return false;
   }
 
   /* 网页版：优先播本地缓存副本（离线可听），没有就用远端 */
@@ -130,6 +163,7 @@
     S.pos = 0;
     S.dur = Math.round((ep.dur || 0) * 1000);
     S.idx = -1;
+    audioRetry.swapped = false;   /* 换集 ⇒ 允许再换一次源 */
     var url = audioUrl();
     if (isNative) {
       nativeLoad(ep.tag, url, posMs || 0);
@@ -239,7 +273,7 @@
    * ⚠️ 这两个函数**必须在 `if (!isNative)` 块外面**（loadEp 也要用它们）——
    *    写在块里 → 块级作用域不提升 → loadEp 调用会 ReferenceError。
    */
-  var audioRetry = { n: 0, timer: null, watch: null, src: '', lastFail: 0 };
+  var audioRetry = { n: 0, timer: null, watch: null, src: '', lastFail: 0, swapped: false };
 
   function audioArmWatch() {
     if (audioRetry.watch) clearTimeout(audioRetry.watch);
@@ -275,6 +309,21 @@
     audioRetry.lastFail = now;
     var st = au.error || {};
     var code = st.code;
+    /* 🔴🔴 **先换源**（2026-10-24）：地址失效（code 4 / 网络错误）时
+     *   重试同一个死地址没有意义 ⇒ 先换备用地址链
+     *   ⇒ 判据：**这次还没换过源** 且 **有备用地址** */
+    if ((code === 4 || code === 2 || code === undefined) && !audioRetry.swapped && audioNextBase()) {
+      audioRetry.swapped = true;
+      var tag2 = S.ep ? (S.ep.audio || (S.ep.tag + '.m4a')) : 'ep01.m4a';
+      try {
+        audioRetry.src = audioUrl();
+        au.src = audioRetry.src;
+        au.load();
+        if (S.playing) au.play().catch(function () { });
+      } catch (e) { }
+      audioArmWatch();
+      return;   /* 换源期间不弹提示（墨水屏上每次 toast 都是一次整屏重绘） */
+    }
     /* code 3 = 解码失败（重试没用）→ 直接报错，不浪费用户时间 */
     if (code !== 3 && audioRetry.n < 2 && audioRetry.src) {
       audioRetry.n++;
@@ -387,6 +436,126 @@
     return out;
   }
 
+  /* ================================================================
+   * 句子结构详解（gs 字段）
+   *   数据由 tools/gen_gs.py 用 MiniMax-Text-01 离线生成 + 事实校验，
+   *   schema 见 docs/新结构注释设计.md。
+   *   渲染目标（用户给的样例形态）：
+   *     一、大框架   →  一行分块（括号 + 原文）+ 下一行对齐角色标签
+   *     主句骨架   →  公式行
+   *     层层修饰主句 → 箭头串
+   *     二、逐块拆解 →  每块：块内骨架 + 逐成分说明 + 整块意思
+   *     整句意思
+   * ============================================================== */
+
+  /* 括号 → CSS 类后缀（决定视觉区分：连接 / 从句 / 内容 / 谓语） */
+  function gsBrkClass(b) {
+    if (b === '[]') return 'k0';
+    if (b === '［］') return 'k1';
+    if (b === '〈〉') return 'k2';
+    if (b === '（）') return 'k3';
+    return 'k1';
+  }
+
+  /* 括号字符本身要**显示出来**（它是语义标记：连接/从句/内容/谓语）
+   * CSS 边框只是辅助区分（墨水屏黑白下靠粗细认）。 */
+  function gsBrkText(b) {
+    if (b === '[]') return ['[', ']'];
+    if (b === '［］') return ['［', '］'];
+    if (b === '〈〉') return ['〈', '〉'];
+    if (b === '（）') return ['（', '）'];
+    return ['', ''];
+  }
+
+  /* 一、大框架：块 + 对齐的角色标签 */
+  function gsFrameHtml(gs) {
+    var fr = gs.frame || [];
+    if (!fr.length) return '';
+    var h = '<div class="gs-frame">';
+    for (var i = 0; i < fr.length; i++) {
+      var bk = gsBrkText(fr[i].b);
+      h += '<span class="gs-bk gs-b' + gsBrkClass(fr[i].b) + '">' +
+        '<span class="gs-bt"><span class="gs-op">' + bk[0] + '</span>' +
+        esc(fr[i].s || '') +
+        '<span class="gs-op">' + bk[1] + '</span></span></span>';
+    }
+    h += '</div>';
+    h += '<div class="gs-roles">';
+    for (var j = 0; j < fr.length; j++) {
+      h += '<span class="gs-rl gs-r' + gsBrkClass(fr[j].b) + '">' +
+        esc(fr[j].role || '') + '</span>';
+    }
+    h += '</div>';
+    return h;
+  }
+
+  /* 逐块拆解 */
+  function gsBlocksHtml(gs) {
+    var bl = gs.blocks || [];
+    if (!bl.length) return '';
+    var h = '';
+    for (var i = 0; i < bl.length; i++) {
+      var b = bl[i];
+      h += '<div class="gs-bkcard">';
+      h += '<div class="gs-bkhead"><span class="gs-bknum">第' +
+        ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'][i] +
+        '块</span><span class="gs-bktext">' + esc(b.s || '') + '</span></div>';
+      if (b.inner) {
+        h += '<div class="gs-inner">' + esc(b.inner) + '</div>';
+      }
+      var ps = b.parts || [];
+      if (ps.length) {
+        h += '<ul class="gs-parts">';
+        for (var j = 0; j < ps.length; j++) {
+          h += '<li><span class="gs-ps">' + esc(ps[j].s || '') + '</span>' +
+            '<span class="gs-pn">' + esc(ps[j].note || '') + '</span></li>';
+        }
+        h += '</ul>';
+      }
+      if (b.mean) {
+        h += '<div class="gs-mean">意思：<b>' + esc(b.mean) + '</b></div>';
+      }
+      h += '</div>';
+    }
+    return h;
+  }
+
+  /* 整节渲染 */
+  function gsHtml(gs) {
+    if (!gs || !gs.frame || !gs.frame.length) return '';
+    var h = '<div class="ex-sec">② 句子结构详解</div><div class="gs">';
+
+    h += '<div class="gs-h">一、大框架</div>';
+    h += gsFrameHtml(gs);
+
+    if (gs.skel) {
+      h += '<div class="gs-skel"><span class="gs-lb">主句骨架</span>' +
+        '<span class="gs-sv">' + esc(gs.skel);
+      if (gs.skelMean) h += ' <span class="gs-eq">＝"' + esc(gs.skelMean) + '"</span>';
+      h += '</span></div>';
+    }
+
+    if (gs.chain && gs.chain.length) {
+      h += '<div class="gs-h gs-h2">层层修饰主句</div>';
+      h += '<div class="gs-chain">';
+      for (var i = 0; i < gs.chain.length; i++) {
+        if (i) h += '<span class="gs-ar">→</span>';
+        h += '<span class="gs-ch">' + esc(gs.chain[i]) + '</span>';
+      }
+      h += '</div>';
+    }
+
+    h += '<div class="gs-h gs-h2">二、逐块拆解</div>';
+    h += gsBlocksHtml(gs);
+
+    if (gs.whole) {
+      h += '<div class="gs-whole"><span class="gs-lb">整句意思</span>' +
+        esc(gs.whole) + '</div>';
+    }
+    h += '</div>';
+    return h;
+  }
+
   /* ---------------- 渲染字幕流 ---------------- */
   function rubyHtml(row) {
     if (!row.ru || !row.ru.length) return esc(row.t || '');
@@ -490,6 +659,7 @@
       '<div class="ex-act">' +
       '<button class="mini-btn" data-act="speak">🔊 朗读</button>' +
       '<button class="mini-btn" data-act="seek">▶ 跳到這句</button>' +
+      '<button class="mini-btn" data-act="copy-sent">📋 复制整句</button>' +
       '</div></div>';
 
     /* ② 逐词拆解 —— 覆盖这一行每一个词
@@ -518,8 +688,13 @@
       h += '<div class="ex-none">这一行是语气词或音效，没有可拆的词。</div>';
     }
 
-    /* ③ 语法说明 —— 句型名 → styles.json（接续/意思/语感） */
-    h += '<div class="ex-sec">② 语法说明</div>';
+    /* ② 句子结构详解（新）—— 大框架 / 主句骨架 / 层层修饰 / 逐块拆解
+     * 数据由 tools/gen_gs.py 离线生成并做事实校验（docs/新结构注释设计.md）。
+     * 没有 gs 的句子（旧数据 / 生成失败）⇒ 这一节不显示，不留空标题。 */
+    h += gsHtml(r.gs);
+
+    /* ③ 句型说明 —— 句型名 → styles.json（接续/意思/语感） */
+    h += '<div class="ex-sec">③ 句型说明</div>';
     var st = r.st ? (S.lex.styles[r.st] || null) : null;
     if (st) {
       h += '<div class="ex-gram"><div class="g-name">' + esc(st.name || r.st) + '</div>';
@@ -544,49 +719,9 @@
       h += '</div>';
     }
 
-    /* ④ 整句结构 */
-    h += '<div class="ex-sec">③ 整句结构</div><div class="ex-struct">';
-    var blocks = r.blk || [];
-    /* 主会话的 blk 里中文块是空的 → 用旁挂的 blk 中文块补上 */
-    var side = (S.blk[S.ep.tag] || {})[S.ep.tag + ':' + L.cueIdx];
-    if (side && side.length) {
-      var needZh = true;
-      for (var bi0 = 0; bi0 < blocks.length; bi0++) {
-        if (pairText(blocks[bi0][1]) || pairRead(blocks[bi0][1])) { needZh = false; break; }
-      }
-      if (needZh) blocks = side;
-    }
-    if (blocks && blocks.length) {
-      for (var bi = 0; bi < blocks.length; bi++) {
-        var bj = blocks[bi];
-        var bjp = Array.isArray(bj) ? (bj[0] || '') : (bj && bj[0]) || '';
-        var bzh = Array.isArray(bj) ? (bj[1] || '') : (bj && bj[1]) || '';
-        h += '<div class="sg-row"><div class="sg-role">' + (bi + 1) + '</div>' +
-          '<div class="sg-pair"><div class="sg-jp">' + esc(bjp) + '</div>' +
-          '<div class="sg-sep">｜</div>' +
-          '<div class="sg-zh">' + esc(bzh) + '</div></div></div>';
-      }
-    } else {
-      h += '<div class="sg-row"><div class="sg-role">整句</div>' +
-        '<div class="sg-pair"><div class="sg-jp">' + esc(r.t || '') + '</div>' +
-        '<div class="sg-sep">｜</div>' +
-        '<div class="sg-zh">' + esc(r.zh || '') + '</div></div></div>';
-    }
-    if (st && st.conn) {
-      h += '<div class="sg-row"><div class="sg-role">结构式</div>' +
-        '<div class="sg-pair"><div class="sg-jp">' + esc(st.conn) + '</div></div></div>';
-    }
-    if (hit && hit.example) {
-      h += '<div class="sg-row"><div class="sg-role">同类例</div>' +
-        '<div class="sg-pair"><div class="sg-jp">' + esc(hit.example) + '</div>' +
-        '<div class="sg-sep">｜</div>' +
-        '<div class="sg-zh">' + esc(hit.exampleZh || '') + '</div></div></div>';
-    }
-    h += '</div>';
-
-    /* ⑤ AI 讲解（实时）—— 默认收起，点开才发请求
-     * 不点就不花额度、不等 8~15 秒；静态四段照旧秒开。 */
-    h += '<div class="ex-sec ex-sec-ai" id="exAiSec">⑤ AI 讲解（实时）'
+    /* ④ AI 讲解（实时）—— 默认收起，点开才发请求
+     * 不点就不花额度、不等 8~15 秒；静态段落照旧秒开。 */
+    h += '<div class="ex-sec ex-sec-ai" id="exAiSec">④ AI 讲解（实时）'
       + '<span class="ex-sec-hint">点开让 AI 讲这一句</span></div>'
       + '<div class="ex-ai" id="exAiBox">'
       + '<div class="ex-ai-quota" id="exAiQuota"></div>'
@@ -1064,6 +1199,7 @@
       if (act === 'close') closeEx();
       else if (act === 'seek') { var L = S.lines[S.exIdx]; if (L) seek(L.s * 1000); closeEx(); }
       else if (act === 'speak') speakCurrent();
+      else if (act === 'copy-sent') copySentence();
       else if (act === 'fav') { var on = toggleFav(); btn.textContent = on ? '★ 已收藏' : '☆ 收藏本句'; btn.classList.toggle('on', on); }
       else if (act === 'loop') { S.loopOne = !S.loopOne; LS.set('loopOne', S.loopOne); refreshTools(); btn.textContent = S.loopOne ? '🔁 循环中' : '🔁 循环本句'; }
       else if (act === 'dl') downloadCurrent();
@@ -1071,7 +1207,7 @@
       else if (act === 'ai-copy' && window.ShunAIActions) window.ShunAIActions.copy();
     });
 
-    /* 点「⑤ AI 讲解」标题 → 展开/收起（默认收起，点开才发请求） */
+    /* 点「④ AI 讲解」标题 → 展开/收起（默认收起，点开才发请求） */
     $('#exBody').addEventListener('click', function (e) {
       var sec = e.target.closest ? e.target.closest('#exAiSec') : null;
       if (sec && window.ShunAIActions) window.ShunAIActions.toggle();
@@ -1140,6 +1276,64 @@
     var L = S.lines[S.exIdx];
     if (!L || !L.row.t) return;
     speakText(L.row.t);
+  }
+
+  /* ---------------- 一键复制整句 ----------------
+   * 复制内容 = 日文原句 + 换行 + 中文翻译（学习者拿去查 / 提问都用得上）。
+   * WebView 里 navigator.clipboard 常常不可用 ⇒ 必须有 execCommand 兜底，
+   * 兜底也失败 ⇒ 把文字显示出来让用户长按选（和「複製提問」同一套做法）。
+   */
+  function copyText(text, okMsg) {
+    if (!text) { toast('没有可复制的内容'); return; }
+    var done = function () { toast(okMsg || '已复制', 2200); };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallbackCopyText(text, okMsg); });
+        return;
+      }
+    } catch (e) { }
+    fallbackCopyText(text, okMsg);
+  }
+
+  function fallbackCopyText(text, okMsg) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '0';
+    document.body.appendChild(ta);
+    try { ta.select(); ta.setSelectionRange(0, ta.value.length); } catch (e) { }
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { }
+    document.body.removeChild(ta);
+    if (ok) { toast(okMsg || '已复制', 2200); return; }
+    showGsCopyBox(text);
+  }
+
+  /* 🔴 函数名**不能**叫 showCopyBox —— shun-ai-ui.js 里已经有同名函数（AI 复制降级用的）。
+   *    两者在同一作用域 ⇒ 后加载的会覆盖先加载的 ⇒ AI 的降级路径会被顶掉。
+   *    ⇒ 这里用 gs 前缀区分。 */
+  function showGsCopyBox(text) {
+    var body = document.getElementById('exBody');
+    if (!body) { toast('复制失败，请手动记录', 2200); return; }
+    var d = document.createElement('div');
+    d.className = 'ex-ai-err';
+    d.innerHTML = '复制失败，请长按下面文字全选复制：';
+    var ta = document.createElement('textarea');
+    ta.className = 'ex-ai-copy';
+    ta.setAttribute('readonly', 'readonly');
+    ta.value = text;
+    d.appendChild(ta);
+    body.insertBefore(d, body.firstChild);
+  }
+
+  function copySentence() {
+    var L = S.lines[S.exIdx];
+    if (!L || !L.row.t) { toast('没有可复制的句子'); return; }
+    var ja = L.row.t;
+    var zh = L.row.zh || '';
+    var text = zh ? (ja + '\n' + zh) : ja;
+    copyText(text, '已复制整句（日文+中文）');
   }
 
   /* ---------------- 启动 ---------------- */
