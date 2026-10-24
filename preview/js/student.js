@@ -743,6 +743,84 @@
     toast('初判完成：信息完整度 ' + res.completeness + '%');
   }
 
+  /* ---------------- AI 精批（按需点，不默认全班自动批） ---------------- */
+  /* 收集要送给 AI 的东西：每句的中文 / 参考译文 / 该句的采分点 + 学生译文 */
+  function aiPayload() {
+    var sents = modeSentences();
+    var byNo = {};
+    modeExprs().forEach(function (e) {
+      if (!e.sno) return;
+      (byNo[e.sno] = byNo[e.sno] || []).push(e.cn + (e.en ? '（' + e.en + '）' : ''));
+    });
+    var store = (practice && practice.store) || {};
+    return {
+      mode: String(sents.length),
+      sentences: sents.map(function (s) {
+        return {
+          no: s.no,
+          zh: stripTags(s.cn || ''),
+          reference: stripTags(s.ref || ''),
+          points: byNo[s.no] || []
+        };
+      }),
+      student: sents.map(function (s) {
+        return { no: s.no, text: String(store[s.no] || '') };
+      })
+    };
+  }
+
+  function runAIGrade() {
+    if (!global.CET4AI) return;
+    var out = $('aiOut');
+    if (!practice || !practice.checked) {
+      out.innerHTML = '<div class="ai-err">先点「交卷 · 看我的档位」，再点 AI 批改。</div>';
+      return;
+    }
+    var payload = aiPayload();
+    var hasText = payload.student.some(function (s) { return String(s.text).trim(); });
+    if (!hasText) {
+      out.innerHTML = '<div class="ai-err">还没写内容，先翻译再让 AI 批改。</div>';
+      return;
+    }
+    var btn = $('btnAI');
+    btn.disabled = true;
+    out.innerHTML = '<div class="ai-pending">AI 正在批改… <span id="aiSec">0</span> 秒'
+      + '<br><span class="muted">一次约 2000 token ≈ ¥0.0002，按需点，不点不花钱。</span></div>';
+    /* 🔴 用 out.querySelector 而不是全局 $('aiSec')：
+       aiSec 是**刚 innerHTML 出来的局部元素**，不在 HTML 里 ⇒
+       用全局 id 查找既慢又会被部署闸门判成「引用了不存在的 id」。 */
+    var secEl = out.querySelector ? out.querySelector('#aiSec') : null;
+    global.CET4AI.grade(payload, function (sec) { if (secEl) secEl.textContent = sec; })
+      .then(function (r) {
+        out.innerHTML = global.CET4AI.renderHTML(r);
+        bindAiSents(out);
+      })
+      .catch(function (e) {
+        if (global.console) global.console.warn('[cet4] ai grade failed', e);
+        out.innerHTML = '<div class="ai-err">AI 批改没跑成，先用上面的机器初判。</div>';
+      })
+      .then(function () { btn.disabled = false; });
+  }
+
+  /* 逐句详情默认收起，点开才展开（墨水屏首屏只给结论） */
+  function bindAiSents(box) {
+    var items = box.querySelectorAll ? box.querySelectorAll('.ai-s') : [];
+    for (var i = 0; i < items.length; i++) {
+      (function (el) {
+        function toggle() {
+          var open = el.classList.contains('open');
+          el.classList.toggle('open', !open);
+          var a = el.querySelector('.ai-sarrow');
+          if (a) a.textContent = open ? '展开' : '收起';
+        }
+        el.addEventListener('click', toggle);
+        el.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+        });
+      })(items[i]);
+    }
+  }
+
   /* ---------------- 逐句对照讲评 ---------------- */
   function renderSegs() {
     var box = $('segGrid');
@@ -950,11 +1028,7 @@
     paintTimer();
   });
   $('btnTimerReset').addEventListener('click', function () { resetTimer(); toast('已重新计时'); });
-  $('btnAI').addEventListener('click', function () {
-    var out = $('aiOut');
-    out.innerHTML = '<div class="ai-pending">AI 批改还没接上这一站。'
-      + '<br><span class="muted">接上之后：一次调用约 2000 token ≈ ¥0.0002，按需点，不点不花钱。</span></div>';
-  });
+  $('btnAI').addEventListener('click', runAIGrade);
   window.addEventListener('resize', syncTopH);
   window.addEventListener('load', syncTopH);
   boot();

@@ -682,3 +682,91 @@ html.hc .tabs button.on { background: #000; color: #fff; }
   .tband-row { grid-template-columns: repeat(2, 1fr); }
   .tbig b { font-size: 1.9rem; }
 }
+
+/* =====================================================================
+   AI 精批结果（cet4 分支）
+   ---------------------------------------------------------------------
+   墨水屏约束照旧：纯黑白、无渐变无阴影、边框一律半透明。
+   ⚠️ 逐句详情**默认收起**（.ai-sbody display:none）⇒ 首屏只给结论，
+      点开才看到逐句改法 —— 墨水屏一屏装不下太多。
+   ===================================================================== */
+.ai-head {
+  border: 1px solid var(--line2); border-radius: var(--r-lg);
+  padding: 12px 14px; margin-top: 10px; background: var(--card);
+}
+.ai-lbl, .ai-lbl2 {
+  font-size: .75rem; color: var(--ink3); letter-spacing: .02em;
+  display: block; margin-bottom: 4px;
+}
+.ai-band { font-size: 1.15rem; font-weight: 800; line-height: 1.35; }
+.ai-score { font-size: .95rem; margin-top: 4px; }
+.ai-score b { font-size: 1.5rem; font-weight: 800; }
+.ai-conf { font-size: .8rem; color: var(--ink2); margin-top: 2px; }
+
+.ai-sum {
+  font-size: .95rem; line-height: 1.6; margin-top: 10px;
+  padding: 10px 12px; border-left: 3px solid var(--line2); background: var(--soft);
+}
+
+.ai-types { margin-top: 12px; }
+.ai-tagrow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.ai-tag {
+  font-size: .8rem; border: 1px solid var(--line2); border-radius: 999px;
+  padding: 3px 10px; background: var(--card);
+}
+
+.ai-weak { margin-top: 12px; }
+.ai-w { font-size: .9rem; line-height: 1.55; margin-top: 4px; }
+
+.ai-sents { margin-top: 14px; }
+.ai-s {
+  border: 1px solid var(--line); border-radius: var(--r);
+  margin-bottom: 8px; background: var(--card); overflow: hidden;
+}
+.ai-stop {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 9px 12px; cursor: pointer; min-height: 44px;
+}
+.ai-sno { font-size: .95rem; font-weight: 700; }
+.ai-sarrow { font-size: .85rem; color: var(--ink2); }
+.ai-sbody { display: none; padding: 0 12px 12px; border-top: 1px solid var(--line); }
+.ai-s.open .ai-sbody { display: block; }
+.ai-s.open .ai-sarrow { font-weight: 700; color: var(--ink); }
+
+.ai-sc { font-size: .92rem; line-height: 1.6; margin-top: 10px; }
+.ai-mp { margin-top: 8px; }
+.ai-m { font-size: .88rem; line-height: 1.55; margin-top: 4px; }
+.ai-gs-box { margin-top: 8px; }
+.ai-g {
+  border-left: 3px solid var(--line2); padding: 4px 0 4px 10px; margin-top: 8px;
+}
+.ai-g-h { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; }
+.ai-gt {
+  font-size: .78rem; font-weight: 800; border: 1px solid var(--line2);
+  border-radius: 999px; padding: 1px 8px;
+}
+.ai-gs { font-size: .88rem; color: var(--ink2); }
+.ai-gf { font-size: .9rem; margin-top: 4px; line-height: 1.5; }
+.ai-gn { font-size: .85rem; color: var(--ink2); margin-top: 2px; line-height: 1.5; }
+.ai-none { font-size: .88rem; color: var(--ink3); margin-top: 8px; }
+.ai-rev { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.ai-rev p { font-size: .95rem; line-height: 1.6; margin-top: 4px; }
+
+.ai-note {
+  font-size: .8rem; line-height: 1.55; color: var(--ink2);
+  margin-top: 12px; padding-top: 8px; border-top: 1px solid var(--line);
+}
+.ai-err {
+  font-size: .9rem; line-height: 1.6; margin-top: 10px;
+  border: 1px dashed var(--line2); border-radius: var(--r); padding: 10px 12px;
+}
+
+/* AI 没按 JSON 输出时的降级展示（原话直出） */
+.ai-raw { margin-top: 10px; }
+.ai-pre {
+  font-family: var(--mono); font-size: .85rem; line-height: 1.6;
+  white-space: pre-wrap; word-break: break-word;
+  border: 1px solid var(--line); border-radius: var(--r);
+  padding: 10px 12px; margin-top: 6px; background: var(--soft);
+  max-height: 60vh; overflow: auto;
+}
