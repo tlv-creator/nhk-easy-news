@@ -106,6 +106,27 @@ def main():
         print("❌ 基底里找不到那段注释 ⇒ 基底变了")
         return 1
     s = s.replace(OLD_POLICY, NEW_POLICY).replace(OLD_CMT, NEW_CMT)
+
+    # 🔴 自检基线要更新成「事故后的**下限**」：
+    #    · 数字只增不减（学生天天在练）⇒ 现在比基线多 = 正常，比基线少 = ⛔
+    #    · 基线写得太高 ⇒ 老师会误以为数据被锁死 SQL 弄丢了（假警报）
+    #    · LISTEN 现在是**补交中**（老师决定走「学生重交」）⇒ 它的下限就是 0
+    old_base = "  values ('JR1',746),('CW3',582),('WL_CW',280),('XQ1',839),('LISTEN',0),('CET4',6),('JR1|u1',0),('JR1|u2',0)"
+    new_base = "  values ('JR1',746),('CW3',591),('WL_CW',280),('XQ1',839),('LISTEN',0),('CET4',6),('JR1|u1',0),('JR1|u2',0)"
+    if old_base not in s:
+        print("❌ 基底里的自检基线行变了 ⇒ 先看清楚再改")
+        return 1
+    s = s.replace(old_base, new_base)
+    s = s.replace("-- ② 总条数：只判「没丢」，不判「等于」（基线 2453；学生练习会自然增长，看到比基线多是对的）",
+                  "-- ② 总条数：只判「没丢」，不判「等于」（基线 2462；学生练习会自然增长，看到比基线多是对的）")
+    s = s.replace("select '② 总数 ' || count(*) || ' / 基线 2453 → '",
+                  "select '② 总数 ' || count(*) || ' / 基线 2462 → '")
+    s = s.replace("|| case when count(*) >= 2453 then '✅ 没丢数据' else '⛔ 少了数据！' end as x",
+                  "|| case when count(*) >= 2462 then '✅ 没丢数据（比基线多是正常的：学生在补交/在练）' else '⛔ 少了数据！' end as x")
+    s = s.replace("--   ⚠️ **数字会自己涨**（学生天天在练）⇒ 判据是「不许比基线少」，不是「必须等于基线」",
+                  "--   ⚠️ **数字会自己涨**（学生天天在练 + 现在正在补交 10/22-24）\n"
+                  "--   ⇒ 判据是「不许比基线少」，**不是**「必须等于基线」\n"
+                  "--   ⇒ 基线 = 事故之后的**下限**（只增不减）⇒ 现在比基线**多**是正常的，别慌")
     # online_status 那张表也一样：显式 drop 同名 policy（否则重名报错 ⇒ 整段回滚）
     old_online = "create policy p_anon_delete_online"
     if old_online not in s:

@@ -138,10 +138,12 @@ commit;
 -- 自检：跑完看这三条（数字对不上就别往下走，截图给我）
 -- =====================================================================
 -- ① 逐班条数 vs 基线（基线 = 2026-10-24 快照）
---   ⚠️ **数字会自己涨**（学生天天在练）⇒ 判据是「不许比基线少」，不是「必须等于基线」
+--   ⚠️ **数字会自己涨**（学生天天在练 + 现在正在补交 10/22-24）
+--   ⇒ 判据是「不许比基线少」，**不是**「必须等于基线」
+--   ⇒ 基线 = 事故之后的**下限**（只增不减）⇒ 现在比基线**多**是正常的，别慌
 --   （写死"总数必须等于 N"是错判据：学生一练习就变少 ⇒ 老师会误以为数据丢了）
 with base(class_key, n) as (
-  values ('JR1',746),('CW3',582),('WL_CW',280),('XQ1',839),('LISTEN',0),('CET4',6),('JR1|u1',0),('JR1|u2',0)
+  values ('JR1',746),('CW3',591),('WL_CW',280),('XQ1',839),('LISTEN',0),('CET4',6),('JR1|u1',0),('JR1|u2',0)
 ), cur as (
   select class_key, count(*) n from public.vocab_history_logs group by class_key
 )
@@ -150,9 +152,9 @@ select '① ' || b.class_key || ' 现在=' || coalesce(c.n,0) || ' 基线=' || b
   from base b left join cur c on c.class_key = b.class_key
  order by b.class_key;
 --
--- ② 总条数：只判「没丢」，不判「等于」（基线 2453；学生练习会自然增长，看到比基线多是对的）
-select '② 总数 ' || count(*) || ' / 基线 2453 → '
-       || case when count(*) >= 2453 then '✅ 没丢数据' else '⛔ 少了数据！' end as x
+-- ② 总条数：只判「没丢」，不判「等于」（基线 2462；学生练习会自然增长，看到比基线多是对的）
+select '② 总数 ' || count(*) || ' / 基线 2462 → '
+       || case when count(*) >= 2462 then '✅ 没丢数据（比基线多是正常的：学生在补交/在练）' else '⛔ 少了数据！' end as x
   from public.vocab_history_logs;
 --
 -- ③ 现在每张表的 DELETE policy（应该每张表只剩一条收紧的）

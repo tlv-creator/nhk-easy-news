@@ -337,16 +337,19 @@ with sync_playwright() as p:
     # 🔴🔴 关键漏判补上：前端发的 x-row-token 必须是**原始令牌**（32 位 hex），
     #    **不能是库里那份 SHA-256 摘要**（64 位 hex）⇒ 发错了 RLS 就算对了也匹配不上
     try:
-        _raw = pg.evaluate("() => { try { return localStorage.getItem('listen.tk.' + window.__lastLogId) || ''; } catch (e) { return ''; } }")
+        _raws = pg.evaluate("() => { try { var o = []; for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf('listen.tk.') === 0) o.push(localStorage.getItem(k)); } return o; } catch (e) { return []; } }")
     except Exception:
-        _raw = ''
+        _raws = []
     _sent = _captured.get('x-row-token', '')
-    ck("🔴 学生删除请求带的 x-row-token 是**原始令牌**（不是哈希）",
+    ck("🔴 学生删除请求带的 x-row-token 是**原始令牌**（32 位 hex，不是 64 位哈希）",
        bool(_sent) and len(_sent) == 32 and all(ch in '0123456789abcdef' for ch in _sent.lower()),
        "请求头 %r（长度 %d）" % (_sent[:12] + '…' if _sent else '', len(_sent)))
-    ck("🔴 请求头里的令牌 == 本机存的原始令牌（不是库里那份摘要）",
-       bool(_sent) and bool(_raw) and _sent == _raw,
-       "头 %r / 本机 %r" % (_sent[:10], _raw[:10]))
+    ck("🔴 请求头里的令牌 ∈ 本机存的原始令牌（不是库里那份摘要）",
+       bool(_sent) and len(_raws) > 0 and _sent in _raws,
+       "头 %r / 本机 %d 个令牌" % (_sent[:10], len(_raws)))
+    ck("🔴 本机存的令牌里**没有**哈希形态（64 位 hex）",
+       all(len(x) != 64 for x in _raws),
+       [len(x) for x in _raws][:6])
 
     print("\n-- 教师端 --")
     print("   （清空全部前会恢复测试前快照：%d 行）" % len(SNAP))
@@ -482,10 +485,18 @@ ck("测试数据已删干净（真实记录不受影响）", not any(MARK in (r.
 #    ⇒ 两套列的指纹当然不同 ⇒ 那是我的判据写错，不是数据出问题）
 _final = snapshot()
 IDS_AFTER = sorted(r.get("id") for r in _final)
-ck("🔴🔴 真班级的 **id 集合一字未变**（没被删了又重插）", IDS_AFTER == IDS_BEFORE,
-   "跑前 %s → 跑后 %s" % (IDS_BEFORE, IDS_AFTER))
-ck("🔴 最终：LISTEN 与测试前**逐字一致**（行数+指纹）", len(_final) == len(SNAP) and fingerprint(_final) == FP_BEFORE,
-   "测试前 %d 行/指纹 %s → 现在 %d 行/指纹 %s" % (len(SNAP), FP_BEFORE[:10], len(_final), fingerprint(_final)[:10]))
+# 🔴 判据是**子集**而不是「完全相等」：
+#    学生在同时提交 ⇒ 总数是**移动靶** ⇒ 「跑前 == 跑后」必然假红
+#    真正要判的是：**跑前就在的记录一条没丢、id 没被换**（新增的随它去）
+ck("🔴🔴 跑前就在的真记录**一条没丢、id 没被换**（新增的随它去）",
+   set(IDS_BEFORE).issubset(set(IDS_AFTER)),
+   "跑前 %d 条 → 跑后 %d 条；缺：%s" % (len(IDS_BEFORE), len(IDS_AFTER),
+                                        sorted(set(IDS_BEFORE) - set(IDS_AFTER))[:6]))
+# 🔴 同样改成子集语义：学生在同时提交 ⇒ 总数/指纹都会变 ⇒ 「完全相等」是移动靶
+_snap_final = set(_rowkey(r) for r in SNAP)
+_fin_final = set(_rowkey(r) for r in _final)
+ck("🔴 最终：跑前的真记录**内容一条没丢**（新增的随它去）", _snap_final.issubset(_fin_final),
+   "缺了：%s" % [k[:70] for k in list(_snap_final - _fin_final)][:3])
 real = [e for e in errs if "favicon" not in e.lower()]
 ck("无 JS 报错", len(real) == 0, real[:3])
 

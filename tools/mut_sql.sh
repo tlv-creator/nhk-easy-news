@@ -37,8 +37,11 @@ elif mode == 'nostudent':       # 去掉学号条件
 elif mode == 'plainhash':       # 把 sha256 比对换成**明文**比对（= 明文令牌落库的老做法）
     s = s.replace("encode(sha256(convert_to(nullif(current_setting('request.headers', true)::json->>'x-row-token', ''), 'utf8')), 'hex')",
                   "nullif(current_setting('request.headers', true)::json->>'x-row-token', '')")
-elif mode == 'loosetoken':      # 令牌正则放宽
+elif mode == 'loosetoken':      # 🔴 令牌**两处一起**放宽：正则放开 + 哈希比对换成通配符
+    # ⚠ 只放宽正则**没有语义**了（sha256 比对仍然精确 ⇒ 攻击照样失败）⇒
+    #   那样这条 mutation 就是摆设（会全绿）⇒ 必须改成「两处一起放宽」才是真实的攻击面
     s = s.replace("~ '^[A-Za-z0-9]{16,64}$'", "~ '^.*$'")
+    s = s.replace("encode(sha256(convert_to(nullif(current_setting('request.headers', true)::json->>'x-row-token', ''), 'utf8')), 'hex')", "'%'")
 elif mode == 'nodrop':          # DO 块漏删旧的宽松 policy
     s = s.replace("and ( 'anon' = any(roles) or roles = ARRAY['public']::name[] )",
                   "and ( 'anon' = any(roles) and roles = ARRAY['public']::name[] )")
@@ -87,5 +90,5 @@ run_mut "D DO 块同时删 ALL"              teachdrop   "p_teach_"
 run_mut "E DO 块少了 roles 过滤"        noroles     "p_teach_"
 run_mut "F 去掉令牌条件"                notoken     "只带学号"
 run_mut "G 去掉学号条件"                nostudent   "令牌对但学号错"
-run_mut "H 令牌正则放宽"                loosetoken  "通配符"
+run_mut "H 令牌两处一起放宽（正则+哈希）"  loosetoken  "通配符"
 run_mut "I sha256 比对改成明文比对"      plainhash   "带对令牌"
