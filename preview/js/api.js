@@ -227,10 +227,26 @@
   function logQuiz(date, ok, total) {
     return '【CET4】理解题 ' + date + ' | 答对: ' + ok + '/' + total;
   }
+  /* 🔴 AI 精批的日志**单独一条、单独字段名**（AI档位 / AI分数）
+   *   ⇒ 绝不与「翻译练习」的档位/完整度混在一起。
+   *   理由：AI 批改是**学生自愿点**的（按需调用，不默认全班自动批）
+   *        ⇒ 样本天然是「愿意点 AI 的那部分学生」⇒ 与全班初判不是一个口径
+   *        ⇒ 混算会得出「全班平均档位」这种**看着权威、其实只代表子集**的结论。
+   *   ⇒ 老师端要分开统计，并写明各自样本数。 */
+  function logAI(date, band, score, errs) {
+    var s = '【CET4】AI精批 ' + date + ' | AI档位: ' + (band || 0) + ' | AI分数: ' + (score || 0);
+    if (errs && errs.length) {
+      s += ' | 错: ' + errs.slice(0, 6).map(function (x) {
+        return String(x).replace(/[，,|｜\n]/g, ' ').trim();
+      }).filter(Boolean).join(',');
+    }
+    return s;
+  }
   // 反解 action：老师端统计全靠它
   function parseLog(action) {
-    var out = { kind: '', date: '', num: 0, den: 0, sec: 0, comp: -1, band: '', miss: [], errs: [] };
-    var m = /^【CET4】(浏览|翻译练习|理解题)\s*(\d{4}-\d{2}-\d{2})\s*\|\s*(时长|命中|答对):\s*(\d+)(?:\/(\d+))?(秒)?/.exec(action || '');
+    var out = { kind: '', date: '', num: 0, den: 0, sec: 0, comp: -1, band: '',
+                miss: [], errs: [], aiBand: -1, aiScore: -1 };
+    var m = /^【CET4】(浏览|翻译练习|理解题|AI精批)\s*(\d{4}-\d{2}-\d{2})\s*\|\s*(时长|命中|答对|AI档位):\s*(\d+)(?:\/(\d+))?(秒)?/.exec(action || '');
     if (!m) return out;
     out.kind = m[1];
     out.date = m[2];
@@ -253,6 +269,11 @@
       out.errs = em[1].split(',').map(function (x) { return x.trim(); })
         .filter(function (x) { return !!x; });
     }
+    // 🔴 AI 精批专有字段（老日志没有 ⇒ 保持 -1，兼容）
+    var ab = /\|\s*AI档位:\s*(\d+)/.exec(action || '');
+    if (ab) out.aiBand = parseInt(ab[1], 10);
+    var as = /\|\s*AI分数:\s*(\d+)/.exec(action || '');
+    if (as) out.aiScore = parseInt(as[1], 10);
     return out;
   }
 
@@ -577,6 +598,34 @@
         class_key: st.class_key, class_name: st.class_name,
         ts_date: today, time: pad(9 + Math.floor(rnd() * 8)) + ':' + pad(Math.floor(rnd() * 60)),
         action: logTrans(today, hit, total, comp, band, miss, errs),
+        duration_sec: 0
+      });
+    }
+
+    /* 🔴 demo：补一批「AI 精批」记录 ⇒ 老师端那块 AI 看板才有东西看
+     *   ⚠️ 口径与真实一致：**只有一部分学生点了 AI**（约 45%）
+     *   ⚠️ 而且**每人只点一次**（避免让 demo 看起来像「反复点」的怪数据）
+     *   ⚠️ AI 档位与本地初判**不相关**（AI 判得更严一点，会低半档）—— 真实情况就是这样 */
+    var AI_BANDS = [
+      { b: 1, s: 14, e: [] },
+      { b: 1, s: 13, e: [] },
+      { b: 2, s: 12, e: ['冠词'] },
+      { b: 2, s: 11, e: ['主谓一致'] },
+      { b: 3, s: 9, e: ['时态', '冠词'] },
+      { b: 3, s: 8, e: ['主谓一致', '介词搭配'] },
+      { b: 3, s: 7, e: ['时态', '主谓一致', '介词搭配'] },
+      { b: 4, s: 6, e: ['单复数', '冠词', '时态'] },
+      { b: 4, s: 5, e: ['动词形式', '主谓一致'] },
+      { b: 5, s: 3, e: ['拼写', '中式表达', '单复数'] }
+    ];
+    for (var ai = 0; ai < st.length; ai++) {
+      if (rnd() > 0.45) continue;                 // 只有约 45% 的学生点了 AI
+      var pick = AI_BANDS[Math.floor(rnd() * AI_BANDS.length)];
+      logs.push({
+        id: logs.length + 1, student_id: st[ai].id, name: st[ai].name,
+        class_key: st[ai].class_key, class_name: st[ai].class_name,
+        ts_date: today, time: pad(10 + Math.floor(rnd() * 7)) + ':' + pad(Math.floor(rnd() * 60)),
+        action: logAI(today, pick.b, pick.s, pick.e),
         duration_sec: 0
       });
     }
@@ -1079,6 +1128,7 @@
     logBrowse: logBrowse,
     logTrans: logTrans,
     logQuiz: logQuiz,
+    logAI: logAI,
     parseLog: parseLog,
     tsString: tsString,
     parseTs: parseTs,

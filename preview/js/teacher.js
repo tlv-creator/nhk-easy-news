@@ -125,6 +125,54 @@
     };
   }
 
+  /* 🔴 AI 精批统计 —— **与本地初判分开，不混算**
+   *   理由：AI 批改是**学生自愿点**的（按需调用）⇒ 样本是「点了 AI 的那部分学生」
+   *        ⇒ 把它混进「全班平均档位」会得出一个只代表子集的结论，却看着像全班数据。
+   *   ⇒ 这里单独统计，并把样本数显式写出来，让老师知道分母是谁。 */
+  function aiStats(logs, today) {
+    var recs = (logs || []).filter(function (l) {
+      return l.kind === 'AI精批' && notTest(l) && (today ? l.ts_date === today : true);
+    });
+    /* 🔴 口径：**每人只算最新一次**
+       理由：学生可以反复点 AI（每次都花钱）⇒ 若按「次」算，
+             反复点的那个学生会把平均分和档位分布整个带偏。
+       ⇒ teacherData 取的是 `order=id.desc`（最新在前）⇒ 第一次遇到的就是最新的那条。
+       ⇒ 「点了多少次」单独报（attempts），统计只用每人最新一次（uniq）。 */
+    var byStudent = {};
+    recs.forEach(function (l) {
+      var sid = String(l.student_id);
+      if (!byStudent[sid]) byStudent[sid] = l;
+    });
+    var uniq = Object.keys(byStudent).map(function (k) { return byStudent[k]; });
+
+    var bands = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    var bandN = 0, scoreSum = 0, scoreN = 0;
+    var errCount = {};
+    uniq.forEach(function (l) {
+      var b = parseInt(l.aiBand, 10);
+      if (b >= 1 && b <= 5) { bands[b]++; bandN++; }
+      /* 🔴 分数必须有上限校验：四级满分 15 ⇒ 超出 0..15 的值是脏数据
+         （模型抽风 / 日志被外部改 / 解析错位）⇒ 剔掉，不进平均。
+         不剔的话，一个 99 分能把整班平均分抬飞。 */
+      if (l.aiScore >= 0 && l.aiScore <= 15) { scoreSum += l.aiScore; scoreN++; }
+      (l.errs || []).forEach(function (t) {
+        if (!t) return;
+        errCount[t] = (errCount[t] || 0) + 1;
+      });
+    });
+    var errTypes = Object.keys(errCount).map(function (t) {
+      return { type: t, n: errCount[t] };
+    }).sort(function (a, b) { return b.n - a.n || a.type.localeCompare(b.type); });
+    return {
+      attempts: recs.length,            // 点了 AI 的总次数
+      students: uniq.length,            // 人数（统计口径：每人最新一次）
+      bands: bands, band_n: bandN,
+      avg_score: scoreN ? Math.round(scoreSum / scoreN * 100) / 100 : -1,
+      score_n: scoreN,
+      err_types: errTypes
+    };
+  }
+
   function aggregate(logs, roster, today, allLogs) {
     // 🔴 自测号的记录一律先剔掉（看板 / 明细 / CSV 全干净）
     logs = (logs || []).filter(notTest);
@@ -225,6 +273,7 @@
       students: students,
       absent: absent,
       trans: transStats(logs, today),
+      ai: aiStats(logs, today),
       totals: {
         roster: (roster || []).length,
         today_active: Object.keys(todaySet).length,
@@ -253,7 +302,8 @@
   global.CET4T = {
     esc: esc, fmtMin: fmtMin, pct: pct,
     filterLogs: filterLogs, aggregate: aggregate, toCSV: toCSV,
-    transStats: transStats
+    transStats: transStats,
+    aiStats: aiStats
   };
 
   /* =====================================================================
@@ -476,6 +526,7 @@
     var agg = CET4T.aggregate(logs, data.roster || [], CET4.todayStr(), data.allLogs || data.logs || []);
     renderStats(agg);
     renderTrans(agg);
+    renderAI(agg);
     renderStudents(agg.students.filter(matchSearch));
     renderLogs(logs.filter(function (l) {
       var q = $('fSearch').value.trim().toLowerCase();
@@ -575,6 +626,60 @@
     }
 
     box.innerHTML = compHtml + bandHtml + weakHtml + errHtml;
+  }
+
+  /* ---------------- AI 精批（单独口径） ---------------- */
+  function renderAI(agg) {
+    var a = agg.ai || {};
+    var box = $('aiBox');
+    var scope = $('aiScope');
+    if (!box) return;
+    box.textContent = '';
+    if (!a.attempts) {
+      scope.textContent = '';
+      box.innerHTML = '<p class="lead">这个区间里还没有 AI 批改记录。'
+        + '学生在学生端点「AI 批改」之后，这里会出现 AI 的定档、分数和它判出的错误类型。'
+        + '<br><span class="muted">AI 批改是<b>学生自愿点</b>的（一次约 ¥0.0002，按需调用），'
+        + '所以这里的样本只代表<b>点了 AI 的那部分学生</b>，不能当作全班的平均分。</span></p>';
+      return;
+    }
+    scope.textContent = '共点 ' + a.attempts + ' 次 · ' + a.students + ' 人（每人只算最新一次）';
+
+    var head = '<div class="tbig"><b>' + (a.avg_score >= 0 ? a.avg_score : '—') + '</b>'
+      + '<span>AI 平均得分（满分 15）</span>'
+      + '<span class="muted">' + a.students + ' 人 · 定档 ' + a.band_n + ' 人</span></div>';
+
+    var bandHtml = '<div class="tband-wrap"><div class="tband-lbl">AI 定档分布</div><div class="tband-row">';
+    [1, 2, 3, 4, 5].forEach(function (no) {
+      var ranges = { 1: '13-15', 2: '10-12', 3: '7-9', 4: '4-6', 5: '1-3' };
+      var names = { 1: '准确表达', 2: '基本表达', 3: '勉强表达', 4: '仅表达少部分', 5: '支离破碎' };
+      var n = a.bands[no] || 0;
+      bandHtml += '<div class="tband"><div class="tb-lbl">第' + no + '档</div>'
+        + '<div class="tb-n">' + n + '</div>'
+        + '<div class="tb-r">' + ranges[no] + ' 分</div>'
+        + '<div class="tb-m">' + names[no] + '</div></div>';
+    });
+    bandHtml += '</div></div>';
+
+    var errHtml = '';
+    if (a.err_types && a.err_types.length) {
+      errHtml = '<div class="terr"><div class="terr-h">🔴 AI 判出的主要错误类型</div>'
+        + '<div class="ttags">' + a.err_types.slice(0, 8).map(function (e) {
+          return '<span class="ttag">' + CET4UI.esc(e.type) + ' <b>' + e.n + '</b></span>';
+        }).join('') + '</div>'
+        + '<p class="lead">按<b>人次</b>算（同一份答卷里同一类错只算 1 次），'
+        + '和上面「本地初判」的错误类型是<b>两套口径</b>，不要相加。</p></div>';
+    }
+
+    var note = '<div class="tres-note">'
+      + '⚠️ 这几项<b>不能和上面「全班平均完整度 / 档位分布」相加或平均</b>：'
+      + 'AI 批改是<b>学生自愿点</b>的，样本天然偏少（愿意点的人通常是想改好的那批）。'
+      + '要看全班整体，仍以「课堂速练」那块的初判数据为准。<br>'
+      + '统计口径：<b>每个学生只算最新一次</b>（点过多次也只取最后一次）；'
+      + '错误类型按<b>人次</b>算（同一份答卷里同一类错只算 1 次），'
+      + '和「本地初判」的错误类型是<b>两套口径</b>，不要相加。</div>';
+
+    box.innerHTML = head + bandHtml + errHtml + note;
   }
 
   function renderStats(agg) {

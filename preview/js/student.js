@@ -794,6 +794,8 @@
       .then(function (r) {
         out.innerHTML = global.CET4AI.renderHTML(r);
         bindAiSents(out);
+        // 🔴 AI 批改结果**单独记一条日志**（老师端分开统计，不与本地初判混算）
+        if (r && r.ok && r.data && r.data.result) reportAI(r.data.result);
       })
       .catch(function (e) {
         if (global.console) global.console.warn('[cet4] ai grade failed', e);
@@ -819,6 +821,19 @@
         });
       })(items[i]);
     }
+  }
+
+  /* AI 精批结果上报（独立日志，独立口径） */
+  function reportAI(res) {
+    if (!me || !issue) return;
+    var types = Object.keys(res.error_types || {});   // 只要类型名（与本地初判同口径：按人次）
+    CET4.addLog({
+      class_name: me.class_name, student_id: me.student_id,
+      duration_sec: 0,
+      action: CET4.logAI(issue.date, res.band, res.score, types)
+    }).then(function (r) {
+      if (r && r.ok === false && r.queued) toast('已存到本机，联网后自动补记');
+    });
   }
 
   /* ---------------- 逐句对照讲评 ---------------- */

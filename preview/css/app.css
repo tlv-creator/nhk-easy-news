@@ -770,3 +770,17 @@ html.hc .tabs button.on { background: #000; color: #fff; }
   padding: 10px 12px; margin-top: 6px; background: var(--soft);
   max-height: 60vh; overflow: auto;
 }
+
+/* ---------------- AI 精批统计（老师端 · 独立口径） ----------------
+   ⚠️ 与「课堂速练」的初判统计**分开显示**，不混算
+   （AI 是学生自愿点的，样本是子集） */
+.tres-note {
+  font-size: .8rem; line-height: 1.6; color: var(--ink2);
+  border-left: 3px solid var(--line2); padding: 6px 0 6px 10px; margin-top: 12px;
+}
+.ttags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.ttag {
+  font-size: .8rem; border: 1px solid var(--line2); border-radius: 999px;
+  padding: 3px 10px; background: var(--card);
+}
+.ttag b { font-weight: 800; }
