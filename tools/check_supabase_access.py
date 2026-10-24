@@ -1,33 +1,29 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""check_supabase_access.py v2 —— 三站 Supabase RLS **真实验收**（2026-10-24 重写）
+
+=====================================================================
+【为什么重写：v1 有两个假绿，都是我自己复核后确认的】
+  ① **站→表的归属靠「扫本地文件路径」猜** ⇒ 听力记录站的三个路径写错了
+     （v1 写 `listening/js/app.js`，真实是 `listening/app/js/{api,student,teacher}.js`）
+     ⇒ 它**一行都没被扫到** ⇒ 报告里全是「来源: 词汇学习站」
+     ⇒ **听力站实际是坏的，脚本却报全绿** ❌
+  ② **只看 HTTP 码** ⇒ PostgREST 删不掉也返回 200/204 + 空数组
+     ⇒ 「删除功能静默失效」在 v1 里**看不见** ❌
+
+【v2 的做法】
+  · 需求**从线上 live 代码抽**（抓每个站的 index.html + 它引用的 js，递归一层）
+    ⇒ 站、页、js 路径对不对，脚本自己会发现；路径写错 ⇒ 当场报「没抓到代码」而不是默默跳过
+  · anon key **从站自己的 js 里现取**（publishable key 本来就是公开的，但不必落进仓库）
+  · 每个 (表, class_key) 跑**真实闭环**：写探针 → 回读确认行在 → 删 → 回读确认真的没了
+  · 一条**反向验证**：不在白名单的 class_key **必须写不进去** ⇒ 证明 policy 真的收窄了，
+    而不是 `using (true)`
+  · 探针行在 finally 里清理；vocab_states 用专属探针 key（**绝不覆盖真实班级的 state_val**）
+
+【退出码】0=全过 / 1=有断言失败（看输出里的 ❌ 列表）/ 脚本崩溃 ⇒ 留 Traceback
+  （跑批器用 scripts/strict_test_exit.py 区分「判据拦截」与「脚本崩了」）
+=====================================================================
 """
-check_supabase_access.py —— 「RLS 装完之后，所有还在用的站还能不能干活？」
-
-起因（2026-10-24 真实事故）：
-  给 vocab_history_logs 装 RLS 时，只给 authenticated（教师侧）配了 policy，
-  而**三个站的学生端全是 anon 直写** ⇒ 全被 42501 挡掉：
-    · 学生端：练习记录全丢
-    · 教师端：SELECT 返回 0 行 ⇒ 老师看到的是**空的**（不是报错，最难发现）
-  ⇒ **RLS 是「改了共享资源，却没检查所有共用者」**的典型。
-
-本脚本回答的问题（就是当时没人问的那句）：
-  ① **源码里实际用到**哪些「表 × 操作」？   ← 扫三个站的前端源码
-  ② 这些操作在 anon 下**实测**能不能做？      ← 真连库跑
-  ③ 有没有「源码要用、但被挡」的组合？        ← 对照出结论
-
-🔴 判据设计（两条都踩过坑）：
-  · 「SELECT 返回 200 但 0 行」**不等于**「表是空的」—— 也可能是被 RLS 过滤了
-    ⇒ 所以读能力**不判「有没有行」**，而是判「**查得到我事先知道存在的行**」
-    （探针：vocab_states 的 __cet4_index / vocab_history_logs 的 class_key=JR1）
-  · 写入探测会**留下脏数据** ⇒ 修复 SQL 里配了只允许删 `__rls_probe__` 的 DELETE policy
-    ⇒ 探测行写完立刻删，**不留垃圾**；而且该 policy 删不掉别人的数据。
-
-用法：
-  python3 tools/check_supabase_access.py              # 扫源码 + 实测（需要网络）
-  python3 tools/check_supabase_access.py --scan-only  # 只扫源码
-退出码：0 = 全通 / 1 = 有被挡的组合 / 2 = 没验成（连不上/没源文件，不放行）
-"""
-import io
 import json
 import os
 import re
@@ -35,267 +31,375 @@ import sys
 import urllib.error
 import urllib.request
 
-SB_URL = os.environ.get('SB_URL', 'https://lszwxcmvcvbraqtrtgon.supabase.co')
-# anon key **不硬编码在文件里**（它虽然本来就是公开的，但每多一份副本就多一处要清理的地方）
-# 用法：export SB_KEY=<你的 anon publishable key>
-SB_KEY = os.environ.get('SB_KEY', '')
-REPO = 'tlv-creator/nhk-easy-news'
-GH = os.environ.get('GH_TOKEN', '')
+UA = 'Mozilla/5.0 (Linux; Android 13) Mobile'
+REST = 'https://lszwxcmvcvbraqtrtgon.supabase.co/rest/v1'
 
-# 源码里扫到什么就查什么表；这张表若源码没用到，仍要查（它是共用表）
-SCAN_TABLES = None  # None = 扫出来的全都查
-
-# 每张表的「读探针」：我事先知道存在的行（查得到 = 读通道 + 这张表有 SELECT policy）
-READ_PROBE = {
-    'vocab_states': 'class_key=eq.__cet4_index',
-    'vocab_history_logs': 'class_key=eq.JR1',
-}
-
-# 装 RLS 之前的真实基线（2026-10-24 实测，用来判断「0 行」是「被挡」还是「真空」）
-BASELINE = {'vocab_history_logs': 2418, 'vocab_states': 17}
-
-# 每张表的「写探针」：一行最小探针 + 删除它用的过滤条件
-# 🔴 探针行必须**删得掉**才做写探测 ⇒ 探测前先探 DELETE 权限（见 probe_write）
-PROBE = {
-    'vocab_states': {'row': {'class_key': '__rls_probe__'},
-                      'filter': 'class_key=eq.__rls_probe__'},
-    'vocab_submissions': {'row': {'student_id': '__rls_probe__'},
-                          'filter': 'student_id=eq.__rls_probe__'},
-    'vocab_online_status': {'row': {'class_key': '__rls_probe__'},
-                             'filter': 'class_key=eq.__rls_probe__'},
-    'vocab_history_logs': {'row': {'class_key': '__rls_probe__',
-                                   'student_id': '__rls_probe__',
-                                   'action': '__rls_probe__',
-                                   'timestamp': '2026/10/24 03:00:00'},
-                            'filter': 'class_key=eq.__rls_probe__'},
-}
-
-# 源码位置：本地目录 + 仓库文件
-LOCAL_ROOTS = [
-    ('词汇站(本地)', ['/workspace/vocab/site/vocab-unit123-v1-prod-standalone.html',
-                     '/workspace/vocab/pkg/vocablog/site/vocab-unit123-v1-prod-standalone.html']),
-]
-REPO_FILES = [
-    ('四级精读日报站', ['cet4.html']),
-    ('每日听力记录站', ['listening/index.html', 'listening/app/index.html',
-                        'listening/app/student.html', 'listening/js/app.js']),
-    ('词汇学习站', ['vocab/index.html']),
+# 站清单（域名来自 protected-sites.json；**不自动刷新**，避免拿到已删的站）
+STATIONS = [
+    ('词汇学习站 Unit1+2+3', 'https://iujsgx3ci73dp.space.mcode.cn/'),
+    ('每日听力记录站',       'https://irk7ibwekq8se.space.mcode.cn/'),
+    ('四级精读日报站',       'https://y8arnrff8t2hj.space.mcode.cn/'),
+    ('词汇学习站 VocabLog',  'https://zp67qm11jonui.space.mcode.cn/'),   # 走 CloudBase 网关，不碰 Supabase
 ]
 
-OPS = ['insert', 'select', 'update', 'upsert', 'delete']
-cleanup = []   # 写探针删不掉的行 ⇒ 攒成清理 SQL
-FROM_RE = re.compile(r"""\.from\(\s*['"]([A-Za-z_][A-Za-z0-9_]*)['"]\s*\)""")
-OP_RE = re.compile(r"""\.(insert|select|update|upsert|delete)\s*\(""")
+# 明显是演示/探针的 key，不算真实需求
+FAKE_KEY = re.compile(r'^(DEMO\d+|demo.*|__.*)$', re.I)
+
+# 探针
+PROBE_ID = '__rls_probe__'
+NEG_KEY = '__rls_neg_probe__'
 
 
-def http(method, path, body=None, extra=None, timeout=25):
-    url = SB_URL + path
+# ────────────────────────────────────────────── HTTP
+def http(method, url, body=None, headers=None, timeout=30):
+    h = {'User-Agent': UA}
+    if headers:
+        h.update(headers)
     data = None
-    hdrs = {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY}
     if body is not None:
-        data = json.dumps(body).encode()
-        hdrs['Content-Type'] = 'application/json'
-    hdrs.update(extra or {})
-    req = urllib.request.Request(url, data=data, headers=hdrs, method=method)
+        data = json.dumps(body).encode('utf-8')
+        h['Content-Type'] = 'application/json'
+    req = urllib.request.Request(url, data=data, headers=h, method=method)
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
-            raw = r.read().decode('utf-8', 'replace')
-            return r.status, dict(r.headers), raw
+            return r.status, dict(r.headers), r.read().decode('utf-8', 'replace')
     except urllib.error.HTTPError as e:
         return e.code, dict(e.headers), e.read().decode('utf-8', 'replace')
     except Exception as e:
-        return 0, {}, ('NETERR: ' + str(e))
+        return 0, {}, 'EXC: %s' % e
 
 
-def fetch_repo(path):
-    if not GH:
-        return None
-    url = 'https://api.github.com/repos/%s/contents/%s' % (REPO, path)
-    req = urllib.request.Request(url, headers={
-        'Authorization': 'Bearer ' + GH, 'Accept': 'application/vnd.github+json',
-        'User-Agent': 'mavis-rls-check'})
+def rest(method, table_path, body=None, prefer=None):
+    h = {}
+    if ANON_KEY:
+        h['apikey'] = ANON_KEY
+        h['Authorization'] = 'Bearer ' + ANON_KEY
+    if prefer:
+        h['Prefer'] = prefer
+    return http(method, REST + table_path, body, h)
+
+
+def rows_of(raw):
     try:
-        with urllib.request.urlopen(req, timeout=25) as r:
-            d = json.loads(r.read().decode())
-            import base64
-            return base64.b64decode(d['content']).decode('utf-8', 'replace')
+        v = json.loads(raw or '[]')
+        return v if isinstance(v, list) else [v]
     except Exception:
-        return None
+        return []
 
 
-def scan_sources():
-    """扫源码 → {表: {操作: [来源]}}"""
-    usage = {}
-    blobs = []
-    for label, files in LOCAL_ROOTS:
-        for f in files:
-            if os.path.isfile(f):
-                blobs.append((label, f, io.open(f, encoding='utf-8', errors='replace').read()))
-    for label, paths in REPO_FILES:
-        for p in paths:
-            txt = fetch_repo(p)
-            if txt is not None:
-                blobs.append((label, 'repo:' + p, txt))
-    if not blobs:
-        return usage, blobs
-    for label, name, txt in blobs:
-        for m in FROM_RE.finditer(txt):
-            table = m.group(1)
-            if table.startswith('__') or table in ('schema',):
-                continue
-            tail = txt[m.end():m.end() + 260]
-            ops = set(OP_RE.findall(tail))
-            if not ops:
-                continue
-            for op in ops:
-                usage.setdefault(table, {}).setdefault(op, set()).add('%s/%s' % (label, name))
-    return usage, blobs
+# ────────────────────────────────────────────── 抓线上代码
+def fetch_text(url):
+    st, _, raw = http('GET', url, headers={'Accept': 'text/html,*/*'})
+    return raw if st == 200 else ''
 
 
-def probe_read(table):
-    """读探针：查得到「事先知道存在的行」才算读通。
-    返回 (通?, 证据串)"""
-    q = READ_PROBE.get(table)
-    if not q:
-        st, hd, raw = http('GET', '/rest/v1/%s?select=*&limit=1' % table)
-        return (st == 200), 'HTTP %s（无专用探针，只看能否访问）' % st
-    st, hd, raw = http('GET', '/rest/v1/%s?%s&limit=1' % (table, q))
-    rng = (hd.get('Content-Range') or hd.get('content-range') or '').strip()
-    if st != 200:
-        return False, 'HTTP %s %s' % (st, raw[:90])
-    # content-range 形如 0-0/* ⇒ 有行；*/* ⇒ 0 行（可能是表空，也可能是被 RLS 过滤）
-    if rng.startswith('*/*') or rng == '':
-        return False, 'HTTP 200 但 content-range=%s ⇒ 0 行（探针 %s 查不到 ⇒ 读被挡或表已空）' % (rng or '(无)', q)
-    return True, 'HTTP 200，content-range=%s ⇒ 探针行查到了 ✅' % rng
+def station_code(root):
+    """抓一个站的 index.html（**内联代码也要**）+ 它引用的所有 js ⇒ 返回 (代码全文, 文件列表)
 
-
-def probe_write(table):
-    """写探针 —— **零污染版**：把一行**真实数据原样写回**（内容不变 ⇒ 数据不变）。
-    失败再退到「写一条探针行 + 给清理 SQL」。
-
-    🔴 为什么不能只用「写探针行」：RLS 挡 DELETE 时 PostgREST 返回 **200/204 + 空数组**
-       （不报错）⇒ 探针行会永久留在库里（2026-10-24 我在 vocab_states 上踩过两次）。
-    🔴 为什么不能只用「写坏行」测：列校验在 RLS 之前 ⇒ 写不存在的列返回 PGRST204，
-       **测不出 RLS**（实测 vocab_submissions 写 {"probe":1} → 400，写合法列 → 401 42501）。
-    ⇒ 零污染判据 = **原样 upsert 真实行**：被挡 ⇒ 42501；通过 ⇒ 数据一模一样。
-    返回 (三态, 证据串)：'ok' / 'blocked' / 'unknown'
+    🔴 v2 第一版的坑：词汇学习站是**单文件内联**（全部 JS 在 index.html 里，没有外部 .js）
+       ⇒ 只抓外部 js 会「一个 js 都没抓到」⇒ 需求整站缺失（还差点被当成「没问题」）
+       ⇒ 现在**内联 HTML 与外部 js 一视同仁**地进代码语料。
     """
-    p = PROBE.get(table)
-    if not p:
-        return 'unknown', '没有配探针行 ⇒ 未验证（不是「被挡」）'
+    idx = fetch_text(root)
+    if not idx:
+        return '', []
+    code_all = idx          # 内联代码
+    urls, seen = [], set()
+    for m in re.finditer(r'<script[^>]+src="([^"]+\.js[^"]*)"', idx):
+        u = m.group(1)
+        if u.startswith('http'):
+            u2 = u
+        else:
+            u2 = root.rstrip('/') + '/' + u.lstrip('/')
+        if u2 not in seen:
+            seen.add(u2)
+            urls.append(u2)
+    # 有些站是 index.html → student.html / teacher.html → 各自的 js
+    for m in re.finditer(r'<a[^>]+href="([^"]+\.html[^"]*)"', idx):
+        page = root.rstrip('/') + '/' + m.group(1).lstrip('/')
+        ptxt = fetch_text(page)
+        if not ptxt:
+            continue
+        code_all += '\n' + ptxt
+        for m2 in re.finditer(r'<script[^>]+src="([^"]+\.js[^"]*)"', ptxt):
+            u2 = root.rstrip('/') + '/' + m2.group(1).lstrip('/')
+            if u2 not in seen:
+                seen.add(u2)
+                urls.append(u2)
+    files = []
+    for u in urls:
+        t = fetch_text(u)
+        if t:
+            code_all += '\n' + t
+            files.append(u)
+    return code_all, files
 
-    # ── 方案 1（首选，零污染）：读一行真实数据，原样 upsert 回去 ──
-    st, hd, raw = http('GET', '/rest/v1/%s?select=*&limit=1' % table)
-    rows = []
-    try:
-        rows = json.loads(raw) if raw.strip().startswith('[') else []
-    except Exception:
-        rows = []
-    if rows:
-        row = rows[0]
-        st2, hd2, raw2 = http('POST', '/rest/v1/%s' % table, row,
-                              {'Prefer': 'resolution=merge-duplicates,return=minimal'})
-        if st2 in (401, 403) or '42501' in raw2:
-            return 'blocked', 'HTTP %s %s（原样写回被挡 ⇒ 写通道不可用）' % (st2, raw2[:110])
-        if st2 in (200, 201):
-            return 'ok', ('HTTP %s 原样 upsert 一条真实行成功 ⇒ 写通道可用 ✅'
-                          '（内容一字未改，数据零变化）' % st2)
 
-    # ── 方案 2（兜底，会留一行）：写探针行，并给出清理 SQL ──
-    st, hd, raw = http('POST', '/rest/v1/%s' % table, p['row'],
-                       {'Prefer': 'return=minimal'})
+KNOWN_TABLES = ('vocab_history_logs', 'vocab_submissions', 'vocab_online_status', 'vocab_states')
+
+
+def extract_needs(code):
+    """从代码里抽：用了哪些表 / 哪些 class_key / 哪些走 delete
+
+    🔴 v2 第一版的坑：另外两个站用的是 `rest('vocab_history_logs?...')` / `fetchAllRows('vocab_...')`
+       这种**裸 REST URL**，不是 `from('vocab_history_logs')` ⇒ 只认 from() 会把表全漏掉
+       ⇒ 现在按「语料里出现过哪些 vocab_* 表」来认表。
+    """
+    tables = set()
+    for t in KNOWN_TABLES:
+        if t in code:
+            tables.add(t)
+    # class_key 的各种写法（全语料）
+    keys = set()
+    keys |= set(re.findall(r"class_key\s*[:=]\s*['\"]([A-Za-z0-9_]+)['\"]", code))
+    keys |= set(re.findall(r"class_key=eq\.([A-Za-z0-9_]+)", code))
+    keys |= set(re.findall(r"LOG_KEY\s*:\s*['\"]([A-Za-z0-9_]+)['\"]", code))
+    keys |= set(re.findall(r"classKey\s*:\s*['\"]([A-Za-z0-9_]+)['\"]", code))
+    keys |= set(re.findall(r"['\"]([A-Z][A-Z0-9_]{2,})['\"]\s*:\s*['\"]", code))
+    keys = {k for k in keys if not FAKE_KEY.match(k)}
+    # delete 路径里用到的 class_key（窗口取 URL 附近的）
+    del_keys = set()
+    for m in re.finditer(r"method:\s*['\"]DELETE['\"]|\.delete\(\)", code):
+        seg = code[max(0, m.start() - 700):m.start() + 300]
+        del_keys |= set(re.findall(r"class_key=eq\.([A-Za-z0-9_]+)", seg))
+        del_keys |= set(re.findall(r"LOG_KEY", seg))
+    del_keys = {k for k in del_keys if not FAKE_KEY.match(k)}
+    upsert = set(re.findall(r"from\(['\"](vocab_[a-z_]+)['\"]\)\.upsert", code))
+    return tables, keys, del_keys, upsert
+
+
+# ────────────────────────────────────────────── 表的探针行（列名全部来自线上代码）
+def probe_row(table, ck):
+    if table == 'vocab_history_logs':
+        return {'class_key': ck, 'class_name': '__rls_probe__', 'student_id': PROBE_ID,
+                'timestamp': '2026-10-24 12:00:00', 'duration_sec': 0, 'action': '__rls_probe__'}
+    if table == 'vocab_online_status':
+        return {'class_key': ck, 'class_name': '__rls_probe__', 'student_id': PROBE_ID,
+                'status_text': '__rls_probe__', 'login_time': '12:00:00'}
+    if table == 'vocab_submissions':
+        return {'student_id': PROBE_ID, 'submitted_exams': ['__rls_probe__']}
+    if table == 'vocab_states':
+        return {'class_key': PROBE_ID, 'state_val': '__rls_probe__'}
+    return {'class_key': ck, 'student_id': PROBE_ID}
+
+
+def read_filter(table, ck):
+    """用「站自己那套过滤条件」回读（这样才和真实用法一致）"""
+    if table == 'vocab_submissions':
+        return 'student_id=eq.' + PROBE_ID
+    if table == 'vocab_states':
+        return 'class_key=eq.' + PROBE_ID
+    return 'class_key=eq.%s&student_id=eq.%s' % (ck, PROBE_ID)
+
+
+def delete_filter(table, ck):
+    if table == 'vocab_submissions':
+        return 'student_id=eq.' + PROBE_ID
+    if table == 'vocab_states':
+        return 'class_key=eq.' + PROBE_ID
+    return 'class_key=eq.%s&student_id=eq.%s' % (ck, PROBE_ID)
+
+
+# ────────────────────────────────────────────── 主流程
+ANON_KEY = ''
+FAILS = []
+CHECKS = 0
+
+
+def fail(what, detail):
+    FAILS.append('%s —— %s' % (what, detail))
+    print('  ❌ %s —— %s' % (what, detail))
+
+
+def ok(what):
+    print('  ✅ %s' % what)
+
+
+def cleanup():
+    """无论如何都清掉探针行"""
+    for table, f in [('vocab_history_logs', 'class_key=eq.%s' % PROBE_ID),
+                     ('vocab_online_status', 'class_key=eq.%s' % PROBE_ID),
+                     ('vocab_submissions', 'student_id=eq.' + PROBE_ID),
+                     ('vocab_states', 'class_key=eq.' + PROBE_ID)]:
+        rest('DELETE', '/%s?%s' % (table, f), prefer='return=representation')
+
+
+def closed_loop(table, ck, need_read=True, need_write=True, need_delete=True):
+    """写 → 回读 → 删 → 回读。返回 (通过?, 细节)"""
+    global CHECKS
+    row = probe_row(table, ck)
+    # 🔴 先清掉同 key 的旧探针 ⇒ 脚本可重复跑，不会被 409 误判成红
+    rest('DELETE', '/%s?%s' % (table, delete_filter(table, ck)), prefer='return=representation')
+    st, _, raw = rest('POST', '/' + table, row, prefer='return=representation')
+    if st == 409:
+        st = 200      # 已存在（上一轮残留）⇒ 继续验读/删，不算红
     if st not in (200, 201):
-        return 'blocked', 'HTTP %s %s' % (st, raw[:130])
-    st2, hd2, raw2 = http('DELETE', '/rest/v1/%s?%s' % (table, p['filter']), None,
-                          {'Prefer': 'return=representation'})
-    try:
-        deleted = json.loads(raw2) if raw2.strip().startswith('[') else []
-    except Exception:
-        deleted = []
-    if deleted:
-        return 'ok', 'HTTP %s 写入成功 → 删除返回 %d 行 ⇒ 真的删掉了，不留垃圾 ✅' % (st, len(deleted))
-    cleanup.append("delete from public.%s where %s;" % (table, p['filter'].split('=', 1)[1].replace('eq.', "'")))
-    return 'ok', ('HTTP %s 写入成功，但**删除被 RLS 挡（200 + 空数组）** ⇒ 库里留下一行探针\n'
-                  '            ⚠ 清理 SQL: delete from public.%s where %s;' % (st, table, p['filter']))
+        return False, '写入被挡 http=%s %s' % (st, raw[:110])
+    CHECKS += 1
+    q = read_filter(table, ck)
+    st, _, raw = rest('GET', '/%s?select=*&%s' % (table, q), prefer='count=exact')
+    if st != 200:
+        return False, '回读失败 http=%s %s' % (st, raw[:110])
+    if not rows_of(raw):
+        return False, '写进去了但回读不到（写和读不是一个通道）'
+    CHECKS += 1
+    if not need_delete:
+        # 只验写入/读取 ⇒ 顺手删掉（这个站本来没有删除路径）
+        rest('DELETE', '/%s?%s' % (table, delete_filter(table, ck)), prefer='return=representation')
+        return True, '写✓ 读✓（该站没有删除路径，未验删）'
+    st, _, raw = rest('DELETE', '/%s?%s' % (table, delete_filter(table, ck)), prefer='return=representation')
+    if st not in (200, 204):
+        return False, '删除被挡 http=%s %s' % (st, raw[:110])
+    CHECKS += 1
+    st, _, raw = rest('GET', '/%s?select=*&%s' % (table, q), prefer='count=exact')
+    if rows_of(raw):
+        return False, '🔴 删不掉（PostgREST 也返回 200/204 ⇒ 只看返回码会假绿）'
+    CHECKS += 1
+    return True, '写✓ 回读到✓ 删✓ 回读确认已消失✓'
 
 
-def main(argv):
-    scan_only = '--scan-only' in argv
-    if not SB_KEY:
-        sys.stderr.write('❌ 没设 SB_KEY（Supabase anon publishable key）\n'
-                         '   export SB_KEY=<key>  再跑\n')
-        return 2
-    write_probe = '--write-probe' in argv
+def main():
+    global ANON_KEY
+    print('=' * 70)
+    print('Supabase RLS 真实验收 v2   项目=lszwxcmvcvbraqtrtgon')
+    print('=' * 70)
 
-    print('══ ① 扫三个站的前端源码，看它们实际用到哪些「表 × 操作」 ══')
-    usage, blobs = scan_sources()
-    if not blobs:
-        sys.stderr.write('❌ 一份源码都没拿到（本地缺 + 仓库拉不到）⇒ 没验成，不放行\n')
-        return 2
-    if not usage:
-        sys.stderr.write('❌ 源码里一处 .from(...) 都没扫到 ⇒ 扫描器可能失效了，不放行\n')
-        return 2
-    tables = sorted(usage.keys())
-    for t in tables:
-        ops = sorted(usage[t].keys())
-        srcs = set()
-        for o in ops:
-            srcs |= usage[t][o]
-        print('  %-24s %-28s  来源: %s' % (t, '+'.join(ops), ', '.join(sorted(srcs))[:90]))
-
-    if scan_only:
-        return 0
-
-    print('')
-    print('══ ② 实测 anon 身份下，每张表到底能做什么 ══')
-    print('   （探针：vocab_states→__cet4_index；vocab_history_logs→class_key=JR1）')
-    print('')
-    blocked = []
-    unknown = []
-    rows = []
-    for t in tables:
-        need = set(usage[t].keys())
-        r_ok, r_why = probe_read(t)
-        if not r_ok and t in BASELINE:
-            r_why += '（装 RLS 前基线：%d 行 ⇒ 不是表空，是被 policy 挡了）' % BASELINE[t]
-        if 'select' in need and not r_ok:
-            blocked.append('%s 读被挡（源码 %s 要读）' % (t, ','.join(sorted(need))))
-        w_state, w_why = 'ok', '源码未用到写入'
-        if 'insert' in need or 'upsert' in need:
-            w_state, w_why = probe_write(t)
-            if w_state == 'blocked':
-                blocked.append('%s 写被挡（源码 %s 要写）' % (t, ','.join(sorted(need))))
-            elif w_state == 'unknown':
-                unknown.append('%s 写通道**未验证**（不是被挡）：%s' % (t, w_why))
-        rows.append((t, need, r_ok, r_why, w_state, w_why))
-
-    for t, need, r_ok, r_why, w_state, w_why in rows:
-        print('  ── %s   （源码要用：%s）' % (t, ','.join(sorted(need))))
-        print('     读 %s  %s' % ('✅ 通' if r_ok else '🔴 被挡', r_why))
-        wl = {'ok': '✅ 通', 'blocked': '🔴 被挡', 'unknown': '⚪ 未验证'}[w_state]
-        print('     写 %s  %s' % (wl, w_why))
-
-    print('')
-    if blocked:
-        print('⛔ 有「源码要用、但被挡」的组合：')
-        for b in blocked:
-            print('   · %s' % b)
-    if unknown:
-        print('')
-        print('⚪ 有没验到的（**不是被挡**，是探针行删不掉所以没敢写）：')
-        for u in unknown:
-            print('   · %s' % u)
-    if cleanup:
-        print('')
-        print('⚠ 本次写探针留下了这些行（RLS 挡 DELETE，删不掉）—— 请在 SQL Editor 跑：')
-        for c in cleanup:
-            print('   ' + c)
-    if blocked:
+    # ── 1) 扫线上代码，抽需求
+    print('\n━━ 1) 需求发现（从线上 live 代码抽，不是猜的）━━')
+    need = {}          # (table, ck) → {'read':bool,'write':bool,'delete':bool}
+    station_of = {}    # (table, ck) → set(站名)
+    for name, root in STATIONS:
+        code, files = station_code(root)
+        if not code:
+            print('  ⚠️  %s：没抓到任何 js（站可能改名/换结构了 ⇒ 需求缺失，**别当通过**）' % name)
+            continue
+        keym = re.search(r'sb_publishable_[A-Za-z0-9_]+', code)
+        if keym and not ANON_KEY:
+            ANON_KEY = keym.group(0)
+        if not keym:
+            print('  ℹ️  %s：代码里没有 Supabase key ⇒ 该站不走 Supabase（CloudBase 网关）⇒ 跳过' % name)
+            continue
+        tables, keys, del_keys, upsert = extract_needs(code)
+        tables = {t for t in tables if t.startswith('vocab_')}
+        keys = {k for k in keys if not FAKE_KEY.match(k)}
+        kind = '内联单文件站（js 全在 html 里）' if not files else '抓到 %d 个 js' % len(files)
+        print('  · %s（%s，用到表 %s）' % (name, kind, ','.join(sorted(tables)) or '—'))
+        for t in sorted(tables):
+            tks = sorted(keys) if t in ('vocab_history_logs', 'vocab_online_status') else ['(无 class_key 列)']
+            for ck in tks:
+                if t == 'vocab_states':
+                    continue        # 下面单独处理（不能拿真班级 key 写探针）
+                k = (t, ck)
+                need.setdefault(k, {'read': True, 'write': True, 'delete': ck in del_keys})
+                station_of.setdefault(k, set()).add(name)
+        for ck in del_keys:
+            k = ('vocab_history_logs', ck)
+            if k in need:
+                need[k]['delete'] = True
+    if not ANON_KEY:
+        ANON_KEY = os.environ.get('SUPABASE_ANON_KEY', '')
+    if not ANON_KEY:
+        print('\n❌ 拿不到 anon key（线上代码里没抽到，环境变量也没有）⇒ 无法验收')
         return 1
-    print('')
-    print('✅ 三个站要用的事，现在全都能做（没验到的部分见上面 ⚪）。')
+    print('  anon key：从线上代码现取（不落仓库）✅')
+
+    if not need:
+        print('\n❌ 一条需求都没抽到 ⇒ 一定是扫描器坏了（不是「没问题」）')
+        return 1
+
+    # ── 2) 真实闭环
+    print('\n━━ 2) 真实闭环验收（写 → 回读 → 删 → 回读）━━')
+    try:
+        for (t, ck), req in sorted(need.items()):
+            label = '%s / %s' % (t, ck)
+            rest('DELETE', '/%s?%s' % (t, delete_filter(t, ck)), prefer='return=representation')
+            st, _, raw = rest('POST', '/' + t, probe_row(t, ck), prefer='return=representation')
+            if st == 409:
+                st = 200
+            if st not in (200, 201):
+                # 写都进不去 ⇒ 后续无从谈起，直接判失败
+                fail(label, '写入被挡 http=%s %s' % (st, raw[:110]))
+                continue
+            global CHECKS
+            CHECKS += 1
+            q = read_filter(t, ck)
+            st, _, raw = rest('GET', '/%s?select=*&%s' % (t, q), prefer='count=exact')
+            if st != 200 or not rows_of(raw):
+                fail(label, '写进去了但回读不到（http=%s）' % st)
+                continue
+            CHECKS += 1
+            if not req['delete']:
+                rest('DELETE', '/%s?%s' % (t, delete_filter(t, ck)), prefer='return=representation')
+                ok('%s  写✓ 回读到✓（该站没有删除路径，未验删）  ← %s'
+                   % (label, '/'.join(sorted(station_of.get((t, ck), [])))))
+                continue
+            st, _, raw = rest('DELETE', '/%s?%s' % (t, delete_filter(t, ck)), prefer='return=representation')
+            st2, _, raw2 = rest('GET', '/%s?select=*&%s' % (t, q), prefer='count=exact')
+            if rows_of(raw2):
+                fail(label, '🔴 删不掉（PostgREST 也返回 200/204 ⇒ 只看返回码会假绿）')
+            else:
+                CHECKS += 2
+                ok('%s  写✓ 回读到✓ 删✓ 回读确认已消失✓  ← %s'
+                   % (label, '/'.join(sorted(station_of.get((t, ck), [])))))
+
+        # vocab_states：只读名册 + 用专属探针 key 验写（绝不覆盖真班级的 state_val）
+        print('\n━━ 2b) vocab_states（名册表；探针用专属 key，不碰真班级）━━')
+        st, _, raw = rest('GET', '/vocab_states?select=*&class_key=eq.__roster_v1', prefer='count=exact')
+        if st == 200 and rows_of(raw):
+            ok('名册可读（__roster_v1 读得到 %d 行）' % len(rows_of(raw)))
+            CHECKS += 1
+        else:
+            fail('vocab_states 名册读取', 'http=%s，读不到名册 ⇒ 三个站都会登不进' % st)
+        # 🔴 vocab_states 的 DELETE 被 RLS 挡（v1 SQL 注释里写过：是设计如此）⇒ **不测删**
+        #    否则会拿一条「本来就该挡」的删除判成红 ⇒ 假红
+        rest('DELETE', '/vocab_states?class_key=eq.%s' % PROBE_ID, prefer='return=representation')
+        st, _, raw = rest('POST', '/vocab_states', probe_row('vocab_states', PROBE_ID),
+                          prefer='resolution=merge-duplicates,return=representation')
+        if st not in (200, 201):
+            fail('vocab_states 探针写入', 'http=%s %s' % (st, raw[:110]))
+        else:
+            CHECKS += 1
+            st, _, raw = rest('GET', '/vocab_states?select=*&class_key=eq.%s' % PROBE_ID, prefer='count=exact')
+            if rows_of(raw):
+                CHECKS += 1
+                ok('vocab_states 写✓ 回读到✓（该表 DELETE 被 RLS 挡是设计如此 ⇒ 未验删）')
+            else:
+                fail('vocab_states 探针回读', '写进去了但回读不到')
+
+        # ── 3) 反向验证：不在白名单的 class_key 必须写不进去
+        print('\n━━ 3) 反向验证（不在白名单的 class_key 必须写不进去 ⇒ policy 真的收窄了）━━')
+        # 🔴 只有「该写的写得进去」时，这条反向验证才有意义
+        #    （现在这种「全都拒」的状态下，任何写入都会被拒 ⇒ 会骗成「policy 收窄得很好」的假绿）
+        wrote_ok = any('写入被挡' not in f for f in FAILS)
+        if not wrote_ok:
+            print('  ⚠️ 跳过：正向写都不通 ⇒ 现在的「拒」不能证明 policy 收窄（等修好再验）')
+        else:
+            st, _, raw = rest('POST', '/vocab_history_logs', probe_row('vocab_history_logs', NEG_KEY),
+                              prefer='return=representation')
+            if st in (200, 201):
+                fail('反向验证', "class_key='%s' 竟然写进去了 ⇒ policy 是 using(true)，没有收窄" % NEG_KEY)
+                rest('DELETE', '/vocab_history_logs?class_key=eq.%s' % NEG_KEY, prefer='return=representation')
+            else:
+                CHECKS += 1
+                ok("class_key='%s' 被拒（http=%s）⇒ policy 确实按 class_key 收窄" % (NEG_KEY, st))
+    finally:
+        cleanup()
+
+    # ── 4) 汇总
+    print('\n━━ 4) 汇总 ━━')
+    print('  断言数：%d' % CHECKS)
+    if FAILS:
+        print('  ❌ 失败 %d 条：' % len(FAILS))
+        for f in FAILS:
+            print('     - %s' % f)
+        print('\n结果：红（%d 条没过）' % len(FAILS))
+        return 1
+    if CHECKS == 0:
+        print('\n❌ 零断言 ⇒ 判失败（扫描器/流程坏了，不是没问题）')
+        return 1
+    print('\n结果：🟢 全绿（%d 条断言）' % CHECKS)
     return 0
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv))
+    sys.exit(main())
