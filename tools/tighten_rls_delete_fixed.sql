@@ -147,12 +147,16 @@ select '② ' || tablename || ' | ' || policyname || ' | roles=' || roles::text 
    and tablename in ('vocab_history_logs','vocab_online_status')
    and 'authenticated' = any(roles);
 
--- ③ 四个班的条数（基线：JR1 746 / CW3 582 / WL_CW 280 / XQ1 839，总 2454）
+-- ③ 各班条数
+--   🔴 **不要拿「基线数字」当判据** —— 学生正在用词汇站，记录数**每天都在涨**
+--   （实测：2454 → 2453 → 2462；CW3 582 → 591）
+--   ⇒ 正确做法：**跑之前先跑一次 ③④ 记下数字，跑完再跑一次，对比你自己的前后值**
+--   ⇒ 这次改动**只动 policy、不动数据** ⇒ 词汇站四个班的条数应当**一模一样**
 select '③ ' || class_key || ' = ' || count(*) as x
   from public.vocab_history_logs
  where class_key in ('JR1','CW3','WL_CW','XQ1','JR1|u1','JR1|u2','LISTEN','CET4')
  group by class_key order by class_key;
 
--- ④ 总条数（基线：2454）
+-- ④ 总条数（同样：**只跟自己的前后值比**，不要跟任何硬编码数字比）
 select '④ 总条数 = ' || count(*) as x from public.vocab_history_logs;
 -- =====================================================================

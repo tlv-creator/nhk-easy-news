@@ -51,6 +51,17 @@ PROBE_SID = '__rls_probe__'        # 探针 student_id
 PROBE_CK = 'LISTENPROBE'           # 探针 class_key（「清空全部」路径专用，不碰真实 LISTEN）
 NEG_CK = '__rls_neg_probe__'       # 反向验证用的非法 class_key
 
+# 🔴🔴 护栏：**「整班删」这个形状只能打在探针 key 上**
+#   同伴 2026-10-24 拦过一次：
+#   `DELETE ?class_key=eq.LISTEN`（不带 student_id 过滤）一旦指向**真实 class_key**
+#   ⇒ 会把全班真记录一次删光 ⇒ **正是 34 条听力记录消失的那个形状**
+#   ⇒ 所以「拿 LISTEN 自己的 key 验」这种改法是危险的 ⇒ 只能拿探针 key
+#   ⇒ 这里的断言让这件事**由代码保证**，而不是靠「我记得别写错」
+REAL_CLASS_KEYS = {'LISTEN', 'CET4', 'CET4TEST', 'JR1', 'CW3', 'WL_CW', 'XQ1',
+                   'JR1|u1', 'JR1|u2', 'WL_CW|u1', 'WL_CW|u2', 'XQ1|u1', 'XQ1|u2'}
+assert PROBE_CK not in REAL_CLASS_KEYS, '整班删形状的探针 key 不能是真实班级'
+assert PROBE_SID not in REAL_CLASS_KEYS
+
 ANON_KEY = ''
 FAILS = []
 CHECKS = 0
@@ -341,6 +352,11 @@ def main():
     #   ⇒ 做法：先在**别的、白名单同样放行的 key** 上打**完全同形态的 URL**（只有 class_key 过滤，
     #      没有 id / student_id 过滤）⇒ 证明「按 class_key 一把清」这条路是通的，
     #      同时**证明它不会误删别的 class_key 的行**
+    if PROBE_CK in REAL_CLASS_KEYS:
+        # 🔴 绝不能在这里给 PROBE_CK 赋值（函数内赋值 ⇒ Python 把它当局部变量
+        #    ⇒ 后面读它就是 UnboundLocalError）⇒ 只中止，不改值
+        fail('T1-c 护栏', '整班删形状的 key 指向了真实班级 ⇒ 会清掉全班真记录 ⇒ 中止')
+        raise SystemExit(2)
     good, rid, why = insert_log(PROBE_CK)
     ins2, rid2, why2 = insert_log('JR1')     # 另一个班级的行，用来验证没被误删
     if not (good and ins2):
@@ -493,7 +509,9 @@ def main():
         st, _, raw = rest('GET', '/vocab_history_logs?select=id&%s' % q, prefer='count=exact')
         n = len(rows_of(raw))
         if st == 200:
-            ok('%s 读得到 %d 行（老师端看板不是空的）' % (label, n))
+            # 🔴 提示必须反映**真实状态**（0 行也要说 0 行，别写「不是空的」）
+            ok('%s 读得到 %d 行%s' % (label, n,
+               '' if n else '（该班当前没有记录 ⇒ 老师端看板会显示空列表，但**不是被 RLS 挡住**）'))
         else:
             fail('%s 读取' % label, 'http=%s' % st)
     st, _, raw = rest('GET', '/vocab_states?select=*&class_key=eq.__roster_v1', prefer='count=exact')
