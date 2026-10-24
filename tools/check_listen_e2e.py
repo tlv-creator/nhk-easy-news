@@ -74,7 +74,9 @@ def main():
           "没有 RLS 报错（42501 = 被 policy 挡）")
     # 🔴 判据必须落在**真实总数**上：`*/0` = anon 看到 0 行（= 被 policy 挡了，或真的没记录）
     total = cr.split("/")[-1] if "/" in cr else cr
-    check(total not in ("0", "*"), "anon 能看到 LISTEN 的行（content-range=%r，总数=%s）" % (cr, total))
+    # 🔴 「表里本来一条都没有」与「读被挡了」在 count 上一样（都是 0）⇒ 不能当判据
+    #    ⇒ 真正的读判据是下面③的「探针回读得到」；这条只作参考信息
+    print("   ℹ️  库里现有 LISTEN 记录 %s 条（0 条正常；读判据看下面③的探针回读）" % total)
 
     # ② 名册（老师端看板的底）
     st2, rs2, cr2 = rows("vocab_states?select=class_key&class_key=eq.__roster_v1")
