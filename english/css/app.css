@@ -1,0 +1,127 @@
+/* =====================================================================
+   教师统一看板 · 样式
+   ---------------------------------------------------------------------
+   🔴 硬约束（跟其它学习站一致，别改）：
+     · 正文 30px 起（老花眼）
+     · 渐变全关、纯黑描边改半透明（黑白电子墨水屏）
+     · 控件用**文字**，不用图标
+     · 当前项不靠颜色区分（墨水屏没颜色）⇒ 用 4px 实心竖条
+   ===================================================================== */
+:root {
+  --fg: #111;
+  --bg: #fff;
+  --gray: #555;
+  --line: rgba(0, 0, 0, .28);
+  --line-strong: rgba(0, 0, 0, .55);
+  --soft: rgba(0, 0, 0, .05);
+}
+* { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
+html { zoom: 1.15; }
+body {
+  margin: 0;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  font-size: 30px;
+  line-height: 1.55;
+  color: var(--fg);
+  background: var(--bg);
+}
+h1 { font-size: 40px; margin: 0 0 6px; }
+h2 { font-size: 34px; margin: 0 0 8px; }
+h3 { font-size: 30px; margin: 0 0 4px; }
+h4 { font-size: 28px; margin: 22px 0 6px; padding-bottom: 4px; border-bottom: 2px solid var(--line); }
+p { margin: 6px 0; }
+.sub { color: var(--gray); font-size: 26px; margin: 0; }
+
+/* ---- 按钮：文字，不用图标 ---- */
+.btn {
+  display: inline-block; background: var(--fg); color: #fff; border: 2px solid var(--fg);
+  border-radius: 8px; padding: 12px 22px; font-size: 28px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+}
+.btn.ghost { background: #fff; color: var(--fg); }
+.btn.sm { padding: 8px 16px; font-size: 26px; }
+.btn.wide { display: block; width: 100%; margin-top: 18px; text-align: center; }
+.btn:disabled { opacity: .55; cursor: default; }
+.mini {
+  background: #fff; color: var(--fg); border: 1px solid var(--line-strong);
+  border-radius: 6px; padding: 4px 12px; font-size: 24px; cursor: pointer; font-family: inherit;
+}
+.mini:hover { background: var(--soft); }
+
+/* ---- 登录 ---- */
+.gate { max-width: 620px; margin: 60px auto; padding: 0 20px; }
+.gate .logo { font-size: 46px; text-align: center; }
+.gate h2 { text-align: center; margin-top: 4px; }
+.gate .sub { text-align: center; margin-bottom: 24px; }
+.card { border: 2px solid var(--line-strong); border-radius: 12px; padding: 22px; margin: 16px 0; }
+.card-b { padding: 4px 6px; }
+.hint { display: block; font-size: 25px; color: var(--gray); margin-bottom: 6px; }
+.inp {
+  display: block; width: 100%; font-family: inherit; font-size: 28px;
+  padding: 12px 14px; border: 2px solid var(--line-strong); border-radius: 8px;
+  background: #fff; color: var(--fg);
+}
+select.inp { padding: 10px 12px; }
+
+/* ---- 顶栏 ---- */
+.top {
+  display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
+  gap: 14px; padding: 22px 24px 14px; border-bottom: 2px solid var(--line);
+}
+.top-r { display: flex; gap: 10px; flex-wrap: wrap; }
+.pill {
+  display: inline-block; border: 1px solid var(--line-strong); border-radius: 999px;
+  padding: 2px 14px; margin-right: 8px; font-size: 24px; color: var(--fg);
+}
+
+/* ---- 标签页（墨水屏：靠左边竖条区分，不靠颜色） ---- */
+.tabs { display: flex; gap: 0; padding: 12px 24px 0; }
+.tab {
+  font-family: inherit; font-size: 28px; background: #fff; color: var(--gray);
+  border: 0; border-bottom: 3px solid transparent; padding: 10px 20px; cursor: pointer;
+}
+.tab.on { color: var(--fg); font-weight: 700; border-bottom-color: var(--fg); }
+
+/* ---- 筛选条 ---- */
+.filters { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 14px 24px; }
+.filters .inp { width: auto; min-width: 200px; flex: 0 1 260px; }
+.count { font-size: 25px; color: var(--gray); margin-left: auto; }
+
+/* ---- 表格 ---- */
+/* 🔴 表格列多 ⇒ 字号要比正文小一档，否则横向撑爆
+   （但不小于 22px，老花眼仍可读） */
+.tb { width: 100%; border-collapse: collapse; margin: 0 24px 24px; font-size: 24px; table-layout: auto; }
+.tb th, .tb td { border-bottom: 1px solid var(--line); padding: 8px 8px; text-align: left; vertical-align: top; }
+.tb thead th { border-bottom: 2px solid var(--line-strong); font-size: 23px; white-space: nowrap; }
+.tb .num { text-align: right; white-space: nowrap; }
+.tb .sm { font-size: 22px; color: var(--gray); }
+/* 🔴 姓名/班级/日期不许被压成竖排（一字一行极难读） */
+.tb .nm, .tb .cls, .tb .dt { white-space: nowrap; }
+.tb .sid { font-weight: 700; white-space: nowrap; }
+.tb .u { font-size: 20px; color: var(--gray); }
+.tb tr.idle td { color: var(--gray); }
+.tb tfoot .sum td { font-weight: 700; border-top: 2px solid var(--line-strong); background: var(--soft); }
+.tb.sm { font-size: 22px; margin: 8px 0 0; }
+/* 表格可以横向滚动，但**整页**不横向滚动（手机上） */
+.tb-wrap { overflow-x: auto; margin: 0 0 24px; }
+
+/* ---- 状态 ---- */
+.loading { padding: 40px 24px; font-size: 28px; color: var(--gray); }
+.err { margin: 16px 24px; padding: 14px 18px; border: 2px solid var(--line-strong); border-radius: 8px; font-size: 26px; }
+.empty { padding: 40px 24px; color: var(--gray); font-size: 28px; }
+.foot { padding: 18px 24px 40px; color: var(--gray); font-size: 23px; border-top: 1px solid var(--line); }
+
+/* ---- 明细弹窗 ---- */
+.pop { position: fixed; inset: 0; background: rgba(255, 255, 255, .97); overflow: auto; padding: 24px; }
+.pop-card {
+  max-width: 1000px; margin: 0 auto; background: #fff;
+  border: 2px solid var(--line-strong); border-radius: 12px; padding: 22px 24px 26px;
+}
+.pop-foot { margin-top: 22px; text-align: right; }
+
+@media (max-width: 700px) {
+  html { zoom: 1; }
+  .tb { font-size: 22px; }
+  .tb th, .tb td { padding: 7px 6px; }
+  .filters .inp { flex: 1 1 100%; }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>英语学习 · 总入口</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/app.css">
+<style>
+/* 入口页专用（与看板同一套墨水屏/老花眼约束） */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; padding: 20px 24px; }
+.tile {
+  display: block; text-decoration: none; color: var(--fg);
+  border: 2px solid var(--line-strong); border-radius: 12px; padding: 20px 22px; background: #fff;
+}
+.tile h3 { margin: 0 0 4px; }
+.tile .t2 { font-size: 25px; color: var(--gray); margin: 0 0 10px; }
+.tile .go { font-size: 25px; color: var(--fg); }
+.tile .u { font-size: 21px; color: var(--gray); word-break: break-all; }
+.hero { padding: 30px 24px 6px; }
+.hero h1 { font-size: 42px; }
+.sec-t { padding: 18px 24px 0; font-size: 30px; font-weight: 700; }
+.note { padding: 4px 24px 0; color: var(--gray); font-size: 24px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>英语学习 · 总入口</h1>
+  <p class="sub">学生端三个网址**照旧不变**　|　这里只是导航台</p>
+</div>
+
+<div class="sec-t">学生端（原来的网址全部照旧，不用换）</div>
+<div class="grid" id="studentGrid"></div>
+
+<div class="sec-t">教师端</div>
+<div class="grid" id="teacherGrid"></div>
+
+<div class="note">
+  数据说明：单词、听力、阅读翻译三类记录**本来就写在同一个数据库里**（靠班级标识区分），
+  所以「一个地方看全」不需要搬数据，也不需要改任何学生网址。
+</div>
+<div style="height:40px"></div>
+
+<script>
+/* 🔴 这些地址是**学生已经在用**的地址 ⇒ 只增不改
+   （改了要同步改 APKS / 引导页 / 文档里所有引用方，漏一个就是死链） */
+var STUDENT = [
+  { t: '单词学习站（第一/二/三课）', d: '背单词 · 平时练习 · 单元测验',
+    u: 'https://tlv-creator.github.io/nhk-easy-news/vocab/', k: '单词' },
+  { t: '每日听力记录', d: '记录每天听了什么、听了多久',
+    u: 'https://tlv-creator.github.io/nhk-easy-news/listening/', k: '听力' },
+  { t: '四级精读日报', d: '每日文章 · 翻译练习 · 理解题',
+    u: 'https://tlv-creator.github.io/nhk-easy-news/cet4.html', k: '阅读翻译' }
+];
+var TEACHER = [
+  { t: '教师统一看板（推荐）', d: '单词 / 听力 / 阅读翻译 —— 一页看全，可导出 CSV',
+    u: 'teacher/', k: '全部' },
+  { t: '词汇站教师端', d: '只看单词（平时练习记录表）',
+    u: 'https://tlv-creator.github.io/nhk-easy-news/vocab/', k: '单词' },
+  { t: '听力站教师端', d: '只看听力记录明细',
+    u: 'https://tlv-creator.github.io/nhk-easy-news/listening/app/teacher.html', k: '听力' },
+  { t: '四级日报教师端', d: '只看四级（浏览 / 翻译 / 理解题）',
+    u: 'https://tlv-creator.github.io/nhk-easy-news/cet4.html', k: '阅读翻译' }
+];
+
+function render(host, arr) {
+  document.getElementById(host).innerHTML = arr.map(function (x) {
+    return '<a class="tile" href="' + x.u + '">' +
+      '<h3>' + x.t + '</h3>' +
+      '<p class="t2">' + x.d + '</p>' +
+      '<p class="go">进入 →</p>' +
+      '<p class="u">' + x.u + '</p>' +
+      '</a>';
+  }).join('');
+}
+render('studentGrid', STUDENT);
+render('teacherGrid', TEACHER);
+</script>
+</body>
+</html>

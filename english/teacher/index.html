@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>教师统一看板 · 单词 听力 阅读翻译</title>
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/app.css">
+</head>
+<body>
+<div id="root"></div>
+<div id="modal"></div>
+
+<script src="../js/api.js"></script>
+<script src="../js/parse.js"></script>
+<script src="../js/app.js"></script>
+<script>
+/* 启动：先进登录门，校验通过才拉数据（未授权时**不读**任何表） */
+(function () {
+  var root = document.getElementById('root');
+  root.innerHTML = '<div class="loading">加载中…</div>';
+  try {
+    THApp.render();
+  } catch (e) {
+    root.innerHTML = '<div class="err">页面初始化失败：' + String(e && e.message || e) + '</div>';
+  }
+})();
+</script>
+</body>
+</html>
