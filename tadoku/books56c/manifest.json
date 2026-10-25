@@ -1,0 +1,520 @@
+[
+ {
+  "tag": "level0-kaze-to-taiyou",
+  "title": "風と太陽",
+  "desc": "The Wind and the Sun",
+  "level": "Level0",
+  "sentences": 39,
+  "isbn": "9784872177497",
+  "official_title": "風と太陽",
+  "title_official": "風と太陽",
+  "official_en_title": "The Wind and the Sun",
+  "book_id": "0",
+  "audio_mp3": "9784872177497/No_001.mp3",
+  "audio_mp3_all": [
+   "9784872177497/No_001.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 236.81,
+  "dur_parts": [
+   236.81
+  ],
+  "audio_head_asr": "風と太陽 イソップ物語より 再話",
+  "zh": 39,
+  "ru_units": 84,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 39,
+   "min": 0.333,
+   "p25": 0.608,
+   "median": 0.667,
+   "max": 1.0,
+   "below_050": 1,
+   "low_samples": [
+    {
+     "i": 36,
+     "cov": 0.333,
+     "ja": "「…………」"
+    }
+   ]
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-tadaima",
+  "title": "木村家の毎日「ただいま」",
+  "desc": "I'm Home!",
+  "level": "Level0",
+  "sentences": 42,
+  "isbn": "9784872177497",
+  "official_title": "木村家の毎日「ただいま」",
+  "title_official": "木村家の毎日「ただいま」",
+  "official_en_title": "I'm Home!",
+  "book_id": "2344",
+  "audio_mp3": "9784872177497/No_002.mp3",
+  "audio_mp3_all": [
+   "9784872177497/No_002.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 195.35,
+  "dur_parts": [
+   195.35
+  ],
+  "audio_head_asr": "木村家の毎日 ただいま 作",
+  "zh": 42,
+  "ru_units": 59,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 42,
+   "min": 0.5,
+   "p25": 0.667,
+   "median": 0.8,
+   "max": 1.0,
+   "below_050": 0,
+   "low_samples": []
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-oshogatsu",
+  "title": "木村家の毎日「お正月」",
+  "desc": "New Year's Day",
+  "level": "Level0",
+  "sentences": 37,
+  "isbn": "9784872177497",
+  "official_title": "木村家の毎日「お正月」",
+  "title_official": "木村家の毎日「お正月」",
+  "official_en_title": "New Year's Day",
+  "book_id": "2345",
+  "audio_mp3": "9784872177497/No_003.mp3",
+  "audio_mp3_all": [
+   "9784872177497/No_003.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 235.0,
+  "dur_parts": [
+   235.0
+  ],
+  "audio_head_asr": "木村家の毎日 お正月 作　粟野真紀子",
+  "zh": 37,
+  "ru_units": 64,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 37,
+   "min": 0.417,
+   "p25": 0.552,
+   "median": 0.667,
+   "max": 1.0,
+   "below_050": 2,
+   "low_samples": [
+    {
+     "i": 13,
+     "cov": 0.417,
+     "ja": "「鏡〈かがみ〉もち」を置〈お〉きます。"
+    },
+    {
+     "i": 19,
+     "cov": 0.476,
+     "ja": "1月〈いちがつ〉1日〈ついたち〉は、「元旦〈がんたん〉」です。"
+    }
+   ]
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-niwaniwani",
+  "title": "西町交番の良さん「にわにわに？」",
+  "desc": "Crocodile in the Garden!",
+  "level": "Level0",
+  "sentences": 37,
+  "isbn": "9784872177497",
+  "official_title": "西町交番の良さん「にわにわに？」",
+  "title_official": "西町交番の良さん「にわにわに？」",
+  "official_en_title": "Crocodile in the Garden!",
+  "book_id": "2346",
+  "audio_mp3": "9784872177497/No_004.mp3",
+  "audio_mp3_all": [
+   "9784872177497/No_004.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 211.68,
+  "dur_parts": [
+   211.68
+  ],
+  "audio_head_asr": "西町交番のりょうさん 庭にワニ？ 作、松田みどり",
+  "zh": 37,
+  "ru_units": 72,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 37,
+   "min": 0.526,
+   "p25": 0.6,
+   "median": 0.706,
+   "max": 1.0,
+   "below_050": 0,
+   "low_samples": []
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-tasukete",
+  "title": "西町交番の良さん「助けて！」",
+  "desc": "Help!",
+  "level": "Level0",
+  "sentences": 26,
+  "isbn": "9784872177497",
+  "official_title": "西町交番の良さん「助けて！」",
+  "title_official": "西町交番の良さん「助けて！」",
+  "official_en_title": "Help!",
+  "book_id": "2347",
+  "audio_mp3": "9784872177497/No_005.mp3",
+  "audio_mp3_all": [
+   "9784872177497/No_005.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 175.99,
+  "dur_parts": [
+   175.99
+  ],
+  "audio_head_asr": "西町交番のりょうさん たすけて 作　松田みどり",
+  "zh": 26,
+  "ru_units": 34,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 26,
+   "min": 0.5,
+   "p25": 0.686,
+   "median": 0.8,
+   "max": 1.0,
+   "below_050": 0,
+   "low_samples": []
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-nanono-suji",
+  "title": "これは何の数字？",
+  "desc": "What Number Is This?",
+  "level": "Level0",
+  "sentences": 42,
+  "isbn": "9784872177497",
+  "official_title": "これは何の数字？",
+  "title_official": "これは何の数字？",
+  "official_en_title": "What Number Is This?",
+  "book_id": "0",
+  "audio_mp3": "9784872177497/No_006.mp3",
+  "audio_mp3_all": [
+   "9784872177497/No_006.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 271.68,
+  "dur_parts": [
+   271.68
+  ],
+  "audio_head_asr": "これは、何の数字？ 数字で見る日本 作、粟野麻紀子",
+  "zh": 42,
+  "ru_units": 106,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 42,
+   "min": 0.0,
+   "p25": 0.454,
+   "median": 0.6,
+   "max": 0.9,
+   "below_050": 14,
+   "low_samples": [
+    {
+     "i": 2,
+     "cov": 0.444,
+     "ja": "378,000〈さんじゅうななまんはっせん〉km²（平方キロメートル〈へいほうき"
+    },
+    {
+     "i": 10,
+     "cov": 0.462,
+     "ja": "73%〈ななじゅうさんぱーせんと〉"
+    },
+    {
+     "i": 15,
+     "cov": 0.474,
+     "ja": "男〈おとこ〉の人〈ひと〉・・・１７１ｃｍ（センチメートル）"
+    },
+    {
+     "i": 16,
+     "cov": 0.421,
+     "ja": "女〈おんな〉の人〈ひと〉・・・１５８ｃｍ（センチメートル）"
+    },
+    {
+     "i": 20,
+     "cov": 0.0,
+     "ja": "オランダ"
+    },
+    {
+     "i": 21,
+     "cov": 0.25,
+     "ja": "アメリカ"
+    }
+   ]
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-usagitokame",
+  "title": "ウサギとカメ",
+  "desc": "The Rabbit and the Tortoise",
+  "level": "Level0",
+  "sentences": 52,
+  "isbn": "9784866398310",
+  "official_title": "ウサギとカメ",
+  "title_official": "ウサギとカメ",
+  "official_en_title": "The Rabbit and the Tortoise",
+  "book_id": "0",
+  "audio_mp3": "9784866398310/001.mp3",
+  "audio_mp3_all": [
+   "9784866398310/001.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 195.82,
+  "dur_parts": [
+   195.82
+  ],
+  "audio_head_asr": "うさぎと亀 イソップ物語より 再話",
+  "zh": 52,
+  "ru_units": 56,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 52,
+   "min": 0.286,
+   "p25": 0.615,
+   "median": 0.727,
+   "max": 1.0,
+   "below_050": 3,
+   "low_samples": [
+    {
+     "i": 3,
+     "cov": 0.467,
+     "ja": "カメ〈かめ〉は、足〈あし〉が遅〈おそ〉いです。"
+    },
+    {
+     "i": 36,
+     "cov": 0.308,
+     "ja": "1　もしもし カメよ カメさんよ"
+    },
+    {
+     "i": 40,
+     "cov": 0.286,
+     "ja": "2　なんと おっしゃる ウサギさん"
+    }
+   ]
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-ryosan-christmas",
+  "title": "西町交番の良さん「良さんのクリスマス」",
+  "desc": "Ryo-san's Christmas",
+  "level": "Level0",
+  "sentences": 22,
+  "isbn": "9784866398310",
+  "official_title": "西町交番の良さん「良さんのクリスマス」",
+  "title_official": "西町交番の良さん「良さんのクリスマス」",
+  "official_en_title": "Ryo-san's Christmas",
+  "book_id": "2351",
+  "audio_mp3": "9784866398310/002.mp3",
+  "audio_mp3_all": [
+   "9784866398310/002.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 160.32,
+  "dur_parts": [
+   160.32
+  ],
+  "audio_head_asr": "西町交番のりょうさん りょうさんのクリスマス 作　まつだみどり",
+  "zh": 22,
+  "ru_units": 31,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 22,
+   "min": 0.5,
+   "p25": 0.636,
+   "median": 0.711,
+   "max": 1.0,
+   "below_050": 0,
+   "low_samples": []
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-otoshimono",
+  "title": "西町交番の良さん「落とし物がいっぱい」",
+  "desc": "So Many Lost Things",
+  "level": "Level0",
+  "sentences": 42,
+  "isbn": "9784866398310",
+  "official_title": "西町交番の良さん「落とし物がいっぱい」",
+  "title_official": "西町交番の良さん「落とし物がいっぱい」",
+  "official_en_title": "So Many Lost Things",
+  "book_id": "2352",
+  "audio_mp3": "9784866398310/003.mp3",
+  "audio_mp3_all": [
+   "9784866398310/003.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 176.78,
+  "dur_parts": [
+   176.78
+  ],
+  "audio_head_asr": "西町交番のりょうさん 落とし物がいっぱい 作",
+  "zh": 42,
+  "ru_units": 81,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 42,
+   "min": 0.25,
+   "p25": 0.576,
+   "median": 0.667,
+   "max": 1.0,
+   "below_050": 2,
+   "low_samples": [
+    {
+     "i": 14,
+     "cov": 0.375,
+     "ja": "男〈おとこ〉の人〈ひと〉と女〈おんな〉の人〈ひと〉が来〈き〉ました。"
+    },
+    {
+     "i": 29,
+     "cov": 0.25,
+     "ja": "「黒〈くろ〉いメガネ〈めがね〉です」"
+    }
+   ]
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-tokyo-densha",
+  "title": "東京の電車",
+  "desc": "A Train in Tokyo",
+  "level": "Level0",
+  "sentences": 37,
+  "isbn": "9784866398310",
+  "official_title": "東京の電車",
+  "title_official": "東京の電車",
+  "official_en_title": "A Train in Tokyo",
+  "book_id": "2353",
+  "audio_mp3": "9784866398310/004.mp3",
+  "audio_mp3_all": [
+   "9784866398310/004.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 218.91,
+  "dur_parts": [
+   218.91
+  ],
+  "audio_head_asr": "東京の電車 作　宮城えみこ 東京は日本の首都です。",
+  "zh": 37,
+  "ru_units": 74,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 37,
+   "min": 0.4,
+   "p25": 0.526,
+   "median": 0.6,
+   "max": 1.0,
+   "below_050": 2,
+   "low_samples": [
+    {
+     "i": 6,
+     "cov": 0.455,
+     "ja": "電車〈でんしゃ〉の中〈なか〉は静〈しず〉かです。"
+    },
+    {
+     "i": 14,
+     "cov": 0.4,
+     "ja": "女性専用車"
+    }
+   ]
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-kekkon",
+  "title": "木村家の毎日「結婚式」",
+  "desc": "A Wedding",
+  "level": "Level0",
+  "sentences": 34,
+  "isbn": "9784866398310",
+  "official_title": "木村家の毎日「結婚式」",
+  "title_official": "木村家の毎日「結婚式」",
+  "official_en_title": "A Wedding",
+  "book_id": "2354",
+  "audio_mp3": "9784866398310/005.mp3",
+  "audio_mp3_all": [
+   "9784866398310/005.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 192.14,
+  "dur_parts": [
+   192.14
+  ],
+  "audio_head_asr": "木村家の毎日 結婚式 作",
+  "zh": 34,
+  "ru_units": 69,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 34,
+   "min": 0.25,
+   "p25": 0.571,
+   "median": 0.667,
+   "max": 1.0,
+   "below_050": 1,
+   "low_samples": [
+    {
+     "i": 17,
+     "cov": 0.25,
+     "ja": "ここに名前〈なまえ〉を書〈か〉きます。"
+    }
+   ]
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ },
+ {
+  "tag": "level0-tanabata",
+  "title": "七夕",
+  "desc": "Tanabata",
+  "level": "Level0",
+  "sentences": 35,
+  "isbn": "9784866398310",
+  "official_title": "七夕",
+  "title_official": "七夕",
+  "official_en_title": "Tanabata",
+  "book_id": "0",
+  "audio_mp3": "9784866398310/006.mp3",
+  "audio_mp3_all": [
+   "9784866398310/006.mp3"
+  ],
+  "audio_concat": false,
+  "dur": 279.46,
+  "dur_parts": [
+   279.46
+  ],
+  "audio_head_asr": "七夕 織姫と彦星の話 再話　川名京子",
+  "zh": 35,
+  "ru_units": 99,
+  "text_source": "bili_scan_print",
+  "cov_vs_asr": {
+   "n": 35,
+   "min": 0.35,
+   "p25": 0.583,
+   "median": 0.65,
+   "max": 0.889,
+   "below_050": 1,
+   "low_samples": [
+    {
+     "i": 2,
+     "cov": 0.35,
+     "ja": "天〈あま〉の川〈かわ〉の東〈ひがし〉と西〈にし〉に、明〈あか〉るい星〈ほし〉があ"
+    }
+   ]
+  },
+  "synced": "2026-10-25 批次1：印刷原文+印刷注音（OCR）+全中文；时间轴待同伴 align_audio.py 计算"
+ }
+]
