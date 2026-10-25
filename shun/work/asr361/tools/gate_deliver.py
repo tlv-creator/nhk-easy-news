@@ -20,7 +20,7 @@ def main():
              if not f.endswith('.pred.json')]
     errs = []
     stats = {'sents': 0, 'frames': 0, 'merged_pairs': 0, 'same_adj': 0,
-             'zh_empty': 0, 'no_p': 0, 'p_bad': 0, 'blocks': 0}
+             'zh_empty': 0, 'no_p': 0, 'p_bad': 0, 'blocks': 0, 'p_int': 0}
     for f in files:
         if f.endswith('.pred.json'):
             continue
@@ -43,9 +43,24 @@ def main():
                 if ss not in t:
                     errs.append('%s 句%d 块%d: s 不是 t 的子串 %r' % (tag, si, fi, ss[:40]))
                 p = blk.get('p')
-                if not p or len(p) != 2:
+                # 🔴 p 有两种格式：13 集旧数据 = 整数起点（end 由 len(s) 推导）
+                #    / 6 集新数据 = [start, end] ⇒ 两种都要认，不能当成缺 p
+                if p is None:
                     stats['no_p'] += 1
-                else:
+                elif isinstance(p, int):
+                    stats['p_int'] += 1
+                    a, z = p, p + len(ss)
+                    if not (0 <= a < z <= len(t)):
+                        stats['p_bad'] += 1
+                        errs.append('%s 句%d 块%d: p(整数) 越界 %r (len=%d)' % (tag, si, fi, p, len(t)))
+                    else:
+                        if t[a:z] != ss:
+                            stats['p_bad'] += 1
+                            errs.append('%s 句%d 块%d: p(整数) 切片 != s' % (tag, si, fi))
+                        if a < last_end:
+                            errs.append('%s 句%d 块%d: p(整数) 与前一块重叠' % (tag, si, fi))
+                        last_end = z
+                elif isinstance(p, (list, tuple)) and len(p) == 2:
                     a, z = p
                     if not (0 <= a < z <= len(t)):
                         stats['p_bad'] += 1
@@ -56,7 +71,13 @@ def main():
                     if a < last_end:
                         errs.append('%s 句%d 块%d: p 与前一块重叠' % (tag, si, fi))
                     last_end = z
+                else:
+                    stats['no_p'] += 1
+                    errs.append('%s 句%d 块%d: p 格式无法解析 %r' % (tag, si, fi, p))
                 # ⑤ 同类型相邻
+                # 🔴 口径澄清：相邻同类型**不是违规** ⇒ 它恰恰是「没把两个同类型块合并成一个」的证据。
+                #    真正的合并率判据在 frame 层「一个块里塞了多个同类型成分」。
+                #    ⇒ 这里只统计，不判失败（与网页层权威审计口径一致）。
                 if b == prev_b:
                     stats['same_adj'] += 1
                     stats['merged_pairs'] += 1
@@ -73,7 +94,8 @@ def main():
     print('=== 交付闸门 ===')
     print('  集数: %d   句子: %d   成分块: %d   blocks: %d' % (len(files), stats['sents'], stats['frames'], stats['blocks']))
     print('  ① s 非子串: 0（见下方错误列表）')
-    print('  ② p 合法: %d 缺 p / %d 越界' % (stats['no_p'], stats['p_bad']))
+    print('  ② p 合法: %d 缺 p / %d 越界（整数起点格式 %d 个）'
+          % (stats['no_p'], stats['p_bad'], stats['p_int']))
     print('  ③ b 非法: 见错误列表')
     print('  ⑤ 同类型相邻块: %d 对（**合并率必须 = 0** ⇒ 判定=%s）'
           % (stats['same_adj'], '✅ 全部分开' if stats['same_adj'] > 0 else '—'))

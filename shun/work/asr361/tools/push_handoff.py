@@ -66,12 +66,13 @@ def local_files():
             out["shun-web/data/%s" % fn] = os.path.join(dd, fn)
     # 🔴 ruby.py 第 19 行按名字找 word_reading.json ⇒ 必须放在 shun/tools/ 旁边才生效
     #    （仓库里从来没有过这个文件 ⇒ 已发布 13 集与新跑的粒度不一致 = 数据漂移）
+    # 🔴 2026-10-25 网页层同伴裁决：**权威位置 = shun/tools/word_reading.json**
+    #    （与 shun/tools/ruby.py 同级；ruby.py:19 是 HERE/word_reading.json）
+    #    ⇒ 不再推 shun/tools/ruby/word_reading.json（那个目录里并没有 ruby.py，
+    #      推它是「两处实现」的错觉 ⇒ 我下次推会把同伴删掉的又推回来）
     wr = os.path.join(SRC, 'word_reading.json')
     if os.path.isfile(wr):
         out["shun/tools/word_reading.json"] = wr
-        # 🔴 引擎目录副本：ruby.py 第 19 行按名字找 word_reading.json
-        #    ⇒ 网页层把引擎持久化到 shun/tools/ruby/ ⇒ 词表要跟引擎同目录（避免两处并存）
-        out["shun/tools/ruby/word_reading.json"] = wr
     return out
 
 
