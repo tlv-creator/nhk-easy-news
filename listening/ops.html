@@ -131,7 +131,7 @@
      + 「清掉本机这份记录」入口（老师的设备长期开着 ⇒ 记录会一直留着 ⇒ 必须能手动清）
      ⚠️ localStorage 在 file:// / 隐私模式下会抛 SecurityError ⇒ 一律 try/catch，不致命
   */
-  var FALLBACK = '没联上库（下面这行是<b>快照</b>，数字停在 2026-10-26 00:14，可能已经过时；<b>以现查库那行为准</b>）：'
+  var FALLBACK = '没联上库（下面这行是<b>快照</b>，数字停在 2026-10-26 00:14，可能已经过时；<b>联网后刷新，这行会变成实时的</b>）：'
     + '已补交 <b>87 条 / 43 位同学</b>；名册 157 人里，还有 <b>114</b> 位同学一条都没交。';
   var LSKEY = 'listen_ops_last_good_v1';
   var cachebox = document.getElementById('cachebox');
@@ -156,7 +156,7 @@
   }
   function renderCached(obj) {
     var t = obj.stamp || '(时间不明)';
-    return '没联上库（下面是<b>你上次现查到的</b>，记于 ' + t + '，可能已经过时；<b>以现查库那行为准</b>）：'
+    return '没联上库（下面是<b>你上次现查到的</b>，记于 ' + t + '，可能已经过时；<b>联网后刷新，这行会变成实时的</b>）：'
       + '已补交 <b>' + obj.n + ' 条 / ' + obj.sub + ' 位同学</b>（' + (obj.parts || '') + '）；'
       + '名册 ' + obj.roster + ' 人里，还有 <b>' + obj.left + '</b> 位同学一条都没交。';
   }
