@@ -256,6 +256,12 @@ finish)
     echo "🔴🔴 有站没删掉（配额在涨）⇒ 命令已落盘 work/pending_site_deletes.txt"
     echo "   ⇒ 请用**有 drive 权限的会话**执行那些 drive files delete 命令"
   fi
+  # 🔴🔴🔴 把待删清单交到**共享仓库**（2026-10-25 22:5x 补的闭环接口）
+  #   本会话常常没有 drive 删站权限 ⇒ 清单只写本地的话，清理 cron（在另一个沙箱）永远看不到
+  #   ⇒ 写进永久地址上的 pending-deletes.json ⇒ 20:00 清理 cron 捡起来删
+  #   ⚠️ 失败只报告、不中断（主流程已经成功了，不能因为清单没交出去就把好版卡住）
+  python3 scripts/site_quota_guard.py export-pending \
+    || echo "   ⚠️ 待删清单没交出去（清理 cron 看不到 ⇒ 站会积压 ⇒ 配额保险会兜住）"
   if [ -n "$OLD" ]; then
     echo "════ 旧站（$OLD）删除前：四层扫引用 ════"
     python3 work/repo_scripts/check_dead_refs.py --dead "$OLD" --apk site/app/NHK.apk --protected 2>&1 | tail -8

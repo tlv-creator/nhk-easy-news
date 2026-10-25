@@ -48,6 +48,8 @@ PROTECTED_URL = "https://tlv-creator.github.io/nhk-easy-news/protected-sites.jso
 BOOT_URL = "https://tlv-creator.github.io/nhk-easy-news/version.json"
 BOOT_LOCAL = os.path.join(ROOT, "boot", "version.json")
 PENDING = os.path.join(ROOT, "work", "pending_site_deletes.txt")
+# 🔴 待删清单的**永久地址**（清理 cron 读它 ⇒ 沙箱本地文件它看不到）
+PENDING_URL = "https://tlv-creator.github.io/nhk-easy-news/pending-deletes.json"
 SITE_SRC = os.path.join(ROOT, "site", "app")
 APK_CANDIDATES = [os.path.join(SITE_SRC, "NHK.apk"),
                   os.path.join(ROOT, "apk", "out", "signed.apk")]
@@ -556,6 +558,103 @@ def mark(args):
     return 0
 
 
+def export_pending(args):
+    """🔴🔴🔴 把「待删但本会话删不掉」的站**导出到共享仓库** —— 这是清理闭环的接口
+
+    🔴 为什么必须有这一步（2026-10-25 22:5x 抓到的断链）：
+        `register/plan/apply` 全部只写**本地** work/site_registry.json
+        ⇒ 而执行删除的清理 cron 跑在**另一个沙箱**（session.mode=new）
+        ⇒ 它**看不到本地文件** ⇒ 本地登记的待删站永远送不到它手里
+        ⇒ 闭环断了一半：站只增不减 ⇒ 几天就撞 50 上限
+    ⇒ 解法：把待删清单写进**永久地址**上的 `pending-deletes.json`
+            （清理 cron 的 prompt 本来就会读它 ⇒ 接口早就有了，只是没人写）
+
+    ⇒ 本会话没 drive 权限也不要紧：清单交出去，由有权限的 cron 去删。
+    """
+    import subprocess
+    reg = load_reg()
+    prot = protected_map()
+    boot = boot_info()
+    cur = current_domain(boot)
+    fb = fallback_domain(reg)
+    regmap = {s.get("domain"): s for s in reg.get("sites", []) if s.get("domain")}
+
+    cands = {}
+    # ① 本地登记表里标了 SUPERSEDED 的
+    for d, s in regmap.items():
+        if str(s.get("status", "")).strip().upper() == "SUPERSEDED":
+            cands[d] = {"node_id": s.get("node_id") or "PENDING", "reason": "本地登记表标 SUPERSEDED"}
+    # ② 线上保护清单里 status=SUPERSEDED 的（**所有 agent 共用** ⇒ 这里才是权威）
+    for d, s in prot.items():
+        if str(s.get("status", "")).strip().upper() != "SUPERSEDED":
+            continue
+        if s.get("frozen"):
+            continue
+        if d == cur or d == fb:
+            continue
+        cands.setdefault(d, {"node_id": "PENDING", "reason": "保护清单标 SUPERSEDED"})
+
+    # 🔴 排除现役 / 兜底 / 已死的
+    alive = []
+    for d in sorted(cands):
+        if d == cur:
+            log("   ⛔ %s 是**现役站** ⇒ 不导出" % d)
+            continue
+        if d == fb:
+            log("   ⛔ %s 是**兜底站** ⇒ 不导出" % d)
+            continue
+        code = http_code(site_url(d))
+        if code != 200:
+            log("   ✅ %s 已经死了（HTTP %s）⇒ 不用删，标 DELETED 即可" % (d, code))
+            continue
+        alive.append(d)
+
+    if not alive:
+        log("✅ 没有需要清理的站（待删清单保持原样）")
+        return 0
+
+    # ③ 拉线上 pending-deletes.json 当**基底**（别人也在改它 ⇒ 别整份覆盖）
+    base = http_json(PENDING_URL) or {"sites": []}
+    sites = {s.get("domain"): s for s in (base.get("sites") or []) if s.get("domain")}
+    for d in alive:
+        info = cands[d]
+        node = info.get("node_id")
+        if node in (None, "", "PENDING"):
+            nid = node_id_from_site(d)
+            node = nid or "PENDING"
+        sites[d] = {
+            "domain": d,
+            "node_id": node,
+            "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）",
+        }
+    out = {
+        "sites": [sites[k] for k in sorted(sites)],
+        "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。",
+    }
+    tmp = "/workspace/pending-deletes.json"   # 对应仓库根的 pending-deletes.json
+    os.makedirs(os.path.dirname(tmp), exist_ok=True)
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=2)
+    log("   待删清单已写：%s（%d 条：%s）" % (tmp, len(out["sites"]), ", ".join(alive)))
+
+    # ④ 推共享仓库（一次提交 = 一次 Pages build）⇒ 清理 cron 才看得到
+    push = os.path.join(ROOT, "scripts", "push_many.py")
+    if not os.path.isfile(push):
+        log("❌ 找不到 %s ⇒ 清单没交出去（清理 cron 看不到）" % push)
+        return 1
+    r = subprocess.run([sys.executable, push, "pending-deletes.json",
+                        "--message", "chore: 待删站清单（NHK 发版后自动登记，清理 cron 20:00 删）"],
+                       cwd="/workspace", capture_output=True, text=True)
+    tail = (r.stdout or "")[-400:] + (r.stderr or "")[-400:]
+    log("   推送结果：\n%s" % tail.strip())
+    if r.returncode != 0:
+        log("❌ 推送失败 ⇒ 清单没交出去（清理 cron 看不到）")
+        return 1
+    log("✅ 待删清单已交到共享仓库 ⇒ 清理 cron（20:00）会捡起来删")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -563,6 +662,7 @@ def main():
     p.add_argument("--node", required=True)
     p.add_argument("--domain", required=True)
     p.add_argument("--ver", required=True)
+    sub.add_parser("export-pending")
     sub.add_parser("plan")
     sub.add_parser("apply")
     sub.add_parser("verify")
@@ -576,7 +676,8 @@ def main():
     a = ap.parse_args()
     return {"register": lambda: register(a), "plan": lambda: plan()[0] and 0 or 0,
             "apply": apply, "verify": verify, "check": check,
-            "discover": discover, "mark": lambda: mark(a)}[a.cmd]()
+            "discover": discover, "mark": lambda: mark(a),
+            "export-pending": lambda: export_pending(a)}[a.cmd]()
 
 
 if __name__ == "__main__":
