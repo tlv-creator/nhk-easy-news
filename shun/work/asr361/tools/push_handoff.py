@@ -64,6 +64,11 @@ def local_files():
     for fn in sorted(os.listdir(dd)):
         if re.match(r'^s\d+(\.pred)?\.json$', fn):
             out["shun-web/data/%s" % fn] = os.path.join(dd, fn)
+    # 🔴 ruby.py 第 19 行按名字找 word_reading.json ⇒ 必须放在 shun/tools/ 旁边才生效
+    #    （仓库里从来没有过这个文件 ⇒ 已发布 13 集与新跑的粒度不一致 = 数据漂移）
+    wr = os.path.join(SRC, 'word_reading.json')
+    if os.path.isfile(wr):
+        out["shun/tools/word_reading.json"] = wr
     return out
 
 
