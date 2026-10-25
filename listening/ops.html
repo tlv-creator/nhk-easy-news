@@ -109,7 +109,7 @@
   var B = 'https://lszwxcmvcvbraqtrtgon.supabase.co/rest/v1/';
   var el = document.getElementById('prog');
   if (!el) return;
-  var FALLBACK = '没联上库，下面是 2026-10-25 19:55 的快照：已补交 <b>67 条 / 37 位同学</b>；名册 157 人里，还有 <b>120</b> 位同学一条都没交。';
+  var FALLBACK = '没联上库，下面是 2026-10-25 20:57 的快照：已补交 <b>71 条 / 40 位同学</b>；名册 157 人里，还有 <b>117</b> 位同学一条都没交。';
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function stamp() {
     var d = new Date();
@@ -145,9 +145,14 @@
     var days = Object.keys(byDay).sort(), parts = [], p;
     for (p = 0; p < days.length; p++) parts.push(days[p].slice(5) + ' ' + byDay[days[p]] + ' 条');
     var nSub = Object.keys(ids).length;
+    /* 🔴 护栏：PostgREST 单次请求最多返回 1000 行（max-rows）
+       ⇒ 一旦正好取到 1000 行，说明**可能被截断** ⇒ 数字不能当准数用，必须说出来 */
+    var capWarn = (logs.length >= 1000)
+      ? '　<b>⚠️ 本次取数正好达到单次上限（1000 行），下面的数字可能不完整 —— 请让我重新取全量。</b>'
+      : '';
     el.innerHTML = '截至 <b>' + stamp() + '</b>（现查库）：已补交 <b>' + logs.length + ' 条 / ' +
       nSub + ' 位同学</b>（' + parts.join('、') + '）；名册 ' + roster.length + ' 人里，还有 <b>' +
-      left + '</b> 位同学一条都没交。';
+      left + '</b> 位同学一条都没交。' + capWarn;
   }).catch(function () {
     el.innerHTML = FALLBACK;
   });
