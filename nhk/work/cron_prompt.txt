@@ -1,0 +1,51 @@
+【NHK やさしいことばニュース · 每日自動更新】工作目录 /workspace/nhk
+
+🔴 **本 prompt 不含任何配方/流程细节**（细节写在 prompt 里会陈旧；prompt 陈旧过一次害过「64k 削波」和「PLACEHOLDER 廢包」）。
+
+⇒ **開工第一步：讀 /workspace/nhk/手册.md，然後照 §7「更新一次的完整流程」走。**
+⇒ **若本 prompt 與手冊衝突，一律以手冊為準。**
+⇒ 🔴 **手冊 §6.6b / §6.9 是新坑**（build.sh 自我修改、build 覆蓋待上線產物、部署順序、抓音張冠李戴）—— 別跳過。
+⇒ 🔴 **手冊 §29 是 2026-10-25 新加的發版閘門**（站點配額 / 緩存版本同號 / 平台注入）—— 別跳過。
+
+## 第 0 步：清理重複的 NHK 任務（必做，但只删 NHK 自己的）
+
+🔴 **只删「NHK 每日更新」這一類的重複任務；別的項目的定時任務一律不許碰**（特別是「Shun 日中精讀 · 周更」= 另一個項目的 cron，必須保留）。
+- **保留判據 = cron_name 含「NHK 每日更新」且 task_id 不是本任務自己**（不是 updated_at 最新）。
+- cron_read view=list → 逐個 cron_delete 符合條件的重複任務（task_id 傳字符串）。**絕對不要刪除 task_id 不是本任務自己的任務**。
+- cron_delete 偶發報「task_id: Expected string」是它自己的 bug ⇒ **重試**（最多 5 次），**不要新建替代任務**（cron_create 建替代 = 每天跑兩次 = 雙部署 + 配額翻倍）。
+
+## 第 1 步 起：照手冊 §7 走（不要自創步驟）
+
+骨架（細節/參數/門檻全在手冊）：
+
+1. 自愈 `bash setup_env.sh` → 2. `python3 update.py --all` → 3. 翻譯**必須派 subagent**（手冊 §4）→ 4. `python3 update.py --build`
+5. 🔴 **打包+stage（只有原生層代碼改了才打包）**：`cd apk && bash build.sh` ⇒ `bash apk/stage_apk.sh`
+   🔴 **SITE_URL 必須留空**（取凍結兜底站）；**絕對不傳 PLACEHOLDER 或當前內容站**（閘門會 exit 1）
+   🔴 **stage 必須在部署之前**（否則新 APK 沒進這次部署）
+6. 🔴🔴 **部署 = 先走零配額路徑，再按需發 mcode 站**（2026-10-25 新增，見手冊 §31）
+   ⇒ **第一步永遠是**：`bash work/deploy_nhk.sh pages`
+      - exit 0  ⇒ **Pages 已更新，音頻沒到閾值 ⇒ 今天 0 配額佔用 ⇒ 部署環節結束**（跳過 prepare/website_deploy/finish）
+      - exit 10 ⇒ 音頻攢夠了 ⇒ 繼續下面的完整部署（prepare → website_deploy → finish）
+      - 其他 rc ⇒ **報錯停下**，不許當成「不用發」
+   🔴 **為什麼這樣**：website_deploy **每次都新建站點節點** ⇒ 發一版 = 佔 1 個配額位（上限 50）
+      ⇒ 舊流程「每天發一次」= 每天 +1 個位 ⇒ **10 周必然撞 ENTITLEMENT_LIMIT_EXCEEDED**（2026-10-25 已經撞過一次）
+      ⇒ 現在：**內容走 GitHub Pages（同一個倉庫 = 同一個站點 = 零配額、地址永變）**，**音頻才留 mcode 並攢批次發**
+   ⇒ 完整部署（只有 exit 10 時才做）：`bash work/deploy_nhk.sh prepare` ⇒ **website_deploy 工具**部署 deploy_site ⇒ `bash work/deploy_nhk.sh finish <新域名> <ver> "<note>" <舊域名>`
+   🔴 **不要手寫部署步驟**（手寫 = 繞過閘門 = 沒有防線）
+   🔴 finish 的第 ⑥ 步會自動同步 GitHub Pages 永久網頁版（https://tlv-creator.github.io/nhk-easy-news/nhk-web/）
+      ⇒ 兩道護欄（源不許比線上舊 / 線上副本能力+版本+期數核對）都在腳本裡；失敗就會停在那裡並報錯
+      ⇒ **改動一律先改 site/app/**（Pages 版是它的投影，不是獨立一份）—— 見手冊 §30
+   🔴 **finish 發完站** ⇒ **立刻刪上一版**（淨增 0）——這是配額不漲的關鍵；刪不動就把命令交給有 drive 權限的會話
+7. 推引導頁（finish 腳本完成）+ 驗 Pages status=built、version.json 的 site 等於新域名
+   🔴 引導頁倉庫只放 version.json + index.html，**絕對不能放憑據**；**絕對不要 DELETE**
+8. 🔴 **容量預警** + 9. 🔴 **清理舊站（每天必做，否則 50 配額撐爆 ⇒ 用戶停在舊站）**
+   🔴 **唯一實現 = `scripts/site_quota_guard.py`**（check / register / plan / apply / verify），四道閘門見手冊 §29.1
+   🔴 **沒有 drive 刪站權限的會話清不了配額**（`session.mode=new` 會話就是）⇒ apply 只會打印命令並落盤
+      `work/pending_site_deletes.txt` ⇒ **必須把命令原樣交給有 drive 權限的會話執行**（別重複部署頂替）
+   🔴 兜底站 vkwwuh9wgkzo0 凍結永刪不得；`drive files search` 的索引不可信，用 curl 判 404
+   🔴 保護名單 https://tlv-creator.github.io/nhk-easy-news/protected-sites.json（發版後用
+      `python3 scripts/refresh_protected_status.py --push` 滾動刷新：現役 → ACTIVE，死站 → DELETED）
+   🔴 **不要為了「去掉平台 token」重新部署**（去不掉，只會白燒一個配額 —— 結論見手冊 §29.3）
+10. **驗收**（全綠才算完，命令見手冊 §7）→ 11. **交付 zip**（APK + 交付說明，只含這兩個；**zip 是主交付物**）→ 12. **報告**（新增期數/翻譯%/新站 URL/引導頁結果/清理結果/測試/新版號/**站點大小與剩餘期數**/**音頻體檢結果**）
+
+**直接做完，不要中途問用戶。** 若這一期沒有新內容，簡短說一句「今天沒有新一期」並確認清理做過即可，不要重複構建部署。
