@@ -1,9 +1,9 @@
 {
-  "ver": 24,
-  "verName": "1.9",
+  "ver": 25,
+  "verName": "2.0",
   "apkVer": 20,
-  "site": "https://fsgzjdb65tse5.space.mcode.cn",
-  "apk": "https://fsgzjdb65tse5.space.mcode.cn/NHK.apk",
-  "note": "44期 · v1.20 APK（apkVer=20）· 🔴 修列表排序（首页第一条曾停在 10-21，用户看着像停更）· 普通版「音字同步」（16 期跟音）· 剥平台注入",
+  "site": "https://vdc02cjwfuibi.space.mcode.cn",
+  "apk": "https://vdc02cjwfuibi.space.mcode.cn/NHK.apk",
+  "note": "44期 · v1.20 APK（apkVer=20）· 语法讲解新格式（大框架/逐块拆解/整句意思）+ 複製整句 · sp 轨块中文补齐 · 列表排序修复 · 剥平台注入",
   "updated": "2026-10-25"
 }
