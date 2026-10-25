@@ -28,6 +28,6 @@ window.CFG.AI_TITLE = 'NHKやさしいことばニュース';
  *      音频放 mcode 源站（60MB 音频塞不进 GitHub）
  *  · 本文件会公开 ⇒ 这里只能放公开可读的东西。 */
 window.CFG.MEDIA_BASE = [
-  'https://em8hjp6jskxyb.space.mcode.cn/',
+  'https://204ocuv36su6w.space.mcode.cn/',
   'https://vkwwuh9wgkzo0.space.mcode.cn/'
 ];
