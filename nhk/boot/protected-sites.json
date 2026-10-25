@@ -1,0 +1,841 @@
+{
+  "_readme": "🔴🔴 云盘站点「不可删除」清单（2026-10-23 起生效）",
+  "_why": "mcode 每次部署都换随机域名，站点很容易在清理时被误删。但有些站是**别的 APK 编译进去的兜底依赖**，删了用户的 App 就会白屏。本清单是所有 agent 清理站点前必须查的。",
+  "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删。🔴 **frozen:true = 这个站永不 redeploy** —— redeploy 会换随机域名，而 APK / cdn 表 / 引导页里已经写死了它 ⇒ 域名一换，用户的 App 就白屏或没声音。⇒ **要更新它的内容，只能新建一个站 + 改所有引用方 + 改完再删旧的**。",
+  "_owner": "NHK / hub / Shun 等各项目 agent 共用",
+  "updated": "2026-10-25",
+  "protected_sites": [
+    {
+      "domain": "vkwwuh9wgkzo0",
+      "project": "nhk",
+      "reason": "NHK App 的**兜底站**（编译进 classes.dex）—— 引导页读不到时 App 就落它",
+      "written_in": "NHK APK classes.dex（Config.SITE_URL）",
+      "frozen": true,
+      "note": "🔴 域名冻结：这个站**永不 redeploy**（redeploy 会换域名 → APK 里的写死值就死了）。它的内容会旧，但只在主引导页挂时用。"
+    },
+    {
+      "domain": "9chr6us9mlatt",
+      "project": "nhk",
+      "reason": "曾是 NHK App 的兜底站 —— **已于 2026-10-23 被误删（404）**",
+      "status": "DELETED",
+      "note": "教训来源：它同时出现在测试 fixture 和真实 APK 的 dex 里，清理者只看到「测试里的假域名」→ 误判成可删。"
+    },
+    {
+      "domain": "d7x7onv4ip0y8",
+      "project": "dora",
+      "reason": "哆啦A梦2002 · 日中对照精读 v1.3（独立站）—— dora 项目已下线",
+      "note": "🔴 2026-10-25 用户决定「哆啦这个不要了」⇒ 项目下线，站已删除。（此站是 dora 独立 App 的站，手机上若还装着旧版 App，它会失效。）",
+      "status": "DELETED"
+    },
+    {
+      "domain": "awcv20k80ydfb",
+      "project": "ama",
+      "reason": "やさしい日本語**独立版**的站 —— 用户手机里的 App 可能还在用它",
+      "note": "不是 hub 的子站，是独立交付物"
+    },
+    {
+      "domain": "da4lxn2phccck",
+      "project": "shun",
+      "reason": "Shun **旧**音频源站（v2，只有 12 集）—— 仍写死在已发布 APK 里当兜底 ⇒ 永删不得",
+      "note": "🔴 2026-10-24：引导页的 audio 字段改指 qtjgfga76bu4o（v3，13 集全齐）。本域名仍写死在**旧版 APK**（v1.2.2 及更早）的 assets/app.js 里 ⇒ 那些用户的 App 断网时靠它 ⇒ **永删不得**。⚠️ 本站**没有 ep13**（2026-10-23 发 Ep278 时漏传）⇒ 只作**兜底**用（ep01~ep12）⇒ 已登记 missing_eps。",
+      "role": "audio-source",
+      "frozen": true,
+      "missing_eps": "[\"ep13\"]"
+    },
+    {
+      "domain": "lnh1i27d4m3vn",
+      "project": "(merged from keep-list)",
+      "reason": "🔴 多読絵本 Tadoku 的旧正式站 —— **已误删**，已重建为 x7b1kbbaa0kh0。**旧地址不要再当正式站引用**",
+      "written_in": "keep-list.json（已合并）",
+      "status": "DELETED"
+    },
+    {
+      "domain": "x7b1kbbaa0kh0",
+      "project": "(merged from keep-list)",
+      "reason": "⚠️ 多読絵本 Tadoku **旧 8 本版**站（2026-10-25 已被 55 本版取代）。留着不删（用户可能有旧书签），但**不再是指南页指向的站**。",
+      "written_in": "keep-list.json（已合并）",
+      "status": "SUPERSEDED",
+      "replaced_by": "0rbbjfw36hj66",
+      "note": "🔴 2026-10-25 补 frozen=true：清单 reason 里写「留着不删」是**给人看的**，删站 cron 只读 status/frozen ⇒ 光写 reason 拦不住它。⇒ 保护必须落成机器读得懂的字段。  | 旧 8 本版站：用户可能有旧书签。",
+      "frozen": true
+    },
+    {
+      "domain": "xwi3hf93nlt4p",
+      "project": "(merged from keep-list)",
+      "reason": "✅ 部署包站（hub 引导页指着它：ai-proxy-code.zip / ai-proxy-rollback.zip）",
+      "written_in": "keep-list.json（已合并）",
+      "frozen": true,
+      "status": "alive",
+      "note": "🔴 域名冻结：**永不 redeploy**（引导页指着它 ⇒ 换域名 = 死链）。要发新版本就**新建站 + 改引导页 + 再删旧的**。"
+    },
+    {
+      "domain": "8mbic178h1f8s",
+      "project": "(merged from keep-list)",
+      "reason": "hub v1.15 的站 —— **已被 v1.16（qk9rwmigiydy4）取代并删除**",
+      "written_in": "keep-list.json（已合并）",
+      "status": "DELETED",
+      "note": "🔴 引导页现在指向 `qk9rwmigiydy4`（v1.16）。这个旧地址不要再当现役站引用。"
+    },
+    {
+      "domain": "9qcq9q73zm4ql",
+      "project": "(merged from keep-list)",
+      "reason": "✅ hub v1.6 —— **留作最保险的回退**（签名没变，出事可覆盖装回去）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "w2jcdkvrprc4d",
+      "project": "(merged from keep-list)",
+      "reason": "✅ NHK やさしいことばニュース v1.23",
+      "written_in": "keep-list.json（已合并）",
+      "status": "SUPERSEDED",
+      "note": "2026-10-24 已被 blb9mns852mft 取代 ⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）"
+    },
+    {
+      "domain": "d6yolwjruhqm2",
+      "project": "(merged from keep-list)",
+      "reason": "曾是 Shun v1.2 的现役内容站（引导页当时指着它）",
+      "written_in": "keep-list.json（已合并）",
+      "note": "🔴 2026-10-23 被 v1.2.1 取代后删除。**教训**：内容站每次发版都换域名 ⇒ 清单里的「现役内容站」条目**每发一版就得更新**，否则会变成一条**指向死站的记录**（比没有还糟 —— 清理的人会以为它活着）。解析命令见 _how_to_resolve.shun。",
+      "status": "DELETED"
+    },
+    {
+      "domain": "zyksozpp1p7i0",
+      "project": "(merged from keep-list)",
+      "reason": "⚠️ 多読絵本 **旧音频 CDN**（2026-10-25 已被新音频源站取代）。",
+      "written_in": "keep-list.json（已合并）",
+      "status": "SUPERSEDED",
+      "replaced_by": "qgozaeqvjc9l9",
+      "note": "🔴 2026-10-25 补 frozen=true：清单 reason 里写「留着不删」是**给人看的**，删站 cron 只读 status/frozen ⇒ 光写 reason 拦不住它。⇒ 保护必须落成机器读得懂的字段。  | 旧音频 CDN：hub v1.6 的 links.js 仍引用 3 处。",
+      "frozen": true
+    },
+    {
+      "domain": "9kgu879p4dhy2",
+      "project": "dora",
+      "reason": "ドラえもん2002 音声ソース（hub v1.6 曾引用；dora 项目已下线 ⇒ 一并下线）",
+      "written_in": "keep-list.json（已合并）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 用户决定「哆啦这个不要了」⇒ 项目下线，站已删除。（此站是 dora 独立 App 的站，手机上若还装着旧版 App，它会失效。）"
+    },
+    {
+      "domain": "3vpcud2aabhor",
+      "project": "(merged from keep-list)",
+      "reason": "✅ 小马宝莉 音频站（hub 的 pony 用它）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "ftu81k0abzbpn",
+      "project": "(merged from keep-list)",
+      "reason": "✅ APK 工具 v8.5",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "wcdo5rd2b9n8t",
+      "project": "(merged from keep-list)",
+      "reason": "✅ 墨水屏描边闸门 v4.4",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "dcjk8zanl3e4r",
+      "project": "(merged from keep-list)",
+      "reason": "✅ AI 讲解客户端 v1.6（对拍基准）",
+      "written_in": "keep-list.json（已合并）"
+    },
+    {
+      "domain": "f3rpiqeouy6c0",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A1（1-14话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 1-14 话没声音"
+    },
+    {
+      "domain": "5wxizdpb9tyq8",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A2（15-28话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 15-28 话没声音"
+    },
+    {
+      "domain": "bjyzdgmd6px91",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A3（29-42话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 29-42 话没声音"
+    },
+    {
+      "domain": "clqvqp5j1qrqu",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A4（43-56话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 43-56 话没声音"
+    },
+    {
+      "domain": "vi57vb0da33qp",
+      "project": "audio",
+      "reason": "魔卡少女樱 日配音频 A5（57-70话）",
+      "written_in": "hub 的 sakura 项目 cdn.js 表",
+      "frozen": true,
+      "note": "🔴 删了 = 魔卡 57-70 话没声音"
+    },
+    {
+      "domain": "4535p9s0wnpzs",
+      "project": "audio",
+      "reason": "若草 音声 节点1（分段）",
+      "written_in": "hub 的 wakakusa 项目 CDN_MAP",
+      "frozen": true,
+      "note": "🔴 删了 = 若草部分集数没声音"
+    },
+    {
+      "domain": "lem5lvwy41rn9",
+      "project": "audio",
+      "reason": "若草 音声 节点2（分段）",
+      "written_in": "hub 的 wakakusa 项目 CDN_MAP",
+      "frozen": true,
+      "note": "🔴 删了 = 若草部分集数没声音"
+    },
+    {
+      "domain": "wn1nwme4cg1hh",
+      "project": "audio",
+      "reason": "若草 音声 节点3（分段）",
+      "written_in": "hub 的 wakakusa 项目 CDN_MAP",
+      "frozen": true,
+      "note": "🔴 删了 = 若草部分集数没声音"
+    },
+    {
+      "domain": "tcw0ti0k7p0hd",
+      "project": "ama",
+      "reason": "あま（アニメあぱん）日配音频站 —— hub 的 ama 项目音频全靠它",
+      "written_in": "hub 的 web/ama/app.js（AMA_AUDIO_BASE_DEFAULT）+ web/hub-shim.js（AMA_BASE / BUILTIN.ama.root）+ web/links.js",
+      "frozen": true,
+      "status": "alive",
+      "note": "🔴 域名冻结：这个站**永不 redeploy**（redeploy = 换域名 = 用户的 App 静音）。删了 = あま 全 12 集没声音。"
+    },
+    {
+      "domain": "hoibadfkj8ena",
+      "project": "nhk",
+      "reason": "现役内容站（引导页当前指向）",
+      "written_in": "引导页 site 字段",
+      "note": "已删（curl 判 404，2026-10-25 核过）⇒ 不可删也不必再保护",
+      "status": "DELETED"
+    },
+    {
+      "domain": "irk7ibwekq8se",
+      "project": "listening（每日听力记录）",
+      "reason": "每日听力记录的**国内加速镜像** —— 🔴 **清站前必查：删了 = 老师/学生手里的链接当场死**（同一个域名已经因为被清站扫掉而消失过一次）",
+      "written_in": "仓库 listening/version.json 的 mirror 字段",
+      "frozen": true,
+      "note": "🟢 canonical（**学生真正用的**）= https://tlv-creator.github.io/nhk-easy-news/listening/（GitHub Pages，永久）。🔴 2026-10-24：旧镜像的 js **不带行令牌** ⇒ 老师跑完收尾 SQL 后，**走旧镜像的学生就删不了自己的记录** ⇒ 已换成新镜像 xqrp2rqkvxqwf。🟢 本域**保留不删**（frozen）：老师/学生手里可能存着这个链接，删了当场死；内容已旧，只作保底。⇒ 新的加速地址见 xqrp2rqkvxqwf 条目。",
+      "role": "mirror",
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/listening/",
+      "action_if_rebuilt": "python3 tools/update_listen_mirror.py <新域名>",
+      "status": "SUPERSEDED",
+      "replaced_by": "xqrp2rqkvxqwf"
+    },
+    {
+      "domain": "xqrp2rqkvxqwf",
+      "project": "listening（每日听力记录）",
+      "reason": "每日听力记录的**国内加速镜像（现行）** —— 2026-10-24 从 irk7ibwekq8se 换过来（旧的 js 不带行令牌 ⇒ 收尾 SQL 后删不了自己的记录）",
+      "written_in": "仓库 listening/version.json + listening/app/version.json 的 mirror 字段、listening/index.html 的「国内加速通道」链接",
+      "frozen": true,
+      "role": "mirror",
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/listening/",
+      "replaces": "irk7ibwekq8se",
+      "note": "🟡 2026-10-24 换新镜像（ul366v9i8nx0s）：这一版是 **sha256 令牌改造之前**的前端 ⇒ 老师跑完收尾 SQL 后，走这一版的学生**删不了自己的记录**（政策比对 sha256，前端发的是明文令牌）。🟢 **保留不删**（frozen）：老师/学生手里可能存着这个链接，删了当场死；内容已旧，只作保底。",
+      "status": "SUPERSEDED",
+      "replaced_by": "ul366v9i8nx0s"
+    },
+    {
+      "domain": "ul366v9i8nx0s",
+      "project": "listening（每日听力记录）",
+      "reason": "每日听力记录的**国内加速镜像（现行 · sha256 令牌版）** —— 2026-10-24 从 xqrp2rqkvxqwf 换过来（那一版的前端是令牌改造前的）",
+      "written_in": "仓库 listening/version.json + listening/app/version.json 的 mirror 字段、listening/index.html 的「国内加速通道」链接",
+      "frozen": true,
+      "role": "mirror",
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/listening/",
+      "replaces": "xqrp2rqkvxqwf",
+      "note": "🔴 frozen=true = 永不删 + 永不 redeploy（域名一换，存过链接的人当场死）。要更新内容：先 `python3 tools/update_listen_mirror.py <新域名>` 改引用，再部署新站。"
+    },
+    {
+      "domain": "rqud34vh5k65y",
+      "project": "shun",
+      "reason": "Shun v1.2.1 现役内容站（引导页 shun.json 与 shun.html 都指着它）",
+      "role": "content",
+      "note": "🔴 2026-10-23 发 Ep278 之前就已经 404 了（不是本次误删）",
+      "status": "DELETED"
+    },
+    {
+      "domain": "qk9rwmigiydy4",
+      "project": "hub",
+      "role": "content",
+      "reason": "✅ **hub v1.16 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
+      "written_in": "hub.html 的 SITE 块",
+      "frozen": false,
+      "status": "DELETED",
+      "note": "🔴 域名冻结：**永不 redeploy**（redeploy = 换域名 = 引导页死链）。发新版要「新建站 + 改引导页 + 再删旧的」。上一版 8mbic178h1f8s（v1.15）暂留（peer 还在拿它做参考）。 【2026-10-23 已删除】"
+    },
+    {
+      "domain": "iujsgx3ci73dp",
+      "project": "词汇学习站 Unit1+2+3（正式版 v3）",
+      "role": "student-facing-site",
+      "reason": "🔴 **老师的单词记录站（正式版 v3）** —— 学生每天在上面记录单词。域名已经写进**发给学生/贴在班群里的链接** ⇒ 删了 = 老师和 157 名学生手里的链接当场死。",
+      "written_in": "老师发出去的链接 + 云盘站名「词汇学习站 Unit1+2+3（正式版 v3）」",
+      "frozen": true,
+      "note": "🔴🔴 老师 2026-10-25 硬指令：学生相关的资料网站绝对不要动（词汇/听力）⇒ frozen=true = 永不删 + 永不 redeploy；站是壳、数据在 Supabase",
+      "current_as_of": "2026-10-23",
+      "student_entry": "https://tlv-creator.github.io/nhk-easy-news/vocab/"
+    },
+    {
+      "domain": "zp67qm11jonui",
+      "project": "词汇学习站 VocabLog（正式版·零凭据）",
+      "role": "student-facing-site",
+      "reason": "🔴 **老师的单词记录站（VocabLog 正式版·零凭据）** —— 与 iujsgx3ci73dp 同属英语线词汇站，同样是学生天天用的正式站。",
+      "written_in": "云盘站名「词汇学习站 VocabLog（正式版·零凭据）」",
+      "frozen": true,
+      "note": "🔴🔴 老师 2026-10-25 硬指令：学生相关的资料网站绝对不要动（词汇/听力）⇒ frozen=true = 永不删 + 永不 redeploy；站是壳、数据在 Supabase",
+      "current_as_of": "2026-10-23",
+      "student_entry": "https://tlv-creator.github.io/nhk-easy-news/vocab/"
+    },
+    {
+      "domain": "px5o34nxmlw12",
+      "project": "词汇站 Unit2+3（无自动记录）",
+      "status": "DELETED",
+      "reason": "🔴 **已删除的旧版词汇站 mcode 镜像** —— 2026-10-21 部署 → 被 vxsl7bgijgdhr 取代 → 已删。",
+      "note": "⚠️ **旧域勿再引用**（会 404）。已被 **vxsl7bgijgdhr** 取代。🔴 **学生真正用的入口不是 mcode 域** —— 是老师自己 CloudBase 上那条固定网址（老师自己传文件更新，网址永不变）⇒ 删/旧化 mcode 镜像**不打断任何学生的链接**。",
+      "replaced_by": "vxsl7bgijgdhr"
+    },
+    {
+      "domain": "vxsl7bgijgdhr",
+      "project": "词汇站 Unit2+3（加了平时练习自动记录）",
+      "status": "DELETED",
+      "reason": "🔴 **已删除的旧版词汇站 mcode 镜像** —— 2026-10-21 部署 → 被 h9dmeuax02tfp 取代 → 已删。",
+      "note": "⚠️ **旧域勿再引用**（会 404）。已被 **h9dmeuax02tfp** 取代。🔴 **学生真正用的入口不是 mcode 域** —— 是老师自己 CloudBase 上那条固定网址（老师自己传文件更新，网址永不变）⇒ 删/旧化 mcode 镜像**不打断任何学生的链接**。",
+      "replaced_by": "h9dmeuax02tfp"
+    },
+    {
+      "domain": "h9dmeuax02tfp",
+      "project": "词汇站 Unit1+2+3 v1（汇总人数未去重）",
+      "status": "DELETED",
+      "reason": "🔴 **已删除的旧版词汇站 mcode 镜像** —— 2026-10-21 部署 → 被 24g05vsqp9dh6 取代 → 已删。",
+      "note": "⚠️ **旧域勿再引用**（会 404）。已被 **24g05vsqp9dh6** 取代。🔴 **学生真正用的入口不是 mcode 域** —— 是老师自己 CloudBase 上那条固定网址（老师自己传文件更新，网址永不变）⇒ 删/旧化 mcode 镜像**不打断任何学生的链接**。",
+      "replaced_by": "24g05vsqp9dh6"
+    },
+    {
+      "domain": "24g05vsqp9dh6",
+      "project": "词汇站 Unit1+2+3 v2（汇总人数去重）",
+      "status": "DELETED",
+      "reason": "🔴 **已删除的旧版词汇站 mcode 镜像** —— 2026-10-23 部署 → 被 iujsgx3ci73dp 取代 → 已删。",
+      "note": "⚠️ **旧域勿再引用**（会 404）。已被 **iujsgx3ci73dp** 取代。🔴 **学生真正用的入口不是 mcode 域** —— 是老师自己 CloudBase 上那条固定网址（老师自己传文件更新，网址永不变）⇒ 删/旧化 mcode 镜像**不打断任何学生的链接**。",
+      "replaced_by": "iujsgx3ci73dp"
+    },
+    {
+      "domain": "stthubiu1kqj7",
+      "project": "hub",
+      "role": "content",
+      "reason": "✅ **hub v1.17 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
+      "written_in": "hub.html 的 SITE 块",
+      "frozen": false,
+      "status": "DELETED",
+      "note": "🔴 域名冻结：**永不 redeploy**（redeploy = 换域名 = 引导页死链）。发新版要「新建站 + 改引导页 + 再删旧的」。 【已删除】"
+    },
+    {
+      "domain": "bo8u69hdw58t4",
+      "project": "shun",
+      "reason": "Shun 内容站 v1.2.2（含 APK + 字幕/词库数据）",
+      "note": "🔴 2026-10-23 发 Ep278 后被 2aixd037sd8fk 取代（原 v1.2.2 站）—— **站还活着，沙箱里没有删站工具，待人工删**",
+      "status": "SUPERSEDED"
+    },
+    {
+      "domain": "tdbdoe02nfrz9",
+      "project": "nhk",
+      "status": "DELETED",
+      "reason": "NHK 内容站 v1.25（已被 4r0zazix2auz0 取代）",
+      "note": "2026-10-23 已删（curl 404 验过）"
+    },
+    {
+      "domain": "4r0zazix2auz0",
+      "project": "nhk",
+      "reason": "NHK 内容站 v1.26（字幕同步修好 + 原速音 96k 无削波 + 坏帧音频已修）",
+      "note": "2026-10-23 已被 v1.26 取代并删除（curl 404 验过）；现役内容站以引导页 version.json 的 site 字段为准",
+      "frozen": false,
+      "status": "DELETED"
+    },
+    {
+      "domain": "sn61770y6nxvr",
+      "project": "nhk",
+      "reason": "NHK 内容站 v1.27（17 期坏帧已修 + 音频四维体检全过 0 削平 0 过冲 + 字幕同步修好）",
+      "note": "已删（curl 判 404，2026-10-25 核过）⇒ 不可删也不必再保护",
+      "frozen": false,
+      "status": "DELETED"
+    },
+    {
+      "domain": "2aixd037sd8fk",
+      "project": "shun",
+      "reason": "曾是 Shun v1.2.2/v1.3.0 的现役内容站",
+      "note": "🔴 2026-10-24 被 h28zxss2zpgag 取代后**已删除并验到 404**。",
+      "status": "DELETED"
+    },
+    {
+      "domain": "w94oj2uij89x0",
+      "project": "shun",
+      "reason": "🔴 2026-10-23 发 Ep278 时的中间站（没有 APK），已被 2aixd037sd8fk 取代；**待删**",
+      "status": "SUPERSEDED",
+      "note": "🔴 2026-10-23 发 Ep278 时的中间站（没有 APK）—— **站还活着，待人工删**"
+    },
+    {
+      "domain": "8k5kf3z052jyp",
+      "project": "shun",
+      "reason": "🔴 2026-10-23 发 Ep278 时的中间站（译文有误），已被 2aixd037sd8fk 取代；**待删**",
+      "status": "SUPERSEDED",
+      "note": "🔴 2026-10-23 发 Ep278 时的中间站（译文有误）—— **站还活着，待人工删**"
+    },
+    {
+      "domain": "m3qv0xis7x0yq",
+      "project": "shun",
+      "reason": "🔴 2026-10-23 发 Ep278 时的中间站（数据没刷新），已被 2aixd037sd8fk 取代；**待删**",
+      "status": "SUPERSEDED",
+      "note": "🔴 2026-10-23 发 Ep278 时的中间站（数据没刷新）—— **站还活着，待人工删**"
+    },
+    {
+      "domain": "crafpejxghpyk",
+      "project": "scenes（日常场景会话）",
+      "reason": "v1.1 站（2026-10-24 已删除，curl 验 404）",
+      "status": "DELETED",
+      "frozen": false,
+      "role": "content_site",
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/scenes.html",
+      "note": "🔴 2026-10-24 已删站（删前扫过五层引用：代码 / 7 个永久页 / APK dex+assets / 全工作区 grep / 其它会话引用）。现役站 3pqlt9tq6lrij。"
+    },
+    {
+      "domain": "n7f88eaaksyjt",
+      "project": "scenes（日常场景会话）",
+      "reason": "v1.0 站（2026-10-24 已删除，curl 验 404）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-24 已删站（删前扫过五层引用：代码 / 7 个永久页 / APK dex+assets / 全工作区 grep / 其它会话引用）。现役站 3pqlt9tq6lrij。",
+      "frozen": false
+    },
+    {
+      "domain": "ygzfk81m89v09",
+      "project": "hub",
+      "role": "content",
+      "reason": "✅ **hub v1.18 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
+      "written_in": "hub.html 的 SITE 块",
+      "frozen": false,
+      "status": "DELETED",
+      "note": "🔴 域名冻结：**永不 redeploy**（redeploy = 换域名 = 引导页死链）。发新版要「新建站 + 改引导页 + 再删旧的」。 【已删除】"
+    },
+    {
+      "domain": "y8arnrff8t2hj",
+      "project": "cet4",
+      "role": "student-facing-site",
+      "reason": "四级精读日报（学生端+老师端）—— 2026-10-25 用户指令「四级日报这个去掉。暂时用不着」⇒ 站已下线",
+      "written_in": "GitHub Pages 引导页 cet4.html（已改成「暂时停用」说明页）",
+      "frozen": false,
+      "note": "🔴 2026-10-25 用户说「暂时用不着」⇒ 站已删除 + cet4.html 改成停用说明页（不删文件 ⇒ 收藏这个地址的人点进来不 404）。🟢 内容一条没删：10 期（2026-10-24~2026-11-02）仍在 Supabase 的 __cet4_day_* 键里 ⇒ 要恢复 = 重发一次站 + 把 cet4.html 指回新域名。⚠️ 每日 06:30 的自动更新任务（cron 455686983762311）当时因平台工具故障没能停掉，恢复/停用都要先看它的状态。",
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "0een4722dqi6v",
+      "project": "nhk",
+      "status": "DELETED",
+      "reason": "NHK 上一版内容站（引导页已切到 2pybu8mvjo0iu）",
+      "note": "已删（curl 判 404，2026-10-25 核过）⇒ 不可删也不必再保护",
+      "frozen": false,
+      "deleted_at": "2026-10-24"
+    },
+    {
+      "domain": "2pybu8mvjo0iu",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "NHK v1.22 上线后被取代（阶段 A 的 44 期站）· 2026-10-24 已删",
+      "frozen": false,
+      "status": "DELETED"
+    },
+    {
+      "domain": "vadhlp76u4vr7",
+      "project": "scenes（日常场景会话）v1.2",
+      "reason": "v1.2 中间站（2026-10-24 已删除，curl 验 404）",
+      "status": "DELETED",
+      "frozen": false,
+      "role": "content_site",
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/scenes.html",
+      "note": "🔴 2026-10-24 已删站（删前扫过五层引用：代码 / 7 个永久页 / APK dex+assets / 全工作区 grep / 其它会话引用）。现役站 3pqlt9tq6lrij。"
+    },
+    {
+      "domain": "3pqlt9tq6lrij",
+      "project": "scenes（日常场景会话）v1.2",
+      "reason": "🔴 本项目**现役站**（v1.2：语法拆解重做 + 换 App 入口）；永久引导页 scenes.html 指着它 ⇒ 永不删、永不 redeploy",
+      "status": "alive",
+      "frozen": true,
+      "role": "content_site",
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/scenes.html",
+      "note": "🔴 2026-10-24 v1.2；站 https://3pqlt9tq6lrij.space.mcode.cn ；含 jpstudy-apk.zip（md5 d4b5cf2967ca1db0174e6f6aceffb676）"
+    },
+    {
+      "domain": "crb86rfrc9lmk",
+      "project": "hub",
+      "role": "content",
+      "reason": "✅ **hub v1.19 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
+      "written_in": "hub.html 的 SITE 块",
+      "frozen": false,
+      "status": "DELETED",
+      "note": "🔴 域名冻结（redeploy 层面）：**永不 redeploy 这个域**（redeploy = 换域名 = 引导页死链）。【2026-10-24 已删除】v1.19 站被 v1.20 站取代（fz40043h2tzaw）后删除。⚠️ 本条的 frozen=false **不是**「取消保护」：hub 的站 URL 只写在引导页 hub.html 里（已指向新站），不存在「学生/老师手里存着这个链接」的风险 ⇒ 与词汇站/听力站的 frozen=true 语义不同，那两类站**仍按永不删处理**。 【2026-10-25 补记】**tadoku 永久入口页曾指向这个域，现已改为 0rbbjfw36hj66。**",
+      "replaced_by": "fz40043h2tzaw",
+      "deleted_at": "2026-10-24"
+    },
+    {
+      "domain": "fz40043h2tzaw",
+      "project": "hub",
+      "role": "content",
+      "reason": "✅ **hub v1.20 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
+      "written_in": "hub.html 的 SITE 块",
+      "frozen": false,
+      "status": "DELETED",
+      "note": "🔴 域名冻结（redeploy 层面）：**永不 redeploy 这个域**。【2026-10-25 已删除】v1.20 站被 v1.21 站取代（lbvlknqo9bzii）后删除。⚠️ frozen=false **不是**「取消保护」：hub 站的 URL 只写在引导页 hub.html 里（已指向新站），不存在「学生/老师手里存着这个链接」的风险 ⇒ 与词汇站/听力站的 frozen=true 语义不同，那两类仍按永不删处理。",
+      "current_as_of": "2026-10-24",
+      "replaced_by": "lbvlknqo9bzii",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "lbvlknqo9bzii",
+      "project": "hub",
+      "role": "content",
+      "reason": "✅ **hub v1.21 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
+      "written_in": "hub.html 的 SITE 块",
+      "frozen": true,
+      "status": "alive",
+      "note": "🔴 域名冻结：**永不 redeploy**。发新版要「新建站 + 改引导页 + 再删旧的」。v1.21 = 瘦身版（魔卡 + 若草 + 日常会话）+ 去掉重复的「目录」浮钮（原来压住顶栏字号按钮）。",
+      "current_as_of": "2026-10-25"
+    },
+    {
+      "domain": "qtjgfga76bu4o",
+      "project": "shun",
+      "reason": "✅ Shun 现役音频源站 v3（13 集全齐，含 ep13）—— 引导页 shun.json 的 audio 字段指着它",
+      "role": "audio-source",
+      "frozen": true,
+      "note": "🔴 **写死在 Shun APK 的 assets/app.js（AUDIO_BASE_LOCAL）+ 引导页 shun.json 的 audio 字段** ⇒ redeploy 就换域名 ⇒ APK 里的写死值立刻死 ⇒ 永久冻结。内容要更新只能新建站 + 改所有引用方 + 改完再删旧的。删了 = Shun 网页版没声音 + 新集播不了。⚠️ 2026-10-24 起因：旧音频站 da4lxn2phccck **漏传了 ep13** ⇒ Ep278 没声音。"
+    },
+    {
+      "domain": "h28zxss2zpgag",
+      "project": "shun",
+      "reason": "曾是 Shun v1.2.3 的中间内容站（里面的 APK 是 AUDIO_BASE 未修的那版）",
+      "role": "content",
+      "note": "🔴 2026-10-24 被 0a5j2weef699t 取代后**已删除并验到 404**。",
+      "status": "DELETED"
+    },
+    {
+      "domain": "0a5j2weef699t",
+      "project": "shun",
+      "reason": "v1.2.3 的旧内容站，2026-10-24 v1.2.4 上线后取代（内容站地址运行时从引导页 shun.json 读，APK 内不含此域名 ⇒ 删除对用户零影响）",
+      "role": "content",
+      "note": "🔴 内容站每发一版换随机域名 ⇒ 本条目**每发一版就要更新**（否则会变成指向死站的记录，比没有还糟）。APK 下载地址也在本站（shun.apk）；音频在独立音频站 qtjgfga76bu4o（frozen）。",
+      "status": "DELETED",
+      "deleted_at": "2026-10-24"
+    },
+    {
+      "domain": "3be4wt47jrt60",
+      "project": "shun",
+      "frozen": true,
+      "note": "🔴 Shun v1.2.4 内容站（现役，2026-10-24）⇒ 永久引导页 shun.json/shun.html 指向它 ⇒ 永删不得 + 不可 redeploy（redeploy = 换域名 = 老链接全死）。内含 13 集字幕/词库/gs + shun.apk + media/ 13 集音频。"
+    },
+    {
+      "domain": "8hkjjsc53f7pl",
+      "project": "nhk",
+      "reason": "旧 NHK 站（那批无引用的旧站之一）",
+      "status": "DELETED",
+      "deleted_at": "2026-10-24",
+      "note": "2026-10-24 主线会话为腾站点配额删掉（删前五层扫描：代码 / 永久页 / APK dex+assets / 全工作区 grep 均零引用）⇒ 删后 curl 404 ✅ ⇒ 留墓碑，别再当活站。"
+    },
+    {
+      "domain": "yr5vvggmm4j8h",
+      "project": "nhk",
+      "reason": "旧 NHK 站（那批无引用的旧站之一）",
+      "status": "DELETED",
+      "deleted_at": "2026-10-24",
+      "note": "2026-10-24 主线会话为腾站点配额删掉（删前五层扫描：代码 / 永久页 / APK dex+assets / 全工作区 grep 均零引用）⇒ 删后 curl 404 ✅ ⇒ 留墓碑，别再当活站。"
+    },
+    {
+      "domain": "l19g3oybpz9z3",
+      "project": "nhk",
+      "reason": "旧 NHK 站（那批无引用的旧站之一）",
+      "status": "DELETED",
+      "deleted_at": "2026-10-24",
+      "note": "2026-10-24 主线会话为腾站点配额删掉（删前五层扫描：代码 / 永久页 / APK dex+assets / 全工作区 grep 均零引用）⇒ 删后 curl 404 ✅ ⇒ 留墓碑，别再当活站。"
+    },
+    {
+      "domain": "testdom.local",
+      "project": "shun",
+      "reason": "测试",
+      "status": "DELETED",
+      "note": "测试"
+    },
+    {
+      "domain": "blb9mns852mft",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "2026-10-24 已被 aaxnw4wets0kt 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用） · 2026-10-25 已删（主会话用 drive 权限删的）",
+      "frozen": false,
+      "status": "DELETED"
+    },
+    {
+      "domain": "aaxnw4wets0kt",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
+      "frozen": false,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "fsgzjdb65tse5",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
+      "frozen": false,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "vdc02cjwfuibi",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
+      "frozen": false,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "u5kzfuj1hiiht",
+      "project": "nhk",
+      "status": "DELETED",
+      "reason": "NHK 上一版内容站",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
+      "frozen": false,
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "jhtywvkn1vzil",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
+      "frozen": false,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "hpufjp83f9cqp",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
+      "frozen": false,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "ac8e29hqy5sv5",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
+      "frozen": false,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "0rbbjfw36hj66",
+      "project": "多読絵本（日语泛读）55 本版",
+      "role": "content_site",
+      "reason": "🔴 **本项目现役站**（55 本 / 5668 句，中文+逐字注音 100%，34 本有音）；永久引导页 tadoku.html 指着它 ⇒ 永不删、永不 redeploy",
+      "status": "alive",
+      "frozen": true,
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/tadoku.html",
+      "site": "https://0rbbjfw36hj66.space.mcode.cn/",
+      "note": "🔴 域名冻结：**永不 redeploy**（永久入口页指着它 ⇒ 换域名 = 死链）。发新版要「新建站 + 改引导页 + 再删旧的」。站上含 tadoku-apk.zip（1.8MB，签名不变可覆盖装）。",
+      "current_as_of": "2026-10-25"
+    },
+    {
+      "domain": "qgozaeqvjc9l9",
+      "project": "多読絵本（音频源站）",
+      "role": "audio_source",
+      "reason": "🔴 **APK 的音频源站**（APK assets/site.txt 指向它 ⇒ 删了 = App 静音）；站上 media/*.mp3 = 34 本真人朗读",
+      "status": "alive",
+      "frozen": true,
+      "site": "https://qgozaeqvjc9l9.space.mcode.cn/",
+      "note": "🔴 域名冻结：**永不 redeploy、绝不删**。这是 APK 编译进去的写死地址（换域名 = 必须重打 APK）。",
+      "current_as_of": "2026-10-25"
+    },
+    {
+      "domain": "em8hjp6jskxyb",
+      "status": "DELETED",
+      "frozen": false,
+      "deploy_url": "https://em8hjp6jskxyb.space.mcode.cn",
+      "created_at": "2026-10-25",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "2026-10-25 21:57 已由 Mavis 主会话删除（node 456152715096317）⇒ drive 列表回读已不在，NHK 回到「现役 1 + 冻结兜底 1」两个位。⚠️ 删后 curl 仍 200（mcode CDN 滞后）⇒ 判删成功要看 drive 列表，不看 HTTP 码。"
+    },
+    {
+      "domain": "hoglwc3wwd3jm",
+      "project": "texta",
+      "reason": "Text A 精读平台的「当前地址」指路页（给集成方查 URL 用）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "k9wj8ullzur44",
+      "project": "texta",
+      "reason": "Text A 精读 · 教案与样卷 v4",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "jhdnng0v2xmdy",
+      "project": "texta",
+      "reason": "Text A 精读平台（独立站）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "89tcygmpuosvd",
+      "project": "texta",
+      "reason": "quizcheck 跨语种通用出题校验器（Text A 配套工具）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "rkw1x077uih9s",
+      "project": "tadoku",
+      "reason": "日语泛读精读（55 本版的中间版，2026-10-25 10:01 部署）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "vt15310hxrx4e",
+      "project": "tadoku",
+      "reason": "日语泛读精读（55 本版的中间版，2026-10-25 08:32 部署）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "9034kcm83ss2a",
+      "project": "dora",
+      "reason": "哆啦A梦2002 · 音频源站(APK专用) —— 零引用，dora 项目已下线",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 用户决定「哆啦这个不要了」⇒ 项目下线，站已删除。此站曾供**旧版** dora App（v1.2）拉音频；v1.3 独立站自带音频 ⇒ 不受影响。"
+    },
+    {
+      "domain": "listening",
+      "status": "ALIVE",
+      "frozen": true,
+      "role": "student-facing-site",
+      "location": "GitHub Pages 子目录 /nhk-easy-news/listening/（非 mcode 站，不占站点配额）",
+      "note": "🔴 老师硬指令：听力站不要动。canonical 在 GitHub Pages ⇒ 不在站点配额体系内，但清站/清目录流程必须跳过它"
+    },
+    {
+      "domain": "204ocuv36su6w",
+      "project": "nhk",
+      "role": "current_site",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "当前现役内容站（App 引导页 version.json 的 site 指向它）。删站闸门只删 SUPERSEDED/DELETED ⇒ 本条永不删。",
+      "frozen": false,
+      "status": "ACTIVE"
+    }
+  ],
+  "_status_vocab": "🔴 **status 的取值词汇表（2026-10-24 定，三个 agent 一起对过）**：\n   DELETED    = 我们说它**已经删了**    ⇒ **期望它死**   ⇒ 还活着 ⇒ 🔴「清单该更新」\n   SUPERSEDED = 旧站**被新站取代、可删** ⇒ **不判死活**   ⇒ 墓碑条目\n   ALIVE      = **显式写出来的「现役」** ⇒ **期望它活着**（语义 ≡ 没有 status）\n   （没有 status）= 现役                 ⇒ **期望它活着** ⇒ 死了   ⇒ 🔴「清单该更新」\n   ⇒ **规范写法是大写**：写入端 shun/tools/update_protected.py 会 .strip().upper() 归一，闸门 tools/check_sites_alive.py 也会 ⇒ 两种写法都能跑。\n   ⇒ ⚠️ **别写第五种取值**：闸门遇到不认识的取值会 **exit 2 不放行**（fail closed）\n      —— 假红的根源从来是「默认分支」，不是「少一个取值」。\n   ⇒ ℹ️ 清单里**还留着 4 条历史小写 `alive`**（xwi3hf93nlt4p / tcw0ti0k7p0hd / 3pqlt9tq6lrij / crb86rfrc9lmk）—— **故意没改**：\n      ① 语义完全相同（闸门两种都认）⇒ 没有功能上的必要；\n      ② 这 4 条分属 hub / ama / scenes 三家，**改别人条目的字面量有极小概率打断别人 grep `\"status\": \"alive\"` 的脚本**；\n      ③ 写入端已归一 ⇒ 这些条目下次被各自主人改动时自然会变成大写。\n   🔴 **合法取值只有四种**：DELETED / SUPERSEDED / alive / 没有 status 字段。\n   出现别的值（例如 2026-10-25 误写的 ACTIVE）= 写法错了 ⇒ 要归一成 alive，否则删站闸门按「穷举取值」判定时会当成未知值直接不放行。",
+  "how_to_check_before_deleting": {
+    "step1": "拉本清单（本文件）",
+    "step2": "🔴 **dex 和 assets 都要扫**（两个都要！）：\n   ① dex（原生 App 写死的地址）：python3 -c \"import zipfile,re,sys;print(sorted(set(m.decode() for m in re.findall(rb'[a-z0-9]{4,}\\.space\\.mcode\\.cn', zipfile.ZipFile(sys.argv[1]).read('classes.dex')))))\" x.apk\n   ② assets（🔴 WebView 型 App 的「编译进去的依赖」在这里 —— NHK/Shun/**hub**/多読絵本 都是）:\n      unzip -o -q x.apk -d ex && grep -rhoaE '[a-z0-9]{4,}\\.space\\.mcode\\.cn' ex/ | sort | uniq -c\n   ⚠️ **只扫 dex 会把 hub 判成「零依赖」** —— 实测 hub v1.15 的 13 个域**全在 assets 里，dex 里一个都没有**。",
+    "step3": "两者都命中 → 不删。删完必须 curl 验 404 + 确认没有现役包引用它",
+    "step0": "🔴 **先看本文件里 frozen:true 的** —— 这些是「域名写死在别人 APK / 音频表 / 引导页里」的，删了会让用户的 App 白屏或某个项目没声音。",
+    "step4": "🔴 **同一个域名可能在「测试 fixture」和「产品 dex」里都出现** —— 前者是假的、后者是真的。**「在测试里当假的用」≠「在产品里也是假的」。**",
+    "step5": "🔴 **现役内容站**：按上面的 `_how_to_resolve` 解析引导页 → 当前指向的站**一律不删**（它每次发版都换域名 ⇒ 不在清单里，但现在是活的）。"
+  },
+  "fallback_pattern": {
+    "_why": "所有「引导壳型」App（页面从线上加载、APK 里写死一个兜底站）都要遵守",
+    "rules": [
+      "① 单独部署一个**专用兜底站**，内容 = 当前最新的完整站",
+      "② 该站的域名**定下后永不 redeploy**（redeploy 会换域名 → APK 里写死的值就死了）",
+      "③ APK 的 Config.SITE_URL 写死**这个**站（不是当前内容站）",
+      "④ 真正的内容更新走**引导页**（GitHub Pages，永久地址）→ App 启动时读它 → 自动跟到最新站",
+      "⑤ 把该站登记进本清单（role=fallback, frozen=true）"
+    ],
+    "example": "NHK: 引导页 tlv-creator.github.io/nhk-easy-news/ → 兜底站 vkwwuh9wgkzo0（冻结）"
+  },
+  "_rules_from_keep_list": [
+    "① 出现在某个 APK 的 classes.dex 里的域 ⇒ 活依赖，不能删（grep 源码找不到，只能解包搜）",
+    "② 记忆/文档里写着「某站是 X 的正式站」的 ⇒ 不能删",
+    "③ 引导页或对话里发出去的链接 ⇒ 不能删（用户手里拿着那一份）",
+    "④ 独立 App 的站 ⇒ 不能删（hub 不替代那些 App）",
+    "⑤ 删站顺序永远是：部署替代站 → 验 → 更新引导页 → 才删旧的"
+  ],
+  "_single_source": "🔴 **本文件是唯一权威的「不可删站清单」** —— 旧的 keep-list.json 已并入并删除。**不要在别处再维护第二份**（两个会话两份实现 = 下次分叉）。",
+  "_rule_current_site": "🔴 **现役内容站不在本清单里** —— 它每次部署都换域名，没法静态列 ⇒ **清理时必须先解析引导页，绝不能删引导页当前指向的站**。",
+  "_how_to_resolve": {
+    "hub": "curl -s https://tlv-creator.github.io/nhk-easy-news/hub.html | grep -oE '[a-z0-9]{10,}\\.space\\.mcode\\.cn' | sort -u",
+    "shun": "curl -s https://tlv-creator.github.io/nhk-easy-news/shun.json | python3 -c 'import json,sys;print(json.load(sys.stdin)[\"site\"])'",
+    "nhk": "curl -s https://tlv-creator.github.io/nhk-easy-news/version.json | python3 -c 'import json,sys;print(json.load(sys.stdin)[\"site\"])'",
+    "note": "hub 的引导页是 HTML（不是 JSON）⇒ 用 grep 抽域；shun/nhk 是 JSON ⇒ 读 site 字段"
+  },
+  "_permanent_anchor": "🔴🔴 **`tlv-creator/nhk-easy-news` 这个 GitHub 仓库 = 所有项目的「永久锚点」** —— 它不是 mcode 站，mcode 清理碰不到它，**但它一旦没了，所有项目的 App 全哑**（引导页 404 → App 白屏）。⇒ **永不删这个仓库 / 永不删里面的 hub.html / version.json / shun.json / protected-sites.json**。",
+  "_rule_delete_list": "🔴 **「待删清单」必须是删之前现取的** —— 快照只能当「候选」，不能当「待删」。\n  **理由（活例子）**：某个站 22:00 部署，6 小时后被清站扫掉 ⇒ **不是 bug，是设计缺陷**。\n  ⇒ 扫描器的输入应该是**现取的候选**，且**每个域在删之前要再验一次「还活着吗」**（现查，不是快照）。",
+  "_rule_publish_order": "🔴 **发版顺序是固定的四步**（mcode 每次部署都换随机域名 ⇒ 「更新」天然是三步，不存在「原地更新」）：\n  ① **新建站**（website_deploy 每次新建节点）\n  ② **验证新站**（拉回来实测：首页/关键页/资源全 200）\n  ③ **改永久引导页**（GitHub Pages）指向新站  ← **唯一稳定入口**\n  ④ **才删旧站**\n  ⇒ 顺序错了（先删旧站）⇒ 引导页在中间那段时间指死链\n  ⇒ 各 agent 的流程用**同一个永久锚点**（GitHub Pages）⇒ 天然不会互相踩\n  ⇒ 每个域在删之前要**再验一次「还活着吗」**（现查，不是快照）",
+  "_rule_vocab_mirror": "词汇站的 mcode 镜像：**允许变旧**（老师实际用的是固定网址，镜像只是「随时能看的副本」）；① 永不删、绝不 redeploy；② 要更新 = **新建站**（新域名）+ 改所有引用方 + 改完才删旧的；③ 🔴 **站名必须带版本号 + 课次数**（清单按部署时间倒序、缩略图长得一样 → 老师会点错，这正是同系列 5 个 App 认错的教训）；④ 老师的说明文档/引导页**只指向现役入口**，并写一句「其他同名的都是历史版本」；⑤ 🟢 **学生的入口 = GitHub Pages 永久地址 https://tlv-creator.github.io/nhk-easy-news/vocab/**（无中间页/不会被删/发新版 URL 不变 ⇒ 清单里的「现役」不用挪）。",
+  "_last_roll": "NHK 现役内容站 v32（语法新格式上线）",
+  "_DELETE_GATE_RULES": "删除闸门优先级（2026-10-24 写入；**每次清理旧站前必读**）\n========================================================================\n① status ∈ {SUPERSEDED, DELETED}（先 .strip().upper() 归一；其它值一律跳过并报告，别用默认分支）\n   ⇒ 这一条只决定「有没有资格进闸门」，**不决定「删不删」**\n② frozen: true ⇒ **永不删**。🔴 **这一条优先于 ①**：\n   ⇒ SUPERSEDED + frozen = 「墓碑但永久保留」⇒ **一律不删**，报告里写明「因 frozen 保留」\n   ⇒ 实例：irk7ibwekq8se（旧听力镜像，已被 xqrp2rqkvxqwf 取代，但老师/学生手里可能存着这个链接）\n③ 现役 APK 的 dex **与 assets** 里写死的域名（WebView 型 App 的域名在 assets，不在 dex）⇒ 不删\n④ 现役引导页 version.json + 各站 cdn.js / links.js / data/*.js 里的真实引用（判据看内容不看状态码）⇒ 不删\n",
+  "sites": [
+    {
+      "domain": "zzjxyp80lpd73.space.mcode.cn",
+      "name": "日语泛读精读 · 正式交付站（55 本 · 汉字注音修正版）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "2026-10-25 注音修正版（教材书“汉字自己当读音”的错全部重算；E1-E4 判据全 0）；站根含 tadoku-apk.zip；永久入口 tadoku.html 指向它",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip（站上那份）",
+        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+      ]
+    },
+    {
+      "domain": "030ktppkqjm6g.space.mcode.cn.space.mcode.cn",
+      "name": "日语泛读精读 · 正式交付站（75 本 · 官方朗読 20 本 + 对轴注音修正）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "2026-10-25 本轮：新增 20 本出版社官方朗読（教材 L3/L4）；时间轴重算（哑句归零）；汉字注音修正 10 本 348 句；词库 3795 条；站根含 tadoku-apk.zip；永久入口 tadoku.html 指向它",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip（站上那份）",
+        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+      ]
+    },
+    {
+      "domain": "ddiwijcogorrr.space.mcode.cn",
+      "name": "日语泛读 · 官方朗読音频源 1/2（10 本 · 88MB）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+      "referenced_by": [
+        "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
+      ]
+    },
+    {
+      "domain": "ppch90g3xmufh.space.mcode.cn",
+      "name": "日语泛读 · 官方朗読音频源 2/2（10 本 · 84MB）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+      "referenced_by": [
+        "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
+      ]
+    }
+  ]
+}
