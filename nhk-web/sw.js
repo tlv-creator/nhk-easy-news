@@ -58,6 +58,16 @@ self.addEventListener('activate', e => {
 /* 预热全部字幕：🔴 **绝不放在 install 的 waitUntil 里** ——
    2.8MB 的预热会把 install 拖住 ⇒ SW 永远不激活 ⇒ 离线能力等于没有。
    这里改成 activate 之后**不阻塞**地跑：失败无所谓，SW 已能用了。 */
+async function warmOne(c, u) {
+  try {
+    const hit = await c.match(u);
+    if (hit) return null;
+    const r = await fetch(u);
+    if (r && r.ok) return await c.put(u, r.clone());
+    return null;
+  } catch (e) { return null; }
+}
+
 async function warmSubs() {
   try {
     const c = await caches.open(CACHE);
@@ -87,21 +97,13 @@ async function warmSubs() {
         return fetch(u).then(r => { if (r && r.ok) return c.put(u, r.clone()); return null; });
       }).catch(() => null)
     ));
-    await Promise.all(DATA_PRELOAD.map(u =>
-      c.match(u).then(hit => {
-        if (hit) return null;
-        return fetch(u).then(r => { if (r && r.ok) return c.put(u, r.clone()); return null; });
-      }).catch(() => null)
-    ));
-    await Promise.all(ids.map(id =>
-      c.match(SUBS_GLOB + id + '.js').then(hit => {
-        if (hit) return null;
-        return fetch(SUBS_GLOB + id + '.js').then(r => {
-          if (r && r.ok) return c.put(SUBS_GLOB + id + '.js', r.clone());
-          return null;
-        });
-      }).catch(() => null)
-    ));
+    // 🔴 限并发：一次并发 53 个请求会把首屏带宽吃光（实测字幕都渲染不出来）
+    //    ⇒ 一次只下 3 个，慢慢来；预热慢没关系，**不能抢用户正在看的内容**。
+    const queue = DATA_PRELOAD.map(u => () => warmOne(c, u))
+      .concat(ids.map(id => () => warmOne(c, SUBS_GLOB + id + '.js')));
+    for (let i = 0; i < queue.length; i += 3) {
+      await Promise.all(queue.slice(i, i + 3).map(fn => fn().catch(() => null)));
+    }
   } catch (e) { /* 预热失败不影响使用 */ }
 }
 
