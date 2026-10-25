@@ -560,6 +560,15 @@
     {
       "domain": "aaxnw4wets0kt",
       "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "2026-10-24 已被 fsgzjdb65tse5 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
+      "frozen": false,
+      "status": "SUPERSEDED"
+    },
+    {
+      "domain": "fsgzjdb65tse5",
+      "project": "nhk",
       "role": "current_site",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
