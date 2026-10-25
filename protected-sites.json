@@ -676,15 +676,14 @@
     },
     {
       "domain": "em8hjp6jskxyb",
-      "status": "ACTIVE",
+      "status": "SUPERSEDED",
       "frozen": false,
       "deploy_url": "https://em8hjp6jskxyb.space.mcode.cn",
-      "role": "current_site",
       "created_at": "2026-10-25",
       "project": "nhk",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的"
+      "note": "2026-10-24 已被 204ocuv36su6w 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）"
     },
     {
       "domain": "hoglwc3wwd3jm",
@@ -742,6 +741,15 @@
       "role": "student-facing-site",
       "location": "GitHub Pages 子目录 /nhk-easy-news/listening/（非 mcode 站，不占站点配额）",
       "note": "🔴 老师硬指令：听力站不要动。canonical 在 GitHub Pages ⇒ 不在站点配额体系内，但清站/清目录流程必须跳过它"
+    },
+    {
+      "domain": "204ocuv36su6w",
+      "project": "nhk",
+      "role": "current_site",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
+      "frozen": false
     }
   ],
   "_status_vocab": "🔴 **status 的取值词汇表（2026-10-24 定，三个 agent 一起对过）**：\n   DELETED    = 我们说它**已经删了**    ⇒ **期望它死**   ⇒ 还活着 ⇒ 🔴「清单该更新」\n   SUPERSEDED = 旧站**被新站取代、可删** ⇒ **不判死活**   ⇒ 墓碑条目\n   ALIVE      = **显式写出来的「现役」** ⇒ **期望它活着**（语义 ≡ 没有 status）\n   （没有 status）= 现役                 ⇒ **期望它活着** ⇒ 死了   ⇒ 🔴「清单该更新」\n   ⇒ **规范写法是大写**：写入端 shun/tools/update_protected.py 会 .strip().upper() 归一，闸门 tools/check_sites_alive.py 也会 ⇒ 两种写法都能跑。\n   ⇒ ⚠️ **别写第五种取值**：闸门遇到不认识的取值会 **exit 2 不放行**（fail closed）\n      —— 假红的根源从来是「默认分支」，不是「少一个取值」。\n   ⇒ ℹ️ 清单里**还留着 4 条历史小写 `alive`**（xwi3hf93nlt4p / tcw0ti0k7p0hd / 3pqlt9tq6lrij / crb86rfrc9lmk）—— **故意没改**：\n      ① 语义完全相同（闸门两种都认）⇒ 没有功能上的必要；\n      ② 这 4 条分属 hub / ama / scenes 三家，**改别人条目的字面量有极小概率打断别人 grep `\"status\": \"alive\"` 的脚本**；\n      ③ 写入端已归一 ⇒ 这些条目下次被各自主人改动时自然会变成大写。\n   🔴 **合法取值只有四种**：DELETED / SUPERSEDED / alive / 没有 status 字段。\n   出现别的值（例如 2026-10-25 误写的 ACTIVE）= 写法错了 ⇒ 要归一成 alive，否则删站闸门按「穷举取值」判定时会当成未知值直接不放行。",
@@ -783,7 +791,7 @@
   "_rule_delete_list": "🔴 **「待删清单」必须是删之前现取的** —— 快照只能当「候选」，不能当「待删」。\n  **理由（活例子）**：某个站 22:00 部署，6 小时后被清站扫掉 ⇒ **不是 bug，是设计缺陷**。\n  ⇒ 扫描器的输入应该是**现取的候选**，且**每个域在删之前要再验一次「还活着吗」**（现查，不是快照）。",
   "_rule_publish_order": "🔴 **发版顺序是固定的四步**（mcode 每次部署都换随机域名 ⇒ 「更新」天然是三步，不存在「原地更新」）：\n  ① **新建站**（website_deploy 每次新建节点）\n  ② **验证新站**（拉回来实测：首页/关键页/资源全 200）\n  ③ **改永久引导页**（GitHub Pages）指向新站  ← **唯一稳定入口**\n  ④ **才删旧站**\n  ⇒ 顺序错了（先删旧站）⇒ 引导页在中间那段时间指死链\n  ⇒ 各 agent 的流程用**同一个永久锚点**（GitHub Pages）⇒ 天然不会互相踩\n  ⇒ 每个域在删之前要**再验一次「还活着吗」**（现查，不是快照）",
   "_rule_vocab_mirror": "词汇站的 mcode 镜像：**允许变旧**（老师实际用的是固定网址，镜像只是「随时能看的副本」）；① 永不删、绝不 redeploy；② 要更新 = **新建站**（新域名）+ 改所有引用方 + 改完才删旧的；③ 🔴 **站名必须带版本号 + 课次数**（清单按部署时间倒序、缩略图长得一样 → 老师会点错，这正是同系列 5 个 App 认错的教训）；④ 老师的说明文档/引导页**只指向现役入口**，并写一句「其他同名的都是历史版本」；⑤ 🟢 **学生的入口 = GitHub Pages 永久地址 https://tlv-creator.github.io/nhk-easy-news/vocab/**（无中间页/不会被删/发新版 URL 不变 ⇒ 清单里的「现役」不用挪）。",
-  "_last_roll": "NHK v1.22 上线：普通版音字同步",
+  "_last_roll": "NHK 现役内容站 v32（语法新格式上线）",
   "_DELETE_GATE_RULES": "删除闸门优先级（2026-10-24 写入；**每次清理旧站前必读**）\n========================================================================\n① status ∈ {SUPERSEDED, DELETED}（先 .strip().upper() 归一；其它值一律跳过并报告，别用默认分支）\n   ⇒ 这一条只决定「有没有资格进闸门」，**不决定「删不删」**\n② frozen: true ⇒ **永不删**。🔴 **这一条优先于 ①**：\n   ⇒ SUPERSEDED + frozen = 「墓碑但永久保留」⇒ **一律不删**，报告里写明「因 frozen 保留」\n   ⇒ 实例：irk7ibwekq8se（旧听力镜像，已被 xqrp2rqkvxqwf 取代，但老师/学生手里可能存着这个链接）\n③ 现役 APK 的 dex **与 assets** 里写死的域名（WebView 型 App 的域名在 assets，不在 dex）⇒ 不删\n④ 现役引导页 version.json + 各站 cdn.js / links.js / data/*.js 里的真实引用（判据看内容不看状态码）⇒ 不删\n",
   "sites": [
     {
