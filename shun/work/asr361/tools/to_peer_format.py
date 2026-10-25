@@ -19,7 +19,13 @@ PROD = os.path.join(ROOT, 'prod')
 OUTD = os.path.join(ROOT, 'shun-web', 'data')
 TAGMAP = os.path.join(ROOT, 'tagmap.json')
 
-# 状语类 role 关键词：这些绝不能是 〈〉（宾语）
+# 🔴 依据权威文档 shun/docs/新结构注释设计.md：
+#    第 38 行「〈方〉 = 主句里的**宾语内容**（含形式名词化 〜こと + 后续助词）」
+#    第 100 行「角色标签和括号必须配套：[]↔连接/副词，［］↔从句，〈〉↔宾语内容，（）↔谓语」
+# ⇒ 〈〉 只放 role 含「宾语」的块；其余（表语/情感对象/小主语/名词短语/主题内容…）
+#    一律归 []（独立成分）—— 用户的定义是「[] 连接/独立成分」
+OBIN = re.compile(r'宾语|对象语')   # ⚠️ 不能只写「对象」——「对象**状语**」是状语不是宾语
+# 旧规则（状语类）已被上面的规则覆盖，保留仅为兼容日志
 ADVERBIAL = re.compile(r'状语|副词|方式|手段|时间|地点|程度|频率|数量|范围|连接|并列|顺接|转折')
 
 
@@ -30,15 +36,63 @@ def retag(t):
 
 
 def norm_bracket_semantics(frame):
-    """口径归一：〈〉 + 状语类 role ⇒ 改 []。返回 (frame, 改动数)"""
+    """
+    口径归一（依据权威文档）：
+      〈〉 只放「宾语」类 role；其余 〈〉 一律改 []（独立成分）。
+    返回 (frame, 改动数)
+    """
     out, changed = [], 0
     for f in frame:
         g = dict(f)
-        if g.get('b') == '〈〉' and ADVERBIAL.search(g.get('role') or ''):
+        if g.get('b') == '〈〉' and not OBIN.search(g.get('role') or ''):
             g['b'] = '[]'
             changed += 1
         out.append(g)
     return out, changed
+
+
+# 音效/纯标点行的识别（⇒ kind='sfx'）
+SFX_RE = re.compile(r'^\s*(\[[^\]]*\]|♪[〜♪\s]*|[・.。,、\s]+)\s*$')
+# 连续的 ASCII 词片段 ⇒ 英文
+# 🔴 但**只剥「≥2 个 ASCII 词」的片段**：单个 ASCII 词多半是品牌名/缩写
+#    （"Shunと日本語…"、"NHK協会"）⇒ 剥了会把日文行的开头切掉
+EN_SEG = re.compile(r'[A-Za-z][A-Za-z\'\-\.]*(?:[ /]+[A-Za-z][A-Za-z\'\-\.]*)+')
+
+
+def split_en(ja):
+    """
+    把 ja 拆成 (日文部分, 英文部分)。
+
+    🔴 2026-10-25 修正一个真 bug：我原来用「整块 ASCII 字母占比 > 50%」判英文
+       ⇒ 「Shunと日本語ポッドキャスト2初心者Beginners Genki 1 Level」
+       ASCII 占比 55% ⇒ **整句被判成英文吞掉** ⇒ t 变空（10 句空 t 的真凶）
+       ⇒ 正确做法：**逐片段剥离** —— 只删掉连续的 ASCII 词片段，日文一字不动。
+    """
+    en_parts = []
+
+    def _take(m):
+        seg = m.group(0).strip()
+        if seg:
+            en_parts.append(seg)
+        return ' '
+
+    jp = EN_SEG.sub(_take, ja)
+    jp = re.sub(r'[ \t　]{2,}', ' ', jp).strip()
+    # 🔴 剥完如果**一个日文字都没有** ⇒ 整句本来就是英文行 ⇒ 保留原文（绝不产空句）
+    if not re.search(r'[぀-ヿ一-鿿]', jp):
+        return ja, ''
+    return jp, ' / '.join(en_parts)
+
+
+def detect_kind(t, en, zh):
+    """speech（台词）｜ sfx（音效/纯标点）｜ en（整句英文）"""
+    if not (t or '').strip():
+        return 'en' if en else 'sfx'
+    if SFX_RE.match(t):
+        return 'sfx'
+    if not re.search(r'[぀-ヿ一-鿿]', t):
+        return 'en'          # 整行是英文（不管 en 字段有没有内容）
+    return 'speech'
 
 
 def strip_english(ja, frame):
@@ -48,35 +102,34 @@ def strip_english(ja, frame):
     🔴 起因（2026-10-25 peer 复核）：平台通道产的原文末尾/词后带**英文对照**
        （例："このレストランは、色々な食べ物があります。There are various foods..."）
        而这些英文被标成了 `[]`/`［］` 块（role=英文翻译）⇒
-        ① 成分层的「谓语块必须在末尾」判据失效（19% 的句子不合格）
+        ① 成分层的「谓语块必须在末尾」判据失效（19% 句子不合格）
         ② 用户看的日文精读页里混着英文，很怪
-    ⇒ 判据：role 含「英文」的块 ⇒ 它是元信息，不是语法成分 ⇒ 从 t 里剥出
-    ⇒ 剥完重算 p（删除会让后面所有字符位置移动 ⇒ 必须重算，不能沿用）
+    ⇒ 修法（第二版）：**逐片段剥离**（不是整块判英文）⇒ 日文原文干净、且**绝不把句子剥空**
+    ⇒ 剥完为空 ⇒ 整句就是英文行 ⇒ t 保留原文、kind='en'（不留空句）
     返回 (日文, frame(去掉英文块), 英文串)
     """
     en_parts = []
     drop = []
     for i, f in enumerate(frame):
         ss = f.get('s') or ''
-        ascii_ratio = (sum(1 for c in ss if c.isascii() and c.isalpha()) / max(1, len(ss)))
-        if '英文' in (f.get('role') or '') or ascii_ratio > 0.5:
+        if '英文' in (f.get('role') or ''):
             en_parts.append(ss)
             drop.append(i)
-    if not en_parts:
-        return ja, frame, ''
     keep = [i for i in range(len(frame)) if i not in set(drop)]
-    # 从 ja 里删掉英文片段（连同它前面的空白）
-    out = ja
-    for s in sorted(set(x for x in en_parts if x), key=len, reverse=True):
-        if s in out:
-            out = out.replace(s, '', 1)
-    # 清掉残留的「词+空格」尾巴（如 "経験する to experience" → "経験する"）
-    out = re.sub(r'[ \t　]+$', '', out)
-    out = re.sub(r'^[ \t　]+', '', out)
-    out = re.sub(r'([、。！？])[ \t　]+', r'\1', out)
+    jp, en_auto = split_en(ja)
+    en = ' / '.join([x for x in en_parts if x.strip()] + ([en_auto] if en_auto else []))
+    # 🔴 t 不得为空：剥完空了 ⇒ 说明整句是英文行 ⇒ 保留原文 + kind='en'
+    if not jp.strip():
+        return ja, [frame[i] for i in keep], en
     newframe = [frame[i] for i in keep]
-    en = ' / '.join(x.strip() for x in en_parts if x.strip())
-    return out, newframe, en
+    # frame 里那些「其实是英文」的块也去掉（逐片段判，不整块吞）
+    kept = []
+    for f in newframe:
+        ss = f.get('s') or ''
+        if ss and not re.search(r'[぀-ヿ一-鿿]', ss):
+            continue          # 纯 ASCII 块 ⇒ 英文，不进成分层
+        kept.append(f)
+    return jp, kept, en
 
 
 def add_positions(ja, frame):
@@ -148,6 +201,7 @@ def main():
             sents.append({
                 't': ja,
                 'en': en,            # 英文对照（原文里带的，剥出来）
+                'kind': detect_kind(ja, en, zh),   # speech | sfx | en
                 'ru': [],            # 注音：peer 用本地 ruby.py 算（零额度）⇒ 留空
                 'w': [],             # 词：同上
                 'zh': zh,
@@ -205,6 +259,19 @@ def main():
 
     print('=== 转换完成（零 API 调用）===')
     print('  集数: %d   句子: %d' % (n_ep, n_sent))
+    # 🔴 断言：归一后 〈〉 的 role 必须都含「宾语/对象语」（权威文档第 100 行）
+    bad = []
+    for fn2 in sorted(os.listdir(OUTD)):
+        if not re.match(r'^s\d+\.json$', fn2):
+            continue
+        d2 = json.load(open(os.path.join(OUTD, fn2), encoding='utf-8'))
+        for si2, s2 in enumerate(d2['sents']):
+            for b2 in s2['gs']['frame']:
+                if b2['b'] == '〈〉' and not OBIN.search(b2.get('role') or ''):
+                    bad.append((fn2, si2, b2['role'], b2['s']))
+    print('  断言 〈〉role 非宾语: %d 处 %s' % (len(bad), '✅' if not bad else '❌ ' + str(bad[:5])))
+    if bad:
+        raise SystemExit(1)
     print('  丢弃块(不逐字): %d   修复块(剥括号): %d   口径归一(〈〉→[]): %d   丢弃块(被外层覆盖): %d'
           % (n_drop, n_fix, n_adv, n_cov))
     print('  剥英文对照: %d 句（英文进 en 字段，日文干净）' % n_en)

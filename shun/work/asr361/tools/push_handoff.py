@@ -26,7 +26,8 @@ MAP = [
     ("prod", "prod"),
     ("tools", "tools"),
 ]
-FILES = ["tagmap.json", "asr_status.json", "pick10.json", "交接说明.md", "frame_overlap.json"]
+FILES = ["tagmap.json", "asr_status.json", "pick10.json", "交接说明.md", "frame_overlap.json",
+         "word_reading.json"]   # 🔴 丢失的整词惯用读音表（从已发布 13 集反推，187 条）
 
 
 def api(url, method='GET', payload=None):
@@ -61,7 +62,7 @@ def local_files():
     # 网页层契约数据（7 集）
     dd = os.path.join(SRC, 'shun-web', 'data')
     for fn in sorted(os.listdir(dd)):
-        if re.match(r'^s\d+\.json$', fn):
+        if re.match(r'^s\d+(\.pred)?\.json$', fn):
             out["shun-web/data/%s" % fn] = os.path.join(dd, fn)
     return out
 
@@ -102,7 +103,8 @@ def main():
     old_tags = {e['tag'] for e in base['eps']}
     mine_idx = []
     for p, lp in lf.items():
-        if p.startswith('shun-web/data/s') and p.endswith('.json'):
+        if (p.startswith('shun-web/data/s') and p.endswith('.json')
+                and not p.endswith('.pred.json')):
             d = json.load(open(lp, encoding='utf-8'))
             mine_idx.append({'tag': d['tag'], 'ep': d['ep'], 'title': d['title'],
                              'desc': d['desc'], 'dur': d['dur'], 'audio': d['audio'],
