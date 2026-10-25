@@ -44,9 +44,13 @@ self.addEventListener('activate', e => {
       .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
+  // 预热放在 activate 之后、**不 waitUntil** ⇒ 慢也不影响 SW 激活
+  setTimeout(function () { warmSubs().catch(function () {}); }, 1500);
 });
 
-/* 预热全部字幕（装 SW 时后台做，不阻塞首屏） */
+/* 预热全部字幕：🔴 **绝不放在 install 的 waitUntil 里** ——
+   2.8MB 的预热会把 install 拖住 ⇒ SW 永远不激活 ⇒ 离线能力等于没有。
+   这里改成 activate 之后**不阻塞**地跑：失败无所谓，SW 已能用了。 */
 async function warmSubs() {
   try {
     const c = await caches.open(CACHE);
@@ -69,9 +73,7 @@ async function warmSubs() {
     ));
   } catch (e) { /* 预热失败不影响使用 */ }
 }
-self.addEventListener('install', e => {
-  e.waitUntil(warmSubs().catch(() => null));
-});
+
 
 function isAudio(url) {
   return /\.(m4a|mp3|aac|m4s)$/i.test(url.pathname);
