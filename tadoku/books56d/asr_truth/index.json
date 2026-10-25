@@ -1,0 +1,261 @@
+{
+ "batch": "books56d（教材 12 本「有原文缺官方朗読」补音）",
+ "date": "2026-10-26",
+ "source": {
+  "url_template": "https://storage.ask-books.com/uploads/books/<ISBN13>/audios/audios.zip",
+  "headers": {
+   "User-Agent": "Mozilla/5.0",
+   "Referer": "https://ask-books.com/book-details/?slug=<ISBN13>"
+  },
+  "note": "🔴 必须 UA + Referer 同时带；只带 UA ⇒ 403"
+ },
+ "zips": [
+  {
+   "isbn": "9784866397306",
+   "title": "レベル別日本語多読ライブラリー レベル3",
+   "bytes": 125690877,
+   "tracks": 7,
+   "crc": "全段通过"
+  },
+  {
+   "isbn": "9784866396583",
+   "title": "レベル別日本語多読ライブラリー レベル1",
+   "bytes": 58349129,
+   "tracks": 6,
+   "crc": "全段通过"
+  },
+  {
+   "isbn": "9784866396569",
+   "title": "レベル別日本語多読ライブラリー レベル4",
+   "bytes": 169753159,
+   "tracks": 5,
+   "crc": "全段通过"
+  }
+ ],
+ "asr": {
+  "platform": "connector__matrix__audios_understand",
+  "quota": "0 额度（未消耗用户 token）",
+  "chunk_sec": 40,
+  "segments_total": 427,
+  "segments_ok": 427,
+  "lines_total": 3314,
+  "line_re": "【\\s*((?:\\d+:)?\\d+(?:\\.\\d+)?)\\s*秒?\\s*】",
+  "note": "【0】与【0秒】混用 ⇒ 正则必须秒?可选；失败结果不缓存；[No speech] 是真实答案"
+ },
+ "books": [
+  "level1-kimono",
+  "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year",
+  "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls",
+  "level3-princess-kaguya",
+  "level3-the-restaurant-of-many-orders",
+  "level3-the-spider-s-thread-and-the-nose",
+  "level3-who-are-these-people-the-story-of-japanese-banknotes",
+  "level4-run-melos",
+  "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site",
+  "level4-the-grave-of-the-wild-chrysanthemums",
+  "level4-the-snow-woman",
+  "level4-toshishun"
+ ],
+ "mapping_status": "content_supported（L4 巻文件名带书名 ⇒ 零歧义；L3/L1 用「各轨开头 ASR vs 書名」内容级佐证）",
+ "reverse_check": {
+  "script": "tadoku/books56d/reverse_check.py",
+  "result": "50 个候选行逐条判完：27 报幕 + 23 写法差异/教材簡約/《むじな》7 句 ⇒ 除《むじな》外其余 11 本正文完整"
+ },
+ "tracks": [
+  {
+   "isbn": "9784866397306",
+   "track": "track-001",
+   "mp3_in_zip": "001.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/001.mp3",
+   "dur": 403.179,
+   "title": "むじな",
+   "books": [
+    "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls"
+   ],
+   "lines": 94,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866397306-track-001.json"
+  },
+  {
+   "isbn": "9784866397306",
+   "track": "track-002",
+   "mp3_in_zip": "002.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/002.mp3",
+   "dur": 573.315,
+   "title": "幽霊滝",
+   "books": [
+    "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls"
+   ],
+   "lines": 127,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866397306-track-002.json"
+  },
+  {
+   "isbn": "9784866397306",
+   "track": "track-003",
+   "mp3_in_zip": "003.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/003.mp3",
+   "dur": 983.385,
+   "title": "注文の多い料理店",
+   "books": [
+    "level3-the-restaurant-of-many-orders"
+   ],
+   "lines": 235,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866397306-track-003.json"
+  },
+  {
+   "isbn": "9784866397306",
+   "track": "track-004",
+   "mp3_in_zip": "004.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/004.mp3",
+   "dur": 1272.537,
+   "title": "お札の話",
+   "books": [
+    "level3-who-are-these-people-the-story-of-japanese-banknotes"
+   ],
+   "lines": 226,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866397306-track-004.json"
+  },
+  {
+   "isbn": "9784866397306",
+   "track": "track-005",
+   "mp3_in_zip": "005.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/005.mp3",
+   "dur": 1056.162,
+   "title": "かぐや姫",
+   "books": [
+    "level3-princess-kaguya"
+   ],
+   "lines": 227,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866397306-track-005.json"
+  },
+  {
+   "isbn": "9784866397306",
+   "track": "track-006",
+   "mp3_in_zip": "006.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/006.mp3",
+   "dur": 704.58,
+   "title": "蜘蛛の糸",
+   "books": [
+    "level3-the-spider-s-thread-and-the-nose"
+   ],
+   "lines": 124,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866397306-track-006.json"
+  },
+  {
+   "isbn": "9784866397306",
+   "track": "track-007",
+   "mp3_in_zip": "007.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/007.mp3",
+   "dur": 798.699,
+   "title": "鼻",
+   "books": [
+    "level3-the-spider-s-thread-and-the-nose"
+   ],
+   "lines": 132,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866397306-track-007.json"
+  },
+  {
+   "isbn": "9784866396569",
+   "track": "NogikunoHaka",
+   "mp3_in_zip": "NogikunoHaka.mp3",
+   "mp3_local": "/workspace/work/kagumo_run2/ext4/NogikunoHaka.mp3",
+   "dur": 2561.8,
+   "title": "野菊の墓",
+   "books": [
+    "level4-the-grave-of-the-wild-chrysanthemums"
+   ],
+   "lines": 589,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866396569-NogikunoHaka.json"
+  },
+  {
+   "isbn": "9784866396569",
+   "track": "Toshishun",
+   "mp3_in_zip": "Toshishun.mp3",
+   "mp3_local": "/workspace/work/kagumo_run2/ext4/Toshishun.mp3",
+   "dur": 1683.0,
+   "title": "杜子春",
+   "books": [
+    "level4-toshishun"
+   ],
+   "lines": 315,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866396569-Toshishun.json"
+  },
+  {
+   "isbn": "9784866396569",
+   "track": "Yukionna",
+   "mp3_in_zip": "Yukionna.mp3",
+   "mp3_local": "/workspace/work/kagumo_run2/ext4/Yukionna.mp3",
+   "dur": 1269.1,
+   "title": "雪女",
+   "books": [
+    "level4-the-snow-woman"
+   ],
+   "lines": 283,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866396569-Yukionna.json"
+  },
+  {
+   "isbn": "9784866396569",
+   "track": "Hashire_Merosu",
+   "mp3_in_zip": "Hashire_Merosu.mp3",
+   "mp3_local": "/workspace/work/kagumo_run2/ext4/Hashire_Merosu.mp3",
+   "dur": 1723.7,
+   "title": "走れメロス",
+   "books": [
+    "level4-run-melos"
+   ],
+   "lines": 506,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866396569-Hashire_Merosu.json"
+  },
+  {
+   "isbn": "9784866396569",
+   "track": "NagaiTakashi",
+   "mp3_in_zip": "NagaiTakashi.mp3",
+   "mp3_local": "/workspace/work/kagumo_run2/ext4/NagaiTakashi.mp3",
+   "dur": 1228.9,
+   "title": "永井隆",
+   "books": [
+    "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site"
+   ],
+   "lines": 235,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866396569-NagaiTakashi.json"
+  },
+  {
+   "isbn": "9784866396583",
+   "track": "l1-002",
+   "mp3_in_zip": "002.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/002.mp3",
+   "dur": 392.6,
+   "title": "着物",
+   "books": [
+    "level1-kimono"
+   ],
+   "lines": 85,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866396583-l1-002.json"
+  },
+  {
+   "isbn": "9784866396583",
+   "track": "l1-003",
+   "mp3_in_zip": "003.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/003.mp3",
+   "dur": 185.0,
+   "title": "エビの体は曲がった？",
+   "books": [
+    "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year"
+   ],
+   "lines": 46,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866396583-l1-003.json"
+  },
+  {
+   "isbn": "9784866396583",
+   "track": "l1-004",
+   "mp3_in_zip": "004.mp3",
+   "mp3_local": "/workspace/work/kagumo_run/ext/004.mp3",
+   "dur": 396.7,
+   "title": "どうして猫年がない？",
+   "books": [
+    "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year"
+   ],
+   "lines": 90,
+   "asr_truth_file": "tadoku/books56d/asr_truth/9784866396583-l1-004.json"
+  }
+ ]
+}

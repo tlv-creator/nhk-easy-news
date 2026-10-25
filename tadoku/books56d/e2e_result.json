@@ -1,0 +1,290 @@
+[
+ {
+  "key": "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls_p0",
+  "kind": "pos",
+  "cov": 0.9333333333333333,
+  "head": "【0】これは、100年ぐらい前の東京の話だ。\n【6】そのころ、東京には"
+ },
+ {
+  "key": "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls_p75",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0秒】した。\n【1秒】「私も」\n【3秒】と三人目も言いました。\n【6秒】「私も」\n【7秒】と"
+ },
+ {
+  "key": "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls_p149",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】子どもの頭はありませんでした。"
+ },
+ {
+  "key": "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls_neg",
+  "kind": "neg",
+  "cov": 0.36363636363636365,
+  "head": "【0】子どもの頭はありませんでした。"
+ },
+ {
+  "key": "level3-the-restaurant-of-many-orders_p0",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【2】ここは山の中です。\n【4】若い男が二人、"
+ },
+ {
+  "key": "level3-the-restaurant-of-many-orders_p69",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】この中のクリームを、顔と手と足につけてください。\n【7】それは、牛乳のク"
+ },
+ {
+  "key": "level3-the-restaurant-of-many-orders_p138",
+  "kind": "pos",
+  "cov": 0.9777777777777777,
+  "head": "【0】でも、\n【1】おじいさんのようにしわくちゃになった顔は、\n【5】東京に帰っても、\n【7】お風呂に入っても、\n【9】"
+ },
+ {
+  "key": "level3-the-restaurant-of-many-orders_neg",
+  "kind": "neg",
+  "cov": 0.0,
+  "head": "【0】いや、そうじゃない。"
+ },
+ {
+  "key": "level3-who-are-these-people-the-story-of-japanese-banknotes_p0",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】日本のお金\n【3】日本には、千円"
+ },
+ {
+  "key": "level3-who-are-these-people-the-story-of-japanese-banknotes_p90",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】たけくらべは、初恋の話です。\n【4】みどりは、十一歳"
+ },
+ {
+  "key": "level3-who-are-these-people-the-story-of-japanese-banknotes_p180",
+  "kind": "pos",
+  "cov": 0.6666666666666666,
+  "head": "【0秒】続けました。\n【1秒】そして、1901年2月3日に死にました。"
+ },
+ {
+  "key": "level3-who-are-these-people-the-story-of-japanese-banknotes_neg",
+  "kind": "neg",
+  "cov": 0.03225806451612903,
+  "head": "【0】二、三人乗り、または、"
+ },
+ {
+  "key": "level3-princess-kaguya_p0",
+  "kind": "pos",
+  "cov": 0.8387096774193549,
+  "head": "【0】かぐや姫\n【3】再話　高橋操子\n【8】昔々、あるところに、おじいさんとおばあさんが住んでいました。\n【16】おじい"
+ },
+ {
+  "key": "level3-princess-kaguya_p91",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】せん。\n【1】あなたと一緒に行くことはできません。\n【5】かぐや姫は静かに"
+ },
+ {
+  "key": "level3-princess-kaguya_p182",
+  "kind": "pos",
+  "cov": 0.6060606060606061,
+  "head": "【0秒】め、というようになって、\n【2秒】今の富士山になったのです。"
+ },
+ {
+  "key": "level3-princess-kaguya_neg",
+  "kind": "neg",
+  "cov": 0.08333333333333333,
+  "head": "【0】「ふじの山」\n【2】と言うようになって、\n【4】今の"
+ },
+ {
+  "key": "level3-the-spider-s-thread-and-the-nose_p0",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0秒】人は死んだらどこへ行くのでしょうか。\n【7秒】生きているとき"
+ },
+ {
+  "key": "level3-the-spider-s-thread-and-the-nose_p48",
+  "kind": "pos",
+  "cov": 0.9183673469387755,
+  "head": "【0】カンダタは自分だけ地獄から出ようとしたから、また地獄に落ちてしまった。\n【10】自分一人が大切だったから、\n【16"
+ },
+ {
+  "key": "level3-the-spider-s-thread-and-the-nose_p96",
+  "kind": "pos",
+  "cov": 0.9047619047619048,
+  "head": "【0】朝の光の中で、\n【3】長い鼻を大切そうに触りながら、"
+ },
+ {
+  "key": "level3-the-spider-s-thread-and-the-nose_neg",
+  "kind": "neg",
+  "cov": 0.17391304347826086,
+  "head": "【0】と答えました。\n【3】本当は、鼻を踏まれて"
+ },
+ {
+  "key": "level4-run-melos_p0",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】メロスは、ギリシャのある村で羊を飼って生活していた。\n【5】メロスには、父も母も"
+ },
+ {
+  "key": "level4-run-melos_p226",
+  "kind": "pos",
+  "cov": 0.9565217391304348,
+  "head": "【0】10キロぐらい歩いたとき、メロスの足は急に止まった。\n【5】目の前の川を見て、びっくり"
+ },
+ {
+  "key": "level4-run-melos_p451",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【1】メロスの顔が、赤くなった。"
+ },
+ {
+  "key": "level4-run-melos_neg",
+  "kind": "neg",
+  "cov": 0.09090909090909091,
+  "head": "【0】だから、一刻も早く"
+ },
+ {
+  "key": "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site_p0",
+  "kind": "pos",
+  "cov": 0.8125,
+  "head": "【0】1945年8月6日、広島に世界で初めて原爆、原子爆弾が落とされました。\n【8】その3日後の8月"
+ },
+ {
+  "key": "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site_p100",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0秒】した。\n【1秒】けれどもそこで見たものは、\n【4秒】周りの建物がない、\n【6秒】街"
+ },
+ {
+  "key": "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site_p200",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】なります。\n【1】本当の平和は、難しい会議や考え方から生まれるのではなく、愛の力から生まれる。"
+ },
+ {
+  "key": "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site_neg",
+  "kind": "neg",
+  "cov": 0.5714285714285714,
+  "head": "【0】から生まれるのではなく、\n【2】愛の力から生まれる。"
+ },
+ {
+  "key": "level4-the-grave-of-the-wild-chrysanthemums_p0",
+  "kind": "pos",
+  "cov": 0.9259259259259259,
+  "head": "【0】野菊の花が咲く季節になると、\n【3】僕は必ず思い出すことがある。\n【6】もう10年以上も前だが、"
+ },
+ {
+  "key": "level4-the-grave-of-the-wild-chrysanthemums_p245",
+  "kind": "pos",
+  "cov": 0.9,
+  "head": "【0】先に入ってください。\n【1】私なんだか恥ずかしいわ。\n【4】じゃ、\n【5】僕が"
+ },
+ {
+  "key": "level4-the-grave-of-the-wild-chrysanthemums_p489",
+  "kind": "pos",
+  "cov": 0.9583333333333334,
+  "head": "【1】十年経った今も、\n【3】民子を思う気持ちは、\n【5】少しも変わらない。"
+ },
+ {
+  "key": "level4-the-grave-of-the-wild-chrysanthemums_neg",
+  "kind": "neg",
+  "cov": 0.09090909090909091,
+  "head": "【0】ある日、彼女から連絡が来ました。"
+ },
+ {
+  "key": "level4-toshishun_p0",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】これは、昔々、今から千五百年ぐらい前の中国、唐の町、洛陽のお話です。\n【11】昔の中国の町は、"
+ },
+ {
+  "key": "level4-toshishun_p142",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】ません。\n【1】死んでも声を出しません。\n【3】そうか。"
+ },
+ {
+  "key": "level4-toshishun_p284",
+  "kind": "pos",
+  "cov": 0.9285714285714286,
+  "head": "【1】今頃、ちょうど家の周りに桃の花がたくさん咲いているだろう。"
+ },
+ {
+  "key": "level4-toshishun_neg",
+  "kind": "neg",
+  "cov": 0.0,
+  "head": "【0】第十五章"
+ },
+ {
+  "key": "level4-the-snow-woman_p0",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】ある村に、茂作と巳之吉という二人の男がいた。\n【6】二人は山で"
+ },
+ {
+  "key": "level4-the-snow-woman_p120",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】「茂作さあん、\n【1】茂作さあん、\n【3】どうしたんですか」\n【5】巳之吉の手が茂作の顔"
+ },
+ {
+  "key": "level4-the-snow-woman_p239",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】お雪は二度と戻ってこなかった。"
+ },
+ {
+  "key": "level4-the-snow-woman_neg",
+  "kind": "neg",
+  "cov": 0.0,
+  "head": "【0】ふむ。そういえば、あいつ"
+ },
+ {
+  "key": "level1-kimono_p0",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】わあ、きれい。\n【3】いろいろな着物がありますね。\n【8】着物は、い"
+ },
+ {
+  "key": "level1-kimono_p26",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】大学の卒業式\n【4】3月です。"
+ },
+ {
+  "key": "level1-kimono_p52",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】そして、花火大会に行きましょう。"
+ },
+ {
+  "key": "level1-kimono_neg",
+  "kind": "neg",
+  "cov": 0.1,
+  "head": "【0】彼等もまた、お蓮と同じように、"
+ },
+ {
+  "key": "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year_p0",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0】どうしてエビの体は曲がった？\n【5】何千年も前"
+ },
+ {
+  "key": "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year_p46",
+  "kind": "pos",
+  "cov": 1.0,
+  "head": "【0秒】二番の動物に\n【3秒】次の年をあげます。\n【6秒】三番の動物に"
+ },
+ {
+  "key": "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year_p91",
+  "kind": "pos",
+  "cov": 0.875,
+  "head": "【0】そして、今も猫はねずみが嫌いです。"
+ },
+ {
+  "key": "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year_neg",
+  "kind": "neg",
+  "cov": 0.08333333333333333,
+  "head": "【0】一番はねずみですよ。\n【3】今年はねず"
+ }
+]

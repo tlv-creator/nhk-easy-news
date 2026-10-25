@@ -1,0 +1,164 @@
+[
+ {
+  "tag": "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls",
+  "dur": 976.494,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run/ext/001.mp3",
+    "dur": 403.17925,
+    "offset": 0.0,
+    "rel": "track-001"
+   },
+   {
+    "path": "/workspace/work/kagumo_run/ext/002.mp3",
+    "dur": 573.31475,
+    "offset": 403.17925,
+    "rel": "track-002"
+   }
+  ]
+ },
+ {
+  "tag": "level3-the-restaurant-of-many-orders",
+  "dur": 983.384958,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run/ext/003.mp3",
+    "dur": 983.384958,
+    "offset": 0.0,
+    "rel": "track-003"
+   }
+  ]
+ },
+ {
+  "tag": "level3-who-are-these-people-the-story-of-japanese-banknotes",
+  "dur": 1272.536938,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run/ext/004.mp3",
+    "dur": 1272.536938,
+    "offset": 0.0,
+    "rel": "track-004"
+   }
+  ]
+ },
+ {
+  "tag": "level3-princess-kaguya",
+  "dur": 1056.162083,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run/ext/005.mp3",
+    "dur": 1056.162083,
+    "offset": 0.0,
+    "rel": "track-005"
+   }
+  ]
+ },
+ {
+  "tag": "level3-the-spider-s-thread-and-the-nose",
+  "dur": 1503.2792920000002,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run/ext/006.mp3",
+    "dur": 704.580042,
+    "offset": 0.0,
+    "rel": "track-006"
+   },
+   {
+    "path": "/workspace/work/kagumo_run/ext/007.mp3",
+    "dur": 798.69925,
+    "offset": 704.580042,
+    "rel": "track-007"
+   }
+  ]
+ },
+ {
+  "tag": "level4-run-melos",
+  "dur": 1723.7,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run2/ext4/Hashire_Merosu.mp3",
+    "dur": 1723.7,
+    "offset": 0.0,
+    "rel": "Hashire_Merosu"
+   }
+  ]
+ },
+ {
+  "tag": "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site",
+  "dur": 1228.9,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run2/ext4/NagaiTakashi.mp3",
+    "dur": 1228.9,
+    "offset": 0.0,
+    "rel": "NagaiTakashi"
+   }
+  ]
+ },
+ {
+  "tag": "level4-the-grave-of-the-wild-chrysanthemums",
+  "dur": 2561.8,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run2/ext4/NogikunoHaka.mp3",
+    "dur": 2561.8,
+    "offset": 0.0,
+    "rel": "NogikunoHaka"
+   }
+  ]
+ },
+ {
+  "tag": "level4-toshishun",
+  "dur": 1683.0,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run2/ext4/Toshishun.mp3",
+    "dur": 1683.0,
+    "offset": 0.0,
+    "rel": "Toshishun"
+   }
+  ]
+ },
+ {
+  "tag": "level4-the-snow-woman",
+  "dur": 1269.1,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run2/ext4/Yukionna.mp3",
+    "dur": 1269.1,
+    "offset": 0.0,
+    "rel": "Yukionna"
+   }
+  ]
+ },
+ {
+  "tag": "level1-kimono",
+  "dur": 392.6,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run2/ext/l1-002.mp3",
+    "dur": 392.6,
+    "offset": 0.0,
+    "rel": "l1-002"
+   }
+  ]
+ },
+ {
+  "tag": "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year",
+  "dur": 581.7,
+  "tracks": [
+   {
+    "path": "/workspace/work/kagumo_run2/ext/l1-003.mp3",
+    "dur": 185.0,
+    "offset": 0.0,
+    "rel": "l1-003"
+   },
+   {
+    "path": "/workspace/work/kagumo_run2/ext/l1-004.mp3",
+    "dur": 396.7,
+    "offset": 185.0,
+    "rel": "l1-004"
+   }
+  ]
+ }
+]

@@ -1,0 +1,326 @@
+{
+ "9784866397306-track-001": {
+  "book": "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls",
+  "flagged": [
+   {
+    "start": 12.0,
+    "cov": 0.214,
+    "text": "レベル別日本語多読ライブラリー"
+   },
+   {
+    "start": 16.0,
+    "cov": 0.4,
+    "text": "にほんごよむよむ文庫"
+   },
+   {
+    "start": 23.0,
+    "cov": 0.3,
+    "text": "監修、日本語多読研究会"
+   },
+   {
+    "start": 31.0,
+    "cov": 0.333,
+    "text": "原作、小泉八雲"
+   },
+   {
+    "start": 35.0,
+    "cov": 0.286,
+    "text": "簡約、粟野真紀子"
+   },
+   {
+    "start": 77.0,
+    "cov": 0.444,
+    "text": "この道にはむじなが"
+   }
+  ]
+ },
+ "9784866397306-track-002": {
+  "book": "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls",
+  "flagged": [
+   {
+    "start": 2.0,
+    "cov": 0.333,
+    "text": "原作　小泉八雲"
+   },
+   {
+    "start": 6.0,
+    "cov": 0.167,
+    "text": "簡訳　橋爪秋子"
+   }
+  ]
+ },
+ "9784866397306-track-003": {
+  "book": "level3-the-restaurant-of-many-orders",
+  "flagged": [
+   {
+    "start": 4.0,
+    "cov": 0.0,
+    "text": "原作　宮沢賢治"
+   },
+   {
+    "start": 7.0,
+    "cov": 0.429,
+    "text": "簡約　粟野まき子"
+   },
+   {
+    "start": 112.0,
+    "cov": 0.5,
+    "text": "「お腹が空いた。」"
+   },
+   {
+    "start": 445.0,
+    "cov": 0.565,
+    "text": "「眼鏡とネクタイピンと財布をここに置いてください。」"
+   },
+   {
+    "start": 455.0,
+    "cov": 0.565,
+    "text": "眼鏡とネクタイピンは危ないからここに置くんだな。」"
+   },
+   {
+    "start": 469.0,
+    "cov": 0.524,
+    "text": "二人は、眼鏡とネクタイピンと財布を置きました。"
+   },
+   {
+    "start": 720.0,
+    "cov": 0.588,
+    "text": "ナイフとフォークの絵も書いてあります。"
+   },
+   {
+    "start": 729.0,
+    "cov": 0.556,
+    "text": "その中から、青い目がこちらを見ています。"
+   }
+  ]
+ },
+ "9784866397306-track-004": {
+  "book": "level3-who-are-these-people-the-story-of-japanese-banknotes",
+  "flagged": [
+   {
+    "start": 76.0,
+    "cov": 0.273,
+    "text": "1876年から1928"
+   },
+   {
+    "start": 338.0,
+    "cov": 0.2,
+    "text": "1900年、"
+   },
+   {
+    "start": 516.0,
+    "cov": 0.273,
+    "text": "1872年から1800…"
+   },
+   {
+    "start": 760.0,
+    "cov": 0.556,
+    "text": "づけられるでしょう。"
+   },
+   {
+    "start": 770.0,
+    "cov": 0.333,
+    "text": "1835年から1901年"
+   },
+   {
+    "start": 1151.0,
+    "cov": 0.458,
+    "text": "江戸時代、1603年から1868年から明治時代、18…"
+   }
+  ]
+ },
+ "9784866397306-track-005": {
+  "book": "level3-princess-kaguya",
+  "flagged": [
+   {
+    "start": 3.0,
+    "cov": 0.5,
+    "text": "再話　高橋聡子"
+   },
+   {
+    "start": 147.0,
+    "cov": 0.5,
+    "text": "「そうだなぁ、おばあさん。"
+   }
+  ]
+ },
+ "9784866397306-track-006": {
+  "book": "level3-the-spider-s-thread-and-the-nose",
+  "flagged": [
+   {
+    "start": 3.0,
+    "cov": 0.143,
+    "text": "原作　芥川龍之介"
+   },
+   {
+    "start": 7.0,
+    "cov": 0.286,
+    "text": "簡訳　粟野麻規子"
+   },
+   {
+    "start": 20.0,
+    "cov": 0.464,
+    "text": "生きている時にいいことをした人は、死んでから極楽へ行きます。"
+   }
+  ]
+ },
+ "9784866397306-track-007": {
+  "book": "level3-the-spider-s-thread-and-the-nose",
+  "flagged": [
+   {
+    "start": 3.0,
+    "cov": 0.143,
+    "text": "原作　芥川龍之介"
+   },
+   {
+    "start": 7.0,
+    "cov": 0.571,
+    "text": "簡約　水野ふずき"
+   }
+  ]
+ },
+ "9784866396569-NogikunoHaka": {
+  "book": "level4-the-grave-of-the-wild-chrysanthemums",
+  "flagged": [
+   {
+    "start": 2.0,
+    "cov": 0.429,
+    "text": "原作　伊藤左千夫"
+   },
+   {
+    "start": 5.0,
+    "cov": 0.571,
+    "text": "簡約　近藤ますこ"
+   },
+   {
+    "start": 8.0,
+    "cov": 0.5,
+    "text": "監修　日本語多読研究会"
+   },
+   {
+    "start": 72.0,
+    "cov": 0.4,
+    "text": "僕は13歳。"
+   },
+   {
+    "start": 1080.0,
+    "cov": 0.333,
+    "text": "「まあ、リンドウ。"
+   },
+   {
+    "start": 1421.0,
+    "cov": 0.545,
+    "text": "10月16日、政夫、民子様。"
+   },
+   {
+    "start": 1645.0,
+    "cov": 0.467,
+    "text": "私はタミさんが可哀想で可哀想で……。"
+   }
+  ]
+ },
+ "9784866396569-Toshishun": {
+  "book": "level4-toshishun",
+  "flagged": [
+   {
+    "start": 3.0,
+    "cov": 0.143,
+    "text": "原作　芥川龍之介"
+   },
+   {
+    "start": 6.0,
+    "cov": 0.143,
+    "text": "簡約　粟野真紀子"
+   },
+   {
+    "start": 226.0,
+    "cov": 0.4,
+    "text": "あたりは暗く、空の月は前よりも白く、はっきり見えました。"
+   }
+  ]
+ },
+ "9784866396569-Yukionna": {
+  "book": "level4-the-snow-woman",
+  "flagged": [
+   {
+    "start": 11.0,
+    "cov": 0.357,
+    "text": "レベル別日本語多読ライブラリー"
+   },
+   {
+    "start": 16.0,
+    "cov": 0.5,
+    "text": "にほんごよむよむ文庫"
+   },
+   {
+    "start": 23.0,
+    "cov": 0.3,
+    "text": "監修 日本語多読研究会"
+   },
+   {
+    "start": 34.0,
+    "cov": 0.167,
+    "text": "簡訳 粟野牧子"
+   }
+  ]
+ },
+ "9784866396569-Hashire_Merosu": {
+  "book": "level4-run-melos",
+  "flagged": [
+   {
+    "start": 3.0,
+    "cov": 0.2,
+    "text": "原作、太宰治。"
+   },
+   {
+    "start": 6.0,
+    "cov": 0.571,
+    "text": "簡約、粟野真紀子。"
+   },
+   {
+    "start": 1721.0,
+    "cov": 0.571,
+    "text": "オーディオブック"
+   }
+  ]
+ },
+ "9784866396569-NagaiTakashi": {
+  "book": "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site",
+  "flagged": [
+   {
+    "start": 6.0,
+    "cov": 0.4,
+    "text": "作　橋爪明子　監修　日本語多読研究会"
+   }
+  ]
+ },
+ "9784866396583-l1-002": {
+  "book": "level1-kimono",
+  "flagged": [
+   {
+    "start": 83.0,
+    "cov": 0.571,
+    "text": "綺麗な小袖を一番上に着ました。"
+   },
+   {
+    "start": 360.0,
+    "cov": 0.333,
+    "text": "髪を上げます。"
+   }
+  ]
+ },
+ "9784866396583-l1-003": {
+  "book": "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year",
+  "flagged": [
+   {
+    "start": 160.0,
+    "cov": 0.333,
+    "text": "ハックショーン！"
+   }
+  ]
+ },
+ "9784866396583-l1-004": {
+  "book": "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year",
+  "flagged": []
+ }
+}
