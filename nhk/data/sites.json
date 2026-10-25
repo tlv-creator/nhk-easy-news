@@ -1,27 +1,28 @@
 {
-  "_readme": "NHK 内容站登记表（项目自己的；跨项目的保护清单在共享仓库的 protected-sites.json）",
-  "_rules": [
-    "fallback_domain = 编译进 APK classes.dex 的**冻结兜底站** ⇒ 永不 redeploy、永不删",
-    "sites = 本项目部署过的站；guide 指向的当前站永远不删",
-    "node_id 留空 ⇒ 因为沙箱里没有 drive 工具（删除要用 mcp_invoke 的 drive 工具）"
-  ],
-  "updated": "2026-10-24",
-  "fallback_domain": "vkwwuh9wgkzo0",
-  "sites": [
-    {
-      "domain": "aaxnw4wets0kt",
-      "ver": 23,
-      "apk_ver": 20,
-      "date": "2026-10-24",
-      "node_id": "",
-      "note": "当前站（引导页 version.json 指向它）"
-    }
-  ],
-  "stale_to_delete": [
-    {
-      "domain": "blb9mns852mft",
-      "status": "SUPERSEDED",
-      "note": "2026-10-24 实测仍 200，但引导页已切走、现役 APK 也没引用 ⇒ 该删（需 drive 工具）"
-    }
-  ]
+ "_readme": "NHK 内容站登记表（项目自己的；跨项目的保护清单在共享仓库的 protected-sites.json）",
+ "_rules": [
+  "fallback_domain = 编译进 APK classes.dex 的**冻结兜底站** ⇒ 永不 redeploy、永不删",
+  "sites = 本项目部署过的站；guide 指向的当前站永远不删",
+  "node_id 留空/PENDING = 沙箱里没有 drive 工具（删除要用 mcp_invoke 的 drive 工具）",
+  "🔴 2026-10-25：node_id 未知时**不许打印会打错的删除命令**（手册 §18.2）⇒ cleanup_sites.py plan 会单独列出来"
+ ],
+ "updated": "2026-10-25",
+ "fallback_domain": "vkwwuh9wgkzo0",
+ "sites": [
+  {
+   "domain": "204ocuv36su6w",
+   "ver": 32,
+   "apk_ver": 20,
+   "date": "2026-10-25",
+   "node_id": "PENDING",
+   "note": "当前站（引导页 version.json 指向它）· 44 期 · ver 32 / apkVer 20"
+  }
+ ],
+ "stale_to_delete": [
+  {
+   "domain": "em8hjp6jskxyb",
+   "status": "DELETED",
+   "note": "2026-10-25 日更清理时已删（curl 判 404，当天核过）⇒ 站点配额释放 1 位；留墓碑，别再当活站"
+  }
+ ]
 }
