@@ -283,7 +283,7 @@
       "reason": "🔴 **老师的单词记录站（正式版 v3）** —— 学生每天在上面记录单词。域名已经写进**发给学生/贴在班群里的链接** ⇒ 删了 = 老师和 157 名学生手里的链接当场死。",
       "written_in": "老师发出去的链接 + 云盘站名「词汇学习站 Unit1+2+3（正式版 v3）」",
       "frozen": true,
-      "note": "🔴 frozen=true = **永不删 + 永不 redeploy**（redeploy = 换随机域名 ⇒ 学生的链接同样死）。✅ **数据在共享 Supabase 项目 lszwxcmvcvbraqtrtgon 里 ⇒ 站删了数据也不会丢**，但链接会死。⚠️ 本站不依赖任何别的 mcode 站（已扫页面引用）。要更新内容：新建站 + 改所有引用方 + 改完再删旧的。 🟢 **mcode 镜像允许停在某个版本**（老师真正在用的是 CloudBase 那条固定网址）⇒ 将来发新版 = **新建站**，不是 redeploy 这个。🔴 **站名必须带版本号 + 课次数**（云盘「网站」列表里几个长得一样的词汇站会让老师点错）。 🟢 **给学生的入口 = GitHub Pages 永久地址** `https://tlv-creator.github.io/nhk-easy-news/vocab/`（**没有腾讯云「确定访问」中间页、不会被清站删、以后发新版 URL 不变**）。 🔴 老师的说明文档/引导页**只指向这条**，别指 mcode 镜像（那是副本，会变旧）。",
+      "note": "🔴🔴 老师 2026-10-25 硬指令：学生相关的资料网站绝对不要动（词汇/听力）⇒ frozen=true = 永不删 + 永不 redeploy；站是壳、数据在 Supabase",
       "current_as_of": "2026-10-23",
       "student_entry": "https://tlv-creator.github.io/nhk-easy-news/vocab/"
     },
@@ -294,7 +294,7 @@
       "reason": "🔴 **老师的单词记录站（VocabLog 正式版·零凭据）** —— 与 iujsgx3ci73dp 同属英语线词汇站，同样是学生天天用的正式站。",
       "written_in": "云盘站名「词汇学习站 VocabLog（正式版·零凭据）」",
       "frozen": true,
-      "note": "🔴 frozen=true = **永不删 + 永不 redeploy**。老师明确要求：**单词记录的网店不能删**。⚠️ 两个词汇站都活着、都可能是老师发给学生的那个 ⇒ 一并保护，别只保一个。 🟢 **mcode 镜像允许停在某个版本**（老师真正在用的是 CloudBase 那条固定网址）⇒ 将来发新版 = **新建站**，不是 redeploy 这个。🔴 **站名必须带版本号 + 课次数**（云盘「网站」列表里几个长得一样的词汇站会让老师点错）。 🟢 **给学生的入口 = GitHub Pages 永久地址** `https://tlv-creator.github.io/nhk-easy-news/vocab/`（**没有腾讯云「确定访问」中间页、不会被清站删、以后发新版 URL 不变**）。 🔴 老师的说明文档/引导页**只指向这条**，别指 mcode 镜像（那是副本，会变旧）。",
+      "note": "🔴🔴 老师 2026-10-25 硬指令：学生相关的资料网站绝对不要动（词汇/听力）⇒ frozen=true = 永不删 + 永不 redeploy；站是壳、数据在 Supabase",
       "current_as_of": "2026-10-23",
       "student_entry": "https://tlv-creator.github.io/nhk-easy-news/vocab/"
     },
@@ -734,6 +734,14 @@
       "reason": "哆啦A梦2002 · 音频源站(APK专用) —— 零引用，dora 项目已下线",
       "status": "DELETED",
       "note": "🔴 2026-10-25 用户决定「哆啦这个不要了」⇒ 项目下线，站已删除。此站曾供**旧版** dora App（v1.2）拉音频；v1.3 独立站自带音频 ⇒ 不受影响。"
+    },
+    {
+      "domain": "listening",
+      "status": "ALIVE",
+      "frozen": true,
+      "role": "student-facing-site",
+      "location": "GitHub Pages 子目录 /nhk-easy-news/listening/（非 mcode 站，不占站点配额）",
+      "note": "🔴 老师硬指令：听力站不要动。canonical 在 GitHub Pages ⇒ 不在站点配额体系内，但清站/清目录流程必须跳过它"
     }
   ],
   "_status_vocab": "🔴 **status 的取值词汇表（2026-10-24 定，三个 agent 一起对过）**：\n   DELETED    = 我们说它**已经删了**    ⇒ **期望它死**   ⇒ 还活着 ⇒ 🔴「清单该更新」\n   SUPERSEDED = 旧站**被新站取代、可删** ⇒ **不判死活**   ⇒ 墓碑条目\n   ALIVE      = **显式写出来的「现役」** ⇒ **期望它活着**（语义 ≡ 没有 status）\n   （没有 status）= 现役                 ⇒ **期望它活着** ⇒ 死了   ⇒ 🔴「清单该更新」\n   ⇒ **规范写法是大写**：写入端 shun/tools/update_protected.py 会 .strip().upper() 归一，闸门 tools/check_sites_alive.py 也会 ⇒ 两种写法都能跑。\n   ⇒ ⚠️ **别写第五种取值**：闸门遇到不认识的取值会 **exit 2 不放行**（fail closed）\n      —— 假红的根源从来是「默认分支」，不是「少一个取值」。\n   ⇒ ℹ️ 清单里**还留着 4 条历史小写 `alive`**（xwi3hf93nlt4p / tcw0ti0k7p0hd / 3pqlt9tq6lrij / crb86rfrc9lmk）—— **故意没改**：\n      ① 语义完全相同（闸门两种都认）⇒ 没有功能上的必要；\n      ② 这 4 条分属 hub / ama / scenes 三家，**改别人条目的字面量有极小概率打断别人 grep `\"status\": \"alive\"` 的脚本**；\n      ③ 写入端已归一 ⇒ 这些条目下次被各自主人改动时自然会变成大写。\n   🔴 **合法取值只有四种**：DELETED / SUPERSEDED / alive / 没有 status 字段。\n   出现别的值（例如 2026-10-25 误写的 ACTIVE）= 写法错了 ⇒ 要归一成 alive，否则删站闸门按「穷举取值」判定时会当成未知值直接不放行。",
