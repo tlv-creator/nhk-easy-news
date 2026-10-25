@@ -26,6 +26,16 @@ do $$ begin
   end if;
 end $$;
 -- ---------------------------------------------------------------------
+-- 🔴 全新本地库里**没有** anon / authenticated / service_role 这三个角色
+--    ⇒ 下面那句 grant 会报 ERROR ⇒ 配合上面的 ON_ERROR_STOP ⇒ **脚本当场死掉**
+--    ⇒ 表现为：表建了，但**policy 一条没建**（这个文件的一半就没了）
+--    ⇒ 幂等地先把这三个角色建出来（已存在就跳过）
+do $$ begin
+  if not exists (select 1 from pg_roles where rolname='anon') then create role anon nologin; end if;
+  if not exists (select 1 from pg_roles where rolname='authenticated') then create role authenticated nologin; end if;
+  if not exists (select 1 from pg_roles where rolname='service_role') then create role service_role nologin; end if;
+end $$;
+
 drop table if exists public.vocab_history_logs, public.vocab_online_status, public.vocab_states;
 
 create table public.vocab_history_logs (
