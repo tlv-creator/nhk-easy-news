@@ -213,8 +213,8 @@
       "project": "nhk",
       "reason": "现役内容站（引导页当前指向）",
       "written_in": "引导页 site 字段",
-      "note": "2026-10-24 已被 blb9mns852mft 取代 ⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
-      "status": "SUPERSEDED"
+      "note": "已删（curl 判 404，2026-10-25 核过）⇒ 不可删也不必再保护",
+      "status": "DELETED"
     },
     {
       "domain": "irk7ibwekq8se",
@@ -352,7 +352,6 @@
     {
       "domain": "4r0zazix2auz0",
       "project": "nhk",
-      "role": "current_site",
       "reason": "NHK 内容站 v1.26（字幕同步修好 + 原速音 96k 无削波 + 坏帧音频已修）",
       "note": "2026-10-23 已被 v1.26 取代并删除（curl 404 验过）；现役内容站以引导页 version.json 的 site 字段为准",
       "frozen": false,
@@ -362,9 +361,9 @@
       "domain": "sn61770y6nxvr",
       "project": "nhk",
       "reason": "NHK 内容站 v1.27（17 期坏帧已修 + 音频四维体检全过 0 削平 0 过冲 + 字幕同步修好）",
-      "note": "2026-10-24 已被 blb9mns852mft 取代 ⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
+      "note": "已删（curl 判 404，2026-10-25 核过）⇒ 不可删也不必再保护",
       "frozen": false,
-      "status": "SUPERSEDED"
+      "status": "DELETED"
     },
     {
       "domain": "2aixd037sd8fk",
@@ -434,9 +433,9 @@
     {
       "domain": "0een4722dqi6v",
       "project": "nhk",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "reason": "NHK 上一版内容站（引导页已切到 2pybu8mvjo0iu）",
-      "note": "2026-10-24 已被 blb9mns852mft 取代 ⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
+      "note": "已删（curl 判 404，2026-10-25 核过）⇒ 不可删也不必再保护",
       "frozen": false,
       "deleted_at": "2026-10-24"
     },
@@ -638,7 +637,6 @@
     {
       "domain": "ac8e29hqy5sv5",
       "project": "nhk",
-      "role": "current_site",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
       "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
@@ -671,11 +669,15 @@
     },
     {
       "domain": "em8hjp6jskxyb",
-      "status": "alive",
+      "status": "ACTIVE",
       "frozen": false,
       "deploy_url": "https://em8hjp6jskxyb.space.mcode.cn",
-      "role": "现役站（v1.30 · SW缓存v30 · 切换按钮加大）",
-      "created_at": "2026-10-25"
+      "role": "current_site",
+      "created_at": "2026-10-25",
+      "project": "nhk",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的"
     },
     {
       "domain": "hoglwc3wwd3jm",
