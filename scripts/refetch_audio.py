@@ -41,6 +41,7 @@ finally:
     sys.argv = _ARGV
 
 from audio_health import probe, FLAT_RATIO_LIMIT, PEAK_LIMIT_DB   # noqa: E402
+import audio_recipe  # noqa: E402  （配方唯一权威）
 
 DATA = os.path.join(ROOT, "data")
 SITE = os.path.join(ROOT, "site/app")
@@ -199,7 +200,7 @@ def transcode(ep_id):
         return
     tmp = dst + ".new.m4a"
     r = subprocess.run(["ffmpeg", "-nostdin", "-y", "-v", "error", "-i", src,
-                        "-c:a", "aac", "-b:a", "96k", "-ar", "48000", "-ac", "2",
+                        "-c:a", "aac", "-b:a", audio_recipe.AAC_BITRATE, "-ar", "48000", "-ac", "2",
                         "-movflags", "+faststart", tmp],
                        capture_output=True, text=True, timeout=300)
     if r.returncode != 0 or not os.path.exists(tmp) or os.path.getsize(tmp) < 20000:
