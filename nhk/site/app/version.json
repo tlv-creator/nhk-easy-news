@@ -4,6 +4,6 @@
   "apkVer": 20,
   "site": "https://tlv-creator.github.io/nhk-easy-news/",
   "apk": "NHK.apk",
-  "note": "44期 · 语法新格式上线(41期/284句) · 排序修复 · 複製整句 · 大按钮 · sp轨校对",
+  "note": "44期 · v1.20 APK（apkVer=20）· 🔴 普通版字幕/音频一致（开关只管高亮）· sp 轨 ASR 错字已校对（16 期）· 语法讲解新格式 · 列表排序修复 + 複製整句 · 剥平台注入",
   "updated": "2026-10-25"
 }
