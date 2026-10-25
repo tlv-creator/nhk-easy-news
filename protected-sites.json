@@ -581,53 +581,59 @@
       "project": "nhk",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "2026-10-24 已被 fsgzjdb65tse5 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
       "frozen": false,
-      "status": "SUPERSEDED"
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
     },
     {
       "domain": "fsgzjdb65tse5",
       "project": "nhk",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "2026-10-24 已被 vdc02cjwfuibi 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
       "frozen": false,
-      "status": "SUPERSEDED"
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
     },
     {
       "domain": "vdc02cjwfuibi",
       "project": "nhk",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "2026-10-24 已被 jhtywvkn1vzil 取代 ⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
       "frozen": false,
-      "status": "SUPERSEDED"
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
     },
     {
       "domain": "u5kzfuj1hiiht",
       "project": "nhk",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "reason": "NHK 上一版内容站",
-      "note": "2026-10-24 已被 jhtywvkn1vzil 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
-      "frozen": false
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
+      "frozen": false,
+      "deleted_at": "2026-10-25"
     },
     {
       "domain": "jhtywvkn1vzil",
       "project": "nhk",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "2026-10-24 已被 hpufjp83f9cqp 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
       "frozen": false,
-      "status": "SUPERSEDED"
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
     },
     {
       "domain": "hpufjp83f9cqp",
       "project": "nhk",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "2026-10-24 已被 ac8e29hqy5sv5 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
       "frozen": false,
-      "status": "SUPERSEDED"
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
     },
     {
       "domain": "ac8e29hqy5sv5",
@@ -635,8 +641,10 @@
       "role": "current_site",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
-      "frozen": false
+      "note": "被 v1.30(em8hjp6jskxyb) 取代；站点配额清理（50/50 阻塞发布）",
+      "frozen": false,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
     },
     {
       "domain": "0rbbjfw36hj66",
@@ -660,6 +668,14 @@
       "site": "https://qgozaeqvjc9l9.space.mcode.cn/",
       "note": "🔴 域名冻结：**永不 redeploy、绝不删**。这是 APK 编译进去的写死地址（换域名 = 必须重打 APK）。",
       "current_as_of": "2026-10-25"
+    },
+    {
+      "domain": "em8hjp6jskxyb",
+      "status": "ACTIVE",
+      "frozen": false,
+      "deploy_url": "https://em8hjp6jskxyb.space.mcode.cn",
+      "role": "现役站（v1.30 · SW缓存v30 · 切换按钮加大）",
+      "created_at": "2026-10-25"
     }
   ],
   "_status_vocab": "🔴 **status 的取值词汇表（2026-10-24 定，三个 agent 一起对过）**：\n   DELETED    = 我们说它**已经删了**    ⇒ **期望它死**   ⇒ 还活着 ⇒ 🔴「清单该更新」\n   SUPERSEDED = 旧站**被新站取代、可删** ⇒ **不判死活**   ⇒ 墓碑条目\n   ALIVE      = **显式写出来的「现役」** ⇒ **期望它活着**（语义 ≡ 没有 status）\n   （没有 status）= 现役                 ⇒ **期望它活着** ⇒ 死了   ⇒ 🔴「清单该更新」\n   ⇒ **规范写法是大写**：写入端 shun/tools/update_protected.py 会 .strip().upper() 归一，闸门 tools/check_sites_alive.py 也会 ⇒ 两种写法都能跑。\n   ⇒ ⚠️ **别写第五种取值**：闸门遇到不认识的取值会 **exit 2 不放行**（fail closed）\n      —— 假红的根源从来是「默认分支」，不是「少一个取值」。\n   ⇒ ℹ️ 清单里**还留着 4 条历史小写 `alive`**（xwi3hf93nlt4p / tcw0ti0k7p0hd / 3pqlt9tq6lrij / crb86rfrc9lmk）—— **故意没改**：\n      ① 语义完全相同（闸门两种都认）⇒ 没有功能上的必要；\n      ② 这 4 条分属 hub / ama / scenes 三家，**改别人条目的字面量有极小概率打断别人 grep `\"status\": \"alive\"` 的脚本**；\n      ③ 写入端已归一 ⇒ 这些条目下次被各自主人改动时自然会变成大写。",
