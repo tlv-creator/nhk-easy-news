@@ -8,7 +8,7 @@
 /* 🔴 缓存名带内容版本：改了 sw.js 本身 ⇒ 浏览器会重装 SW ⇒ 预缓存里的
    data/episodes.js 等才会刷新。否则 stale-while-revalidate 会把**旧期数**
    先发给用户（第一次打开看不到新一期，得开第二次）—— 2026-10-24 修 */
-const CACHE = 'nhk-easynews-v48';
+const CACHE = 'nhk-easynews-v30';
 const CORE = [
   './',
   './index.html',

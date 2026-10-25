@@ -1058,15 +1058,12 @@ html[data-palette="bw"] .sp-w { background: #f4f4f4; }
   border-bottom: 1px solid var(--line);
   background: var(--bg-2);
 }
-.verbar .vb {
-  font: inherit; font-size: 14px; font-weight: 700; line-height: 1.2;
-  padding: 7px 12px; border-radius: 9px; cursor: pointer;
-  border: 1px solid var(--line); background: var(--bg-3); color: var(--fg-dim);
-  min-height: 34px;
-}
+.verbar .vb {   font: inherit; font-size: 17px; font-weight: 700; line-height: 1.25;   padding: 10px 16px; border-radius: 10px; cursor: pointer;   border: 2px solid var(--line); background: var(--bg-3); color: var(--fg);   min-height: 46px; }
 .verbar .vb.on { background: var(--accent); color: var(--accent-ink, #fff); border-color: var(--accent); }
-.verbar .vb.off { opacity: .38; cursor: not-allowed; }
-.verbar .vb-hint { margin-left: auto; font-size: 12.5px; color: var(--fg-dim); white-space: nowrap; }
+.verbar .vb.off {   opacity: .55; cursor: not-allowed; }
+.verbar .vb.off::after { content: '（本期無）'; font-size: 13px; font-weight: 400; }
+   opacity: .55; cursor: not-allowed; }
+.verbar .vb-hint {   margin-left: auto; font-size: 14px; color: var(--fg-dim); white-space: nowrap; }
 
 /* 词条详情里的「收藏这个词」 */
 .wd-act { margin-top: 10px; }
