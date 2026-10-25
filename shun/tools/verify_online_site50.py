@@ -71,8 +71,9 @@ with sync_playwright() as pw:
     pg2 = b.new_page(viewport={'width': 412, 'height': 915})
     e2 = []
     pg2.on('pageerror', lambda e: e2.append(str(e)))
-    pg2.goto(SINGLE, wait_until='load')
-    pg2.wait_for_timeout(4000)
+    # ⚠️ 单文件版 5.4MB（gzip 848KB）⇒ 沙箱网络 1.2MB/s ⇒ load 事件要 20s+
+    pg2.goto(SINGLE, wait_until='domcontentloaded', timeout=180000)
+    pg2.wait_for_timeout(6000)
     ck('单文件版渲染出句子', pg2.locator('.cue').count() > 0,
         '= %d' % pg2.locator('.cue').count())
     n2 = pg2.evaluate("()=>window.__shun.EPS.length")

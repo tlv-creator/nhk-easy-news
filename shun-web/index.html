@@ -236,6 +236,10 @@ html[data-k="bw"] .fl{color:#000}
   var $ = function(s){ return document.querySelector(s); };
 
   var S = { ep: 0, cur: -1, on: false, au: null, fs: 30, kw: '', struct: true };
+  /* 🔴 只读测试钩子（2026-10-25）：验收脚本要能取到真实句子做「逐字对齐」校验。
+     EPS 是 IIFE 内的 var，页面外取不到 ⇒ 暴露一个只读入口。
+     对用户零影响（不写任何东西，只读）。 */
+  window.__SHUN_EPS__ = EPS;
   try { S.fs = parseInt(localStorage.getItem('shun.txt.fs') || '30', 10) || 30; } catch(e){}
 
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -343,6 +347,29 @@ html[data-k="bw"] .fl{color:#000}
     var h = '';
     for (var i=0;i<gs.chain.length;i++) h += (i?' <i>→</i> ':'<i>') + esc(gs.chain[i]) + '</i>';
     return '<p class="chain">层层修饰：'+h+'</p>';
+  }
+  /* ④ 谓语细分与形态链（2026-10-25 新增）
+     数据：s.pred = { p:[[start,len,code,label],...], mc:[辞書形,て形,意志形,ば形], k:句末类型 }
+     ⚠️ 缺数据时**显式说明**，不静默不渲染（用户会以为功能坏了）。 */
+  function predHtml(s){
+    var pr = s && s.pred;
+    if (!pr) return '<p class="skel">这一句没做谓语细分（规则引擎未覆盖）。</p>';
+    var h = '';
+    if (pr.k) h += '<p class="skel">句末类型：<b>'+esc(pr.k)+'</b></p>';
+    if (pr.p && pr.p.length){
+      h += '<p class="skel">谓语细分：</p>';
+      for (var i=0;i<pr.p.length;i++){
+        var it = pr.p[i];
+        var seg = (it && it[0]!=null) ? s.t.substr(it[0], it[1]) : '';
+        var lbl = it && it[3] ? it[3] : '';
+        h += '<p class="sh-part"><b>'+esc(seg)+'</b>：'+esc(lbl)+'</p>';
+      }
+    }
+    if (pr.mc && pr.mc.length){
+      h += '<p class="chain">形态链：'+esc(pr.mc.join(' → '))+'</p>';
+    }
+    if (!h) return '<p class="skel">这一句没做谓语细分（规则引擎未覆盖）。</p>';
+    return h;
   }
 
   /* ---------- 按集加载（site 模式） ---------- */
@@ -565,6 +592,7 @@ html[data-k="bw"] .fl{color:#000}
       h += '<div class="sh-sec"><h4>③ 主句骨架与修饰链</h4>'
          + (hasChain ? chainHtml(s.gs) + (s.gs.whole ? ('<p class="skel">整句意思：<b>'+esc(s.gs.whole)+'</b></p>') : '')
                       : '<p class="skel">这一集没有骨架/修饰链标注。</p>') + '</div>';
+      h += '<div class="sh-sec"><h4>④ 谓语细分与形态链</h4>'+predHtml(s)+'</div>';
     } else {
       h += '<div class="sh-sec"><h4>结构分层</h4><p class="skel">这一句没有结构标注。</p></div>';
     }

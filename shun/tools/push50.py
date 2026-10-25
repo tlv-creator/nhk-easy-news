@@ -50,7 +50,10 @@ def main():
              'verify_data50.py', 'verify_site50.py', 'verify_online50.py',
              'verify_online_site50.py', 'push50.py', 'run_platform.py',
              'fetch_audio.py', 'fetch_base50.py', 'build_site50.py',
-             'fix_ep16_timeline.py']
+             'fix_ep16_timeline.py',
+             # 🔴 2026-10-25：ruby 引擎（修了 11 处空读音 + 1 处错读音 + 依赖硬失败）
+             #    ⚠️ 权威位置是 shun/tools/ruby/ruby.py（不是 shun/tools/ruby.py）
+             'gen_pred_mc_new.py', 'merge_pred_mc.py']
     for t in TOOLS:
         lp = os.path.join(ROOT, t)
         if os.path.exists(lp):
@@ -58,6 +61,23 @@ def main():
     docp = os.path.join(ROOT, 'docs', '50集说明.md')
     if os.path.exists(docp):
         items.append(('shun/docs/50集说明.md', docp))
+    # 🔴 ruby 引擎目录（词表 + 词典 + 读音优先表）—— 缺了 ruby.py 会硬失败
+    RUBY_DIR = os.path.join(ROOT, 'tools', 'ruby')
+    if os.path.isdir(RUBY_DIR):
+        for fn in sorted(os.listdir(RUBY_DIR)):
+            fp = os.path.join(RUBY_DIR, fn)
+            if os.path.isfile(fp) and not fn.endswith('.bak') and fn != '__pycache__':
+                items.append(('shun/tools/ruby/' + fn, fp))
+    # pred/mc sidecar（19 集 peer 的 + 31 集我生成的）
+    for fn in ('pred_mc_19eps.json', 'pred_mc_new31.json'):
+        fp = os.path.join(ROOT, 'tools', fn)
+        if os.path.exists(fp):
+            items.append(('shun/tools/' + fn, fp))
+    # 设计文档（唯一权威）
+    for fn in ('新结构注释设计.md',):
+        fp = os.path.join(ROOT, 'docs', fn)
+        if os.path.exists(fp):
+            items.append(('shun/docs/' + fn, fp))
 
     # ① HEAD
     head = req('GET', API + '/git/ref/heads/main')['object']['sha']

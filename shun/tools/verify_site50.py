@@ -98,11 +98,36 @@ try:
         print('\n【3】点句 → 底部大弹窗')
         pg.locator('.cue').first.click()
         pg.wait_for_timeout(700)
+        # 取第 1 句挂到全局，供④段的偏移校验用
+        # 🔴 站点版懒加载：句子在 EPS[0].sents（不是 window.SHUN.eps）
+        #    ⇒ 必须在**点句之后**取（此时该集已加载）
+        pg.evaluate("""() => {
+          const E = window.__SHUN_EPS__ || [];
+          const e = E[0] || null;
+          if (e && e.sents && e.sents.length) window.__SHUN_TEST_SENT__ = e.sents[0];
+        }""")
         chk(pg.locator('#sheet').is_visible(), '弹窗打开')
         h = pg.locator('#sheet').inner_text()
         chk('分层大框架' in h, '① 分层大框架')
         chk('逐块拆解' in h, '② 逐块拆解')
         chk('主句骨架与修饰链' in h, '③ 主句骨架与修饰链')
+        chk('谓语细分与形态链' in h, '④ 谓语细分与形态链')
+        # ④ 的**内容**必须真的有（不能只有一个空标题）
+        sec4 = pg.locator('#sheet .sh-sec').nth(3)
+        t4 = sec4.inner_text() if sec4.count() else ''
+        chk(len(t4.strip()) > len('④ 谓语细分与形态链') + 2, '④ 段有实际内容',
+            '= %d 字' % len(t4.strip()))
+        chk('句末类型' in t4 or '谓语细分' in t4 or '形态链' in t4,
+            '④ 段含谓语细分/形态链条目')
+        # ④ 的谓语细分片段必须**逐字来自原句**（偏移不能错）
+        # 🔴 None（取不到数据）= **没验到** = 必须判红，不能当通过
+        seg_ok = pg.evaluate("""() => {
+          const s = window.__SHUN_TEST_SENT__;
+          if (!s || !s.pred || !s.pred.p || !s.pred.p.length) return null;
+          return s.pred.p.every(it => s.t.substr(it[0], it[1]).length === it[1]);
+        }""")
+        chk(seg_ok is True, '④ 谓语细分偏移逐字对齐原句（取不到数据=没验到=判红）',
+            str(seg_ok))
         chk(pg.locator('#sheet .sh-part').count() > 0, '成分说明列表',
             '= %d 条' % pg.locator('#sheet .sh-part').count())
         box = pg.evaluate("() => { const r = document.querySelector('#sheet').getBoundingClientRect();"
@@ -182,6 +207,17 @@ try:
         chk(n_eps == 50, '单文件版内联 50 集', '= %d' % n_eps)
         chk(pg2.locator('#epBtn').inner_text().startswith('第1集'), '默认显示第1集',
             repr(pg2.locator('#epBtn').inner_text()))
+        # 🔴 单文件版也要有第④段（两版同源，但必须各自验到）
+        pg2.locator('.cue').first.click()
+        pg2.wait_for_timeout(700)
+        h2 = pg2.locator('#sheet').inner_text()
+        chk('谓语细分与形态链' in h2, '单文件版 ④ 谓语细分与形态链')
+        sec4b = pg2.locator('#sheet .sh-sec').nth(3)
+        t4b = sec4b.inner_text() if sec4b.count() else ''
+        chk(len(t4b.strip()) > len('④ 谓语细分与形态链') + 2,
+            '单文件版 ④ 段有实际内容', '= %d 字' % len(t4b.strip()))
+        pg2.locator('#sheetClose').click()
+        pg2.wait_for_timeout(200)
         chk(len(errs2) == 0, '单文件版 0 JS 错误', '; '.join(errs2[:3]))
         pg2.screenshot(path=SHOTS + '/52-single-50.png')
 
