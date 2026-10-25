@@ -796,6 +796,37 @@
         "/workspace/output/tadoku-apk.zip（站上那份）",
         "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
       ]
+    },
+    {
+      "domain": "030ktppkqjm6g.space.mcode.cn.space.mcode.cn",
+      "name": "日语泛读精读 · 正式交付站（75 本 · 官方朗読 20 本 + 对轴注音修正）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "2026-10-25 本轮：新增 20 本出版社官方朗読（教材 L3/L4）；时间轴重算（哑句归零）；汉字注音修正 10 本 348 句；词库 3795 条；站根含 tadoku-apk.zip；永久入口 tadoku.html 指向它",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip（站上那份）",
+        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+      ]
+    },
+    {
+      "domain": "ddiwijcogorrr.space.mcode.cn",
+      "name": "日语泛读 · 官方朗読音频源 1/2（10 本 · 88MB）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+      "referenced_by": [
+        "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
+      ]
+    },
+    {
+      "domain": "ppch90g3xmufh.space.mcode.cn",
+      "name": "日语泛读 · 官方朗読音频源 2/2（10 本 · 84MB）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+      "referenced_by": [
+        "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
+      ]
     }
   ]
 }
