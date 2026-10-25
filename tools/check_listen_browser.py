@@ -28,7 +28,52 @@ if LOCKED:
     sys.argv = [a for a in sys.argv if a != "--locked"]
 SU = "https://lszwxcmvcvbraqtrtgon.supabase.co"
 AK = os.environ.get("SB_KEY", "sb_publishable_3LuLZXWMadqYH3SLYOenig_ECHa51Mo")
-SID, NAME = "26270133", "王曦娴"
+# 🔴🔴 公开仓库里**不写死真实学生的学号/姓名**（仓库是 public，Pages 公开可读）
+#    ⇒ 运行时再取：① 环境变量 E2E_SID / E2E_NAME  ② 否则取随站发布的静态名册第一条
+#    （名册本来就对 anon 可读，不算新增暴露；取到的还是同一个学生，行为完全不变）
+#    ③ 两条路都拿不到 ⇒ exit 9（**环境没搭起来**，不是断言红）
+def _first_roster_entry():
+    here = os.path.dirname(os.path.abspath(__file__))
+    texts = []
+    for p in (os.path.join(here, "..", "listening", "app", "data", "roster.js"),
+              os.path.join(here, "roster.js")):
+        try:
+            texts.append(open(p, encoding="utf-8").read())
+        except Exception:
+            pass
+    if not texts:
+        try:
+            with urllib.request.urlopen(
+                    "https://tlv-creator.github.io/nhk-easy-news/listening/app/data/roster.js",
+                    timeout=20) as r:
+                texts.append(r.read().decode("utf-8", "replace"))
+        except Exception:
+            pass
+    for txt in texts:
+        m = re.search(r'window\.LISTEN_ROSTER_FALLBACK\s*=\s*(\[.*?\])\s*;', txt, re.S)
+        if not m:
+            continue
+        try:
+            arr = json.loads(m.group(1))
+        except Exception:
+            continue
+        if arr and arr[0].get("id") and arr[0].get("name"):
+            return arr[0]
+    return None
+
+
+_E2E_SID = os.environ.get("E2E_SID", "").strip()
+_E2E_NAME = os.environ.get("E2E_NAME", "").strip()
+if _E2E_SID and _E2E_NAME:
+    SID, NAME = _E2E_SID, _E2E_NAME
+else:
+    _first = _first_roster_entry()
+    if not _first:
+        print("❌ 拿不到名册（本地没有 listening/app/data/roster.js，线上也取不到）")
+        print("   ⇒ 没法登录 ⇒ 本次验收**无效**（不是断言红）")
+        print("   临时指定：E2E_SID=<学号> E2E_NAME=<姓名> python3 %s" % os.path.basename(__file__))
+        sys.exit(9)
+    SID, NAME = (_E2E_SID or _first["id"]), (_E2E_NAME or _first["name"])
 MARK = "浏览器闭环测试"
 CHROME = "/root/.cache/ms-playwright/chromium-1243/chrome-linux/chrome"
 

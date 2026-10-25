@@ -13,11 +13,12 @@ const mock = require('./mock_supabase');
 const PORT = 18731;
 const BASE = 'http://127.0.0.1:' + PORT;
 
-/* 真库里的班（用来验证「清空只清目标班」） */
+/* 真库里的班（用来验证「清空只清目标班」）
+   🔴 学号全是**合成占位**（90000011/90000012/90000013），不是真人学号 */
 const SEED = [
-  { class_key: 'LISTEN', class_name: '26互联网金融1班', student_id: '26270133', timestamp: '2026/10/24 12:00:00', duration_sec: 600, action: '听力 A' },
-  { class_key: 'LISTEN', class_name: '26互联网金融1班', student_id: '26270134', timestamp: '2026/10/24 13:00:00', duration_sec: 300, action: '听力 B' },
-  { class_key: 'LISTEN', class_name: '26互联网金融2班', student_id: '26270135', timestamp: '2026/10/24 14:00:00', duration_sec: 200, action: '听力 C' },
+  { class_key: 'LISTEN', class_name: '26互联网金融1班', student_id: '90000011', timestamp: '2026/10/24 12:00:00', duration_sec: 600, action: '听力 A' },
+  { class_key: 'LISTEN', class_name: '26互联网金融1班', student_id: '90000012', timestamp: '2026/10/24 13:00:00', duration_sec: 300, action: '听力 B' },
+  { class_key: 'LISTEN', class_name: '26互联网金融2班', student_id: '90000013', timestamp: '2026/10/24 14:00:00', duration_sec: 200, action: '听力 C' },
   { class_key: 'JR1', class_name: 'JR1班', student_id: '10001', timestamp: '2026/10/24 10:00:00', duration_sec: 100, action: '词汇' },
   { class_key: 'CW3', class_name: 'CW3班', student_id: '10002', timestamp: '2026/10/24 11:00:00', duration_sec: 100, action: '词汇' },
   { class_key: 'CET4', class_name: '四级', student_id: '10003', timestamp: '2026/10/24 12:00:00', duration_sec: 100, action: '日报' }

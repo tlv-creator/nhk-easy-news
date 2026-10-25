@@ -1,4 +1,6 @@
 \set ON_ERROR_STOP on
+-- 🔴🔴 这里的学号全是**合成占位**（90000001/90000002/90000003），不是真人学号
+--    ⇒ 本套断言连到生产库也只会碰到自己造的 3 行，绝不会删到任何真学生的记录
 do $$ begin perform set_config('request.headers','{}',false); end $$;
 -- 场景 1：anon 删词汇站整班（JR1）—— 期望删 0 行
 begin; set role anon;
@@ -15,30 +17,30 @@ rollback;
 -- 场景 3：🔴 攻击者偷看 action 列拿到的是 sha256 摘要，当作 x-row-token 送来 —— 期望删 0 行
 begin; set role anon;
 do $$ begin perform set_config('request.headers',
-  json_build_object('x-student-id','26230326','x-row-token',
+  json_build_object('x-student-id','90000001','x-row-token',
     (select split_part(action,'#tk=',2) from public.vocab_history_logs
-      where class_key='LISTEN' and student_id='26230326' limit 1))::text, false); end $$;
-delete from public.vocab_history_logs where class_key='LISTEN' and student_id='26230326';
+      where class_key='LISTEN' and student_id='90000001' limit 1))::text, false); end $$;
+delete from public.vocab_history_logs where class_key='LISTEN' and student_id='90000001';
 select 'T3 偷到的摘要当令牌 剩余=' || count(*) as r from public.vocab_history_logs
-  where class_key='LISTEN' and student_id='26230326';
+  where class_key='LISTEN' and student_id='90000001';
 rollback;
 
 -- 场景 4：学生本人带**原始令牌**（只存在本机）—— 期望删掉自己那 1 条
 begin; set role anon;
 do $$ begin perform set_config('request.headers',
-  '{"x-student-id":"26230326","x-row-token":"a1b2c3d4e5f60718293a4b5c6d7e8f90"}', false); end $$;
-delete from public.vocab_history_logs where class_key='LISTEN' and student_id='26230326';
+  '{"x-student-id":"90000001","x-row-token":"a1b2c3d4e5f60718293a4b5c6d7e8f90"}', false); end $$;
+delete from public.vocab_history_logs where class_key='LISTEN' and student_id='90000001';
 select 'T4 本人带原始令牌 剩余=' || count(*) as r from public.vocab_history_logs
-  where class_key='LISTEN' and student_id='26230326';
+  where class_key='LISTEN' and student_id='90000001';
 rollback;
 
 -- 场景 5：拿 A 的原始令牌 + 冒充 B 的学号 —— 期望删 0 行
 begin; set role anon;
 do $$ begin perform set_config('request.headers',
-  '{"x-student-id":"26270127","x-row-token":"a1b2c3d4e5f60718293a4b5c6d7e8f90"}', false); end $$;
-delete from public.vocab_history_logs where class_key='LISTEN' and student_id='26270127';
+  '{"x-student-id":"90000002","x-row-token":"a1b2c3d4e5f60718293a4b5c6d7e8f90"}', false); end $$;
+delete from public.vocab_history_logs where class_key='LISTEN' and student_id='90000002';
 select 'T5 拿A令牌冒充B 剩余=' || count(*) as r from public.vocab_history_logs
-  where class_key='LISTEN' and student_id='26270127';
+  where class_key='LISTEN' and student_id='90000002';
 rollback;
 
 -- 场景 6：anon 删探针行 —— 期望能删（清理口子必须留着）
@@ -50,10 +52,10 @@ rollback;
 -- 场景 7：🔴 LIKE 通配符注入（x-row-token 里带 %）—— 期望删 0 行
 begin; set role anon;
 do $$ begin perform set_config('request.headers',
-  '{"x-student-id":"26230326","x-row-token":"%"}', false); end $$;
-delete from public.vocab_history_logs where class_key='LISTEN' and student_id='26230326';
+  '{"x-student-id":"90000001","x-row-token":"%"}', false); end $$;
+delete from public.vocab_history_logs where class_key='LISTEN' and student_id='90000001';
 select 'T7 通配符注入 剩余=' || count(*) as r from public.vocab_history_logs
-  where class_key='LISTEN' and student_id='26230326';
+  where class_key='LISTEN' and student_id='90000001';
 rollback;
 
 -- 场景 8：老师侧 authenticated 删词汇站整班 —— 期望成功（剩余 0）
@@ -71,7 +73,7 @@ rollback;
 -- 场景 10：老师侧 authenticated 删单条（带令牌形状）—— 期望成功
 begin; set role authenticated;
 delete from public.vocab_history_logs where id=(select id from public.vocab_history_logs
-  where class_key='LISTEN' and student_id='26230326' limit 1);
+  where class_key='LISTEN' and student_id='90000001' limit 1);
 select 'T10 老师删单条 LISTEN剩余=' || count(*) as r from public.vocab_history_logs where class_key='LISTEN';
 rollback;
 
@@ -86,11 +88,11 @@ select 'T12 ' || policyname || ' | cmd=' || cmd || ' | roles=' || roles::text ||
 -- 场景 13：🔴 哈希以 0 开头（最易丢前导零）+ 本人带原始令牌 ⇒ 期望删掉
 -- 造一条「哈希以 0 开头」的真实行
 insert into public.vocab_history_logs (class_key, class_name, student_id, duration_sec, action)
-values ('LISTEN','听力','26230999',600, '【听力】前导零测试 | #tk=091a2cfded201d1f6aa540ada1addfbaa578663675bcc232467cde25c7b201ba');
+values ('LISTEN','听力','90000003',600, '【听力】前导零测试 | #tk=091a2cfded201d1f6aa540ada1addfbaa578663675bcc232467cde25c7b201ba');
 begin; set role anon;
 do $$ begin perform set_config('request.headers',
-  '{"x-student-id":"26230999","x-row-token":"00000000000000007"}', false); end $$;
-delete from public.vocab_history_logs where class_key='LISTEN' and student_id='26230999';
+  '{"x-student-id":"90000003","x-row-token":"00000000000000007"}', false); end $$;
+delete from public.vocab_history_logs where class_key='LISTEN' and student_id='90000003';
 select 'T13 哈希以0开头 → 本人带原始令牌 剩余=' || count(*) as r
-  from public.vocab_history_logs where student_id='26230999';
+  from public.vocab_history_logs where student_id='90000003';
 rollback;

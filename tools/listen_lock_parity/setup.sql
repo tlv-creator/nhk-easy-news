@@ -47,12 +47,14 @@ select c.k, c.k || '班', '2660' || lpad((row_number() over (partition by c.k or
   from (values ('JR1',746),('CW3',591),('WL_CW',280),('XQ1',839),('CET4',6)) as c(k,n),
        generate_series(1, c.n) g;
 
--- LISTEN：A/B 两人各一条，令牌在库里只存 **sha256(原始令牌)**；原始令牌分别是
+-- LISTEN：A/B 两人各一条（🔴 学号 90000001/90000002 是**合成占位**，不是真人学号
+--   ⇒ 这套脚本连到生产库也不会碰到任何真学生的行），
+--   令牌在库里只存 **sha256(原始令牌)**；原始令牌分别是
 --   A = 'a1b2c3d4e5f60718293a4b5c6d7e8f90'  B = 'b1c2d3e4f5061728394a5b6c7d8e9f001'
 insert into public.vocab_history_logs (class_key, class_name, student_id, duration_sec, action) values
- ('LISTEN','听力','26230326',900,
+ ('LISTEN','听力','90000001',900,
   '【听力】精听 | 测试A | #tk=' || encode(sha256(convert_to('a1b2c3d4e5f60718293a4b5c6d7e8f90','utf8')),'hex')),
- ('LISTEN','听力','26270127',900,
+ ('LISTEN','听力','90000002',900,
   '【听力】精听 | 测试B | #tk=' || encode(sha256(convert_to('b1c2d3e4f5061728394a5b6c7d8e9f001','utf8')),'hex'));
 -- 探针行
 insert into public.vocab_history_logs (class_key, class_name, student_id, duration_sec, action)

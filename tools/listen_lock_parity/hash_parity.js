@@ -40,7 +40,7 @@ function pg_form(str) {
   cases.push(['空串', '']);
   cases.push(['1字符', 'x']);
   cases.push(['64字符', 'c'.repeat(64)]);
-  cases.push(['非ASCII(学号+中文)', '26230326张雪静']);
+  cases.push(['非ASCII(学号+中文)', '90000001测试同学']);
   cases.push(['含大写', 'ABCDEF0123456789abcdefABCDEF0123456789']);
 
   const rows = [];

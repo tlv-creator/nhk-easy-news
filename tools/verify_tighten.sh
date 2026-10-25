@@ -107,9 +107,9 @@ create policy p_teach_all_online on public.vocab_online_status
 create policy p_mixed_logs on public.vocab_history_logs
   for delete to anon, authenticated using (class_key = 'MIXED');
 insert into public.vocab_history_logs (class_key, class_name, student_id, timestamp, duration_sec, action)
-values ('JR1','26互联网金融1班','26270133','2026/10/25 20:00:00',600,'x'),
-       ('LISTEN','26财务管理3班','26230330','2026/10/25 20:46:00',900,'y'),
-       ('LISTEN','26财务管理3班','26230331','2026/10/25 21:00:00',300,'z'),
+values ('JR1','26互联网金融1班','90000011','2026/10/25 20:00:00',600,'x'),
+       ('LISTEN','26财务管理3班','90000021','2026/10/25 20:46:00',900,'y'),
+       ('LISTEN','26财务管理3班','90000022','2026/10/25 21:00:00',300,'z'),
        ('CET4','四级','999','2026/10/25 21:10:00',120,'w');
 insert into public.vocab_history_logs (class_key, student_id) values ('LISTEN','__rls_probe__');
 insert into public.vocab_online_status (class_key, student_id, state) values ('LISTEN','__rls_probe__','x');
