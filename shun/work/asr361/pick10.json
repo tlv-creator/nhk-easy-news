@@ -1,0 +1,114 @@
+{
+ "pick": [
+  {
+   "uid": "5329b106-2273-4e07-90f3-345a4173c112",
+   "url": "https://audio4.redcircle.com/episodes/5329b106-2273-4e07-90f3-345a4173c112/stream.mp3",
+   "dur": 1017,
+   "date": "Fri, 23 Oct 2026 11:30:23 &#43;0000",
+   "title": "【N5-N4】Ep278 How to make a good relationship with people / Japanese Podcast for Beginners",
+   "kind": "e",
+   "no": 278,
+   "ep": 361,
+   "tag": "ep361"
+  },
+  {
+   "uid": "3a5b8aa0-1e90-49cc-892c-0aa9b0a2de83",
+   "url": "https://audio4.redcircle.com/episodes/3a5b8aa0-1e90-49cc-892c-0aa9b0a2de83/stream.mp3",
+   "dur": 881,
+   "date": "Fri, 09 Oct 2026 11:30:14 &#43;0000",
+   "title": "【N5-N4】Ep277 New Friends, Old Friends / Japanese Podcast for Beginners",
+   "kind": "e",
+   "no": 277,
+   "ep": 358,
+   "tag": "ep358"
+  },
+  {
+   "uid": "a32f8359-3cb1-4a46-9a50-1de3d014be48",
+   "url": "https://audio4.redcircle.com/episodes/a32f8359-3cb1-4a46-9a50-1de3d014be48/stream.mp3",
+   "dur": 640,
+   "date": "Fri, 25 Sep 2026 11:30:23 &#43;0000",
+   "title": "【N5-N4】Ep276 What would you do if AI took your job? / Japanese Podcast for Beginners",
+   "kind": "e",
+   "no": 276,
+   "ep": 356,
+   "tag": "ep356"
+  },
+  {
+   "uid": "bbfd4496-1745-41db-a5e2-7d97180213f7",
+   "url": "https://audio4.redcircle.com/episodes/bbfd4496-1745-41db-a5e2-7d97180213f7/stream.mp3",
+   "dur": 629,
+   "date": "Fri, 11 Sep 2026 11:30:45 &#43;0000",
+   "title": "【N5-N4】Ep275 Saving Money / Japanese Podcast for Beginners",
+   "kind": "e",
+   "no": 275,
+   "ep": 354,
+   "tag": "ep354"
+  },
+  {
+   "uid": "6856e9e5-60c2-4e4f-b0f4-4d0c316e124c",
+   "url": "https://audio4.redcircle.com/episodes/6856e9e5-60c2-4e4f-b0f4-4d0c316e124c/stream.mp3",
+   "dur": 842,
+   "date": "Fri, 28 Aug 2026 11:30:51 &#43;0000",
+   "title": "【N5-N4】Ep274 Which generation is better? / Japanese Podcast for Beginners",
+   "kind": "e",
+   "no": 274,
+   "ep": 353,
+   "tag": "ep353"
+  },
+  {
+   "uid": "d35a248c-29e4-4e00-881e-cbe22e7e1132",
+   "url": "https://audio4.redcircle.com/episodes/d35a248c-29e4-4e00-881e-cbe22e7e1132/stream.mp3",
+   "dur": 836,
+   "date": "Fri, 14 Aug 2026 11:30:19 &#43;0000",
+   "title": "【N5-N4】Ep273 Let's get excited!! / Japanese Podcast for Beginners",
+   "kind": "e",
+   "no": 273,
+   "ep": 352,
+   "tag": "ep352"
+  },
+  {
+   "uid": "a0ac395c-deaf-42f5-96e3-933988734b88",
+   "url": "https://audio4.redcircle.com/episodes/a0ac395c-deaf-42f5-96e3-933988734b88/stream.mp3",
+   "dur": 307,
+   "date": "Tue, 26 Jan 2021 01:02:15 &#43;0000",
+   "title": "Ep1 Self-introduction",
+   "kind": "e",
+   "no": 1,
+   "ep": 1,
+   "tag": "ep001"
+  },
+  {
+   "uid": "06f99cee-c614-4a51-bbbc-d53e274239fd",
+   "url": "https://audio4.redcircle.com/episodes/06f99cee-c614-4a51-bbbc-d53e274239fd/stream.mp3",
+   "dur": 391,
+   "date": "Fri, 29 Jan 2021 18:40:28 &#43;0000",
+   "title": "Ep3 Daily routine",
+   "kind": "e",
+   "no": 3,
+   "ep": 3,
+   "tag": "ep003"
+  },
+  {
+   "uid": "c89143c3-6e9e-4ed3-8c57-33430ea50279",
+   "url": "https://audio4.redcircle.com/episodes/c89143c3-6e9e-4ed3-8c57-33430ea50279/stream.mp3",
+   "dur": 469,
+   "date": "Wed, 13 Nov 2024 11:00:00 &#43;0000",
+   "title": "【Genki2】L22 Kid's Education / Japanese podcast for beginners",
+   "kind": "l",
+   "no": 22,
+   "ep": 290,
+   "tag": "ep290"
+  },
+  {
+   "uid": "f9265414-a02b-4a8b-8387-95b76cceaa93",
+   "url": "https://audio4.redcircle.com/episodes/f9265414-a02b-4a8b-8387-95b76cceaa93/stream.mp3",
+   "dur": 584,
+   "date": "Wed, 04 Dec 2024 11:00:00 &#43;0000",
+   "title": "【Genki2】L23 When I was forced to do something / Easy Japanese podcast for beginners",
+   "kind": "l",
+   "no": 23,
+   "ep": 292,
+   "tag": "ep292"
+  }
+ ]
+}
