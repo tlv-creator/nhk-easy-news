@@ -48,6 +48,11 @@ elif mode == 'loosetoken':      # 🔴 令牌**两处一起**放宽：正则放�
 elif mode == 'nodrop':          # DO 块漏删旧的宽松 policy
     s = s.replace("and ( 'anon' = any(roles) or roles = ARRAY['public']::name[] )",
                   "and ( 'anon' = any(roles) and roles = ARRAY['public']::name[] )")
+elif mode == 'norebuild':       # 🔴 DO 块**去掉重建逻辑**（混合型 policy 的老师那半边没了）
+    # 为什么要这条：加了「重建」加固之后，「只去掉 roles 过滤」已经无害了（重建兜住了）
+    #   ⇒ 那条 mutation 变空 ⇒ 假绿 ⇒ 判据变成摆设
+    #   ⇒ 必须改成「**同时**去掉重建」才是真的攻击面
+    s = re.sub(r"\n\s*if coalesce\(array_length\(array_remove.*?end if;", "", s, flags=re.S)
 elif mode == 'noroles':         # DO 块少了 roles 过滤 ⇒ 误删老师的 FOR DELETE 形状
     s = s.replace("       and ( 'anon' = any(roles) or roles = ARRAY['public']::name[] )", "")
 elif mode == 'teachdrop':       # DO 块同时删 ALL **且** 没了 roles 过滤
@@ -90,7 +95,7 @@ run_mut "A 退回旧的宽松 policy"        wide        "无头删 LISTEN"
 run_mut "B DO 块漏删旧的宽松 policy"    nodrop      "无头删 LISTEN"
 run_mut "C 只剩探针行（砍功能那版）"    probeonly   "带对令牌"
 run_mut "D DO 块同时删 ALL"              teachdrop   "p_teach_"
-run_mut "E DO 块少了 roles 过滤"        noroles     "p_teach_"
+run_mut "E DO 块不重建老师的 policy"   norebuild   "p_teach_"
 run_mut "F 去掉令牌条件"                notoken     "只带学号"
 run_mut "G 去掉学号条件"                nostudent   "令牌对但学号错"
 run_mut "H 令牌两处一起放宽（正则+哈希）"  loosetoken  "通配符"
