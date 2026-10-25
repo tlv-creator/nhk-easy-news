@@ -23,6 +23,8 @@ https://tlv-creator.github.io/nhk-easy-news/listening/ops.html
      🔴 service_role 绝不能贴到前端 / 静态站 / APK / 任何 zip
   验端点：https://vocab-test-d2gkep01q257d3351.service.tcloudbase.com/ai/vocab-ops
      对的标志 = 返回 **405**，**而且回包里能看到 "service":"vocab-ops"**（只看 405 不算数）
+     ⚠️ 地址要认准上面那个 **tcloudbase.com** 的域名 —— **打错主机也会回 405**
+        （学生加速站的 OSS 静态托管就回 405 的 XML，body 里没有 service 标记）
 
 【第 3 步】等第 2 步验通之后，再跑：收尾 SQL（关掉「听力记录」那个口子）
   ⚠️ 第 2 步没验通**不要**跑 ⇒ 老师端「删一条 / 清空全部」会当场废掉
