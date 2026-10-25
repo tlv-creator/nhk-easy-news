@@ -41,7 +41,10 @@ def main():
     tmp = tempfile.mkdtemp(prefix="chkbooks_")
     idx_path = os.path.join(tmp, "index.json")
     # 用真 index（若不在本地就现拉）
-    if IDX is None:
+    local_idx = "/workspace/work/batch1/peer/tadoku__books56c__asr_truth__index.json"
+    if os.path.exists(local_idx):
+        shutil.copyfile(local_idx, idx_path)
+    elif IDX is None:
         import base64, urllib.request
         api = ("https://api.github.com/repos/tlv-creator/nhk-easy-news/contents/"
                "tadoku/books56c/asr_truth/index.json")
@@ -104,6 +107,23 @@ def main():
     r = rc == 1 and "找不到对应的轨" in out
     print(f"[反向5] mp3 对不上 ⇒ rc={rc} {'✅' if r else '❌'}")
     results.append(("反向5", r))
+
+    # ---------- 反向 7：读音混进 t（ru 表层拼接 ≠ t）----------
+    b = make_book(); b["cues"][0]["rows"][0]["t"] = "風かぜと太陽"
+    b["cues"][0]["rows"][0]["ru"] = [["風", "かぜ"], ["と太陽", ""]]
+    write(b); rc, out = run(books, idx_path)
+    r = rc == 1 and "ru 表层拼接" in out
+    print(f"[反向7] 读音混进 t ⇒ rc={rc} {'✅' if r else '❌'}")
+    results.append(("反向7", r))
+
+    # ---------- 反向 8：对话引号「」不该被判失败（书里本来就有）----------
+    b = make_book()
+    b["cues"][0]["rows"][0]["t"] = "「お正月」が、来ます。"
+    b["cues"][0]["rows"][0]["ru"] = [["「お正月」", ""], ["が、", ""], ["来ます。", ""]]
+    write(b); rc, out = run(books, idx_path)
+    r = rc == 0
+    print(f"[反向8] t 带「」（对话引号）⇒ rc={rc}（应为 0）{'✅' if r else '❌'}")
+    results.append(("反向8", r))
 
     # ---------- 反向 6：ru 形状错（只给 seg）⇒ 应当是 WARN 而不是 FAIL ----------
     b = make_book()

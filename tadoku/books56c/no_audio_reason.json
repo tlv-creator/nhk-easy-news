@@ -1,0 +1,695 @@
+[
+ {
+  "book": "level0-kaze-to-taiyou",
+  "i": 8,
+  "kind": "B-音频里有(位置被占)",
+  "text": "男が、来ました。",
+  "matched_frag": "男が来ました",
+  "asr_line": "男が来ました。",
+  "asr_start": 41.0
+ },
+ {
+  "book": "level0-kaze-to-taiyou",
+  "i": 9,
+  "kind": "B-音频里有(位置被占)",
+  "text": "冷たい風です。",
+  "matched_frag": "冷たい風です",
+  "asr_line": "冷たい風です。",
+  "asr_start": 81.0
+ },
+ {
+  "book": "level0-kaze-to-taiyou",
+  "i": 36,
+  "kind": "A-音频里没有",
+  "text": "「…………」",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-kekkon",
+  "i": 2,
+  "kind": "B-音频里有(位置被占)",
+  "text": "今日は結婚式です。",
+  "matched_frag": "今日は結婚式",
+  "asr_line": "今日は結婚式です。",
+  "asr_start": 33.0
+ },
+ {
+  "book": "level0-kekkon",
+  "i": 3,
+  "kind": "B-音频里有(位置被占)",
+  "text": "みんな、きれいな服を着ます。",
+  "matched_frag": "な服を着ます",
+  "asr_line": "みんな綺麗な服を",
+  "asr_start": 37.0
+ },
+ {
+  "book": "level0-kekkon",
+  "i": 17,
+  "kind": "B-音频里有(位置被占)",
+  "text": "ここに名前を書きます。",
+  "matched_frag": "を書きます",
+  "asr_line": "お母さんが返事を書きます。",
+  "asr_start": 27.0
+ },
+ {
+  "book": "level0-kekkon",
+  "i": 23,
+  "kind": "A-音频里没有",
+  "text": "すてき〜。",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-nanono-suji",
+  "i": 20,
+  "kind": "A-音频里没有",
+  "text": "オランダ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-nanono-suji",
+  "i": 21,
+  "kind": "A-音频里没有",
+  "text": "アメリカ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-nanono-suji",
+  "i": 22,
+  "kind": "A-音频里没有",
+  "text": "日本",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-nanono-suji",
+  "i": 23,
+  "kind": "A-音频里没有",
+  "text": "メキシコ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-niwaniwani",
+  "i": 1,
+  "kind": "A-音频里没有",
+  "text": "「にわにわに？」",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-niwaniwani",
+  "i": 23,
+  "kind": "A-音频里没有",
+  "text": "「にわにわに？」",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-oshogatsu",
+  "i": 4,
+  "kind": "A-音频里没有",
+  "text": "謹賀新年",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-oshogatsu",
+  "i": 5,
+  "kind": "A-音频里没有",
+  "text": "本年もどうぞよろしくお願いいたします。",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-oshogatsu",
+  "i": 6,
+  "kind": "B-音频里有(位置被占)",
+  "text": "あけましておめでとうございます",
+  "matched_frag": "あけましてお",
+  "asr_line": "あけましておめでとうございます。",
+  "asr_start": 130.0
+ },
+ {
+  "book": "level0-oshogatsu",
+  "i": 7,
+  "kind": "A-音频里没有",
+  "text": "2011年",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-oshogatsu",
+  "i": 8,
+  "kind": "A-音频里没有",
+  "text": "ことしもよろしく！",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-oshogatsu",
+  "i": 9,
+  "kind": "A-音频里没有",
+  "text": "大そうじ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-oshogatsu",
+  "i": 24,
+  "kind": "A-音频里没有",
+  "text": "京子ちゃん…",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-oshogatsu",
+  "i": 31,
+  "kind": "A-音频里没有",
+  "text": "初もうで",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-otoshimono",
+  "i": 4,
+  "kind": "B-音频里有(位置被占)",
+  "text": "西町交番の良さん",
+  "matched_frag": "西町交番の",
+  "asr_line": "西町交番のりょうさん",
+  "asr_start": 0.0
+ },
+ {
+  "book": "level0-otoshimono",
+  "i": 5,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「落とし物がいっぱい」",
+  "matched_frag": "落とし物がい",
+  "asr_line": "落とし物がいっぱい",
+  "asr_start": 3.0
+ },
+ {
+  "book": "level0-otoshimono",
+  "i": 6,
+  "kind": "B-音频里有(位置被占)",
+  "text": "女の人が来ました。",
+  "matched_frag": "女の人が来ま",
+  "asr_line": "女の人が来ました。",
+  "asr_start": 40.0
+ },
+ {
+  "book": "level0-otoshimono",
+  "i": 7,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「落とし物です。バス停にありました」",
+  "matched_frag": "落とし物です",
+  "asr_line": "落とし物です。",
+  "asr_start": 33.0
+ },
+ {
+  "book": "level0-otoshimono",
+  "i": 22,
+  "kind": "B-音频里有(位置被占)",
+  "text": "ニャーニャー",
+  "matched_frag": "ニャニャ",
+  "asr_line": "ニャーニャー。",
+  "asr_start": 77.0
+ },
+ {
+  "book": "level0-otoshimono",
+  "i": 23,
+  "kind": "B-音频里有(位置被占)",
+  "text": "ニャーニャー",
+  "matched_frag": "ニャニャ",
+  "asr_line": "ニャーニャー。",
+  "asr_start": 77.0
+ },
+ {
+  "book": "level0-otoshimono",
+  "i": 33,
+  "kind": "A-音频里没有",
+  "text": "ニャー",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-otoshimono",
+  "i": 36,
+  "kind": "B-音频里有(位置被占)",
+  "text": "ニャーニャーニャーニャー",
+  "matched_frag": "ニャニャ",
+  "asr_line": "ニャーニャー。",
+  "asr_start": 77.0
+ },
+ {
+  "book": "level0-otoshimono",
+  "i": 37,
+  "kind": "A-音频里没有",
+  "text": "ニャー",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-ryosan-christmas",
+  "i": 1,
+  "kind": "A-音频里没有",
+  "text": "今日も、自転車で町へ行きます。",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-ryosan-christmas",
+  "i": 3,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「花村さんに、プレゼントをあげたいなあ」",
+  "matched_frag": "花村さんにプ",
+  "asr_line": "花村さんにプレゼントをあげたいなあ。",
+  "asr_start": 43.0
+ },
+ {
+  "book": "level0-ryosan-christmas",
+  "i": 4,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「あれ？ あのサンタクロース、大変だなあ」",
+  "matched_frag": "あれあのサン",
+  "asr_line": "あれ？あのサンタクロース、大変だなあ。",
+  "asr_start": 50.0
+ },
+ {
+  "book": "level0-ryosan-christmas",
+  "i": 5,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「大変ですね。手伝いましょう」",
+  "matched_frag": "大変ですね手",
+  "asr_line": "大変ですね。手伝いましょう。",
+  "asr_start": 60.0
+ },
+ {
+  "book": "level0-ryosan-christmas",
+  "i": 12,
+  "kind": "A-音频里没有",
+  "text": "ビリビリッ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-ryosan-christmas",
+  "i": 14,
+  "kind": "A-音频里没有",
+  "text": "えっ、どろぼう？！」",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 9,
+  "kind": "B-音频里有(位置被占)",
+  "text": "一郎が、帰りました。",
+  "matched_frag": "一郎が帰りま",
+  "asr_line": "一郎が帰りました。",
+  "asr_start": 31.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 10,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「ただいま」",
+  "matched_frag": "ただいま",
+  "asr_line": "ただいま",
+  "asr_start": 4.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 11,
+  "kind": "B-音频里有(位置被占)",
+  "text": "由美が、言います。",
+  "matched_frag": "由美が言いま",
+  "asr_line": "一郎と由美が言います。",
+  "asr_start": 80.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 12,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「おかえりなさい」",
+  "matched_frag": "おかえりなさ",
+  "asr_line": "「おかえりなさい。」",
+  "asr_start": 44.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 13,
+  "kind": "B-音频里有(位置被占)",
+  "text": "一郎が、言います。",
+  "matched_frag": "一郎が言いま",
+  "asr_line": "一郎が言います。",
+  "asr_start": 48.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 14,
+  "kind": "A-音频里没有",
+  "text": "「それ、何？」",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 15,
+  "kind": "B-音频里有(位置被占)",
+  "text": "由美が、言います。",
+  "matched_frag": "由美が言いま",
+  "asr_line": "一郎と由美が言います。",
+  "asr_start": 80.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 16,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「今日は、１１月８日よ」",
+  "matched_frag": "今日は11月",
+  "asr_line": "「今日は、11月8日よ。」",
+  "asr_start": 61.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 17,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「ああ、そうか。お母さんの…」",
+  "matched_frag": "ああそうかお",
+  "asr_line": "「ああ、そうか。お母さんの……」",
+  "asr_start": 66.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 18,
+  "kind": "B-音频里有(位置被占)",
+  "text": "一郎が、帰りました。",
+  "matched_frag": "一郎が帰りま",
+  "asr_line": "一郎が帰りました。",
+  "asr_start": 31.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 19,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「ただいま」",
+  "matched_frag": "ただいま",
+  "asr_line": "ただいま",
+  "asr_start": 4.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 20,
+  "kind": "B-音频里有(位置被占)",
+  "text": "由美が、言います。",
+  "matched_frag": "由美が言いま",
+  "asr_line": "一郎と由美が言います。",
+  "asr_start": 80.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 21,
+  "kind": "B-音频里有(位置被占)",
+  "text": "「おかえりなさい」",
+  "matched_frag": "おかえりなさ",
+  "asr_line": "「おかえりなさい。」",
+  "asr_start": 44.0
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 29,
+  "kind": "A-音频里没有",
+  "text": "「…………」",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 33,
+  "kind": "A-音频里没有",
+  "text": "「…………」",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-tadaima",
+  "i": 35,
+  "kind": "A-音频里没有",
+  "text": "「あれ？　由美！？　一郎！？」",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-tanabata",
+  "i": 32,
+  "kind": "A-音频里没有",
+  "text": "サッカーせんしゅになりたい",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-tokyo-densha",
+  "i": 14,
+  "kind": "A-音频里没有",
+  "text": "女性専用車",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 12,
+  "kind": "B-音频里有(位置被占)",
+  "text": "はははははは！",
+  "matched_frag": "ははははは",
+  "asr_line": "「ははははは！遅くない？",
+  "asr_start": 53.0
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 30,
+  "kind": "B-音频里有(位置被占)",
+  "text": "はははは はは！",
+  "matched_frag": "ははははは",
+  "asr_line": "「ははははは！遅くない？",
+  "asr_start": 53.0
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 31,
+  "kind": "A-音频里没有",
+  "text": "ウサギとカメ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 32,
+  "kind": "A-音频里没有",
+  "text": "もしもし カメよ カメさんよ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 33,
+  "kind": "A-音频里没有",
+  "text": "せかいの うちで おまえほど",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 34,
+  "kind": "A-音频里没有",
+  "text": "あゆみの のろい ものはない",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 35,
+  "kind": "A-音频里没有",
+  "text": "どうして そんなに のろいのか",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 36,
+  "kind": "A-音频里没有",
+  "text": "1　もしもし カメよ カメさんよ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 37,
+  "kind": "A-音频里没有",
+  "text": "せかいのうちで おまえほど",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 38,
+  "kind": "A-音频里没有",
+  "text": "あゆみの のろい ものはない",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 39,
+  "kind": "A-音频里没有",
+  "text": "どうして そんなに のろいのか",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 40,
+  "kind": "A-音频里没有",
+  "text": "2　なんと おっしゃる ウサギさん",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 41,
+  "kind": "A-音频里没有",
+  "text": "そんなら おまえと かけくらべ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 42,
+  "kind": "A-音频里没有",
+  "text": "むこうの おやまの ふもとまで",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 43,
+  "kind": "A-音频里没有",
+  "text": "どちらが さきに かけつくか",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 44,
+  "kind": "A-音频里没有",
+  "text": "3　どんなに カメが いそいでも",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 45,
+  "kind": "A-音频里没有",
+  "text": "どうせ ばんまで かかるだろ",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 46,
+  "kind": "A-音频里没有",
+  "text": "ここらで ちょっと ひとねむり",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 47,
+  "kind": "A-音频里没有",
+  "text": "ぐーぐー ぐーぐー ぐーぐーぐー",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 48,
+  "kind": "A-音频里没有",
+  "text": "4　これは ねすぎた しくじった",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 49,
+  "kind": "B-音频里有(位置被占)",
+  "text": "ぴょんぴょん ぴょんぴょん ぴょんぴょんぴょん",
+  "matched_frag": "ぴょんぴょん",
+  "asr_line": "ぴょんぴょん。",
+  "asr_start": 18.0
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 50,
+  "kind": "A-音频里没有",
+  "text": "あんまりおそい ウサギさん",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ },
+ {
+  "book": "level0-usagitokame",
+  "i": 51,
+  "kind": "A-音频里没有",
+  "text": "さっきのじまんは どうしたの",
+  "matched_frag": "",
+  "asr_line": "",
+  "asr_start": null
+ }
+]

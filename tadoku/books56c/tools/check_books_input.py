@@ -24,7 +24,11 @@ import argparse, json, os, re, sys, urllib.request
 
 REPO = "tlv-creator/nhk-easy-news"
 INDEX_PATH = "tadoku/books56c/asr_truth/index.json"
-RUBY_MARK = re.compile(r"[〈〉《》「」]|｜|\|")
+# 🔴 「」**是对话引号**（书里本来就有），不是注音标记
+#   实测：批次 1 的 445 行里 119 行带「」；线上现役 75 本的 t 里也带「」⇒ 不能当错误
+#   而且 align_audio.py 的 norm() 的 PUNCT 里本来就含「」⇒ 比对时两边都被剥掉 ⇒ 不污染字符流
+#   （2026-10-25 构建会话指出，我复核后确认：PUNCT = set("、。「」『』（）()【】［］〈〉<>〔〕…"))
+RUBY_MARK = re.compile(r"[〈〉《》]|｜|\|")
 # 「制作信息行」：书末 credits（推给老师的书上常有，朗読里也念）
 CREDIT = re.compile(r"^(作|監修|原作|再話|簡約|著者|翻訳|NPO多言語多読|多読)[\s　]*")
 
@@ -120,6 +124,12 @@ def main():
                     if not (isinstance(r["ru"], list) and all(
                             isinstance(x, (list, tuple)) and len(x) == 2 for x in r["ru"])):
                         fails.append(f"{tag}: cue[{ci}].rows[{ri}] 的 ru 不是 [[表层,读音],...]")
+                    else:
+                        # 🔴 **ru 的表层拼起来必须等于 t** ⇒ 一条就抓出「读音混进正文 / 漏注音 / 多注音」
+                        surf = "".join(x[0] for x in r["ru"])
+                        if surf != t:
+                            fails.append(f"{tag}: cue[{ci}].rows[{ri}] ru 表层拼接 ≠ t "
+                                         f"（读音混进正文或注音缺失）：t={t[:24]!r} surf={surf[:24]!r}")
                 if r.get("seg"):
                     has_seg += 1
         total_rows += n_rows
