@@ -776,14 +776,13 @@
     var d = (window.__SUBS__ || {})[ep && ep.id];
     if (!d) return [];
     if (Object.prototype.toString.call(d) === '[object Array]') return d;   // 兼容单版本
-    // 🔴🔴 2026-10-24 普通版的「音」和「字」本来不是同一份文本：
-    //   音 = 电视播报稿（口语）  字 = 报纸原文（书面）
-    //   ⇒ 拿报纸原文去套播报音的时间轴 ⇒ 字幕**跳句**（一句还没念完就跳下一句）
-    //   ⇒ 所以普通版存两套句子：
-    //       sp 轨 = 播报稿（跟音用，来源 = 该期原速音的真实 ASR）
-    //       web 轨 = 报纸原文（阅读用）
-    //   ⇒ 开关开着且这一期有 sp 轨 ⇒ 用 sp 轨（跟音）；否则用 web 轨（阅读）
-    if (S.ver === 'web' && S.settings.sp) {
+    // 🔴🔴 2026-10-25 修「声画对不上」
+    //   原来：开关一关 ⇒ 字幕切成报纸原文，**但音频还是电视播报音（fast）**
+    //        ⇒ 听着播报稿、看着报纸稿 ⇒ 声画全错（用户反馈「对不上」）
+    //   现在：普通版**只要这一期有 sp 轨（= 播报稿，与原速音是同一份）就恒用它**
+    //        「音字同步」开关**只管高亮 + 自动滚**，不再换字幕来源
+    //        ⇒ 任何情况下，打开的音和看到的字都是同一份
+    if (S.ver === 'web') {
       var sp = d.sp;
       if (sp && sp.length) return sp;
     }
@@ -802,7 +801,11 @@
   function trackMode(ep) {
     if (S.ver === 'web') {
       var sp = spTrack(ep);
-      if (S.settings.sp && sp) return { mode: 'sp', label: '跟音（電視播報稿）' };
+      // 🔴 2026-10-25：字幕源由「有没有 sp 轨」决定，**不再由开关决定**
+      //   开关只表示「高亮 + 自动滚」开不开
+      if (sp) {
+        return { mode: 'sp', label: '跟音字幕（電視播報稿）· ' + (S.settings.sp ? '高亮同步' : '靜默跟讀') };
+      }
       return { mode: 'text', label: '閱讀（報紙原文）' };
     }
     return { mode: 'sp', label: '跟音（慢速音）' };
@@ -811,7 +814,10 @@
   /** 要不要做「音字同步」（高亮 + 自动滚）—— **与易懂版共用同一套逻辑**，只是这里多一个条件 */
   function syncEnabled() {
     if (S.ver !== 'web') return true;        // 易懂版：音和字本来就是一份
-    return trackMode(S.ep).mode === 'sp';
+    // 🔴🔴 2026-10-25：**没有原速音 ⇒ 没有东西可同步** ⇒ 不高亮、不自动滚
+    //   （这一期普通版根本没有音频在放，高亮一个「不存在的播放位置」只会误导）
+    if (S.ep && !verHasAudio(S.ep, 'web')) return false;
+    return !!S.settings.sp;                   // 开关只管高亮+自动滚
   }
 
   function verAvailable(ep, ver) {
@@ -2204,6 +2210,26 @@ function speakJa(text) {
         }
         return;
       }
+      // 🔴🔴 2026-10-25「複製整句」：把**该句完整日文**复制到剪贴板
+      //   ⇒ 不含注音、不含中文（就是 c.ja）
+      //   ⇒ 剪贴板走 aiCopy 那套**双路兜底**（clipboard API + textarea + execCommand）
+      //      —— WebView 里 clipboard API 常常没权限，必须有兜底
+      //   ⇒ 复制完给**可见**反馈：按钮短暂变「已複製」＋ toast（墨水屏刷新慢，toast 停 2800ms）
+      var scp = e.target.closest ? e.target.closest('[data-act="sp-copy"]') : null;
+      if (scp) {
+        e.stopPropagation();
+        var cj = (CUR && CUR.c) ? (CUR.c.ja || '') : '';
+        if (!cj) { toast('沒有可複製的日文'); return; }
+        aiCopy(cj, null);
+        var oldTxt = scp.textContent;
+        scp.textContent = '已複製';
+        scp.classList.add('copied');
+        setTimeout(function () {
+          scp.textContent = oldTxt;
+          scp.classList.remove('copied');
+        }, 2800);
+        return;
+      }
       // 字号预设：小 / 標準 / 大 / 特大
       var pb = e.target.closest ? e.target.closest('[data-pfs]') : null;
       if (pb) {
@@ -2377,6 +2403,9 @@ function speakJa(text) {
     h += '<span class="sp-time">' + fmt(c.s / 1000) + '</span>';
     h += '<span class="sp-hint">点词＝朗读＋看解释</span>';
     h += '<button class="sp-btn" data-act="sp-size" title="調整彈窗字號">Aa</button>';
+    // 🔴🔴 2026-10-25 补上「複製整句」（用户 10-24 亲定，规格里一直缺着）
+    //   要复制的是**该句完整日文**（不含注音、不含中文）⇒ 就是 c.ja（纯文本）
+    h += '<button class="sp-btn" data-act="sp-copy" title="把這句日文整句複製到剪貼板">複製整句</button>';
     h += '<button class="sp-btn" id="spDl" data-act="dl" title="把本集音頻存到手機">⬇ 存本集</button>';
     h += '<button class="sp-btn" data-act="jump">▶ 跳到這句</button>';
     h += '<button class="sp-btn" data-act="close">收起 ▲</button>';
@@ -2418,14 +2447,27 @@ function speakJa(text) {
       h += '<div class="sp-wd hidden" id="wordDetail"></div>';
     }
 
-    // ② 语法说明
+    // 🔴🔴 2026-10-25 **语法讲解新格式**（用户 10-24 亲定：只有这一种结构）
+    //   ⇒ 有新格式数据就渲染它；**没有就回落旧三段式**
+    //   （①逐词拆解照旧 —— 那是「点词展开释义」的入口，不能删）
+    // 🔴 2026-10-25 **接线修正**（真 bug，之前的新格式永远渲染不出来）
+    //   数据里的 blk 结构是 {frame, frameLabels, skeleton, blocks, zh, range, text}
+    //   —— **没有 layers 字段** ⇒ 老判据 c.blk.layers 恒为 undefined
+    //   ⇒ hasBlk 恒 false ⇒ 新格式永不触发 ⇒ 一直落回旧三段式
+    //   ⇒ 判据放宽：只要有 frame（四类括号串）或 blocks（逐块拆解）就算有
+    var hasBlk = !!(c.blk && ((c.blk.layers && c.blk.layers.length) ||
+                              (c.blk.blocks && c.blk.blocks.length) ||
+                              !!c.blk.frame));
+    if (hasBlk) h += renderBlk(c);
+
+    // ② 语法说明（旧格式：没有新格式数据时才用）
     var pats = [];
     (c.g || []).forEach(function (g) {
       var pp = (window.__PATTERNS__ || {})[g[2]];
       if (pp) pats.push(pp);
     });
     var chains = chainList(c);
-    if (pats.length || chains.length) {
+    if (!hasBlk && (pats.length || chains.length)) {
       h += '<div class="sp-sec">② 语法说明</div><div class="sp-gram">';
       if (pats.length) {
         var p0 = pats[0];
@@ -2452,8 +2494,8 @@ function speakJa(text) {
       h += '</div>';
     }
 
-    // ③ 整句结构
-    if (c.y && c.y.length) {
+    // ③ 整句结构（旧格式；新格式下由「二、逐块拆解」承担）
+    if (!hasBlk && c.y && c.y.length) {
       h += '<div class="sp-sec">③ 整句结构</div><div class="sp-syn">';
       for (var i = 0; i < c.y.length; i++) {
         var sg = c.y[i];
@@ -2502,6 +2544,95 @@ function speakJa(text) {
   }
 
   /** 点一句 → 弹大窗 */
+
+  /* ============ 🔴 语法讲解新格式的渲染（2026-10-25）============
+     规格（用户 10-24 亲定）：
+       一、大框架   四类括号 + 每层的语法角色标注
+       二、逐块拆解 每块：成分分解（＋ 连接）+ 2~4 条说明 + 块的中文意思
+       整句意思    完整中文翻译
+     四类括号 = 四种语法层级：
+       [ ]   连接词 / 独立成分（呼语、承接词、转折词）
+       ［ ］  从句（条件、让步、修饰、宾语从句…）
+       〈 〉  句体成分（主语、宾语、补语等句内成分）
+       （ ）  谓语（动词/形容词 + 助动词，含疑问与终助词） */
+  var BLK_CLASS = { '[]': 'b-conn', '［］': 'b-cls', '〈〉': 'b-body', '（）': 'b-pred' };
+  /* 🔴 四类括号的中文标签（用户 10-24 亲定）
+     [ ] 连接词/独立成分 ｜ ［ ］ 从句 ｜ 〈 〉 句体成分 ｜ （ ） 谓语 */
+  var BLK_LABEL = { '[]': '连接词／独立成分', '［］': '从句', '〈〉': '句体成分', '（）': '谓语' };
+  var BLK_ORD = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+
+  /* 🔴 2026-10-25 把 blk.frame（四类括号串）切成 layers
+     frame 形如：[国によると、] 〈去年、〉 〈自殺した人は〉 （でした。） ［前の年より］…
+     ⚠️ 要按**配对**切，不能用简单正则 —— 有嵌套（〈…（…）…〉）时正则会切错
+     ⇒ 用栈扫描：只在栈空→非空的那一刻记一个块，闭合时出栈
+     ⇒ 括号外的残留文字（如果有）单独作为「独立成分」补一块，不丢信息 */
+  function parseFrame(frame) {
+    var PAIRS = { '[': ']', '［': '］', '〈': '〉', '（': '）' };
+    var out = [], stack = [], rest = '';
+    if (!frame) return out;
+    for (var i = 0; i < frame.length; i++) {
+      var ch = frame.charAt(i);
+      if (PAIRS[ch]) {
+        stack.push({ open: ch, text: ch });
+        continue;
+      }
+      if (stack.length) {
+        var top = stack[stack.length - 1];
+        top.text += ch;
+        if (ch === PAIRS[top.open]) {
+          stack.pop();
+          if (!stack.length) out.push({ type: top.open + PAIRS[top.open], text: top.text });
+        }
+        continue;
+      }
+      rest += ch;
+    }
+    if (rest.trim()) out.push({ type: '[]', text: rest.trim() });
+    return out;
+  }
+
+  function renderBlk(c) {
+    var b = c.blk || {};
+    var h = '';
+    /* ── 一、大框架 ── */
+    h += '<div class="sp-sec">一、大框架</div>';
+    h += '<div class="sp-frame">';
+    var layers = (b.layers && b.layers.length) ? b.layers : parseFrame(b.frame);
+    layers.forEach(function (L) {
+      var ty = String(L.type || '[]').replace(/\s/g, '');
+      var cls = BLK_CLASS[ty] || 'b-conn';
+      var lbl = L.label || BLK_LABEL[ty] || '';
+      h += '<div class="sp-frame-row">' +
+        '<span class="sp-frame-t ' + cls + '">' + escapeHtml(L.text || '') + '</span>' +
+        '<span class="sp-frame-l">' + escapeHtml(lbl) + '</span></div>';
+    });
+    h += '</div>';
+    if (b.skeleton) {
+      h += '<div class="sp-skel">' + escapeHtml(b.skeleton) + '</div>';
+    }
+    /* ── 二、逐块拆解 ── */
+    h += '<div class="sp-sec">二、逐块拆解</div>';
+    (b.blocks || []).forEach(function (bl, i) {
+      var parts = (bl.parts || []).map(function (p) {
+        return escapeHtml(p[0]) + '<em>' + escapeHtml(p[1] || '') + '</em>';
+      }).join(' ＋ ');
+      h += '<div class="sp-blk">';
+      // 🔴 blocks[] 里常常没有 text 字段 ⇒ 用 parts 的原文拼出块文本
+      var blText = bl.text || (bl.parts || []).map(function (p) { return p[0] || ''; }).join('');
+      h += '<div class="sp-blk-h">第' + (BLK_ORD[i] || (i + 1)) + '块：' +
+        escapeHtml(blText) + '</div>';
+      if (parts) h += '<div class="sp-blk-p">' + parts + '</div>';
+      (bl.notes || []).forEach(function (nt) {
+        h += '<div class="sp-blk-n">· ' + escapeHtml(nt) + '</div>';
+      });
+      if (bl.zh) h += '<div class="sp-blk-z">意思：' + escapeHtml(bl.zh) + '</div>';
+      h += '</div>';
+    });
+    /* ── 整句意思 ── */
+    if (b.zh) h += '<div class="sp-blk-z sp-blk-all">整句意思：' + escapeHtml(b.zh) + '</div>';
+    return h;
+  }
+
   function openStudy(c, idx) {
     CUR.c = c; CUR.i = idx;
     // 词库延遲加載：沒就緒先等（第一次會有 3.8MB 的下載）
@@ -3355,7 +3486,7 @@ function speakJa(text) {
       refreshVerBar(S.ep);
       syncCue();
     }
-    toast(S.settings.sp ? '普通版：跟音（電視播報稿）' : '普通版：閱讀（報紙原文）');
+    toast(S.settings.sp ? '普通版：高亮同步（字幕不變）' : '普通版：靜默跟讀（字幕不變）');
   });
   function setFs(d) {
     var v = Math.max(18, Math.min(46, (S.settings.fs || 30) + d));
