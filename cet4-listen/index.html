@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>大学英语四级 · 听力真题</title>
+<style>
+/* ============================================================
+   墨水屏 + 老花眼 硬约束
+   · 正文 30px 起，行距宽松
+   · 渐变全关，描边半透明
+   · 控件用文字不用图标
+   · 当前项只用左侧 4px 竖条，不变色
+   ============================================================ */
+:root{
+  --fg:#000; --bg:#fff; --line:rgba(0,0,0,.32); --soft:rgba(0,0,0,.18);
+  --hl:#000;
+}
+html.hc{ --fg:#000; --bg:#fff; --line:rgba(0,0,0,.55); --soft:rgba(0,0,0,.3); }
+*{box-sizing:border-box;-webkit-text-size-adjust:100%}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg)}
+body{
+  font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  font-size:30px;line-height:1.75;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px 80px}
+
+/* ---- 顶栏 ---- */
+.top{
+  position:sticky;top:0;z-index:20;background:var(--bg);
+  border-bottom:1px solid var(--line);
+  padding:10px 0;margin-bottom:14px;
+}
+.top-in{max-width:760px;margin:0 auto;padding:0 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.top h1{font-size:26px;margin:0;font-weight:700;flex:1;min-width:130px}
+.btn{
+  font:inherit;font-size:24px;background:var(--bg);color:var(--fg);
+  border:1.5px solid var(--line);border-radius:8px;padding:6px 14px;cursor:pointer;
+  min-height:44px;
+}
+.btn:active{background:rgba(0,0,0,.08)}
+.btn.on{background:var(--fg);color:var(--bg)}
+
+/* ---- 集选择 ---- */
+.sets{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.set{
+  flex:1;min-width:200px;text-align:left;font:inherit;font-size:26px;
+  background:var(--bg);color:var(--fg);border:1.5px solid var(--line);
+  border-radius:10px;padding:12px 14px;cursor:pointer;
+}
+.set b{display:block;font-size:26px}
+.set span{display:block;font-size:22px;color:rgba(0,0,0,.62);margin-top:2px}
+
+/* ---- 题组 ---- */
+.sec{
+  border:1.5px solid var(--line);border-radius:10px;
+  margin-bottom:18px;padding:0;overflow:hidden;
+}
+.sec-h{
+  display:flex;align-items:center;gap:12px;width:100%;
+  font:inherit;font-size:28px;font-weight:700;text-align:left;
+  background:var(--bg);color:var(--fg);border:0;border-bottom:1.5px solid var(--line);
+  padding:12px 14px;cursor:pointer;min-height:56px;
+}
+.sec-h .n{
+  display:inline-block;min-width:44px;height:44px;line-height:42px;text-align:center;
+  border:1.5px solid var(--line);border-radius:8px;font-size:24px;
+}
+.sec-h .t{flex:1}
+.sec-h .m{font-size:22px;color:rgba(0,0,0,.6);font-weight:400}
+.sec-b{padding:14px}
+
+/* ---- 播放器 ---- */
+.player{
+  border:1.5px solid var(--line);border-radius:10px;padding:12px;margin-bottom:14px;
+  background:var(--bg);
+}
+.p-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.p-time{font-size:24px;font-variant-numeric:tabular-nums;min-width:110px}
+.p-ctl{
+  font:inherit;font-size:24px;background:var(--bg);color:var(--fg);
+  border:1.5px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;min-height:44px;
+}
+.p-ctl:active{background:rgba(0,0,0,.08)}
+.p-note{font-size:22px;color:rgba(0,0,0,.6);margin-top:8px;line-height:1.5}
+
+/* ---- 逐句 ---- */
+.sent{
+  display:block;width:100%;text-align:left;font:inherit;font-size:28px;line-height:1.6;
+  background:var(--bg);color:var(--fg);border:0;border-left:4px solid transparent;
+  padding:4px 6px 4px 12px;cursor:pointer;margin:0;
+}
+.sent:active{background:rgba(0,0,0,.06)}
+.sent.cur{border-left-color:var(--hl)}   /* 当前句：只加竖条，不变色 */
+.sent .no{font-size:22px;color:rgba(0,0,0,.5);margin-right:6px}
+
+/* ---- 原文 ---- */
+.para{
+  border-left:4px solid var(--soft);padding:2px 0 2px 12px;margin:10px 0;
+  font-size:28px;line-height:1.7;
+}
+.para .no{font-size:22px;color:rgba(0,0,0,.55);margin-right:6px}
+
+/* ---- 题目 ---- */
+.q{border-top:1.5px solid var(--line);padding:14px 0 4px}
+.q:first-child{border-top:0}
+.q-stem{font-size:29px;font-weight:700;line-height:1.6}
+.q-stem .cn{display:block;font-size:26px;font-weight:400;color:rgba(0,0,0,.72);margin-top:3px}
+.opts{margin:10px 0 0}
+.opt{
+  display:block;width:100%;text-align:left;font:inherit;font-size:28px;line-height:1.6;
+  background:var(--bg);color:var(--fg);border:1.5px solid var(--line);
+  border-radius:8px;padding:8px 12px;margin-bottom:8px;cursor:pointer;
+  min-height:48px;
+}
+.opt:active{background:rgba(0,0,0,.06)}
+.opt.sel{border-color:var(--fg);border-width:2.5px}
+.opt.right{border-color:var(--fg);border-width:2.5px}
+.opt.wrong{border-style:dashed;border-width:2.5px}
+.opt .k{font-weight:700;margin-right:8px}
+.q-foot{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 10px}
+.q-ans{font-size:24px}
+.exp{
+  font-size:25px;line-height:1.7;color:rgba(0,0,0,.82);
+  border:1.5px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;
+  display:none;
+}
+.exp.show{display:block}
+
+/* ---- 折叠 ---- */
+details.fold{border-top:1.5px solid var(--line);padding:10px 0}
+details.fold>summary{font-size:26px;cursor:pointer;list-style:none;min-height:44px;
+  display:flex;align-items:center}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::after{content:" 展开";font-size:22px;color:rgba(0,0,0,.55);margin-left:auto}
+details.fold[open]>summary::after{content:" 收起"}
+.hide{display:none!important}
+#toast{
+  position:fixed;left:50%;bottom:28px;transform:translateX(-50%);
+  background:var(--fg);color:var(--bg);font-size:24px;padding:10px 18px;border-radius:8px;
+  display:none;z-index:50;max-width:88vw;
+}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="top-in">
+  <h1>四级听力真题</h1>
+  <button class="btn" id="btnAa" type="button">字号</button>
+  <button class="btn" id="btnHc" type="button">高对比：关</button>
+</div></div>
+
+<div class="wrap">
+  <div class="sets" id="sets"></div>
+  <div id="list"></div>
+  <p style="font-size:24px;color:rgba(0,0,0,.6);line-height:1.6;margin-top:24px">
+    音频按题组切分，点哪组下哪组；听过的会自动缓存在本机，第二次打开不再走流量。<br>
+    所有答案与解析默认收起，先自己作答再对照。
+  </p>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var ZOOM_KEY="cet4listen.zoom", HC_KEY="cet4listen.hc";
+  var baseZoom=1, curSet=null, data=null, cache={};
+
+  /* ---------- 字号 ---------- */
+  function applyZoom(){
+    var z=parseFloat(localStorage.getItem(ZOOM_KEY))||1;
+    baseZoom=z; document.body.style.zoom=z;
+    document.getElementById("btnAa").textContent="字号 "+Math.round(z*100)+"%";
+  }
+  document.getElementById("btnAa").addEventListener("click",function(){
+    var steps=[1,1.15,1.3,1.5,1.75];
+    var cur=parseFloat(localStorage.getItem(ZOOM_KEY))||1;
+    var i=steps.indexOf(cur);
+    var next=steps[(i+1)%steps.length];
+    localStorage.setItem(ZOOM_KEY,next);
+    applyZoom();
+  });
+  /* ---------- 高对比 ---------- */
+  function applyHc(){
+    var on=localStorage.getItem(HC_KEY)==="1";
+    document.documentElement.classList.toggle("hc",on);
+    document.getElementById("btnHc").textContent="高对比："+(on?"开":"关");
+  }
+  document.getElementById("btnHc").addEventListener("click",function(){
+    localStorage.setItem(HC_KEY, localStorage.getItem(HC_KEY)==="1"?"0":"1");
+    applyHc();
+  });
+  applyZoom(); applyHc();
+
+  /* ---------- toast ---------- */
+  var toastT=null;
+  function toast(msg){
+    var t=document.getElementById("toast");
+    t.textContent=msg; t.style.display="block";
+    clearTimeout(toastT);
+    toastT=setTimeout(function(){t.style.display="none";},2200);
+  }
+  function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+  /* ---------- 集列表 ---------- */
+  var SETS=[
+    {id:"2026-06-set1",name:"2026年6月 第1套",note:"15题 · 原版录音"},
+    {id:"2025-12-set1",name:"2025年12月 第1套",note:"15题 · 原版录音"}
+  ];
+  function renderSets(){
+    var box=document.getElementById("sets");
+    box.innerHTML="";
+    SETS.forEach(function(s){
+      var b=document.createElement("button");
+      b.className="set"; b.type="button";
+      b.innerHTML="<b>"+esc(s.name)+"</b><span>"+esc(s.note)+"</span>";
+      b.addEventListener("click",function(){ load(s.id); });
+      box.appendChild(b);
+    });
+  }
+
+  function load(id){
+    if(cache[id]){ data=cache[id]; curSet=id; render(); return; }
+    fetch("data/"+id+".json",{cache:"no-store"}).then(function(r){
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return r.json();
+    }).then(function(j){
+      cache[id]=j; data=j; curSet=id; render();
+      window.scrollTo(0,0);
+    }).catch(function(e){
+      toast("加载失败："+e.message);
+    });
+  }
+
+  /* ---------- 渲染 ---------- */
+  function render(){
+    var box=document.getElementById("list");
+    box.innerHTML="";
+    if(!data) return;
+    (data.sections||[]).forEach(function(sec){
+      var d=document.createElement("section");
+      d.className="sec";
+      var h=document.createElement("button");
+      h.className="sec-h"; h.type="button";
+      h.innerHTML='<span class="n">'+(sec.qs&&sec.qs.length?sec.qs[0]+"-"+sec.qs[sec.qs.length-1]:"")+
+                  '</span><span class="t">'+esc(sec.title)+'</span>'+
+                  '<span class="m">'+(sec.audio?Math.round(sec.audio.dur)+"秒":"")+'</span>';
+      var body=document.createElement("div");
+      body.className="sec-b";
+      body.appendChild(player(sec));
+      body.appendChild(sentBlock(sec));
+      if(sec.paras&&sec.paras.length) body.appendChild(paraBlock(sec));
+      if(sec.questions&&sec.questions.length) body.appendChild(qBlock(sec));
+      h.addEventListener("click",function(){
+        var open=body.style.display!=="none";
+        body.style.display=open?"none":"block";
+      });
+      d.appendChild(h); d.appendChild(body);
+      box.appendChild(d);
+    });
+  }
+
+  /* ---------- 播放器 ---------- */
+  function fmt(s){
+    s=Math.max(0,Math.floor(s||0));
+    var m=Math.floor(s/60), x=s%60;
+    return m+":"+(x<10?"0":"")+x;
+  }
+  function player(sec){
+    var wrap=document.createElement("div");
+    wrap.className="player";
+    var au=document.createElement("audio");
+    au.preload="none";
+    au.src=sec.audio.file;
+    var row=document.createElement("div");
+    row.className="p-row";
+    var btnPlay=document.createElement("button");
+    btnPlay.className="p-ctl"; btnPlay.type="button"; btnPlay.textContent="播放";
+    var btnR=document.createElement("button");
+    btnR.className="p-ctl"; btnR.type="button"; btnR.textContent="重听本句";
+    var t=document.createElement("span");
+    t.className="p-time"; t.textContent="0:00 / "+fmt(sec.audio.dur);
+    row.appendChild(btnPlay); row.appendChild(btnR); row.appendChild(t);
+    var note=document.createElement("div");
+    note.className="p-note";
+    note.textContent="整组共 "+Math.round(sec.audio.dur)+" 秒 · "+sec.audio.kb+" KB · 点句子可单句重听";
+    wrap.appendChild(row); wrap.appendChild(note);
+    wrap.appendChild(au);
+
+    au.addEventListener("timeupdate",function(){
+      t.textContent=fmt(au.currentTime)+" / "+fmt(sec.audio.dur);
+      markCurrent(sec, au.currentTime);
+    });
+    au.addEventListener("ended",function(){ btnPlay.textContent="重播"; });
+    btnPlay.addEventListener("click",function(){
+      if(au.paused){ au.play(); btnPlay.textContent="暂停"; }
+      else { au.pause(); btnPlay.textContent="继续"; }
+    });
+    btnR.addEventListener("click",function(){
+      var cur=lastSpoken(sec, au.currentTime);
+      if(cur){ au.currentTime=cur.s; au.play(); btnPlay.textContent="暂停"; }
+      else toast("先播放一下再点重听");
+    });
+    return wrap;
+  }
+
+  function lastSpoken(sec,cur){
+    var best=null;
+    (sec.sentences||[]).forEach(function(s){ if(s.s<=cur+0.05) best=s; });
+    return best;
+  }
+  function markCurrent(sec,cur){
+    (sec.sentences||[]).forEach(function(s){
+      var el=document.getElementById("s-"+curSet+"-"+sec.id+"-"+s.s);
+      if(!el) return;
+      if(cur>=s.s && cur<s.e) el.classList.add("cur");
+      else el.classList.remove("cur");
+    });
+  }
+
+  /* ---------- 逐句 ---------- */
+  function sentBlock(sec){
+    var f=document.createElement("details");
+    f.className="fold";
+    var s=document.createElement("summary");
+    s.textContent="逐句原文（"+((sec.sentences||[]).length)+" 句）";
+    f.appendChild(s);
+    var box=document.createElement("div");
+    (sec.sentences||[]).forEach(function(x,i){
+      var b=document.createElement("button");
+      b.type="button"; b.className="sent";
+      b.id="s-"+curSet+"-"+sec.id+"-"+x.s;
+      b.innerHTML='<span class="no">'+(i+1)+'</span>'+esc(x.t);
+      b.addEventListener("click",function(){
+        var au=document.querySelector("audio[src='"+sec.audio.file+"']");
+        if(!au) return;
+        au.currentTime=x.s; au.play();
+      });
+      box.appendChild(b);
+    });
+    f.appendChild(box);
+    return f;
+  }
+
+  /* ---------- 原文段落 ---------- */
+  function paraBlock(sec){
+    var f=document.createElement("details");
+    f.className="fold";
+    var s=document.createElement("summary");
+    s.textContent="听力原文（"+((sec.paras||[]).length)+" 段）";
+    f.appendChild(s);
+    (sec.paras||[]).forEach(function(p){
+      var d=document.createElement("div");
+      d.className="para";
+      d.innerHTML='<span class="no">['+p.n+']</span>'+esc(p.t);
+      f.appendChild(d);
+    });
+    return f;
+  }
+
+  /* ---------- 题目 ---------- */
+  function qBlock(sec){
+    var f=document.createElement("div");
+    (sec.questions||[]).forEach(function(q){
+      var d=document.createElement("div");
+      d.className="q";
+      var stem=document.createElement("div");
+      stem.className="q-stem";
+      stem.innerHTML=esc(q.en)+(q.cn?'<span class="cn">'+esc(q.cn)+'</span>':'');
+      d.appendChild(stem);
+      var ob=document.createElement("div");
+      ob.className="opts";
+      var buttons={};
+      ["A","B","C","D"].forEach(function(k){
+        var b=document.createElement("button");
+        b.type="button"; b.className="opt";
+        b.innerHTML='<span class="k">'+k+')</span>'+esc((q.opts||{})[k]||"");
+        b.addEventListener("click",function(){
+          if(d.getAttribute("data-done")) return;
+          Object.keys(buttons).forEach(function(x){buttons[x].classList.remove("sel");});
+          b.classList.add("sel");
+          // 判对错
+          if(q.ans){
+            d.setAttribute("data-done","1");
+            var right=buttons[q.ans];
+            if(right) right.classList.add("right");
+            if(k!==q.ans) b.classList.add("wrong");
+            showAns(d,q);
+          }
+        });
+        buttons[k]=b; ob.appendChild(b);
+      });
+      d.appendChild(ob);
+      var foot=document.createElement("div");
+      foot.className="q-foot";
+      var ab=document.createElement("button");
+      ab.className="p-ctl"; ab.type="button"; ab.textContent="看答案与解析";
+      ab.addEventListener("click",function(){ showAns(d,q); });
+      foot.appendChild(ab);
+      var as=document.createElement("span");
+      as.className="q-ans"; foot.appendChild(as);
+      d.appendChild(foot);
+      f.appendChild(d);
+    });
+    return f;
+  }
+  function showAns(d,q){
+    var as=d.querySelector(".q-ans");
+    if(q.ans) as.textContent="正确答案："+q.ans;
+    else as.textContent="（这题暂无解析）";
+    var e=d.querySelector(".exp");
+    if(!e){
+      e=document.createElement("div");
+      e.className="exp";
+      d.appendChild(e);
+    }
+    e.innerHTML = q.exp ? esc(q.exp) : "（本题解析待补）";
+    e.classList.add("show");
+  }
+
+  renderSets();
+})();
+</script>
+</body>
+</html>

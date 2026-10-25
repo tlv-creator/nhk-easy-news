@@ -1,0 +1,911 @@
+{
+ "set": "2026-06-set1",
+ "title": "大学英语四级 · 听力真题",
+ "total_dur": 803.5,
+ "total_kb": 3139,
+ "sections": [
+  {
+   "id": "news1",
+   "title": "News Report 1",
+   "kind": "news",
+   "qs": [
+    1,
+    2
+   ],
+   "audio": {
+    "file": "audio/2026-06-set1/news1.mp3",
+    "start": 38.84,
+    "end": 154.52,
+    "dur": 116.48,
+    "kb": 455
+   },
+   "sentences": [
+    {
+     "s": 38.84,
+     "e": 50.12,
+     "t": "News Report 1. A man was left with a $1,000 bill after his 6-year-old son ordered a virtual buffet of food from several restaurants last weekend."
+    },
+    {
+     "s": 50.12,
+     "e": 58.46,
+     "t": "This led to a string of unexpected deliveries and maybe a starring role in an advertisement campaign."
+    },
+    {
+     "s": 59.32,
+     "e": 68.58,
+     "t": "Keith Stonehouse said the food piled up quickly at his home Saturday night after he let his son use his cell phone to play a game before bed."
+    },
+    {
+     "s": 69.3,
+     "e": 77.76,
+     "t": "He said the youngster instead used his father's online food ordering account to order food from one restaurant after another."
+    },
+    {
+     "s": 77.76,
+     "e": 88.42,
+     "t": "The boy's mother, Kristen Stonehouse, said that the online food app has reached out to the family and offered them a $1,000 gift card."
+    },
+    {
+     "s": 89.36,
+     "e": 95.52,
+     "t": "The company also is considering using the family in an online promotional campaign."
+    },
+    {
+     "s": 96.42,
+     "e": 103.46,
+     "t": "Most of the food went into the family's refrigerators. They also invited some neighbors over to eat some of it."
+    },
+    {
+     "s": 103.46,
+     "e": 106.6,
+     "t": "The father is planning to change his password."
+    },
+    {
+     "s": 107.4,
+     "e": 112.1,
+     "t": "Questions 1 and 2 are based on the news report you have just heard."
+    },
+    {
+     "s": 112.92,
+     "e": 118.06,
+     "t": "Question 1. Why was Keith Stonehouse left with a $1,000 bill?"
+    },
+    {
+     "s": 133.69,
+     "e": 138.83,
+     "t": "Question 2. What does the news report say Keith Stonehouse is planning to do?"
+    }
+   ],
+   "paras": [
+    {
+     "n": 2,
+     "s": 103.46,
+     "e": 108.12,
+     "t": "The father is planning to change his password"
+    }
+   ],
+   "questions": [
+    {
+     "no": 1,
+     "en": "Why was Keith Stonehouse left with a $1,000 bill?",
+     "cn": "",
+     "opts": {
+      "A": "He had bought meals wi由 his ouline food or.dering account.",
+      "B": "1丑s son had used his cell phone to pay f，田 playing a g副卫e",
+      "C": "His son had ordered food 齿。，m several restaurants.",
+      "D": "He had dined out at a fa皿QUS five-star restaurant."
+     },
+     "ans": "C",
+     "exp": ""
+    },
+    {
+     "no": 2,
+     "en": "What does the news report say Keith Stonehouse is planning to do?",
+     "cn": "",
+     "opts": {
+      "A": "T四ch his son a lesson.",
+      "C": "Ask his neighbors for help.",
+      "B": "Change his password.",
+      "D": "Buy a bigger re缸gerat田-"
+     },
+     "ans": "B",
+     "exp": ""
+    }
+   ]
+  },
+  {
+   "id": "news2",
+   "title": "News Report 2",
+   "kind": "news",
+   "qs": [
+    3,
+    4
+   ],
+   "audio": {
+    "file": "audio/2026-06-set1/news2.mp3",
+    "start": 154.52,
+    "end": 256.19,
+    "dur": 102.47,
+    "kb": 400
+   },
+   "sentences": [
+    {
+     "s": 154.52,
+     "e": 161.3,
+     "t": "News report 2. Animal behavior experts looked at more than 100 research papers."
+    },
+    {
+     "s": 161.3,
+     "e": 167.92,
+     "t": "They examined how visitors affected the behavior of more than 250 species in zoos."
+    },
+    {
+     "s": 168.5,
+     "e": 173.7,
+     "t": "They found that elephants socialized more with each other during public feeding times."
+    },
+    {
+     "s": 174.52,
+     "e": 180.34,
+     "t": "After public feeding times, they were more likely to search for food and less likely to be inactive."
+    },
+    {
+     "s": 181.2,
+     "e": 188.64,
+     "t": "In the presence of many visitors, elephants were less likely to use repetitive behaviors which often indicate boredom."
+    },
+    {
+     "s": 188.64,
+     "e": 194.58,
+     "t": "Visitors had a similar effect on some other species too, including polar bears,"
+    },
+    {
+     "s": 195.12,
+     "e": 198.82,
+     "t": "certain jungle cats, and black-tailed, plain dogs."
+    },
+    {
+     "s": 199.8,
+     "e": 206.44,
+     "t": "Some animal species have been born and raised in zoos, and so have likely become used to the presence of humans."
+    },
+    {
+     "s": 207.36,
+     "e": 215.0,
+     "t": "Zoo visitors are often aspects of zoo animals' environment that animals cannot control and, as such, can be stressful."
+    },
+    {
+     "s": 215.0,
+     "e": 221.74,
+     "t": "although some species appear to show good adaptability to the changing conditions of visitors."
+    },
+    {
+     "s": 222.7,
+     "e": 227.52,
+     "t": "Questions 3 and 4 are based on the news report you have just heard."
+    },
+    {
+     "s": 228.28,
+     "e": 234.0,
+     "t": "Question 3. What did animal behavior experts do according to the news report?"
+    },
+    {
+     "s": 249.77,
+     "e": 256.19,
+     "t": "Question 4. Why have some animal species likely become used through the presence of humans?"
+    }
+   ],
+   "paras": [
+    {
+     "n": 4,
+     "s": 204.28,
+     "e": 212.9,
+     "t": "Some animal species have been bom and raised in zoos , and tohave likely become used to the presence of humans. Zoo visitors are often aspects of zoo animals' environment that animals cannot 0ntrol ， and as such can be stressful , although some species appear to show good adaptability to the changing conditions of visitors."
+    }
+   ],
+   "questions": [
+    {
+     "no": 3,
+     "en": "What did animal behavior experts do according to the news report?",
+     "cn": "",
+     "opts": {
+      "A": "τ\"hey examined how visitors aff国腼d animal behaviour in z∞s.",
+      "B": "τ\"hey studied when 由e best time 阳 feed animals in public was.",
+      "C": "τ\"hey studied how animals adap恒d themselves 阳 life 皿 zoos.",
+      "D": "They examined what behaviours indica面dani皿al boredo皿."
+     },
+     "ans": "A",
+     "exp": ""
+    },
+    {
+     "no": 4,
+     "en": "Why have some animal species likely become used through the presence of humans?",
+     "cn": "",
+     "opts": {
+      "A": "τ\"hey socialise wi也 zookeepers 困 well as wi由 each 0也已r.",
+      "B": "τ\"hey show good adaptability to living with hurnans.",
+      "C": "τ\"hey have been kept as pe臼 by humans.",
+      "D": "τ\"hey have been born and raised in zoos."
+     },
+     "ans": "B",
+     "exp": ""
+    }
+   ]
+  },
+  {
+   "id": "news3",
+   "title": "News Report 3",
+   "kind": "news",
+   "qs": [
+    5,
+    6,
+    7
+   ],
+   "audio": {
+    "file": "audio/2026-06-set1/news3.mp3",
+    "start": 256.19,
+    "end": 462.61,
+    "dur": 207.22,
+    "kb": 810
+   },
+   "sentences": [
+    {
+     "s": 256.19,
+     "e": 278.52,
+     "t": "News Report 3 Denver is suspending its popular electric bike incentive program."
+    },
+    {
+     "s": 279.16,
+     "e": 281.2,
+     "t": "The program was launched in April."
+    },
+    {
+     "s": 282.04,
+     "e": 289.04,
+     "t": "It allowed Denver residents to apply for $400 in government funds before buying an electric"
+    },
+    {
+     "s": 289.04,
+     "e": 291.22,
+     "t": "bike from a participating shop."
+    },
+    {
+     "s": 291.94,
+     "e": 298.38,
+     "t": "Residents who met certain income qualifications could qualify for $1,200."
+    },
+    {
+     "s": 298.38,
+     "e": 305.34,
+     "t": "$100. More than 3,000 Denver residents applied for incentives within the first three weeks."
+    },
+    {
+     "s": 306.02,
+     "e": 311.58,
+     "t": "The city then changed the program to limit the number of applications each month. On"
+    },
+    {
+     "s": 311.58,
+     "e": 314.0,
+     "t": "Monday the city announced the pause."
+    },
+    {
+     "s": 314.98,
+     "e": 320.48,
+     "t": "�We�re honored to be a part of transforming the way Denver wants to move around,� said"
+    },
+    {
+     "s": 320.48,
+     "e": 326.38,
+     "t": "Grace Rink, Denver�s chief climate officer. �We exhausted three years� worth of funding"
+    },
+    {
+     "s": 326.38,
+     "e": 333.44,
+     "t": "funding in six months. The city said the program has put 4,400 electric bikes on the streets"
+    },
+    {
+     "s": 333.44,
+     "e": 342.34,
+     "t": "of Denver and invested $8.6 million into the local economy. The city has provided 2,200"
+    },
+    {
+     "s": 342.34,
+     "e": 349.94,
+     "t": "incentives to lower income residents. That represents 68% of the program funding. The"
+    },
+    {
+     "s": 349.94,
+     "e": 353.86,
+     "t": "The city expects to resume the program early next year."
+    },
+    {
+     "s": 354.58,
+     "e": 361.36,
+     "t": "It also plans design changes to make participation easier and increase access to the program."
+    },
+    {
+     "s": 362.22,
+     "e": 366.56,
+     "t": "Questions 5 to 7 are based on the news report you have just heard."
+    },
+    {
+     "s": 367.1,
+     "e": 367.92,
+     "t": "Question 5."
+    },
+    {
+     "s": 368.66,
+     "e": 372.92,
+     "t": "What is Denver doing with its popular electric bike incentive program?"
+    },
+    {
+     "s": 388.59,
+     "e": 389.55,
+     "t": "Question 6."
+    },
+    {
+     "s": 389.55,
+     "e": 393.99,
+     "t": "How did the Electric Bike Incentive Program benefit residents?"
+    },
+    {
+     "s": 410.0,
+     "e": 415.26,
+     "t": "Question 7. What does the City of Denver expect to do early next year?"
+    },
+    {
+     "s": 430.83,
+     "e": 432.95,
+     "t": "Section B. Directions"
+    },
+    {
+     "s": 432.95,
+     "e": 436.65,
+     "t": "In this section you will hear two long conversations."
+    },
+    {
+     "s": 437.79,
+     "e": 441.31,
+     "t": "At the end of each conversation you will hear four questions."
+    },
+    {
+     "s": 442.21,
+     "e": 446.25,
+     "t": "Both the conversation and the questions will be spoken only once."
+    },
+    {
+     "s": 446.25,
+     "e": 455.31,
+     "t": "After you hear a question, you must choose the best answer from the four choices marked A, B, C, and D."
+    },
+    {
+     "s": 455.95,
+     "e": 461.17,
+     "t": "Then mark the corresponding letter on answer sheet 1 with a single line through the center."
+    }
+   ],
+   "paras": [
+    {
+     "n": 5,
+     "s": 282.18,
+     "e": 292.44,
+     "t": "Denver is suspending its popular electric bike incentive program. The program was launched in April. lt allowed Denver residents to apply for $400 in government funds before buying an electric bike from a participating shop."
+    },
+    {
+     "n": 6,
+     "s": 308.56,
+     "e": 323.22,
+     "t": "Residents who met certain income qualifications could qualify for $ 1,200. More than 3,000 Denver residents applied for incentives within the tìrst 3 weeks. The city then changed the program to lirnit the number of applications each month. On Monday , the city announced the pause. \"We're honored to be a part of transforming the way Denver wants to move around ,\" said Grace Rink, Denver' s chief climate oftìcer. \" We exhausted 3 years , worth of funding in 6 months.\" The city said the program has put 4,400 electric bikes on the streets of Denver and invested $ 8.6 million into the local economy. The city has provided 2,2θo incentives to lower-income residents tbat represent 68% of the program funding."
+    }
+   ],
+   "questions": [
+    {
+     "no": 5,
+     "en": "What is Denver doing with its popular electric bike incentive program?",
+     "cn": "",
+     "opts": {
+      "A": "Adjus由19 it.",
+      "B": "Suspending it.",
+      "C": "Reevalua咀ng it",
+      "D": "Expanding it."
+     },
+     "ans": "C",
+     "exp": ""
+    },
+    {
+     "no": 6,
+     "en": "How did the Electric Bike Incentive Program benefit residents?",
+     "cn": "",
+     "opts": {
+      "A": "They could buy an electric bike f，哑 $400 in A回1.",
+      "B": "τ\"hey co叫d buy 也.eir first electric bike at a discount.",
+      "C": "τ\"hey could e:咱oy 仕ee after-sale servi四 for 也eir purch田e.",
+      "D": "They could get $ 1 ， 200 齿。m govemment 且mds 汪也.ey qualified"
+     },
+     "ans": "D",
+     "exp": ""
+    },
+    {
+     "no": 7,
+     "en": "What does the City of Denver expect to do early next year?",
+     "cn": "",
+     "opts": {
+      "A": "Put 400 more el，叫c bikes on its s阳也.",
+      "B": "In，口ease 也e program funding by 8 阳'Cent.",
+      "C": "Resume its electric bike incentive program.",
+      "D": "Invest millions of dollars inωthe local ∞onomy."
+     },
+     "ans": "C",
+     "exp": ""
+    }
+   ]
+  },
+  {
+   "id": "conv1",
+   "title": "Conversation 1",
+   "kind": "conv",
+   "qs": [
+    8,
+    9,
+    10,
+    11
+   ],
+   "audio": {
+    "file": "audio/2026-06-set1/conv1.mp3",
+    "start": 462.61,
+    "end": 647.25,
+    "dur": 185.44,
+    "kb": 724
+   },
+   "sentences": [
+    {
+     "s": 462.61,
+     "e": 463.63,
+     "t": "Conversation 1"
+    },
+    {
+     "s": 463.63,
+     "e": 467.79,
+     "t": "Hey Mike, what do you think of the museum you visited today?"
+    },
+    {
+     "s": 468.19,
+     "e": 474.21,
+     "t": "Hey Sue, the museum is great. Very interesting. They have loads of stuff there on display."
+    },
+    {
+     "s": 474.21,
+     "e": 481.71,
+     "t": "The primitive tools early humans used to tell a lot about their life, but my favorite is the coin collection."
+    },
+    {
+     "s": 482.17,
+     "e": 485.41,
+     "t": "They have some coins that are over 2,000 years old."
+    },
+    {
+     "s": 485.73,
+     "e": 486.57,
+     "t": "That sounds cool."
+    },
+    {
+     "s": 487.01,
+     "e": 488.81,
+     "t": "Yeah. What did you do today?"
+    },
+    {
+     "s": 489.43,
+     "e": 492.39,
+     "t": "Kathy and I just wandered through the old city center."
+    },
+    {
+     "s": 492.95,
+     "e": 496.27,
+     "t": "The streets are narrow but beautiful, with plenty of charm."
+    },
+    {
+     "s": 496.87,
+     "e": 499.71,
+     "t": "We saw the Trevi Fountain, which is in all the guidebooks."
+    },
+    {
+     "s": 500.23,
+     "e": 501.19,
+     "t": "How do you like it?"
+    },
+    {
+     "s": 501.19,
+     "e": 504.85,
+     "t": "It's very pretty, but it was overcrowded with tourists."
+    },
+    {
+     "s": 505.83,
+     "e": 507.93,
+     "t": "Yeah, well, it's crowded everywhere."
+    },
+    {
+     "s": 508.49,
+     "e": 511.59,
+     "t": "It is August after all, the busiest month of the year."
+    },
+    {
+     "s": 512.03,
+     "e": 515.85,
+     "t": "Yes, it's like the whole world is here on holiday, including us."
+    },
+    {
+     "s": 516.31,
+     "e": 517.23,
+     "t": "What will you do tomorrow?"
+    },
+    {
+     "s": 517.85,
+     "e": 519.47,
+     "t": "I haven't decided yet."
+    },
+    {
+     "s": 519.95,
+     "e": 522.17,
+     "t": "I was thinking of doing what you did today,"
+    },
+    {
+     "s": 522.49,
+     "e": 524.91,
+     "t": "wandering the old streets and taking pictures."
+    },
+    {
+     "s": 525.53,
+     "e": 528.97,
+     "t": "I was also thinking of visiting the square with the Spanish steps."
+    },
+    {
+     "s": 528.97,
+     "e": 531.35,
+     "t": "What is that? I haven't heard of it."
+    },
+    {
+     "s": 531.71,
+     "e": 538.11,
+     "t": "It's a square where, on one side, there are some very wide steps with flowers that go up to a church."
+    },
+    {
+     "s": 538.75,
+     "e": 545.33,
+     "t": "It's also in all the Taurus guidebooks. It's very famous and pretty. I was also thinking of seeing that tomorrow."
+    },
+    {
+     "s": 545.81,
+     "e": 549.49,
+     "t": "It sounds very nice. Do you mind if Kathy and I join you tomorrow?"
+    },
+    {
+     "s": 549.95,
+     "e": 553.43,
+     "t": "Not at all. I spent the whole day today pretty much alone."
+    },
+    {
+     "s": 553.95,
+     "e": 556.81,
+     "t": "Doing tourist stuff with others would be a welcome change."
+    },
+    {
+     "s": 556.81,
+     "e": 560.39,
+     "t": "Let me ask her first, but I'm sure she'll be up for it."
+    },
+    {
+     "s": 561.41,
+     "e": 566.27,
+     "t": "Questions 8 to 11 are based on the conversation you have just heard."
+    },
+    {
+     "s": 567.09,
+     "e": 571.95,
+     "t": "Question 8. What exhibit does the man like best in the museum he visited?"
+    },
+    {
+     "s": 587.54,
+     "e": 591.54,
+     "t": "Question 9. What does the woman say about the old city centre?"
+    },
+    {
+     "s": 607.08,
+     "e": 611.66,
+     "t": "Question 10. What does the man say about the square with the Spanish steps?"
+    },
+    {
+     "s": 611.66,
+     "e": 631.34,
+     "t": "Question 11. What does the woman say she is going to do first?"
+    }
+   ],
+   "paras": [
+    {
+     "n": 8,
+     "s": 482.49,
+     "e": 485.89,
+     "t": "but my favorite is the coin collection. They h ave some coins that are over 2,000 years old. W. That sounds cool. M: Yeah , what did you do today? W: Kathy and I just wandered through the old city cen衍e."
+    },
+    {
+     "n": 9,
+     "s": 519.95,
+     "e": 529.65,
+     "t": "The s位eetoare narrow but beaUl tiful with plenty of 生主旦二 We saw the Trevi Fountain , which is in all the guidebooks. M: How do you like it? W: It's very pretty , but it was overcrowded with tourists. M: Yeah , well , it's crowded everywhere. It is August , after all , the busiest month of the year. W: Yes , it' s like the whole world is here on holiday , incI uding us. What will you do tomon'ow? M: I haven't decided ye t. I was thinking of doing what you did today- wandering the old streets and taking pictures. I was also thinking of visiting the square with the Spanish steps. W. What is that? I haven't heard of it. M: It' s a square where on one side , there are some very wide st冠ps with flowers that go up to a church. It's aJso in all the tourist guidebooks."
+    }
+   ],
+   "questions": [
+    {
+     "no": 8,
+     "en": "What exhibit does the man like best in the museum he visited?",
+     "cn": "",
+     "opts": {
+      "A": "The coin collection.",
+      "C": "咀le ancient ornaments.",
+      "B": "The primitiveωols.",
+      "D": "The 2 ，则-year-old clothes."
+     },
+     "ans": "A",
+     "exp": ""
+    },
+    {
+     "no": 9,
+     "en": "What does the woman say about the old city centre?",
+     "cn": "",
+     "opts": {
+      "A": "It is charming wi也 E缸。w but beau曲1 s田础.",
+      "B": "It a阳ts 四i阳台omev町 comer of the world.",
+      "C": "It has flowers displayed around 也 Trevi Foun回n.",
+      "D": "It is more a阳ctive 也m 也e pictures in 伊idebooks."
+     },
+     "ans": "A",
+     "exp": ""
+    },
+    {
+     "no": 10,
+     "en": "What does the man say about the square with the Spanish steps?",
+     "cn": "",
+     "opts": {
+      "A": "It is covered wi也 wild grass.",
+      "C": "It is located aw町 from an old church.",
+      "B": "It is very famous and pre句.",
+      "D": "It is surrounded by Spani血-style houses."
+     },
+     "ans": "B",
+     "exp": ""
+    },
+    {
+     "no": 11,
+     "en": "What does the woman say she is going to do first?",
+     "cn": "",
+     "opts": {
+      "A": "Ask Kathy what her plan is.",
+      "B": "Tell Kathy Mike will join 由em.",
+      "C": "Ask Kathy if she' d likeωsee the square.",
+      "D": "Tell Kathy Mike would like ωhave a change."
+     },
+     "ans": "C",
+     "exp": ""
+    }
+   ]
+  },
+  {
+   "id": "conv2",
+   "title": "Conversation 2",
+   "kind": "conv",
+   "qs": [
+    12,
+    13,
+    14,
+    15
+   ],
+   "audio": {
+    "file": "audio/2026-06-set1/conv2.mp3",
+    "start": 647.25,
+    "end": 838.34,
+    "dur": 191.89,
+    "kb": 750
+   },
+   "sentences": [
+    {
+     "s": 647.25,
+     "e": 648.25,
+     "t": "Conversation 2."
+    },
+    {
+     "s": 649.53,
+     "e": 654.49,
+     "t": "Can you give me advice about being successful at a new job? I start mine next week."
+    },
+    {
+     "s": 655.01,
+     "e": 664.63,
+     "t": "Sure. It's important not to undermine the significance of the first few days of your job, since this is the best time to create a solid first impression."
+    },
+    {
+     "s": 664.63,
+     "e": 673.45,
+     "t": "That's a good point. I'll need to collaborate with my co-workers, and I'm very aware of just how important others are for my success at work."
+    },
+    {
+     "s": 674.03,
+     "e": 679.83,
+     "t": "It's also important to understand your role thoroughly to gain a comprehensive picture of your job."
+    },
+    {
+     "s": 680.37,
+     "e": 686.33,
+     "t": "The most important thing for you to do at first is to understand your role from multiple perspectives."
+    },
+    {
+     "s": 686.89,
+     "e": 687.53,
+     "t": "Why is that?"
+    },
+    {
+     "s": 687.53,
+     "e": 691.87,
+     "t": "Well, what you do at work is not just limited to your job description."
+    },
+    {
+     "s": 692.71,
+     "e": 696.75,
+     "t": "You need to consider how your work relates to other people within the organization."
+    },
+    {
+     "s": 697.37,
+     "e": 705.77,
+     "t": "Oh right. So for example, certain reports that I create at the end of the month may be used by a team in another department."
+    },
+    {
+     "s": 706.19,
+     "e": 712.31,
+     "t": "That's right. And in that respect, it's also important to learn about the business to see the big picture."
+    },
+    {
+     "s": 712.97,
+     "e": 715.79,
+     "t": "You mean like knowing about the history of the company?"
+    },
+    {
+     "s": 715.79,
+     "e": 721.45,
+     "t": "Kind of, but more like knowing the details of the products and services that the company"
+    },
+    {
+     "s": 721.45,
+     "e": 722.75,
+     "t": "exists to deliver."
+    },
+    {
+     "s": 723.61,
+     "e": 728.25,
+     "t": "Learning about the business will give you a chance to understand how your role fits into"
+    },
+    {
+     "s": 728.25,
+     "e": 729.03,
+     "t": "the bigger picture."
+    },
+    {
+     "s": 729.75,
+     "e": 734.03,
+     "t": "Okay, I'm feeling a bit uneasy about meeting my boss as well."
+    },
+    {
+     "s": 734.33,
+     "e": 735.37,
+     "t": "That's to be expected."
+    },
+    {
+     "s": 735.93,
+     "e": 740.33,
+     "t": "However, it's crucial that you get to know the people who have decision-making authority"
+    },
+    {
+     "s": 740.83,
+     "e": 745.05,
+     "t": "to gain insight regarding how the business is run and decisions are made."
+    },
+    {
+     "s": 745.05,
+     "e": 747.13,
+     "t": "Great advice. Thanks."
+    },
+    {
+     "s": 748.17,
+     "e": 752.65,
+     "t": "Questions 12 to 15 are based on the conversation you have just heard."
+    },
+    {
+     "s": 753.69,
+     "e": 757.71,
+     "t": "Question 12. What advice does the man want to get from the woman?"
+    },
+    {
+     "s": 773.44,
+     "e": 779.36,
+     "t": "Question 13. What does the woman say is the most important thing for the man to do at first?"
+    },
+    {
+     "s": 795.14,
+     "e": 800.22,
+     "t": "Question 14. What does the man say he is feeling a bit uneasy about?"
+    },
+    {
+     "s": 800.22,
+     "e": 822.6,
+     "t": "Question 15. What does the woman suggest the man do to gain insight about the running of the business?"
+    }
+   ],
+   "paras": [
+    {
+     "n": 13,
+     "s": 687.53,
+     "e": 697.65,
+     "t": "The most important thing for you to do at first is to understand your role from multiple perspectives M: Why is that? W: Well , what you do at work is not just limited to your job description. You need to consider how your work relates to other people within the organization. M: Oh , righ t. So , for example , certain reports that 1 create at the end of the month may be used by a team in another departmen t. W: That' s righ t. Amd in that respect , it' s also important to learn about the business to see the big picture. M: You mean like knowing about the history of the company? W: Ki nd of , but more Ii ke knowing the details of the products and services that the company exists to deliver. Learning about the business will give you a chance to understand how yOUJ role fits into the bigger picture. M: Okay."
+    },
+    {
+     "n": 14,
+     "s": 730.88,
+     "e": 734.49,
+     "t": "!' m feeling a bit uneasy about meeting my boss as well W: That' s to be expec 比 d. However ,"
+    }
+   ],
+   "questions": [
+    {
+     "no": 12,
+     "en": "What advice does the man want to get from the woman?",
+     "cn": "",
+     "opts": {
+      "A": "How ωfit int，。他 bigger picture.",
+      "C": "How ωcreate a solid first impression.",
+      "B": "How to get on wi也 colleagues.",
+      "D": "How to succeed in a new job."
+     },
+     "ans": "D",
+     "exp": ""
+    },
+    {
+     "no": 13,
+     "en": "What does the woman say is the most important thing for the man to do at first?",
+     "cn": "",
+     "opts": {
+      "A": "Get famili缸响也 d 也e details of his job description.",
+      "B": "Leam about 由e relations wi恤他吨anization.",
+      "C": "Recogn国 his own limitations and weaknesses.",
+      "D": "Understand his role from various perspectives."
+     },
+     "ans": "D",
+     "exp": ""
+    },
+    {
+     "no": 14,
+     "en": "What does the man say he is feeling a bit uneasy about?",
+     "cn": "",
+     "opts": {
+      "A": "L巳aming history.",
+      "C": "。因.ting repo血 for other d叩缸恤entsωu四.",
+      "B": "Meeting his boss.",
+      "D": "Leavi鸣 his ∞，workers 扭曲e presentα皿明ny."
+     },
+     "ans": "B",
+     "exp": ""
+    },
+    {
+     "no": 15,
+     "en": "What does the woman suggest the man do to gain insight about the running of the business?",
+     "cn": "",
+     "opts": {
+      "A": "Getωknow the decision-makers.",
+      "C": "Promote its products and services.",
+      "B": "Acquire decision-making au也ority.",
+      "D": "Ob田:rve its overall management."
+     },
+     "ans": "A",
+     "exp": ""
+    }
+   ]
+  }
+ ]
+}

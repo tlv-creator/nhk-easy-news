@@ -1,0 +1,897 @@
+{
+ "set": "2025-12-set1",
+ "title": "大学英语四级 · 听力真题",
+ "total_dur": 749.8,
+ "total_kb": 2953,
+ "sections": [
+  {
+   "id": "news1",
+   "title": "News Report 1",
+   "kind": "news",
+   "qs": [
+    1,
+    2
+   ],
+   "audio": {
+    "file": "audio/2025-12-set1/news1.mp3",
+    "start": 39.86,
+    "end": 133.59,
+    "dur": 94.53,
+    "kb": 374
+   },
+   "sentences": [
+    {
+     "s": 39.86,
+     "e": 41.18,
+     "t": "News Report 1"
+    },
+    {
+     "s": 41.18,
+     "e": 49.06,
+     "t": "A terrified cat has survived a five mile round trip under the engine cover of a car on a school run."
+    },
+    {
+     "s": 49.06,
+     "e": 56.0,
+     "t": "The black cat was found curled up under the engine cover of David King's car when he decided"
+    },
+    {
+     "s": 56.0,
+     "e": 60.96,
+     "t": "to do an oil check after dropping his grandson off at school in Kent."
+    },
+    {
+     "s": 61.9,
+     "e": 67.86,
+     "t": "Mr. King's wife said her husband had come running in and was shouting for me to come"
+    },
+    {
+     "s": 67.86,
+     "e": 68.42,
+     "t": "have a look."
+    },
+    {
+     "s": 69.22,
+     "e": 74.44,
+     "t": "We weren't even sure it was alive, so I gently pushed it with a stick to check"
+    },
+    {
+     "s": 74.44,
+     "e": 81.34,
+     "t": "it was breathing, and saw it was a terrified little cat. It reversed even further into the"
+    },
+    {
+     "s": 81.34,
+     "e": 86.88,
+     "t": "engine and was stuck. I tried to reach it, but it was too far down, and there wasn't"
+    },
+    {
+     "s": 86.88,
+     "e": 88.3,
+     "t": "any way I could get it out."
+    },
+    {
+     "s": 89.34,
+     "e": 95.9,
+     "t": "Following a rescue by UK charity Cats Protection, the four-year-old cat was later reunited"
+    },
+    {
+     "s": 95.9,
+     "e": 98.26,
+     "t": "with its owner, Mr King's neighbour."
+    },
+    {
+     "s": 99.26,
+     "e": 104.88,
+     "t": "questions one and two are based on the news report you have just heard question"
+    },
+    {
+     "s": 104.88,
+     "e": 126.15,
+     "t": "one where was the black cat found question two what do we learn about the cat at"
+    },
+    {
+     "s": 126.15,
+     "e": 146.81,
+     "t": "the end of the news report news report two in less than a month the special"
+    }
+   ],
+   "paras": [],
+   "questions": [
+    {
+     "no": 1,
+     "en": "Where was the black cat found?",
+     "cn": "",
+     "opts": {
+      "A": "At the gate of a grade school in Kent.",
+      "C": "Inside the car of David King's neighbour.",
+      "B": "Under the engine cover of a man's car.",
+      "D": "Outside the office of a charity foundation."
+     },
+     "ans": "B",
+     "exp": ""
+    },
+    {
+     "no": 2,
+     "en": "What do we learn about the cat at the end of the news report?",
+     "cn": "",
+     "opts": {
+      "A": "It got reunited with its owner.",
+      "C": "It was placed in the care of a UK charity.",
+      "B": "It was injured during the rescue.",
+      "D": "It became a pet of Mr. King's grandson."
+     },
+     "ans": "A",
+     "exp": ""
+    }
+   ]
+  },
+  {
+   "id": "news2",
+   "title": "News Report 2",
+   "kind": "news",
+   "qs": [
+    3,
+    4
+   ],
+   "audio": {
+    "file": "audio/2025-12-set1/news2.mp3",
+    "start": 133.59,
+    "end": 250.98,
+    "dur": 118.19,
+    "kb": 466
+   },
+   "sentences": [
+    {
+     "s": 146.81,
+     "e": 152.05,
+     "t": "olympic spring games will make a return to Fayetteville the games are coming"
+    },
+    {
+     "s": 152.05,
+     "e": 158.15,
+     "t": "back for the first time in five years. The event will take place at Methodist University."
+    },
+    {
+     "s": 159.27,
+     "e": 164.99,
+     "t": "Event organiser Benjamin Kowalzig says he's excited that athletes will get a chance to"
+    },
+    {
+     "s": 164.99,
+     "e": 170.83,
+     "t": "come back and demonstrate their abilities. Organisers expect about a hundred athletes"
+    },
+    {
+     "s": 170.83,
+     "e": 175.75,
+     "t": "will come out to compete in Fayetteville. They will have a variety of events to choose"
+    },
+    {
+     "s": 175.75,
+     "e": 182.35,
+     "t": "from, including running, throwing and jumping. There will also be a fun tent for children."
+    },
+    {
+     "s": 183.41,
+     "e": 188.37,
+     "t": "Koalzik said it's rewarding to see athletes with special needs triumph in the games."
+    },
+    {
+     "s": 189.33,
+     "e": 194.59,
+     "t": "For anyone who wants to help make this year's games a massive success, there are still"
+    },
+    {
+     "s": 194.59,
+     "e": 201.07,
+     "t": "opportunities to volunteer for Fayetteville's Special Olympics. Organizers encourage them to"
+    },
+    {
+     "s": 201.07,
+     "e": 203.47,
+     "t": "visit the game's website to sign up."
+    },
+    {
+     "s": 205.54,
+     "e": 209.8,
+     "t": "Questions 3 and 4 are based on the news report you have just heard."
+    },
+    {
+     "s": 210.84,
+     "e": 211.62,
+     "t": "Question 3."
+    },
+    {
+     "s": 212.54,
+     "e": 215.24,
+     "t": "What will Fayetteville witness in less than a month?"
+    },
+    {
+     "s": 230.59,
+     "e": 231.39,
+     "t": "Question 4."
+    },
+    {
+     "s": 232.23,
+     "e": 235.71,
+     "t": "What did Benjamin Koalzik say is rewarding to see?"
+    }
+   ],
+   "paras": [
+    {
+     "n": 3,
+     "s": 143.67,
+     "e": 153.89,
+     "t": "In less than a month, the Special Olympic Spring Games will make a return to Fayetteville. The games are coming back for the first time in 5 years. The event will take place at Methodist University. Event organizer Benjamin Kowalczyk says he’s excited that athletes will get a chance to come back and demonstrate their abilities."
+    }
+   ],
+   "questions": [
+    {
+     "no": 3,
+     "en": "What will Fayetteville witness in less than a month?",
+     "cn": "",
+     "opts": {
+      "A": "The reunion of this year's Olympic gold medalists.",
+      "B": "The opening of the Special Olympics Spring Games.",
+      "C": "The first important political event in the next five years.",
+      "D": "The 100th anniversary celebration of Methodist University."
+     },
+     "ans": "B",
+     "exp": ""
+    },
+    {
+     "no": 4,
+     "en": "What did Benjamin Koalzik say is rewarding to see?",
+     "cn": "",
+     "opts": {
+      "A": "Volunteers visit the Games' website to sign up.",
+      "B": "Children play in a fun tent and enjoy themselves fully.",
+      "C": "Organizers devote their time and energy to the Games.",
+      "D": "Athletes with special needs triumph in the Games."
+     },
+     "ans": "D",
+     "exp": ""
+    }
+   ]
+  },
+  {
+   "id": "news3",
+   "title": "News Report 3",
+   "kind": "news",
+   "qs": [
+    5,
+    6,
+    7
+   ],
+   "audio": {
+    "file": "audio/2025-12-set1/news3.mp3",
+    "start": 250.98,
+    "end": 423.79,
+    "dur": 173.61,
+    "kb": 683
+   },
+   "sentences": [
+    {
+     "s": 250.98,
+     "e": 252.1,
+     "t": "News report 3."
+    },
+    {
+     "s": 252.9,
+     "e": 258.22,
+     "t": "A German supermarket has been ordered to destroy its chocolate rabbits after it lost"
+    },
+    {
+     "s": 258.22,
+     "e": 264.98,
+     "t": "a court battle with the Swiss chocolate manufacturer. The Swiss firm had argued its gold-wrapped"
+    },
+    {
+     "s": 264.98,
+     "e": 270.54,
+     "t": "chocolate rabbit deserved copyright protection from a similar product sold by the budget"
+    },
+    {
+     "s": 270.54,
+     "e": 277.86,
+     "t": "supermarket. Switzerland's highest court agreed and overturned a ruling last year by the"
+    },
+    {
+     "s": 277.86,
+     "e": 283.58,
+     "t": "country's commercial court that had sided with the supermarket. It ordered that all"
+    },
+    {
+     "s": 283.58,
+     "e": 288.84,
+     "t": "While the imitation rabbits be destroyed, but suggested the chocolate needn't be wasted,"
+    },
+    {
+     "s": 289.42,
+     "e": 291.5,
+     "t": "it could be melted for use in other products."
+    },
+    {
+     "s": 292.6,
+     "e": 297.4,
+     "t": "It said even though there are some differences between the two products, there was still"
+    },
+    {
+     "s": 297.4,
+     "e": 299.9,
+     "t": "the possibility of confusion for consumers."
+    },
+    {
+     "s": 301.08,
+     "e": 306.76,
+     "t": "The Swiss manufacturer's rabbit has a red bow and bell, while the German supermarkets"
+    },
+    {
+     "s": 306.76,
+     "e": 308.42,
+     "t": "has a green bow and bell."
+    },
+    {
+     "s": 308.42,
+     "e": 313.58,
+     "t": "The color of the wrapper is similar, as are the illustrations of the features."
+    },
+    {
+     "s": 314.52,
+     "e": 319.24,
+     "t": "The chocolate company has been to court before to protect its popular chocolate treat."
+    },
+    {
+     "s": 319.96,
+     "e": 325.84,
+     "t": "Last year, a German federal court said the shade of the gold wrapping was also protected."
+    },
+    {
+     "s": 327.36,
+     "e": 332.32,
+     "t": "Questions 5 to 7 are based on the news report you have just heard."
+    },
+    {
+     "s": 332.32,
+     "e": 337.88,
+     "t": "Question 5. What has the German supermarket been ordered to do?"
+    },
+    {
+     "s": 353.08,
+     "e": 358.64,
+     "t": "Question 6. What did Switzerland's highest court suggest about the chocolate in question?"
+    },
+    {
+     "s": 373.96,
+     "e": 379.38,
+     "t": "Question 7. Why did Switzerland's highest court overturn the commercial court's ruling?"
+    },
+    {
+     "s": 394.57,
+     "e": 400.17,
+     "t": "Section B. Directions. In this section, you will hear two long conversations."
+    },
+    {
+     "s": 400.17,
+     "e": 404.15,
+     "t": "At the end of each conversation, you will hear four questions."
+    },
+    {
+     "s": 404.81,
+     "e": 408.67,
+     "t": "Both the conversation and the questions will be spoken only once."
+    },
+    {
+     "s": 409.35,
+     "e": 416.37,
+     "t": "After you hear a question, you must choose the best answer from the four choices marked A, B, C and D."
+    },
+    {
+     "s": 416.99,
+     "e": 422.05,
+     "t": "Then mark the corresponding letter on answer sheet 1 with a single line through the centre."
+    }
+   ],
+   "paras": [
+    {
+     "n": 5,
+     "s": 252.9,
+     "e": 273.06,
+     "t": "A German supermarket has been ordered to destroy its chocolate rabbits after it lost a court battle with the Swiss chocolate manufacturer. The Swiss firm had argued its gold-wrapped chocolate rabbit deserved copyright protection from a similar product sold by the budget supermarket."
+    },
+    {
+     "n": 6,
+     "s": 306.76,
+     "e": 328.06,
+     "t": "but suggested the chocolate needn’t be wasted. It could be melted for use in other products. [7] It said even though there are some differences between the two products, there was still the possibility of confusion for consumers. The Swiss manufacturer’s rabbit has a red bow and bell, while the German supermarket’s has a green bow and bell. The color of the wrapper is similar as are the illustrations of the features. The chocolate company has been to court before to protect its popular chocolate treat. Last year, a German federal court said the shade of the gold wrapping was also protected."
+    }
+   ],
+   "questions": [
+    {
+     "no": 5,
+     "en": "What has the German supermarket been ordered to do?",
+     "cn": "",
+     "opts": {
+      "A": "Compensate for the Swiss manufacturer's loss.",
+      "C": "Destroy its imitation chocolate rabbits.",
+      "B": "Change the wrapping of its commodities.",
+      "D": "Defend itself in the country's commercial court."
+     },
+     "ans": "C",
+     "exp": ""
+    },
+    {
+     "no": 6,
+     "en": "What did Switzerland's highest court suggest about the chocolate in question?",
+     "cn": "",
+     "opts": {
+      "A": "It could be reused in other products.",
+      "B": "It could be resold cheaper to avoid waste.",
+      "C": "It could be reshaped into animals other than rabbits.",
+      "D": "It could be rewrapped and sold by the budget supermarket."
+     },
+     "ans": "A",
+     "exp": ""
+    },
+    {
+     "no": 7,
+     "en": "Why did Switzerland's highest court overturn the commercial court's ruling?",
+     "cn": "",
+     "opts": {
+      "A": "To be fair to the German supermarkets.",
+      "C": "To prevent consumers' possible confusion.",
+      "B": "To protect chocolate retailers' interests.",
+      "D": "To boost the growth of the chocolate industry."
+     },
+     "ans": "C",
+     "exp": ""
+    }
+   ]
+  },
+  {
+   "id": "conv1",
+   "title": "Conversation 1",
+   "kind": "conv",
+   "qs": [
+    8,
+    9,
+    10,
+    11
+   ],
+   "audio": {
+    "file": "audio/2025-12-set1/conv1.mp3",
+    "start": 423.79,
+    "end": 599.84,
+    "dur": 176.85,
+    "kb": 696
+   },
+   "sentences": [
+    {
+     "s": 423.79,
+     "e": 424.77,
+     "t": "Conversation 1"
+    },
+    {
+     "s": 426.35,
+     "e": 431.49,
+     "t": "Can you please hand me that book over there? It has instructions for making a winter bean"
+    },
+    {
+     "s": 431.49,
+     "e": 437.15,
+     "t": "salad. My sister's boyfriend is coming over for dinner. He's vegetarian, so I need to make a"
+    },
+    {
+     "s": 437.15,
+     "e": 443.65,
+     "t": "lot of vegetable dishes. He only eats vegetables, no meat. That doesn't sound like a very balanced"
+    },
+    {
+     "s": 443.65,
+     "e": 449.21,
+     "t": "diet. How can he get enough protein? What does he do to strengthen his muscles and all that?"
+    },
+    {
+     "s": 449.91,
+     "e": 456.11,
+     "t": "Apparently, that's no problem. He's explained this to me when we first met. He eats a variety of"
+    },
+    {
+     "s": 456.11,
+     "e": 460.27,
+     "t": "different vegetables and nuts, especially those with high amounts of protein."
+    },
+    {
+     "s": 460.99,
+     "e": 466.37,
+     "t": "It sounds a bit difficult, but he's done his research, I suppose. What's his reasoning for"
+    },
+    {
+     "s": 466.37,
+     "e": 471.05,
+     "t": "being vegetarian? Is it his religion, health condition, or lifestyle?"
+    },
+    {
+     "s": 471.75,
+     "e": 476.71,
+     "t": "He's an animal activist. He's always been very sensitive and sympathizes with animals."
+    },
+    {
+     "s": 476.71,
+     "e": 481.53,
+     "t": "He's even written to his state senator about the torture of dolphins in sea parks."
+    },
+    {
+     "s": 482.09,
+     "e": 486.29,
+     "t": "He says that keeping animals in zoos and parks causes them great distress."
+    },
+    {
+     "s": 486.93,
+     "e": 490.73,
+     "t": "That's a little gloomy, but I can understand that to a point."
+    },
+    {
+     "s": 491.47,
+     "e": 495.11,
+     "t": "Not all zoos and animal parks have the most favorable conditions."
+    },
+    {
+     "s": 495.83,
+     "e": 500.57,
+     "t": "But without them, it just wouldn't be feasible to learn about animals and their environments."
+    },
+    {
+     "s": 501.35,
+     "e": 505.81,
+     "t": "Besides, I don't think I could ever give up a good hot dog at a baseball game."
+    },
+    {
+     "s": 505.81,
+     "e": 506.31,
+     "t": "him?\""
+    },
+    {
+     "s": 506.31,
+     "e": 511.77,
+     "t": "Honestly, I agree, but just don't let him hear you say that. He's the spokesperson for"
+    },
+    {
+     "s": 511.77,
+     "e": 513.27,
+     "t": "his local animal rights group."
+    },
+    {
+     "s": 514.45,
+     "e": 518.57,
+     "t": "Questions 8 to 11 are based on the conversation you have just heard."
+    },
+    {
+     "s": 519.23,
+     "e": 523.07,
+     "t": "Question 8. What does the man request the woman to do?"
+    },
+    {
+     "s": 538.37,
+     "e": 542.91,
+     "t": "Question 9. What does the woman say about eating vegetables only?"
+    },
+    {
+     "s": 557.96,
+     "e": 563.4,
+     "t": "Question 10. Why does the boyfriend of the man's sister choose to be a vegetarian?"
+    },
+    {
+     "s": 563.4,
+     "e": 584.1,
+     "t": "Question 11. On what point does the man agree with the woman at the end of the conversation?"
+    }
+   ],
+   "paras": [],
+   "questions": [
+    {
+     "no": 8,
+     "en": "What does the man request the woman to do?",
+     "cn": "",
+     "opts": {
+      "A": "Pass a book to him.",
+      "C": "Return the handbook to him.",
+      "B": "Make a vegetable dish.",
+      "D": "Meet his sister's boyfriend."
+     },
+     "ans": "A",
+     "exp": ""
+    },
+    {
+     "no": 9,
+     "en": "What does the woman say about eating vegetables only?",
+     "cn": "",
+     "opts": {
+      "A": "It doesn't sound practical for her.",
+      "C": "It would reduce one's protein intake.",
+      "B": "It would do harm to one's muscles.",
+      "D": "It doesn't seem to be a balanced diet."
+     },
+     "ans": "D",
+     "exp": ""
+    },
+    {
+     "no": 10,
+     "en": "Why does the boyfriend of the man's sister choose to be a vegetarian?",
+     "cn": "",
+     "opts": {
+      "A": "To improve his health.",
+      "C": "To stick to his religious belief.",
+      "B": "To protect animal rights.",
+      "D": "To follow a trendy lifestyle."
+     },
+     "ans": "B",
+     "exp": ""
+    },
+    {
+     "no": 11,
+     "en": "On what point does the man agree with the woman at the end of the conversation?",
+     "cn": "",
+     "opts": {
+      "A": "The torture and distress dolphins suffer in parks.",
+      "C": "The gloomy environments animals are kept in.",
+      "B": "The urgency of joining an animal rights group.",
+      "D": "The necessity of having zoos and eating meat."
+     },
+     "ans": "D",
+     "exp": ""
+    }
+   ]
+  },
+  {
+   "id": "conv2",
+   "title": "Conversation 2",
+   "kind": "conv",
+   "qs": [
+    12,
+    13,
+    14,
+    15
+   ],
+   "audio": {
+    "file": "audio/2025-12-set1/conv2.mp3",
+    "start": 599.84,
+    "end": 785.69,
+    "dur": 186.65,
+    "kb": 734
+   },
+   "sentences": [
+    {
+     "s": 599.84,
+     "e": 600.96,
+     "t": "Conversation 2."
+    },
+    {
+     "s": 601.94,
+     "e": 605.78,
+     "t": "Did you see that television program on air travel last night?"
+    },
+    {
+     "s": 606.16,
+     "e": 616.26,
+     "t": "Yes. The part about overcoming jet lag was interesting. I was surprised that the expert recommended not eating for the entire journey and avoiding sleeping on the plane."
+    },
+    {
+     "s": 616.94,
+     "e": 622.42,
+     "t": "I was too, as I read an article on the subject in the past that suggested the opposite."
+    },
+    {
+     "s": 623.04,
+     "e": 628.28,
+     "t": "It claimed that it was important not to miss meals, and that taking a nap on the plane was"
+    },
+    {
+     "s": 628.28,
+     "e": 630.62,
+     "t": "the best way to adjust to a new time zone."
+    },
+    {
+     "s": 631.3,
+     "e": 637.04,
+     "t": "Well, the expert on the show did cite research supporting her recommendations, so I guess"
+    },
+    {
+     "s": 637.04,
+     "e": 639.6,
+     "t": "I'll give it a try next time I fly a long distance."
+    },
+    {
+     "s": 640.36,
+     "e": 645.22,
+     "t": "Jet lag is a big problem for me, and has been for the last few years, even though"
+    },
+    {
+     "s": 645.22,
+     "e": 646.8,
+     "t": "I never suffered from it before."
+    },
+    {
+     "s": 647.88,
+     "e": 652.16,
+     "t": "Well, she did say that jet lag often becomes more of a problem after 40."
+    },
+    {
+     "s": 652.8,
+     "e": 657.1,
+     "t": "So I guess I'm lucky that I can still adjust to different time zones well."
+    },
+    {
+     "s": 657.78,
+     "e": 659.92,
+     "t": "My problem is I'm afraid to fly."
+    },
+    {
+     "s": 660.46,
+     "e": 661.92,
+     "t": "Oh, I didn't know that."
+    },
+    {
+     "s": 662.58,
+     "e": 667.1,
+     "t": "Actually, my mother is terrified of airplanes to the point where she can't even fly,"
+    },
+    {
+     "s": 667.5,
+     "e": 670.7,
+     "t": "so our family vacations were always by car or train."
+    },
+    {
+     "s": 671.12,
+     "e": 672.46,
+     "t": "I'm not as bad as that."
+    },
+    {
+     "s": 672.46,
+     "e": 677.1,
+     "t": "I just get anxious before I fly and feel nervous the whole time we're in the air"
+    },
+    {
+     "s": 677.1,
+     "e": 682.36,
+     "t": "Which is why I was hoping the television program would cover that topic more than it did"
+    },
+    {
+     "s": 682.36,
+     "e": 688.06,
+     "t": "Yeah, that segment was too brief especially as so many people have that problem"
+    },
+    {
+     "s": 688.06,
+     "e": 691.4,
+     "t": "She said 20% of people are afraid to fly"
+    },
+    {
+     "s": 692.06,
+     "e": 697.9,
+     "t": "Actually, it was a quarter of people so the problem really is widespread and deserves attention"
+    },
+    {
+     "s": 699.14,
+     "e": 703.58,
+     "t": "Question 12 to 15 are based on the conversation you have just heard."
+    },
+    {
+     "s": 704.54,
+     "e": 705.2,
+     "t": "Question 12."
+    },
+    {
+     "s": 706.02,
+     "e": 709.62,
+     "t": "What part of the TV program does the man say was interesting?"
+    },
+    {
+     "s": 724.97,
+     "e": 725.81,
+     "t": "Question 13."
+    },
+    {
+     "s": 726.71,
+     "e": 730.37,
+     "t": "What does the man say he will do next time he flies a long distance?"
+    },
+    {
+     "s": 745.67,
+     "e": 746.73,
+     "t": "Question 14."
+    },
+    {
+     "s": 747.65,
+     "e": 749.41,
+     "t": "Why does the woman think she is lucky?"
+    },
+    {
+     "s": 764.63,
+     "e": 765.69,
+     "t": "Question 15."
+    },
+    {
+     "s": 765.69,
+     "e": 770.63,
+     "t": "Why does the woman think the problem of being afraid to fly deserves attention?"
+    }
+   ],
+   "paras": [
+    {
+     "n": 12,
+     "s": 607.04,
+     "e": 617.42,
+     "t": "The part about overcoming jet lag was interesting. I was surprised that the expert recommended not eating for the entire journey and avoiding sleeping on the plane."
+    },
+    {
+     "n": 13,
+     "s": 631.3,
+     "e": 647.88,
+     "t": "Well, the expert on the show did cite research supporting her recommendations. So I guess I'll give it a try next time I fly a long distance. Jet lag is a big problem for me and has been for the last few years, even though I never suffered from it before."
+    },
+    {
+     "n": 14,
+     "s": 652.8,
+     "e": 660.74,
+     "t": "So I guess I'm lucky that I can still adjust to different time zones well. My problem is I'm afraid to fly."
+    }
+   ],
+   "questions": [
+    {
+     "no": 12,
+     "en": "What part of the TV program does the man say was interesting?",
+     "cn": "",
+     "opts": {
+      "A": "The part about not eating on board the plane.",
+      "C": "The part about getting over jetlag.",
+      "B": "The part about air travel in the past.",
+      "D": "The part about avoiding sleeping on the plane."
+     },
+     "ans": "C",
+     "exp": ""
+    },
+    {
+     "no": 13,
+     "en": "What does the man say he will do next time he flies a long distance?",
+     "cn": "",
+     "opts": {
+      "A": "Try following the advice given by the expert on the show.",
+      "B": "Concentrate on reading articles recommended by experts.",
+      "C": "Have meals as usual to stay away from hunger.",
+      "D": "Take a nap to adjust to a new time zone."
+     },
+     "ans": "A",
+     "exp": ""
+    },
+    {
+     "no": 14,
+     "en": "Why does the woman think she is lucky?",
+     "cn": "",
+     "opts": {
+      "A": "She has been well treated when traveling.",
+      "C": "She can spend a lot of time vacationing.",
+      "B": "She does not have to worry about jetlag.",
+      "D": "She does not have any problem flying."
+     },
+     "ans": "B",
+     "exp": ""
+    },
+    {
+     "no": 15,
+     "en": "Why does the woman think the problem of being afraid to fly deserves attention?",
+     "cn": "",
+     "opts": {
+      "A": "It affects twenty-five percent of people.",
+      "C": "It impacts female travelers more seriously.",
+      "B": "It has long been ignored by many experts.",
+      "D": "It has caused heavy losses to many airlines."
+     },
+     "ans": "A",
+     "exp": ""
+    }
+   ]
+  }
+ ]
+}
