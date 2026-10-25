@@ -50,7 +50,19 @@ if [ ! -f "$SHARED/scripts/audio_health.py" ]; then
   tar xzf "$ROOT/shared.tar.gz" -C "$SHARED" --strip-components=1 || die "解压失败"
 fi
 for t in audio_health.py check_dead_refs.py update_guide_page.py strip_inject.py; do
-  [ -f "$SHARED/scripts/$t" ] && cp -f "$SHARED/scripts/$t" "$PROJ/scripts/$t" && echo "  复制 scripts/$t"
+  if [ ! -f "$SHARED/scripts/$t" ]; then continue; fi
+  if [ ! -f "$PROJ/scripts/$t" ]; then
+    cp -f "$SHARED/scripts/$t" "$PROJ/scripts/$t" && echo "  复制 scripts/$t（本地没有）"
+  elif ! cmp -s "$SHARED/scripts/$t" "$PROJ/scripts/$t"; then
+    # 🔴🔴 2026-10-25 修（今天真踩到）：原来**无条件覆盖**本地文件
+    #    ⇒ 本地刚修好的 strip_inject.py 被共享仓库的旧版**静默覆盖回去**
+    #    ⇒ 修的改动凭空消失（而且没有任何提示）⇒ 排查半天
+    #    ⇒ 现在：内容不同就**保留本地** + 明确提示（共享仓库才是权威 ⇒ 该把改动推上去）
+    echo "  ⚠️ scripts/$t：本地与共享仓库**不一致** ⇒ 保留本地版"
+    echo "     （共享仓库是权威 ⇒ 确认本地改动是对的之后，要推上去：scripts/push_files.py）"
+  else
+    echo "  scripts/$t：与共享仓库一致 ✅"
+  fi
 done
 echo "  共享工具目录：$SHARED/scripts"
 
@@ -90,12 +102,34 @@ for t in update.py scripts/fetch_nhk.py scripts/asr_align.py scripts/translate.p
          scripts/update_nhk_guide.py work/deploy_nhk.sh apk/build.sh apk/stage_apk.sh; do
   [ -f "$PROJ/$t" ] || warn "缺 $t"
 done
+
+# 🔴🔴 2026-10-25 改（今天实测）：**站点文件每次都从线上站对齐一次**（--skip-existing ⇒ 只补缺的）
+#    为什么：共享仓库里的 nhk/site/app 只是一份**旧快照**（今天是 APP_VER v30，线上是 v32）
+#    ⇒ 沙箱重置后本地目录是旧的 ⇒ 明天 build 会拿旧数据当底 ⇒ 静默出错
+#    ⇒ 现在：每次 setup 都跟线上站对齐（只补缺的 ⇒ 便宜）⇒ 本地目录永远是"线上那一版"
+CUR=$(curl -s -m 20 -H 'Cache-Control: no-cache' \
+      https://tlv-creator.github.io/nhk-easy-news/version.json \
+      | python3 -c "import json,sys; print((json.load(sys.stdin).get('site') or '').rstrip('/'))" 2>/dev/null)
+if [ -n "$CUR" ]; then
+  echo "  当前站：$CUR ⇒ 对齐站点文件（只补缺的）…"
+  python3 "$PROJ/scripts/fetch_nhk.py" --restore-site --site "$CUR" --skip-existing \
+    || warn "站点文件对齐失败（继续，但本地可能是旧快照）"
+  # 🔴 index.html 特判：**每次都取回 + 重新剥平台注入**
+  #    （线上那份 index.html **带着平台注入的统计脚本** ⇒ 不能直接当本地源码；
+  #      而 --skip-existing 会跳过它 ⇒ 本地就会留着旧快照里那份）
+  if curl -s -m 30 -o "$PROJ/site/app/index.html" "$CUR/index.html"; then
+    python3 "$PROJ/scripts/strip_inject.py" "$PROJ/site/app/index.html" >/dev/null 2>&1 \
+      && echo "  index.html：已取回 + 平台注入已剥" \
+      || warn "index.html 剥注入失败（查 scripts/strip_inject.py）"
+  else
+    warn "index.html 取回失败"
+  fi
+else
+  warn "读不到引导页当前站 ⇒ 站点文件没法自动对齐"
+fi
 [ -f "$PROJ/site/app/app.js" ] || warn "site/app 不在（从线上站取回：python3 scripts/fetch_nhk.py --restore-site --site <线上站> --with-media）"
 # 音频不进仓库 ⇒ 缺了就从线上站拉（引导页的 site = 当前站）
 if [ ! -d "$PROJ/site/app/media/slow" ] || [ -z "$(ls -A "$PROJ/site/app/media/slow" 2>/dev/null)" ]; then
-  CUR=$(curl -s -m 20 -H 'Cache-Control: no-cache' \
-        https://tlv-creator.github.io/nhk-easy-news/version.json \
-        | python3 -c "import json,sys; print((json.load(sys.stdin).get('site') or '').rstrip('/'))" 2>/dev/null)
   if [ -n "$CUR" ]; then
     warn "音频不在（沙箱重置会丢）⇒ 从 $CUR 取回"
     python3 "$PROJ/scripts/fetch_nhk.py" --restore-site --site "$CUR" --with-media \
