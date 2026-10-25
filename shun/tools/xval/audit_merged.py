@@ -79,12 +79,15 @@ def real_sort(e):
 ordered = all_eps_sorted
 gi = 0
 for e in ordered:
+    ep_s = []
     for s in e['sents']:
         t = s.get('t') or ''
         g = shung[gi]; p = shunp[gi]
         R['sents'] += 1
         if not (s.get('zh') or '').strip():
             R['zh_empty'] += 1
+        # 时间轴：句区间不许交叠（peer 实测 s001 16 处 / s006 9 处）
+        ep_s.append((s.get('s'), s.get('e')))
         fr = g.get('frame') or []
         if not fr:
             R['no_frame'] += 1
@@ -127,8 +130,20 @@ print('=== 合并版数据层独立审计 ===')
 for k in ['eps', 'sents', 'shung_len', 'shunp_len', 'blocks', 'blocks_total', 'blocks_with_parts',
           'with_inner', 'with_skel', 'pred_with_chain', 'mc_total',
           'shun_line_identical', 'dup_ep', 'sorted_by_real', 'min_ep', 'max_ep',
-          's_not_sub', 'locate_fail', 'overlap', 'b_illegal', 'adj_same', 'zh_empty', 'no_frame']:
+          's_not_sub', 'locate_fail', 'overlap', 'b_illegal', 'adj_same', 'zh_empty', 'no_frame',
+          'timeline_overlaps']:
     print(f'  {k:20s} {R[k]}')
+# 时间轴交叠（按集判）
+ep_ovl = 0
+for e in ordered:
+    ss = [(x.get('s'), x.get('e')) for x in e['sents']]
+    for i in range(len(ss) - 1):
+        a, b = ss[i][1], ss[i + 1][0]
+        if a is not None and b is not None and a > b:
+            ep_ovl += 1
+R['timeline_overlaps'] = ep_ovl
+if ep_ovl:
+    fails.append(f'句级时间轴有 {ep_ovl} 处交叠')
 print('\n=== 判定 ===')
 if fails:
     for f in fails:

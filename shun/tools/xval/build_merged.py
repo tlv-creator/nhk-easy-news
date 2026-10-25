@@ -39,6 +39,40 @@ eps6 = []
 for tag in TAGS6:
     d = json.load(open(os.path.join(PEER, tag + '.json'), encoding='utf-8'))
     eps6.append(d)
+
+# ---------- 2.1 时间轴单调化（peer 实测 s001 16 处 / s006 9 处交叠）----------
+# 🔴 13 集 0 处交叠；6 集有 ⇒ 个别句子的 e 偏大，盖住了后面几句
+#    ⇒ 修法（零额度、只动 s/e，不动 zh/gs/ru 一个字）：
+#       e = min(e, 下一句.s)；若 e <= s 则 e = 下一句.s
+def overlaps(sents):
+    n = 0
+    for i in range(len(sents) - 1):
+        a, b = sents[i].get('e'), sents[i + 1].get('s')
+        if a is not None and b is not None and a > b:
+            n += 1
+    return n
+
+def monotonicize(sents):
+    fixed = 0
+    for i in range(len(sents) - 1):
+        cur, nxt = sents[i], sents[i + 1]
+        if cur.get('e') is None or nxt.get('s') is None:
+            continue
+        if cur['e'] > nxt['s']:
+            old = cur['e']
+            cur['e'] = nxt['s']
+            if cur['e'] <= cur.get('s', 0):
+                cur['e'] = nxt['s']
+            fixed += 1
+    return fixed
+
+for d in eps6:
+    before = overlaps(d['sents'])
+    fixed = monotonicize(d['sents'])
+    after = overlaps(d['sents'])
+    if before:
+        print(f"  {d['tag']}: 交叠 {before} → {after}（改了 {fixed} 句的 e；zh/gs/ru 未动）")
+    assert after == 0, (d['tag'], after)
 print('6 集:', len(eps6), '集', sum(len(e['sents']) for e in eps6), '句')
 
 # ---------- 2.5 补 13 集的词级拆解（规则引擎产的块 parts 为空） ----------
