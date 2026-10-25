@@ -77,9 +77,9 @@
     {
       "domain": "zzjxyp80lpd73.space.mcode.cn",
       "name": "日语泛读精读 · 上一版交付站（55 本 · 汉字注音修正版）",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "frozen": false,
-      "reason": "2026-10-25 本轮 75 本新版已用新站取代；没有任何 APK 的 site.txt 指向它 ⇒ 可删",
+      "reason": "2026-10-25 已手动删除并复验 404（线上实测 HTTP 404）",
       "referenced_by": [
         "/workspace/output/tadoku-apk.zip（站上那份）",
         "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
@@ -118,11 +118,31 @@
       ]
     },
     {
-      "domain": "4a5zb27ejec6k.space.mcode.cn",
-      "name": "日语泛读精读 · 正式交付站 v1.2.0（75 本 / 11036 句）",
+      "domain": "k5ibj8z3fwew9.space.mcode.cn",
+      "name": "日语泛读精读 · 正式交付站 v1.2.0（75 本 / 11036 句 · 注音残留已清）",
       "status": "ALIVE",
       "frozen": true,
-      "reason": "当前正式交付站（2026-10-25 v1.2.0：修正 51 处注音残留/英文串栏）"
+      "reason": "2026-10-25 v1.2.0 最终版：清理 195+51 处正文注音残留（魔術 195 / 地震 139 / 其它 6 本）＋ 外来碎片 guest/[sic]/đại；两个独立干净源（印刷页图像 OCR + 出版社朗読音频 ASR）逐字裁决；站根含 tadoku-apk.zip（v1.2.0，签名 44eb130d…ce053 可覆盖安装）",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip",
+        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+      ]
+    },
+    {
+      "domain": "4a5zb27ejec6k.space.mcode.cn",
+      "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
+      "status": "SUPERSEDED",
+      "frozen": false,
+      "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
+      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn"
+    },
+    {
+      "domain": "ns507ds9uold3.space.mcode.cn",
+      "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
+      "status": "SUPERSEDED",
+      "frozen": false,
+      "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
+      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn"
     }
   ]
 }
