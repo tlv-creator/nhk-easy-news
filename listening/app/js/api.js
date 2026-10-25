@@ -43,21 +43,44 @@
         if (Object.prototype.hasOwnProperty.call(opts.headers, hk)) headers[hk] = opts.headers[hk];
       }
     }
-    return fetch(CFG.SU + '/rest/v1/' + path, {
-      method: opts.method || 'GET',
-      headers: headers,
-      body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined
-    }).then(function (r) {
-      return r.text().then(function (t) {
-        if (!r.ok) {
-          throw new Error(friendlyMsg(r.status, t));
+    /* 🔴 网络层失败要**重试**：微信 webview / 弱网 / 连接被重置时，一次失败就报
+       「连不上服务器」⇒ 学生直接进不去（2026-10-25 实测有多位同学这样）
+       ⇒ 现在：网络层失败重试 2 次（共 3 次，退避 0.7s / 1.6s），HTTP 错误码**不重试**
+       ⇒ 另外加 15 秒超时（原来没有 ⇒ 卡住的请求会一直转圈） */
+    var left = (opts.retries === undefined) ? 2 : opts.retries;
+    var timeoutMs = opts.timeoutMs || 15000;
+    function once() {
+      var ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var timer = ctl ? setTimeout(function () { try { ctl.abort(); } catch (e) { } }, timeoutMs) : null;
+      return fetch(CFG.SU + '/rest/v1/' + path, {
+        method: opts.method || 'GET',
+        headers: headers,
+        body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
+        signal: ctl ? ctl.signal : undefined
+      }).then(function (r) {
+        return r.text().then(function (t) {
+          if (timer) clearTimeout(timer);
+          if (!r.ok) {
+            throw new Error(friendlyMsg(r.status, t));   /* HTTP 错误码 ⇒ 直接抛，不重试 */
+          }
+          if (!t) return null;
+          try { return JSON.parse(t); } catch (e) { return t; }
+        });
+      }, function (e) {
+        if (timer) clearTimeout(timer);
+        var isAbort = e && (e.name === 'AbortError' || e.code === 20);
+        var msg = isAbort ? '网络太慢，等太久没连上，请再试一次' : '连不上服务器，请检查网络后重试';
+        if (left > 0) {
+          left--;
+          var wait = 700 + (2 - left) * 900;
+          return new Promise(function (res) { setTimeout(res, wait); }).then(once);
         }
-        if (!t) return null;
-        try { return JSON.parse(t); } catch (e) { return t; }
+        var err = new Error(msg);
+        err.net = true;
+        throw err;
       });
-    }, function () {
-      throw new Error('连不上服务器，请检查网络后重试');
-    });
+    }
+    return once();
   }
 
   /* ================= 教师侧特权操作（走云函数端点） =================
@@ -139,11 +162,21 @@
         return list;
       })
       .catch(function (err) {
-        // 断网兜底：用本机上次缓存的名册（24 小时内）
+        // 🔴 兜底顺序：**本机缓存（24h，更新鲜）→ 随页面发布的静态名册 → 抛错**
+        //    静态名册解决的是「第一次打开 + 网络被拦/太慢」这类场景
+        //    （之前只有本机缓存 ⇒ 从没成功加载过的设备**永远进不去**）
         try {
           var c = JSON.parse(localStorage.getItem('listen.roster') || 'null');
           if (c && c.v && (Date.now() - c.t) < 86400000) { rosterCache = c.v; return c.v; }
         } catch (e2) { }
+        try {
+          var fb = global.LISTEN_ROSTER_FALLBACK;
+          if (fb && fb.length) {
+            rosterCache = fb;
+            try { localStorage.setItem('listen.roster', JSON.stringify({ t: Date.now(), v: fb })); } catch (e3) { }
+            return fb;
+          }
+        } catch (e4) { }
         throw err;
       });
   }
