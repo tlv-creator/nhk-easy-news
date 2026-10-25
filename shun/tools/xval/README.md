@@ -1,0 +1,117 @@
+# shun/tools/xval —— 语法结构「交叉验证工具箱」
+
+零额度、零 MiniMax 调用。全部基于 **kuromoji + IPADIC（规则引擎）**，用来给任何来源的
+`gs.frame` 做**独立第三方复核**，以及在不改 frame 的前提下补出第二层信息。
+
+> 为什么要交叉验证：LLM 产出的语义标签（从句小类 / 角色 / 骨架）确实比规则引擎好，
+> 但**发布环节**可能把块文本截坏、把边界搞错 ⇒
+> **语义层用 LLM，结构层用规则 ⇒ 两者必须对拍**。
+> 下面的 `gs_quality.py` 就是那个「对拍判据」。
+
+---
+
+## 0. 装依赖
+
+```bash
+npm install kuromoji kanjidic2-json        # kuromoji=分词+IPADIC / kanjidic2-json=逐字读音
+export KUROMOJI_DIC=<repo>/node_modules/kuromoji/dict
+```
+
+## 1. 四判据质量闸门（最常用）
+
+```python
+from gs_quality import check_frame
+ok, why = check_frame(gs['frame'], sent_text)
+```
+
+| 判据 | 内容 | 为什么 |
+|---|---|---|
+| ① 逐字 | 块文本必须是原句的连续子串 | 防止同义替换（「各々」→「色々」）|
+| ② 不重叠 | 块之间 p 区间不重叠 | 防止一个块吃掉别人的地盘 |
+| ③ 谓语在末尾 | 「谓语」角色的块必须在末尾 | 防止谓语被从句盖住 |
+| ④ 覆盖 ≥80% | 去标点后主干覆盖 | 防止漏掉句子主干 |
+
+**实测**：仓库 `shun-web/data/eps/epNN.json` 那批 LLM `gs` → **642/1129 过闸**（57%）；
+本工具箱生成的 7 集 → **473/475 过闸（99.6%）**。
+
+## 2. 对任意 `s*.json` 做独立复核 + 交叉验证
+
+```bash
+export SHUN_DATA_DIR=<repo>/shun-web/data
+export SHUN_XVAL_DIR=<repo>/shun/tools/xval
+python3 xval_peer.py            # 逐字/区间/括号/合并率/覆盖 + 角色分布
+```
+
+它会独立复核：s 非子串 / p 缺·越界·不重叠 / b 非法 / 相邻同类型合并数 / 谓语在末尾率 /
+覆盖分布 / 块长分布（用来判断「粒度对不对」）。
+
+## 3. 规则引擎 → 四类括号 + 形态链
+
+```bash
+node extract_generic.js <in.json> <tokens.json>     # 任意 {eps:[{sents:[{t,zh}]}]} → tokens
+python3 -c "
+import json,sys; sys.path.insert(0,'.')
+from analyze import analyze_sentence
+from frame import frame_from_tree, inner_of
+toks=json.load(open('tokens.json',encoding='utf-8'))
+a=analyze_sentence(toks[0]); print(frame_from_tree(a, toks[0]['t']))
+"
+```
+
+- `analyze.py` 输出：树 `nodes`（前序扁平，5 整数/节点）、从句 `c`、谓语链 `p`、句型 `g`、形态链 `mc`
+- `frame.py` 把树转成四类括号：`[]`连接 ｜ `［］`从句 ｜ `〈〉`句体成分 ｜ `（）`谓语
+- `conj.py` 形态链：辞書形 → て形 → 意志形 → ば形
+
+## 4. 不改 frame，只补第二层
+
+```bash
+export SHUN_DATA_DIR=<repo>/shun-web/data
+python3 gen_blocks.py
+```
+
+产出 `gs.blocks[] = {s, inner, parts:[{s,note}], mean}` + `gs.skel` / `gs.chain` / `gs.whole`，
+并把 `ru`（逐字 ruby）补进去。
+
+🔴 **原则**：frame 一个字节都不动。
+理由：LLM 的**语义分组**（如把「友達を作るのが」整体当主语从句）比规则的**成分切分**更贴
+`shun/docs/新结构注释设计.md` 的四类括号定义；规则引擎只负责回答
+「**这个块里面**是什么成分」（块内骨架）和「**这个句子的主干公式**是什么」。
+
+实测（7 集 / 502 句 / 1612 块）：`inner` 有标注 988/1612（61.3%），
+`parts` ≥2 词的块 1273/1612（79.0%）。
+
+## 5. 逐字 ruby
+
+```bash
+node ruby_gen.js peer      # 给 s*.json 生成 ru（写 ruby_peer.json）
+node ruby_gen.js validate  # 用原始 13 集的 ru 当基准验证（1154 句）
+```
+
+算法：kuromoji 分词 → 汉字串切出前导假名/汉字/送り仮名 → 送り仮名只贡献自己的读音 →
+剩下的读音用 **DP 逐字分配**给汉字（候选 = 仓库 `shun/tools/kanji_readings.json` 熟字訓表
+> kanjidic2 音读/训读/名乗り）→ DP 无解则整块兜底（词级读音）。
+
+**验证**（对原始 13 集 1154 句）：
+```
+① ruby 表层能还原原文        1154/1154 (100%)
+② 读音内容与原数据完全一致    1071/1154 (92.8%)
+③ 切分粒度完全一致             667/1154 (57.8%)  ← 差的都是「整词 vs 逐字」
+```
+② 的 7.2% 差异**全是同字异读变体**（人:ひと/ひ、国:くに/く、金:おかね/かね）——
+原数据的 `word_reading.json` 是**按词**人工调过的，本引擎走**词典默认读音**。
+
+## 6. 浏览器端到端断言
+
+```bash
+node verify_peer.js     # 需要本目录的 peer-render-test.html（用 build_peer_test.py 生成）
+```
+
+## 7. 已知的坑（别再踩）
+
+1. **`text.find(s)` 定位重复文本会指错地方** → 块定位必须**按出现顺序推进**
+   `find(s, cursor)`，命中后 `cursor = idx + len(s)`。用 `find(s)` 做「块不重叠」断言会造出
+   几十条假违例。
+2. **剥括号会让块撑过语法边界** → s 里混进括号时，**取第一个括号对内的内容**，
+   不要把括号连同文字一起剥掉。
+3. **脚本注入顺序**：SHUN → SHUNG/SHUNP → app。app 先跑 ⇒ 整页 frame 空且**不报错**。
+4. **数据里有空 `t`** ⇒ 渲染层整行空白。检查 `t` 是否为空要和检查 frame 数量一样严格。
