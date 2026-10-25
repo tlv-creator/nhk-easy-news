@@ -3,7 +3,7 @@
   "_why": "mcode 每次部署都换随机域名，站点很容易在清理时被误删。但有些站是**别的 APK 编译进去的兜底依赖**，删了用户的 App 就会白屏。本清单是所有 agent 清理站点前必须查的。",
   "_rule": "清理站点前：① 查本清单 ② 扫所有现役 APK 的 dex 里写死的 mcode 域名 ③ 两者都命中 → 一律不删。🔴 **frozen:true = 这个站永不 redeploy** —— redeploy 会换随机域名，而 APK / cdn 表 / 引导页里已经写死了它 ⇒ 域名一换，用户的 App 就白屏或没声音。⇒ **要更新它的内容，只能新建一个站 + 改所有引用方 + 改完再删旧的**。",
   "_owner": "NHK / hub / Shun 等各项目 agent 共用",
-  "updated": "2026-10-24",
+  "updated": "2026-10-25",
   "protected_sites": [
     {
       "domain": "vkwwuh9wgkzo0",
@@ -553,9 +553,9 @@
       "project": "nhk",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "2026-10-24 已被 aaxnw4wets0kt 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用）",
+      "note": "2026-10-24 已被 aaxnw4wets0kt 取代（引导页已切走）⇒ **不再是现役站**，可删（保留记录是为了别再被误当成活引用） · 2026-10-25 已删（主会话用 drive 权限删的）",
       "frozen": false,
-      "status": "SUPERSEDED"
+      "status": "DELETED"
     },
     {
       "domain": "aaxnw4wets0kt",
