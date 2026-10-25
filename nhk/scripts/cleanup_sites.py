@@ -20,6 +20,7 @@
     python3 scripts/cleanup_sites.py add <node_id> <域名> <版本>   # 登记新站
     python3 scripts/cleanup_sites.py prune     # 把已删的从登记表去掉
 """
+import argparse
 import json
 import os
 import re
@@ -121,8 +122,17 @@ def cmd_plan(a):
     if to_del:
         print("\n🔴 下面这些站该删（**逐条执行**，别批量）：")
         for s in to_del:
-            print("  mcp_invoke tool_name=drive_files_delete arguments='{\"node_id\":\"%s\"}'   # %s"
-                  % (s.get("node_id", "?"), s.get("domain")))
+            nid = (s.get("node_id") or "").strip()
+            # 🔴🔴 手册 §18.2：node_id 未知时**不许打印会打错的删除命令**
+            #    （把 "PENDING"/"?" 当 node_id 打出去 = 白折腾）
+            if not nid or nid in ("?", "PENDING"):
+                print("  ⚠️ %-18s 该删，但 **node_id 未知** ⇒ 先查云盘列表拿真 id" % s.get("domain"))
+                print("       查询：mcp_invoke tool_name=drive_files_search "
+                      "arguments='{\"category\":\"website\",\"query\":\"%s\"}'" % s.get("domain"))
+                print("       删时：mcp_invoke tool_name=drive_files_delete arguments='{\"node_id\":\"<真id>\"}'")
+            else:
+                print("  mcp_invoke tool_name=drive_files_delete arguments='{\"node_id\":\"%s\"}'   # %s"
+                      % (nid, s.get("domain")))
     else:
         print("\n✅ 没有需要删的站")
     return 0
@@ -148,6 +158,16 @@ def cmd_verify(a):
         ok = ok and good
     frozen = [s["domain"] for s in prot.get("protected_sites", []) if s.get("frozen")]
     for d in frozen:
+        # 🔴 2026-10-25 修（**假红**）：有些保护项**根本不是 mcode 站**
+        #    （例：每日听力记录站 = GitHub Pages 子目录 listening/ ⇒ https://listening.space.mcode.cn 必然 404）
+        #    ⇒ 拿 mcode 域名去探活 ⇒ 永远判红「冻结站不该没」⇒ 假红。
+        ent = next((s for s in prot.get("protected_sites", []) if s.get("domain") == d), {})
+        # 🔴 判据要准：**location** 才是「托管在哪」；
+        #    **canonical** 是「入口页在哪」（很多 mcode 站的入口页也在 Pages 上）⇒ 不能拿它判
+        loc = ent.get("location", "") or ""
+        if ("非 mcode 站" in loc) or ("github.io" in loc):
+            print("  %-18s 冻结站（非 mcode 站 · 跳过探活）" % d)
+            continue
         st = code(d)
         print("  %-18s 冻结站 HTTP=%s %s" % (d, st, "✅" if st == 200 else "❌ 冻结站不该没"))
         ok = ok and (st == 200)
@@ -189,18 +209,23 @@ def main():
     if len(sys.argv) < 2:
         print(__doc__)
         return 2
-    cmd = sys.argv[1]
     ap = argparse.ArgumentParser()
     ap.add_argument("--apk", default=os.path.join(ROOT, "deploy_site", "NHK.apk"))
     sub = ap.add_subparsers(dest="c")
-    sub.add_parser("plan")
-    sub.add_parser("verify")
-    sub.add_parser("prune")
+    # 🔴 2026-10-25 修：`--apk` 原来只能在子命令**前面**（argparse 的规矩）
+    #    ⇒ 手册里写的 `cleanup_sites.py plan` 走的是默认路径 deploy_site/NHK.apk
+    #    ⇒ 沙箱里 deploy_site 不存在 ⇒ **APK 闸门（②）静默失效**（空集合 = 全都"没被引用"）
+    #    ⇒ 现在每个子命令后面也能带 --apk。
+    for name in ("plan", "verify", "prune"):
+        sp = sub.add_parser(name)
+        sp.add_argument("--apk", default=ap.get_default("apk"))
     p = sub.add_parser("add")
     p.add_argument("node_id")
     p.add_argument("domain")
     p.add_argument("ver")
+    p.add_argument("--apk", default=ap.get_default("apk"))
     a = ap.parse_args()
+    cmd = a.c
     if cmd == "plan":
         return cmd_plan(a)
     if cmd == "verify":
