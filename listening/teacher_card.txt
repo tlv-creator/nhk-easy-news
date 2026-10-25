@@ -1,0 +1,49 @@
+════════════════════════════════════════════════════════════
+  每日听力记录站 · 老师今天就做这 3 步（**顺序不能反**）
+════════════════════════════════════════════════════════════
+
+【先点这个永久操作页】★ 三个按钮都在里面，点一下就进 Supabase（SQL 已填好，进去点 Run）
+https://tlv-creator.github.io/nhk-easy-news/listening/ops.html
+
+【现状一句话】
+  现在「公开 anon key」能删掉整班听力记录 ⇒ 这几天**谁都别点**老师端的「清空全部」。
+
+【第 1 步】现在就能跑：把「公开 key 的删除权限」收紧
+  作用：公开 key 只删得掉「听力记录」这一类 ⇒ 词汇站/四级站那些行当场安全
+        老师端功能一点不受影响（老师侧的权限一根都不动）
+  ⚠️ 数字**比基线多是正常的**（学生在补交）⇒ **比基线少才是问题**
+  ⚠️ 这一步**没有**关掉「听力记录」那个口子（那是第 3 步的事）
+
+【第 2 步】传云函数包 + 加两个环境变量
+  包：https://tlv-creator.github.io/nhk-easy-news/cet4-ai/ai-proxy-code-vocabops-v2.zip
+     ⚠️ **不要用 v1**（ai-proxy-code-vocabops.zip）：那版部署完会 500，
+        症状跟「权限被挡」一模一样，根本分不出来
+  SB_URL = https://lszwxcmvcvbraqtrtgon.supabase.co
+  SB_SERVICE_ROLE = Supabase → Project Settings → API → service_role 密钥
+     🔴 service_role 绝不能贴到前端 / 静态站 / APK / 任何 zip
+  验端点：https://vocab-test-d2gkep01q257d3351.service.tcloudbase.com/ai/vocab-ops
+     对的标志 = 返回 **405**，**而且回包里能看到 "service":"vocab-ops"**（只看 405 不算数）
+
+【第 3 步】等第 2 步验通之后，再跑：收尾 SQL（关掉「听力记录」那个口子）
+  ⚠️ 第 2 步没验通**不要**跑 ⇒ 老师端「删一条 / 清空全部」会当场废掉
+  ⚠️ **第 3 步跑过之后，不要回头补跑第 1 步**（第 1 步会把收紧过的权限改回宽的）
+
+【万一报错】
+  两段 SQL 都包在一个事务里 ⇒ 报错就**整段没生效** ⇒ 库还是原样，不会有半截状态
+  把报错原文发我（截图也行）⇒ 我改完给你新链接 ⇒ **别自己重跑第二遍**
+
+【给学生的地址（不要改）】
+  https://tlv-creator.github.io/nhk-easy-news/listening/
+  ⚠️ 学生的二维码就是它 ⇒ 换加速通道也不用重发码
+  补交是学生自己的事（首页有提示 + 10/22、10/23、10/24 三个一键填日期按钮），老师不用管
+
+【给老师的两条「可取字节」的链接地址（供核对用，不是要点）】
+  第①步 SQL 正文：https://tlv-creator.github.io/nhk-easy-news/tools/tighten_url.txt
+       10669 字符 ｜ md5 295588653350c5b4bb7079fc41026cf3
+  第③步 SQL 正文：https://tlv-creator.github.io/nhk-easy-news/tools/listen_lock_url.txt
+       16879 字符 ｜ md5 200efb2c723bd104e01a3a22f2fea6bc
+  ⇒ 万一老师点不动，复制这两个文件里的正文也行（一条 curl 就能取到，不用手抄）
+
+【补交进度】
+  📊 **实时数字看操作页最下面那一行**（它每次打开都现查库，永不过期）
+  本卡**刻意不写死条数/人数** ⇒ 库是活的，写死的数一会儿就错 ⇒ 只认操作页那一行。
