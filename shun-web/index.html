@@ -372,7 +372,7 @@ html[data-k="bw"] .fl{color:#000}
             + '</div>';
     }
     $('#main').innerHTML = h + rows;
-    $('#epBtn').textContent = '第'+(e.ep)+'集';
+    $('#epBtn').textContent = '第'+(e.ep)+'集' + (e.realEp ? (' · Ep'+e.realEp) : '');
     $('#brand p').textContent = '日语播客 · 日中对照文本版 · 共'+e.sents.length+'句';
     S.cur = -1;
     /* 🔴 换集时同步音频状态：无音频集 ⇒ 播放键写「无音频」、时间显示「— / —」、
@@ -453,7 +453,7 @@ html[data-k="bw"] .fl{color:#000}
       var e = EPS[i];
       var ns = e.sents ? e.sents.length : (e.n || 0);   /* 站点版：集未加载时用索引里的句数 */
       h += '<button class="eitem'+(i===S.ep?' on':'')+'" data-i="'+i+'">'
-         +   '第'+e.ep+'集　'+esc(e.title)
+         +   '第'+e.ep+'集'+(e.realEp?(' · Ep'+e.realEp):'')+'　'+esc(e.title)
          +   '<small>'+ns+' 句 · '+Math.round(e.dur/60)+' 分钟</small></button>';
     }
     h += '<button class="tool" id="closeDrawer" style="width:100%">关闭</button>';
@@ -527,7 +527,8 @@ html[data-k="bw"] .fl{color:#000}
     var s = curEp().sents[i];
     if (!s) return;
     var h = '<button class="tbtn" id="sheetClose">×</button>';
-    h += '<h3>第'+(S.ep+1)+'集 · 第'+(i+1)+'句</h3>';
+    var _ce = curEp();
+    h += '<h3>第'+(S.ep+1)+'集' + (_ce && _ce.realEp ? (' · Ep'+_ce.realEp) : '') + ' · 第'+(i+1)+'句</h3>';
     h += '<p class="jp">'+rubyHl(s.ru, '')+'</p>';
     h += '<p class="zh" style="font-size:var(--fszh);line-height:1.7;color:var(--zhc)">'+esc(s.zh)+'</p>';
     if (s.gs && s.gs.frame && s.gs.frame.length){
