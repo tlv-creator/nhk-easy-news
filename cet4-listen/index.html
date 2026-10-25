@@ -406,6 +406,9 @@ details.fold[open]>summary::after{content:"收起"}
       if(fromT!=null){
         if(au.readyState>=1) au.currentTime=fromT;
         else pending=fromT;
+        /* 🔴 seek 之后 Chrome 不保证立刻发 timeupdate ⇒ 这里主动标一次当前句，
+           否则「点句子」后竖条还停在上一句 */
+        markCurrent(sec, fromT);
       }
       if(au.readyState===0){ au.preload="metadata"; au.load(); }
       syncBtn();
@@ -418,6 +421,7 @@ details.fold[open]>summary::after{content:"收起"}
       paint(t);
       if(au.readyState>=1) au.currentTime=t;
       else pending=t;
+      markCurrent(sec, t);
     }
 
     au.addEventListener("loadedmetadata",function(){
@@ -428,6 +432,7 @@ details.fold[open]>summary::after{content:"收起"}
       paint(au.currentTime);
       markCurrent(sec, au.currentTime);
     });
+    au.addEventListener("seeked",function(){ markCurrent(sec, au.currentTime); });
     au.addEventListener("play",syncBtn);
     au.addEventListener("playing",syncBtn);
     au.addEventListener("pause",syncBtn);
