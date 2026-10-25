@@ -16,7 +16,7 @@
 set -uo pipefail
 [ $# -ge 1 ] || { echo "用法: tighten_regress.sh <sql1> [sql2 ...]"; exit 1; }
 HERE="$(cd "$(dirname "$0")" && pwd)"
-# 🔴 路径可移植：原来写死 /workspace/work/pgtest2 ⇒ 别人从仓库跑会写到不存在的目录
+# 🔴 路径可移植：原来写死了沙箱里的临时目录 ⇒ 别人从仓库跑会写到不存在的路径
 PGROOT="${TIGHTEN_PGROOT:-/var/tmp/pgtighten_regress}"
 PGDATA="$PGROOT/data"
 PORT="${LISTEN_PGPORT:-55433}"
