@@ -1,3 +1,14 @@
+-- =====================================================================
+-- 🔴🔴🔴 本文件**只能在你自己起的空的本地库**上跑！
+--    第 3 行是：drop table if exists public.vocab_history_logs,
+--                               public.vocab_online_status, public.vocab_states;
+--    ⇒ **连到生产库执行 = 三个表直接没了**（所有学生的真实记录清零）
+--    ⇒ 正确用法：initdb 起一个本地 PG → 建个空库（例：createdb rlstest）
+--                → psql -d <本地空库> -f setup.sql
+--    ⇒ 不确定当前连的是哪个库 ⇒ 先 \c 看清库名再跑
+-- 🔴 夹具里的学号 90000001/90000002 是**合成占位**（不是真人学号）
+--    ⇒ 夹具本身碰不到任何真学生的行 —— 但**前提仍是本地空库**
+-- =====================================================================
 -- 本地回归台 #3：真实库形状 + sha256 行令牌 + LISTEN 三条路径
 drop table if exists public.vocab_history_logs, public.vocab_online_status, public.vocab_states;
 
@@ -48,7 +59,7 @@ select c.k, c.k || '班', '2660' || lpad((row_number() over (partition by c.k or
        generate_series(1, c.n) g;
 
 -- LISTEN：A/B 两人各一条（🔴 学号 90000001/90000002 是**合成占位**，不是真人学号
---   ⇒ 这套脚本连到生产库也不会碰到任何真学生的行），
+--   ⇒ 夹具本身碰不到任何真学生的行；**但本文件开头的 drop table 会清库** ⇒ 仍只许本地空库），
 --   令牌在库里只存 **sha256(原始令牌)**；原始令牌分别是
 --   A = 'a1b2c3d4e5f60718293a4b5c6d7e8f90'  B = 'b1c2d3e4f5061728394a5b6c7d8e9f001'
 insert into public.vocab_history_logs (class_key, class_name, student_id, duration_sec, action) values
