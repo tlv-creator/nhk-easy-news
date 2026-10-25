@@ -1,0 +1,211 @@
+/* AI 讲解客户端 · 默认样式（墨水屏友好：纯黑白、无渐变、无阴影） */
+
+.ai-box {
+  font-size: 30px;
+  line-height: 1.75;
+  color: #000;
+  background: #fff;
+}
+
+/* 五段标题 */
+.ai-box .ai-h {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 18px 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 3px solid #000;
+  color: #000;
+  background: #fff;
+}
+.ai-box .ai-h:first-child { margin-top: 0; }
+
+/* ① 原文 / ② 中文翻译 这类「标题+内容」 */
+.ai-box .ai-lead {
+  margin: 4px 0 10px;
+  font-size: 30px;
+  color: #000;
+}
+.ai-box .ai-lead:first-of-type { font-weight: 700; }
+
+/* 段落 */
+.ai-box .ai-p {
+  margin: 6px 0;
+  font-size: 30px;
+  color: #000;
+}
+
+/* ③ 逐词拆解：每行一个词 */
+.ai-box .ai-li {
+  margin: 3px 0;
+  padding-left: 10px;
+  font-size: 30px;
+  color: #000;
+  line-height: 1.7;
+}
+
+/* ⑤ 整句结构框架：树状缩进 */
+.ai-box .ai-tree {
+  margin: 3px 0;
+  font-size: 30px;
+  color: #000;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+/* 表格转成行式后的样子 */
+.ai-box .ai-thead {
+  margin: 8px 0 4px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  border-bottom: 2px solid #000;
+  padding-bottom: 2px;
+}
+.ai-box .ai-trow {
+  margin: 2px 0;
+  padding-left: 8px;
+  font-size: 30px;
+  color: #000;
+  line-height: 1.7;
+}
+
+/* 【重点】 */
+.ai-box .ai-key {
+  font-weight: 700;
+  background: #000;
+  color: #fff;
+  padding: 0 4px;
+}
+
+/* 墨水屏修正（2026-10-22）：盒子边框一律 rgba(0,0,0,.35) 半透明 ——
+   墨水屏上纯黑边框会糊成粗杠杠；只保留 2 条 border-bottom 实黑（结构线：
+   五段标题 .ai-h、表头 .ai-thead），那是分隔线，越清楚越好。 */
+/* ------------------------------------------------------------------
+   句子结构剖析（新答题模式 2026-10-22）
+   本文件是「墨水屏纯黑白」风格（不用主题变量），
+   需要跟主题联动的 App 请自行覆盖这几条。
+   ------------------------------------------------------------------ */
+
+/* 3.1 整体大框架：加粗 + 边框（用户要的那行 A は 【B】 …） */
+.ai-box .ai-frame {
+  border: 2px solid rgba(0, 0, 0, .35);
+  padding: 8px 10px;
+  margin: 8px 0 12px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: #000;
+  background: #fff;
+  word-break: break-word;
+}
+
+/* 3.2 成分展开：A：<原文> */
+.ai-box .ai-comp {
+  margin: 10px 0 2px;
+  font-size: 30px;
+  line-height: 1.65;
+  color: #000;
+}
+.ai-box .ai-comp .ai-tag {
+  display: inline-block;
+  min-width: 2.2em;
+  margin-right: 6px;
+  padding: 1px 6px;
+  border: 2px solid rgba(0, 0, 0, .35);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* 3.4 主句谓语 */
+.ai-box .ai-predicate { margin-top: 14px; }
+
+/* 3.3 内部骨架：X = <原文> */
+.ai-box .ai-eq {
+  margin: 2px 0 2px 12px;
+  font-size: 30px;
+  line-height: 1.65;
+  color: #000;
+}
+.ai-box .ai-eq .ai-tag {
+  display: inline-block;
+  min-width: 1.8em;
+  margin-right: 4px;
+  font-weight: 700;
+  text-align: right;
+}
+.ai-box .ai-eq-sign { margin-right: 6px; color: #000; }
+
+/* 说明行：缩进 + 左边竖线（竖线用半透明 → 墨水屏不会变成粗杠杠） */
+.ai-box .ai-note {
+  margin: 0 0 4px 12px;
+  padding-left: 8px;
+  border-left: 2px solid rgba(0, 0, 0, .3);
+  font-size: 28px;
+  line-height: 1.7;
+  color: #000;
+}
+.ai-box .ai-note .ai-tag {
+  font-weight: 700;
+  color: #000;
+  margin-right: 4px;
+}
+.ai-box .ai-note .ai-note-l {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 0 5px;
+  border: 1px solid rgba(0, 0, 0, .3);
+  font-size: 26px;
+}
+
+/* 兜底行 */
+.ai-box .ai-line {
+  margin: 2px 0;
+  font-size: 30px;
+  line-height: 1.7;
+  color: #000;
+  word-break: break-word;
+}
+
+/* 模型偶尔吐的代码块 */
+.ai-box .ai-code {
+  margin: 8px 0;
+  padding: 10px;
+  border: 2px solid rgba(0, 0, 0, .35);
+  background: #fff;
+  font-size: 26px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* 「思考中… 已用 N 秒」状态条 */
+.ai-wait {
+  font-size: 30px;
+  color: #000;
+  background: #fff;
+  border: 2px solid rgba(0, 0, 0, .35);
+  padding: 10px 12px;
+  margin: 6px 0;
+  text-align: center;
+}
+
+/* 错误提示（墨水屏上要短） */
+.ai-err {
+  font-size: 30px;
+  color: #000;
+  background: #fff;
+  border: 3px solid rgba(0, 0, 0, .35);
+  padding: 10px 12px;
+  margin: 6px 0;
+}
+
+/* 降级：复制提问按钮 */
+.ai-copy {
+  font-size: 28px;
+  color: #000;
+  background: #fff;
+  border: 2px solid rgba(0, 0, 0, .35);
+  padding: 8px 14px;
+  border-radius: 4px;
+}
+.ai-copy:active { background: #000; color: #fff; }

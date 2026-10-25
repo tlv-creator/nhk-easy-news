@@ -1,0 +1,40 @@
+/* 合法样本（clean.css）—— 闸门的**反向**测试用
+ *
+ * 🔴 这一份的存在意义：闸门必须有「已知合法 → 必须判干净」这一侧。
+ *    只测「已知违规 → 必须抓到」，一个恒返回「没有违规」的空实现也能通过。
+ *    （同 APK API 闸门 v4 的教训）
+ *
+ * 覆盖的合法形态：
+ *   ① 半透明边框
+ *   ② 深灰边框（#333 不是纯黑）
+ *   ③ border-bottom 实黑（结构线，名额内）
+ *   ④ 半透明 border-bottom（不占结构线名额）
+ *   ⑤ var 指向合法色
+ *   ⑥ var 解析不出但有合法 fallback
+ *   ⑦ 多主题定义（全部合法）
+ *   ⑧ eink-ok 豁免（纯黑但显式豁免）
+ *   ⑨ 变量链 var(--a) → var(--b) → 合法色
+ */
+:root {
+  --acc: #2b6cb0;
+  --line: rgba(0, 0, 0, .26);
+  --safe: #556677;
+  --chain-a: var(--chain-b);
+  --chain-b: #5a7a9a;
+  --t1: rgba(0, 0, 0, .35);
+  --t2: #eeeeee;
+}
+
+.a { border: 1px solid rgba(0, 0, 0, .35); }
+.b { border: 2px solid #556677; }
+.c { border-bottom: 1px solid #000; }
+.d { border-bottom: 1px solid rgba(0, 0, 0, .26); }
+.e { border-left: 4px solid var(--acc); }
+.f { border: 1px solid var(--safe); }
+.g { border: 1px solid var(--nope, #eeeeee); }
+.h { border: 1px solid var(--chain-a); }
+.i { border: 1px solid var(--t1); }
+.j { border: 1px solid var(--t2); }
+
+/* eink-ok: 当前句位置指示竖条 —— 设计要求，必须实黑 */
+.k { border-left: 4px solid #000; }

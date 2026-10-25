@@ -619,6 +619,11 @@ html[data-theme="dark"] .ret-bar { background: linear-gradient(135deg, #3a2540, 
 .sp-sizebar .tbtn { font-size: calc(var(--pfs) - 4px); padding: 4px 9px; }
 .sp-sizebar .tbtn.on { background: var(--accent); color: #fff; border-color: transparent; }
 .sp-btn:active { background: var(--accent); color: #fff; border-color: transparent; }
+/* 「複製整句」复制成功后的状态：墨水屏上要看得见（纯白底纯黑字 + 实黑边） */
+.sp-btn.copied {
+  /* 🔴 墨水屏闸门：边框必须半透明（实黑会糊成粗杠杠）⇒ 状态靠「白底+黑字+加粗」表达 */
+  background: #fff; color: #000; border: 1px solid rgba(0, 0, 0, .35); font-weight: 800;
+}
 .sp-orig {
   font-size: calc(var(--pfs) + 9px); color: var(--ja); font-weight: 700; line-height: 2.05;
   padding: 10px 12px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 14px;
@@ -1062,7 +1067,6 @@ html[data-palette="bw"] .sp-w { background: #f4f4f4; }
 .verbar .vb.on { background: var(--accent); color: var(--accent-ink, #fff); border-color: var(--accent); }
 .verbar .vb.off {   opacity: .55; cursor: not-allowed; }
 .verbar .vb.off::after { content: '（本期無）'; font-size: 13px; font-weight: 400; }
-   opacity: .55; cursor: not-allowed; }
 .verbar .vb-hint {   margin-left: auto; font-size: 14px; color: var(--fg-dim); white-space: nowrap; }
 
 /* 词条详情里的「收藏这个词」 */
@@ -1227,3 +1231,38 @@ html.hc .ai-note .ai-note-l { border-color: rgba(0,0,0,.3) !important; }
   font-size: .92em; letter-spacing: .04em;
 }
 html.hc .ai-sub { color: #444 !important; }
+
+/* ================================================================
+ * 语法讲解新格式（2026-10-25）：一、大框架 / 二、逐块拆解 / 整句意思
+ * 墨水屏：纯白底纯黑字、描边一律半透明、层级靠「字号+留白」而不是颜色
+ * ================================================================ */
+.sp-frame { margin: 0 0 8px; }
+.sp-frame-row {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  padding: 4px 0; border-bottom: 1px solid rgba(0, 0, 0, .12);
+}
+.sp-frame-t { font-size: calc(var(--pfs) + 2px); font-weight: 800; color: var(--fg); }
+.sp-frame-l { font-size: calc(var(--pfs) - 3px); color: var(--fg-dim); }
+.sp-frame-t.b-conn { border-left: 4px solid rgba(0, 0, 0, .45); padding-left: 8px; }
+.sp-frame-t.b-cls  { border-left: 4px solid rgba(0, 0, 0, .30); padding-left: 8px; }
+.sp-frame-t.b-body { border-left: 4px solid rgba(0, 0, 0, .20); padding-left: 8px; }
+.sp-frame-t.b-pred { border-left: 4px solid rgba(0, 0, 0, .60); padding-left: 8px; }
+.sp-skel {
+  font-size: calc(var(--pfs) - 1px); color: var(--fg-dim);
+  padding: 6px 8px; margin: 4px 0 8px;
+  background: var(--bg-2); border: 1px solid rgba(0, 0, 0, .18); border-radius: 10px;
+}
+.sp-blk {
+  padding: 7px 0; border-bottom: 1px solid rgba(0, 0, 0, .12);
+}
+.sp-blk-h { font-size: calc(var(--pfs) + 1px); font-weight: 800; color: var(--fg); }
+.sp-blk-p {
+  font-size: calc(var(--pfs) - 2px); color: var(--fg-dim); margin: 3px 0;
+}
+.sp-blk-p em { font-style: normal; color: var(--fg); }
+.sp-blk-n { font-size: calc(var(--pfs) - 2px); color: var(--fg-dim); margin: 2px 0; }
+.sp-blk-z { font-size: calc(var(--pfs) - 1px); color: var(--fg); margin: 4px 0 0; }
+.sp-blk-all {
+  margin-top: 10px; padding: 8px 10px; font-weight: 700;
+  background: var(--bg-2); border: 1px solid rgba(0, 0, 0, .22); border-radius: 12px;
+}

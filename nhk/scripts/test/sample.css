@@ -1,0 +1,38 @@
+/* 1 字面量纯黑 */
+.a { border: 2px solid #000; }
+/* 2 rgb 带空格 */
+.b { border: 1px solid rgb(0, 0, 0); }
+/* 3 !important */
+.c { border: 2px solid #000 !important; }
+/* 4 border-left !important（当前句竖条那种） */
+.d { border-left: 6px solid #000 !important; }
+/* 5 var 链 */
+:root { --a: var(--b); --b: #000; }
+.e { border: 1px solid var(--a); }
+/* 6 var 解析不出 */
+.f { border: 1px solid var(--missing); }
+/* 7 currentColor */
+.g { border: 1px solid currentColor; }
+/* 8 合法变量（v4.2：#1a1a1a 属「近黑」，墨水屏上等同纯黑 → 挪到 leak.css 测） */
+:root { --safe: #556677; }
+.h { border: 1px solid var(--safe); }
+/* 9 多主题多定义（一硬一软）*/
+:root { --t: #000; --t: #333333; }
+.i { border: 1px solid var(--t); }
+/* 10 border-bottom 实黑 = 结构线 */
+.j { border-bottom: 1px solid #000; }
+/* 11 border-bottom 半透明 = 不占名额 */
+.k { border-bottom: 1px solid rgba(0,0,0,.26); }
+/* 12 eink-ok 豁免 */
+/* eink-ok: 缩进引导线，短竖线是清晰分隔 */
+.l { border-left: 2px solid var(--acc2); }
+/* 13 fallback 多值 */
+.m { border: 1px solid #000, var(--x); }
+/* 14 合法 var fallback */
+.n { border: 1px solid var(--nope, #eeeeee); }
+/* 15 border-top 纯黑（收紧后要查） */
+.o { border-top: 1px solid #000; }
+/* 16 var fallback 也是 var 且都解析不出 → FAIL */
+.p { border: 1px solid var(--nope2, var(--also-nope2)); }
+/* 17 var fallback 是合法色 → OK */
+.q { border: 1px solid var(--nope3, #eeeeee); }

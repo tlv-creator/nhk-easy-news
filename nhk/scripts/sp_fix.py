@@ -190,7 +190,14 @@ def apply_raw(reject=None, manual=None):
             if passes(old, new, ref_nums):
                 sp[i]['ja'] = new; n += 1
         if n:
-            open(f, 'w', encoding='utf-8').write(write_sp(src, sp))
+            # 🔴 2026-10-25：改成**原子写**（临时文件 + rename）
+            #   ⇒ 并发时（sp_fix / build_sp / gen_blk 同时改 subs）不会读到**半截**文件
+            #   ⇒ 之前我这边跑到一半 JSON 解析报「Invalid control character」（2026-10-25 踩到）
+            import tempfile
+            fd, tmp = tempfile.mkstemp(dir=os.path.dirname(f), suffix='.tmp')
+            with os.fdopen(fd, 'w', encoding='utf-8') as fh:
+                fh.write(write_sp(src, sp))
+            os.replace(tmp, f)
             total += n
             print(f'  ✅ {eid}  写入 {n}/{len(sp)} 句')
     print(f'  合计写入 {total} 句')

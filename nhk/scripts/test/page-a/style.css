@@ -1,0 +1,3 @@
+/* 页面 A：浅色主题，线色是近黑 → 墨水屏上等同纯黑 → 应被报 */
+:root{ --line:#111; }
+.x { border: 1px solid var(--line); }

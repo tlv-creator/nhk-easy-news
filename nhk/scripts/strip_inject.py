@@ -36,13 +36,23 @@ def must(cond, msg):
 
 
 # ── 记下「功能特征词」数量（用于事后证明没误删）──
-FEATURES = ['字幕', '收藏', '字号', '墨水屏', '播放', '详解', '跟音', '普通版', '易解', '易読']
+# 🔴 2026-10-24 加：'platformInjectGuard' —— 本项目自带的**运行时兜底脚本**
+#    （没有它，被误删了也不会有人知道 ⇒ 断言必须覆盖它）
+FEATURES = ['字幕', '收藏', '字号', '墨水屏', '播放', '详解', '跟音', '普通版', '易解', '易読',
+            'platformInjectGuard']
 feat_before = {f: s.count(f) for f in FEATURES}
 
 # ── ① 删统计脚本整块 ──
 n = 0
 while True:
-    m = re.search(r'<script[^>]*data-minimax-analytics[^>]*>.*?</script>', s, re.S)
+    # 🔴🔴 2026-10-24 修（本地加固版）：**必须认平台的真注入标记**，
+    #    不能只凭「script 标签 + data-minimax-analytics 属性」——
+    #    否则**注释里写一句**「<script data-minimax-analytics=...>」就会被当成注入块，
+    #    一路吃到下一个 </script> ⇒ 把中间的正常内容（我自己的兜底脚本）整块吃掉。
+    #    ⇒ 平台注入的属性值固定是 'minimax-website-analytics-v1' ⇒ 精确匹配它。
+    m = re.search(
+        r"""<script[^>]*data-minimax-analytics\s*=\s*["']minimax-website-analytics-v1["'][^>]*>.*?</script>""",
+        s, re.S)
     if not m:
         break
     s = s[:m.start()] + s[m.end():]
@@ -79,11 +89,30 @@ def css_repl(m):
     #    ⇒ 改成**强制在规则体最前面**插 display:none !important（同规则内 !important 必赢）
     body2 = re.sub(r'display\s*:\s*[^;}]+;?', '', body)
     return sel + '{ display:none !important; ' + body2.strip() + '}'
-s = re.sub(r'([#.][^{}]*minimax-floating-ball[^{}]*)\{([^{}]*)\}', css_repl, s)
-report.append("悬浮球 CSS 规则 %d 条 → 加 display:none !important" % n_css)
+
+# 🔴🔴 2026-10-24 修（本地加固版）：**CSS 重写只许在 <style> 块里做**。
+#    原来是对**整个文档**跑 `([#.][^{}]*minimax-floating-ball[^{}]*)\{([^{}]*)\}` ⇒
+#    ⇒ 它会扫到 **JavaScript 代码**（比如 `document.getElementById('minimax-floating-ball')` 后面跟着 `{`）
+#    ⇒ 把 JS 改写成 `{ display:none !important; ... }` ⇒ **文件语法直接坏掉**
+#    （实测踩到过：我的兜底脚本被改成语法错误 ⇒ 幸好下面的 node --check 断言挡住了）
+#    ⇒ 现在：只对 <style>…</style> 之间的内容做替换。
+def _style_only(text):
+    def repl(m):
+        global n_css
+        inner = m.group(2)
+        inner = re.sub(r'([#.][^{}]*minimax-floating-ball[^{}]*)\{([^{}]*)\}', css_repl, inner)
+        return m.group(1) + inner + m.group(3)
+    return re.sub(r'(<style[^>]*>)(.*?)(</style>)', repl, text, flags=re.S)
+
+s = _style_only(s)
+report.append("悬浮球 CSS 规则 %d 条 → 加 display:none !important（**只改 <style> 块内**）" % n_css)
 
 # ── ⑤ 追加一条保险：万一 mcode 重新注入了 HTML，也强制隐藏 ──
-if 'minimax-floating-ball' in s and 'display:none !important' not in s.split('</style>')[0]:
+# 🔴 2026-10-24 修：判据只看 **<style> 块内**有没有那条隐藏规则
+#    （原来用 s.split('</style>')[0] —— 那是「第一个 </style> 之前」的整段文本，
+#      包含 head 里的其它内容 ⇒ 判据不准）
+if 'minimax-floating-ball' in s and not re.search(
+        r'<style[^>]*>[^<]*#minimax-floating-ball\s*\{[^}]*display\s*:\s*none\s*!important', s, re.S):
     s = s.replace('</style>',
                   '/* 平台悬浮球：永久隐藏（mcode 每次部署会重新注入） */\n'
                   '#minimax-floating-ball{display:none !important;}\n</style>', 1)
@@ -97,10 +126,18 @@ must('navigator.sendBeacon' in s and 'window.fetch' in s, "🔴 拦截器内容�
 
 # ② 统计 token 必须没了
 must('eyJ2Ijox' not in s, "🔴 统计 token 还在")
-must(not re.search(r'data-minimax-analytics', s), "🔴 统计脚本还在")
+# 🔴 2026-10-24 修：断言要看**真的 script 标签**，不能看字符串 ——
+#    本项目的兜底脚本里本来就有 'script[data-minimax-analytics]' 这个选择器
+#    ⇒ 用字符串判定会**永远红**（假红比假绿更坏：会让人以为有注入而乱改）。
+must(not re.search(r'<script[^>]*data-minimax-analytics', s), "🔴 统计脚本还在")
 
 # ③ 悬浮球必须不可见、不可点
-must('window.open(\'https://agent.minimax.cn/' not in s, "🔴 悬浮球的 window.open 还在（会把用户甩出 App）")
+# 🔴 2026-10-24 修：**只查可执行代码里的** window.open —— 注释/文档里写一句
+#    「window.open('https://agent.minimax.cn/')」是说明文字，不是行为。
+#    ⇒ 用字符串全文判定会**永远红**（假红 ⇒ 让人以为注入还在而乱改）。
+_inline = re.findall(r'<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>', s, re.S)
+must(not any("window.open('https://agent.minimax.cn/" in _c for _c in _inline),
+     "🔴 悬浮球的 window.open 还在（会把用户甩出 App）")
 must(not re.search(r'<div[^>]*id=["\']minimax-floating-ball', s), "🔴 悬浮球 HTML 还在")
 if 'minimax-floating-ball' in s:
     must(re.search(r'#minimax-floating-ball\s*\{[^}]*display\s*:\s*none\s*!important', s),

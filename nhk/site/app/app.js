@@ -12,7 +12,7 @@
   var EPISODES = window.__EPISODES__ || [];
   var SUBS = window.__SUBS__ = window.__SUBS__ || {};
   // 字幕数据版本：换版时 +1，绕开浏览器/CDN 的旧缓存
-  var APP_VER = 'v30';
+  var APP_VER = 'v32';
   // 运行时配置（config.js）。🔴 这里只可能有公开信息，不会有任何 key。
   var CFG = window.CFG || {};
 
@@ -560,7 +560,32 @@
     }
     var out = [];
     for (var i = 0; i < a.length; i++) { if (a[i]) out.push(String(a[i])); }
-    return out;
+    return withMediaBase(out);
+  }
+
+  /** 音频基址（window.CFG.MEDIA_BASE）
+   *  · 不填 / 空数组 ⇒ 用相对路径（本站自己带 media/ 的部署形态，行为与从前完全一致）
+   *  · 填绝对 URL（字符串或数组）⇒ 媒体在别处，静态资源在本处
+   *    —— 用于「静态站放 GitHub Pages（永久地址）+ 媒体放 mcode 源站」这种形态。
+   *    数组 ⇒ 多个候选源，按顺序 fallback（第一个源挂了自动试下一个）。
+   *  🔴 唯一权威在这里；别在别处再拼一遍前缀。 */
+  function withMediaBase(paths) {
+    var cfg = window.CFG || {};
+    var base = cfg.MEDIA_BASE;
+    if (!base) return paths;
+    if (!Array.isArray(base)) base = [base];
+    var out = [];
+    for (var b = 0; b < base.length; b++) {
+      var pre = String(base[b] || '').replace(/\/+$/, '');
+      if (!pre) continue;
+      for (var i = 0; i < paths.length; i++) {
+        var p = paths[i];
+        if (/^https?:\/\//i.test(p)) { out.push(p); continue; }
+        out.push(pre + '/' + p.replace(/^\/+/, ''));
+      }
+    }
+    // 一个 base 都没配好 ⇒ 退回相对路径（至少不会变成空数组导致完全没声音）
+    return out.length ? out : paths;
   }
 
   /** APK 内若前端映射缺失，退回原生桥接查一次 */

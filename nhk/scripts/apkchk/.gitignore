@@ -1,0 +1,5 @@
+# 🔴 android.jar 共 80MB —— 绝不能进发布包（source archive 200MB 上限）
+#    只保留 .py + 拉取脚本 + 固化 sha
+jars/*.jar
+jars/p-*.zip
+jars/tmp-*/
