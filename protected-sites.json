@@ -1,148 +1,163 @@
 {
-  "_readme": "站点保护清单：清理 cron 每天扫本文件，只删 status ∈ {SUPERSEDED, DELETED} 的站；frozen=true 永不删、也不可 redeploy（域名会换＝链接当场死）。",
-  "sites": [
-    {
-      "domain": "rkw1x077uih9s.space.mcode.cn",
-      "name": "日语泛读精读 · 正式交付站（45 本）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "已交付给用户的正式链接（45 本 / 4836 句 / 教材 L0-L4 分组）"
-    },
-    {
-      "domain": "vt15310hxrx4e.space.mcode.cn",
-      "name": "日语泛读精读 · 音频源站（APK 的 site.txt 写死它）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "APK（com.jpstudy.tadoku v1.0.0）assets/site.txt 写死这个域名做 /media/ 转发源 ⇒ 删了 App 里就没声音了",
-      "referenced_by": [
-        "/workspace/output/tadoku-apk.zip",
-        "APK assets/site.txt"
-      ]
-    },
-    {
-      "domain": "iujsgx3ci73dp.space.mcode.cn",
-      "name": "词汇学习站 Unit1+2+3（正式版 v3）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "老师 2026-10-23 明确要求：单词记录（词汇学习）的网站不能删除（长期硬指令）"
-    },
-    {
-      "domain": "zp67qm11jonui.space.mcode.cn",
-      "name": "词汇学习站 VocabLog（正式版·零凭据）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "同上（老师的长期硬指令）"
-    },
-    {
-      "domain": "0rbbjfw36hj66.space.mcode.cn",
-      "name": "日语泛读精读 · 上一版交付站（55 本 · 对轴修正前）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "2026-10-25 对轴修正版已用新站取代；但老版 APK(v1.0.0) 的 site.txt 写死这个域 ⇒ 暂留，等老 APK 淘汰后再删",
-      "referenced_by": [
-        "/workspace/output/tadoku-apk.zip（站上那份）"
-      ]
-    },
-    {
-      "domain": "qgozaeqvjc9l9.space.mcode.cn",
-      "name": "日语泛读精读 · 音频源站（站上 APK 包的 site.txt 写死它）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "站上下载的 tadoku-apk.zip 里 site.txt 指向这个域 ⇒ 它必须活着（内容与交付站一致）",
-      "referenced_by": [
-        "站上 tadoku-apk.zip 的 site.txt"
-      ]
-    },
-    {
-      "domain": "wzm2lkj4a7oo8.space.mcode.cn",
-      "name": "日语泛读精读 · 上一版交付站（55 本 · 对轴修正版）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "2026-10-25 注音修正版已用新站取代；但已装到用户手机上的老 APK assets/site.txt 写死这个域做 /media/ 转发源 ⇒ 必须留着（frozen）",
-      "referenced_by": [
-        "/workspace/output/tadoku-apk.zip（站上那份指向 A）",
-        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
-      ]
-    },
-    {
-      "domain": "1hv73j0i9907z.space.mcode.cn",
-      "name": "日语泛读精读 · 音频源站（站上 APK 包的 site.txt 写死它）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "站上下载的 tadoku-apk.zip 里 site.txt 指向这个域 ⇒ 它必须活着（内容与交付站一致）",
-      "referenced_by": [
-        "站上 tadoku-apk.zip 的 site.txt"
-      ]
-    },
-    {
-      "domain": "zzjxyp80lpd73.space.mcode.cn",
-      "name": "日语泛读精读 · 上一版交付站（55 本 · 汉字注音修正版）",
-      "status": "DELETED",
-      "frozen": false,
-      "reason": "2026-10-25 已手动删除并复验 404（线上实测 HTTP 404）",
-      "referenced_by": [
-        "/workspace/output/tadoku-apk.zip（站上那份）",
-        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
-      ]
-    },
-    {
-      "domain": "030ktppkqjm6g.space.mcode.cn",
-      "name": "日语泛读精读 · 正式交付站（75 本 · 官方朗読 20 本 + 对轴注音修正）",
-      "status": "SUPERSEDED",
-      "frozen": false,
-      "reason": "已被 4a5zb27ejec6k 取代（v1.2.0）；待清理 cron 回收",
-      "referenced_by": [
-        "/workspace/output/tadoku-apk.zip（站上那份）",
-        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
-      ],
-      "superseded_by": "4a5zb27ejec6k.space.mcode.cn"
-    },
-    {
-      "domain": "ddiwijcogorrr.space.mcode.cn",
-      "name": "日语泛读 · 官方朗読音频源 1/2（10 本 · 88MB）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
-      "referenced_by": [
-        "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
-      ]
-    },
-    {
-      "domain": "ppch90g3xmufh.space.mcode.cn",
-      "name": "日语泛读 · 官方朗読音频源 2/2（10 本 · 84MB）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
-      "referenced_by": [
-        "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
-      ]
-    },
-    {
-      "domain": "k5ibj8z3fwew9.space.mcode.cn",
-      "name": "日语泛读精读 · 正式交付站 v1.2.0（75 本 / 11036 句 · 注音残留已清）",
-      "status": "ALIVE",
-      "frozen": true,
-      "reason": "2026-10-25 v1.2.0 最终版：清理 195+51 处正文注音残留（魔術 195 / 地震 139 / 其它 6 本）＋ 外来碎片 guest/[sic]/đại；两个独立干净源（印刷页图像 OCR + 出版社朗読音频 ASR）逐字裁决；站根含 tadoku-apk.zip（v1.2.0，签名 44eb130d…ce053 可覆盖安装）",
-      "referenced_by": [
-        "/workspace/output/tadoku-apk.zip",
-        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
-      ]
-    },
-    {
-      "domain": "4a5zb27ejec6k.space.mcode.cn",
-      "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
-      "status": "SUPERSEDED",
-      "frozen": false,
-      "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
-      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn"
-    },
-    {
-      "domain": "ns507ds9uold3.space.mcode.cn",
-      "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
-      "status": "SUPERSEDED",
-      "frozen": false,
-      "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
-      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn"
-    }
-  ]
+ "_readme": "站点保护清单：清理 cron 每天扫本文件，只删 status ∈ {SUPERSEDED, DELETED} 的站；frozen=true 永不删、也不可 redeploy（域名会换＝链接当场死）。",
+ "sites": [
+  {
+   "domain": "rkw1x077uih9s.space.mcode.cn",
+   "name": "日语泛读精读 · 正式交付站（45 本）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "已交付给用户的正式链接（45 本 / 4836 句 / 教材 L0-L4 分组）"
+  },
+  {
+   "domain": "vt15310hxrx4e.space.mcode.cn",
+   "name": "日语泛读精读 · 音频源站（APK 的 site.txt 写死它）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "APK（com.jpstudy.tadoku v1.0.0）assets/site.txt 写死这个域名做 /media/ 转发源 ⇒ 删了 App 里就没声音了",
+   "referenced_by": [
+    "/workspace/output/tadoku-apk.zip",
+    "APK assets/site.txt"
+   ]
+  },
+  {
+   "domain": "iujsgx3ci73dp.space.mcode.cn",
+   "name": "词汇学习站 Unit1+2+3（正式版 v3）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "老师 2026-10-23 明确要求：单词记录（词汇学习）的网站不能删除（长期硬指令）"
+  },
+  {
+   "domain": "zp67qm11jonui.space.mcode.cn",
+   "name": "词汇学习站 VocabLog（正式版·零凭据）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "同上（老师的长期硬指令）"
+  },
+  {
+   "domain": "0rbbjfw36hj66.space.mcode.cn",
+   "name": "日语泛读精读 · 上一版交付站（55 本 · 对轴修正前）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "2026-10-25 对轴修正版已用新站取代；但老版 APK(v1.0.0) 的 site.txt 写死这个域 ⇒ 暂留，等老 APK 淘汰后再删",
+   "referenced_by": [
+    "/workspace/output/tadoku-apk.zip（站上那份）"
+   ]
+  },
+  {
+   "domain": "qgozaeqvjc9l9.space.mcode.cn",
+   "name": "日语泛读精读 · 音频源站（站上 APK 包的 site.txt 写死它）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "站上下载的 tadoku-apk.zip 里 site.txt 指向这个域 ⇒ 它必须活着（内容与交付站一致）",
+   "referenced_by": [
+    "站上 tadoku-apk.zip 的 site.txt"
+   ]
+  },
+  {
+   "domain": "wzm2lkj4a7oo8.space.mcode.cn",
+   "name": "日语泛读精读 · 上一版交付站（55 本 · 对轴修正版）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "2026-10-25 注音修正版已用新站取代；但已装到用户手机上的老 APK assets/site.txt 写死这个域做 /media/ 转发源 ⇒ 必须留着（frozen）",
+   "referenced_by": [
+    "/workspace/output/tadoku-apk.zip（站上那份指向 A）",
+    "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+   ]
+  },
+  {
+   "domain": "1hv73j0i9907z.space.mcode.cn",
+   "name": "日语泛读精读 · 音频源站（站上 APK 包的 site.txt 写死它）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "站上下载的 tadoku-apk.zip 里 site.txt 指向这个域 ⇒ 它必须活着（内容与交付站一致）",
+   "referenced_by": [
+    "站上 tadoku-apk.zip 的 site.txt"
+   ]
+  },
+  {
+   "domain": "zzjxyp80lpd73.space.mcode.cn",
+   "name": "日语泛读精读 · 上一版交付站（55 本 · 汉字注音修正版）",
+   "status": "DELETED",
+   "frozen": false,
+   "reason": "2026-10-25 已手动删除并复验 404（线上实测 HTTP 404）",
+   "referenced_by": [
+    "/workspace/output/tadoku-apk.zip（站上那份）",
+    "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+   ]
+  },
+  {
+   "domain": "030ktppkqjm6g.space.mcode.cn",
+   "name": "日语泛读精读 · 正式交付站（75 本 · 官方朗読 20 本 + 对轴注音修正）",
+   "status": "SUPERSEDED",
+   "frozen": false,
+   "reason": "已被 4a5zb27ejec6k 取代（v1.2.0）；待清理 cron 回收",
+   "referenced_by": [
+    "/workspace/output/tadoku-apk.zip（站上那份）",
+    "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+   ],
+   "superseded_by": "4a5zb27ejec6k.space.mcode.cn"
+  },
+  {
+   "domain": "ddiwijcogorrr.space.mcode.cn",
+   "name": "日语泛读 · 官方朗読音频源 1/2（10 本 · 88MB）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+   "referenced_by": [
+    "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
+   ]
+  },
+  {
+   "domain": "ppch90g3xmufh.space.mcode.cn",
+   "name": "日语泛读 · 官方朗読音频源 2/2（10 本 · 84MB）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+   "referenced_by": [
+    "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
+   ]
+  },
+  {
+   "domain": "k5ibj8z3fwew9.space.mcode.cn",
+   "name": "日语泛读精读 · 上一版交付站 v1.2.0（75 本 / 11036 句）",
+   "status": "SUPERSEDED",
+   "frozen": false,
+   "reason": "已被 v1.3.0（ygqm1hz5djz1n）取代；旧 APK 自带数据不依赖它 ⇒ 可删",
+   "referenced_by": [
+    "/workspace/output/tadoku-apk.zip",
+    "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+   ]
+  },
+  {
+   "domain": "4a5zb27ejec6k.space.mcode.cn",
+   "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
+   "status": "SUPERSEDED",
+   "frozen": false,
+   "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
+   "superseded_by": "k5ibj8z3fwew9.space.mcode.cn"
+  },
+  {
+   "domain": "ns507ds9uold3.space.mcode.cn",
+   "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
+   "status": "SUPERSEDED",
+   "frozen": false,
+   "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
+   "superseded_by": "k5ibj8z3fwew9.space.mcode.cn"
+  },
+  {
+   "domain": "ygqm1hz5djz1n.space.mcode.cn",
+   "name": "日语泛读精读 · 正式交付站 v1.3.0（87 本 / 11481 句 · 教材L0官方朗読12本 + 生词表 + 句型表）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "2026-10-26 v1.3.0：新增教材 Level 0 官方朗読 12 本；点句弹窗加「本句生词表」与「本句句型」；入口页与二维码已指向它"
+  },
+  {
+   "domain": "pjnzjdw3kx6l0.space.mcode.cn",
+   "name": "日语泛读 · 官方朗読音频源 3/3（批次1 的教材 L0 12 本 · 58MB）",
+   "status": "ALIVE",
+   "frozen": true,
+   "reason": "官方朗読音频包（9784872177497 / 9784866398310）的 12 条轨，按书改名后统一托管；App 数据里的 audio 指向这里"
+  }
+ ],
+ "_meta_note": "2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED"
 }
