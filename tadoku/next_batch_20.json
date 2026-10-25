@@ -1,0 +1,2899 @@
+{
+ "_meta": {
+  "generated_by": "work/select_next_batch.py (v3 定稿)",
+  "official_source": "work/jgr86_snapshot.json（官网已损坏，唯一权威快照）",
+  "online_source": "app/data/eps/index.json（75 本 / 有音 54）",
+  "local_text_source": "work/data/books/*.json（111 本）",
+  "zh_gap_source": "work/translate_want_all56.json（56 本只缺中文）",
+  "official_total": 86,
+  "covered_online": 57,
+  "todo": 29,
+  "A_have_text_need_zh": 0,
+  "B_need_source_text": 29,
+  "match_rule": "核心标题候选集交集（切 ～『／空格，≥4 字）＋ 英文标题精确；不使用标题包含兜底",
+  "batch_1_rule": "Level Start 全 8 + Level 0 全 12 = 20；L2 的 9 本留 batch_2"
+ },
+ "rows": [
+  {
+   "official_ja": "一つ二つ三つ",
+   "official_reading": "ひとふたみっ",
+   "official_en": "",
+   "level": "Level Start",
+   "isbn": "9784866394701",
+   "book_id": "9076",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 17,
+    "audio_zip": "200 / 20270036 B / 8 tracks"
+   },
+   "audio_volume": "9784866394701"
+  },
+  {
+   "official_ja": "しりとり",
+   "official_reading": "",
+   "official_en": "",
+   "level": "Level Start",
+   "isbn": "9784866394701",
+   "book_id": "9078",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 17,
+    "audio_zip": "200 / 20270036 B / 8 tracks"
+   },
+   "audio_volume": "9784866394701"
+  },
+  {
+   "official_ja": "絵の中のねこ",
+   "official_reading": "えなか",
+   "official_en": "",
+   "level": "Level Start",
+   "isbn": "9784866394701",
+   "book_id": "9079",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 17,
+    "audio_zip": "200 / 20270036 B / 8 tracks"
+   },
+   "audio_volume": "9784866394701"
+  },
+  {
+   "official_ja": "アリとハト ～イソップ物語より～",
+   "official_reading": "ものがたり",
+   "official_en": "",
+   "level": "Level Start",
+   "isbn": "9784866394701",
+   "book_id": "9080",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 17,
+    "audio_zip": "200 / 20270036 B / 8 tracks"
+   },
+   "audio_volume": "9784866394701"
+  },
+  {
+   "official_ja": "西町交番の良さん「あぶない！」",
+   "official_reading": "にしまちこうばんりょう",
+   "official_en": "",
+   "level": "Level Start",
+   "isbn": "9784866394701",
+   "book_id": "9081",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 17,
+    "audio_zip": "200 / 20270036 B / 8 tracks"
+   },
+   "audio_volume": "9784866394701"
+  },
+  {
+   "official_ja": "西町交番の良さん「どろぼう？」",
+   "official_reading": "にしまちこうばんりょう",
+   "official_en": "",
+   "level": "Level Start",
+   "isbn": "9784866394701",
+   "book_id": "9082",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 17,
+    "audio_zip": "200 / 20270036 B / 8 tracks"
+   },
+   "audio_volume": "9784866394701"
+  },
+  {
+   "official_ja": "わかがえりの水",
+   "official_reading": "みず",
+   "official_en": "",
+   "level": "Level Start",
+   "isbn": "9784866394701",
+   "book_id": "9083",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 17,
+    "audio_zip": "200 / 20270036 B / 8 tracks"
+   },
+   "audio_volume": "9784866394701"
+  },
+  {
+   "official_ja": "森のコンサート",
+   "official_reading": "もり",
+   "official_en": "",
+   "level": "Level Start",
+   "isbn": "9784866394701",
+   "book_id": "9084",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 17,
+    "audio_zip": "200 / 20270036 B / 8 tracks"
+   },
+   "audio_volume": "9784866394701"
+  },
+  {
+   "official_ja": "桜",
+   "official_reading": "さくら",
+   "official_en": "Sakura",
+   "level": "Level 0",
+   "isbn": "9784866398020",
+   "book_id": "2336",
+   "match_key": "ja:桜",
+   "candidates": [
+    "tadoku-l0-sakura"
+   ],
+   "online_tags": [
+    "tadoku-l0-sakura"
+   ],
+   "local_slugs": [
+    "tadoku-l0-sakura"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L0"
+   ],
+   "local_n_sent": 31
+  },
+  {
+   "official_ja": "大豆",
+   "official_reading": "だいず",
+   "official_en": "The Soybeans",
+   "level": "Level 0",
+   "isbn": "9784866398020",
+   "book_id": "2337",
+   "match_key": "ja:大豆",
+   "candidates": [
+    "tadoku-l0-daizu"
+   ],
+   "online_tags": [
+    "tadoku-l0-daizu"
+   ],
+   "local_slugs": [
+    "tadoku-l0-daizu"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L0"
+   ],
+   "local_n_sent": 36
+  },
+  {
+   "official_ja": "木村家の毎日「いってきます」",
+   "official_reading": "きむらけまいにち",
+   "official_en": "Meet the Kimura Family: Ittekimasu",
+   "level": "Level 0",
+   "isbn": "9784866398020",
+   "book_id": "2338",
+   "match_key": "ja:木村家の毎日いってきます",
+   "candidates": [
+    "level0-im-off"
+   ],
+   "online_tags": [
+    "level0-im-off"
+   ],
+   "local_slugs": [
+    "level0-im-off"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L0"
+   ],
+   "local_n_sent": 41
+  },
+  {
+   "official_ja": "木村家の毎日「いただきます」",
+   "official_reading": "きむらけまいにち",
+   "official_en": "The Kimura Family at Table: Itadakimasu",
+   "level": "Level 0",
+   "isbn": "9784866398020",
+   "book_id": "2339",
+   "match_key": "ja:木村家の毎日いただきます",
+   "candidates": [
+    "tadoku-l0-itadakimasu"
+   ],
+   "online_tags": [
+    "tadoku-l0-itadakimasu"
+   ],
+   "local_slugs": [
+    "tadoku-l0-itadakimasu"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L0"
+   ],
+   "local_n_sent": 42
+  },
+  {
+   "official_ja": "木村家の毎日「一郎、学校で」",
+   "official_reading": "きむらけまいにちいちろうがっこう",
+   "official_en": "Ichiro Kimura at School",
+   "level": "Level 0",
+   "isbn": "9784866398020",
+   "book_id": "2340",
+   "match_key": "ja:木村家の毎日一郎学校で",
+   "candidates": [
+    "tadoku-l0-ichiro"
+   ],
+   "online_tags": [
+    "tadoku-l0-ichiro"
+   ],
+   "local_slugs": [
+    "tadoku-l0-ichiro"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L0"
+   ],
+   "local_n_sent": 24
+  },
+  {
+   "official_ja": "西町交番の良さん「交番はどこ？」",
+   "official_reading": "にしまちこうばんりょうこうばん",
+   "official_en": "Ryo-san at the Nishimachi Koban: Where is the Koban?",
+   "level": "Level 0",
+   "isbn": "9784866398020",
+   "book_id": "2341",
+   "match_key": "ja:西町交番の良さん交番はどこ",
+   "candidates": [
+    "tadoku-l0-ryosan"
+   ],
+   "online_tags": [
+    "tadoku-l0-ryosan"
+   ],
+   "local_slugs": [
+    "tadoku-l0-ryosan"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L0"
+   ],
+   "local_n_sent": 34
+  },
+  {
+   "official_ja": "風と太陽　～イソップ物語より～",
+   "official_reading": "かぜたいようものがたり",
+   "official_en": "The Wind and the Sun",
+   "level": "Level 0",
+   "isbn": "9784872177497",
+   "book_id": "2343",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 14,
+    "audio_zip": null
+   },
+   "audio_volume": "9784872177497"
+  },
+  {
+   "official_ja": "木村家の毎日「ただいま」",
+   "official_reading": "きむらけまいにち",
+   "official_en": "The Kimura Family Comes Home: Tadaima",
+   "level": "Level 0",
+   "isbn": "9784872177497",
+   "book_id": "2344",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 14,
+    "audio_zip": null
+   },
+   "audio_volume": "9784872177497"
+  },
+  {
+   "official_ja": "木村家の毎日「お正月」",
+   "official_reading": "きむらけまいにちしょうがつ",
+   "official_en": "New Year of the Kimura Family: Oshougatsu",
+   "level": "Level 0",
+   "isbn": "9784872177497",
+   "book_id": "2345",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 14,
+    "audio_zip": null
+   },
+   "audio_volume": "9784872177497"
+  },
+  {
+   "official_ja": "西町交番の良さん「にわにわに？」",
+   "official_reading": "にしまちこうばんりょう",
+   "official_en": "Ryo-san at the Nishimachi Koban: an Alligator in the Garden",
+   "level": "Level 0",
+   "isbn": "9784872177497",
+   "book_id": "2346",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 14,
+    "audio_zip": null
+   },
+   "audio_volume": "9784872177497"
+  },
+  {
+   "official_ja": "西町交番の良さん「助けて！」",
+   "official_reading": "にしまちこうばんりょうたす",
+   "official_en": "Ryo-san at the Nishimachi Koban: Help!",
+   "level": "Level 0",
+   "isbn": "9784872177497",
+   "book_id": "2347",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 14,
+    "audio_zip": null
+   },
+   "audio_volume": "9784872177497"
+  },
+  {
+   "official_ja": "これは何の数字？ ～数字で見る日本～",
+   "official_reading": "なんすうじすうじみにほん",
+   "official_en": "Japan Via Numbers",
+   "level": "Level 0",
+   "isbn": "9784872177497",
+   "book_id": "2348",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 14,
+    "audio_zip": null
+   },
+   "audio_volume": "9784872177497"
+  },
+  {
+   "official_ja": "ウサギとカメ　～イソップ物語より～",
+   "official_reading": "ものがたり",
+   "official_en": "The Hare and the Tortoise",
+   "level": "Level 0",
+   "isbn": "9784866398310",
+   "book_id": "2350",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 7,
+    "audio_zip": "200 / 19018662 B"
+   },
+   "audio_volume": "9784866398310"
+  },
+  {
+   "official_ja": "西町交番の良さん「良さんのクリスマス」",
+   "official_reading": "にしまちこうばんりょうりょう",
+   "official_en": "Ryo-san at Nishimachi Koban: The Christmas",
+   "level": "Level 0",
+   "isbn": "9784866398310",
+   "book_id": "2351",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 7,
+    "audio_zip": "200 / 19018662 B"
+   },
+   "audio_volume": "9784866398310"
+  },
+  {
+   "official_ja": "西町交番の良さん「落とし物がいっぱい」",
+   "official_reading": "にしまちこうばんりょうおもの",
+   "official_en": "Ryo-san at Nishimachi Koban: Lots of Lost Items",
+   "level": "Level 0",
+   "isbn": "9784866398310",
+   "book_id": "2352",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 7,
+    "audio_zip": "200 / 19018662 B"
+   },
+   "audio_volume": "9784866398310"
+  },
+  {
+   "official_ja": "東京の電車",
+   "official_reading": "とうきょうでんしゃ",
+   "official_en": "Trains in Tokyo",
+   "level": "Level 0",
+   "isbn": "9784866398310",
+   "book_id": "2353",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 7,
+    "audio_zip": "200 / 19018662 B"
+   },
+   "audio_volume": "9784866398310"
+  },
+  {
+   "official_ja": "木村家の毎日「結婚式」",
+   "official_reading": "きむらけまいにちけっこんしき",
+   "official_en": "The Kimura Family at a Wedding Ceremony",
+   "level": "Level 0",
+   "isbn": "9784866398310",
+   "book_id": "2354",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 7,
+    "audio_zip": "200 / 19018662 B"
+   },
+   "audio_volume": "9784866398310"
+  },
+  {
+   "official_ja": "七夕　― 織姫と彦星の話 ―",
+   "official_reading": "たなばたおりひめひこぼしはなし",
+   "official_en": "Tanabata Festival",
+   "level": "Level 0",
+   "isbn": "9784866398310",
+   "book_id": "2355",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "need": [
+    "原文（出版社样章页 OCR，图上自带逐字注音）",
+    "切句",
+    "逐字注音结构化 seg",
+    "简体中文译文"
+   ],
+   "resource": {
+    "sample_images": 7,
+    "audio_zip": "200 / 19018662 B"
+   },
+   "audio_volume": "9784866398310"
+  },
+  {
+   "official_ja": "女の子",
+   "official_reading": "おんなこ",
+   "official_en": "A Little Girl Lost and Found",
+   "level": "Level 1",
+   "isbn": "9784872176247",
+   "book_id": "2357",
+   "match_key": "ja:女の子",
+   "candidates": [
+    "level1-the-girl"
+   ],
+   "online_tags": [
+    "level1-the-girl"
+   ],
+   "local_slugs": [
+    "level1-the-girl"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L1"
+   ],
+   "local_n_sent": 39
+  },
+  {
+   "official_ja": "ハチの話",
+   "official_reading": "はなし",
+   "official_en": "A Tale of Hachi",
+   "level": "Level 1",
+   "isbn": "9784872176247",
+   "book_id": "2358",
+   "match_key": "ja:ハチの話",
+   "candidates": [
+    "level1-hachi-s-story"
+   ],
+   "online_tags": [
+    "level1-hachi-s-story"
+   ],
+   "local_slugs": [
+    "level1-hachi-s-story"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L1"
+   ],
+   "local_n_sent": 56
+  },
+  {
+   "official_ja": "ジョンさん日本へ",
+   "official_reading": "にほん",
+   "official_en": "John-san goes to Japan",
+   "level": "Level 1",
+   "isbn": "9784872176247",
+   "book_id": "2359",
+   "match_key": "ja:ジョンさん日本へ",
+   "candidates": [
+    "level1-john-comes-to-japan"
+   ],
+   "online_tags": [
+    "level1-john-comes-to-japan"
+   ],
+   "local_slugs": [
+    "level1-john-comes-to-japan"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L1"
+   ],
+   "local_n_sent": 84
+  },
+  {
+   "official_ja": "浦島太郎",
+   "official_reading": "うらしまたろう",
+   "official_en": "Urashima Taro",
+   "level": "Level 1",
+   "isbn": "9784872176247",
+   "book_id": "2360",
+   "match_key": "ja:浦島太郎",
+   "candidates": [
+    "level1-urashima-taro"
+   ],
+   "online_tags": [
+    "level1-urashima-taro"
+   ],
+   "local_slugs": [
+    "level1-urashima-taro"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L1"
+   ],
+   "local_n_sent": 127
+  },
+  {
+   "official_ja": "笑い話",
+   "official_reading": "わらばなし",
+   "official_en": "Funny Stories from the Edo Period",
+   "level": "Level 1",
+   "isbn": "9784872176247",
+   "book_id": "2361",
+   "match_key": "ja:笑い話",
+   "candidates": [
+    "level1-funny-stories"
+   ],
+   "online_tags": [
+    "level1-funny-stories"
+   ],
+   "local_slugs": [
+    "level1-funny-stories"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L1"
+   ],
+   "local_n_sent": 159
+  },
+  {
+   "official_ja": "タクシー",
+   "official_reading": "",
+   "official_en": "The Taxi",
+   "level": "Level 1",
+   "isbn": "9784866396545",
+   "book_id": "2363",
+   "match_key": "ja:タクシー",
+   "candidates": [
+    "level1-the-taxi"
+   ],
+   "online_tags": [
+    "level1-the-taxi"
+   ],
+   "local_slugs": [
+    "level1-the-taxi"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 69
+  },
+  {
+   "official_ja": "寿司・すし・SUSHI",
+   "official_reading": "すし",
+   "official_en": "Sushi through the Ages",
+   "level": "Level 1",
+   "isbn": "9784866396545",
+   "book_id": "2364",
+   "match_key": "ja:SUSHI",
+   "candidates": [
+    "level1-sushi"
+   ],
+   "online_tags": [
+    "level1-sushi"
+   ],
+   "local_slugs": [
+    "level1-sushi"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 110
+  },
+  {
+   "official_ja": "笠地蔵",
+   "official_reading": "かさじぞう",
+   "official_en": "Kasa Jizo",
+   "level": "Level 1",
+   "isbn": "9784866396545",
+   "book_id": "2365",
+   "match_key": "ja:笠地蔵",
+   "candidates": [
+    "level1-the-straw-hats-and-the-jizo-statues"
+   ],
+   "online_tags": [
+    "level1-the-straw-hats-and-the-jizo-statues"
+   ],
+   "local_slugs": [
+    "level1-the-straw-hats-and-the-jizo-statues"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 87
+  },
+  {
+   "official_ja": "ジョンさん　バスの中で",
+   "official_reading": "なか",
+   "official_en": "John-san in the Bus",
+   "level": "Level 1",
+   "isbn": "9784866396545",
+   "book_id": "2366",
+   "match_key": "ja:ジョンさんバスの中で",
+   "candidates": [
+    "level1-john-on-the-bus"
+   ],
+   "online_tags": [
+    "level1-john-on-the-bus"
+   ],
+   "local_slugs": [
+    "level1-john-on-the-bus"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 93
+  },
+  {
+   "official_ja": "どうして猿の尾は短い？／どうしてクラゲは骨がない？",
+   "official_reading": "さるおみじかほね",
+   "official_en": "Why Do Monkeys Have a Short Tail? / Why Don't Jellyfish Have Bones?",
+   "level": "Level 1",
+   "isbn": "9784866396545",
+   "book_id": "2367",
+   "match_key": "ja:どうして猿の尾は短い/どうしてクラゲは骨がない",
+   "candidates": [
+    "level1-why-is-the-monkey-s-tail-short-why-do-jellyfish-have-no"
+   ],
+   "online_tags": [
+    "level1-why-is-the-monkey-s-tail-short-why-do-jellyfish-have-no"
+   ],
+   "local_slugs": [
+    "level1-why-is-the-monkey-s-tail-short-why-do-jellyfish-have-no"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 120
+  },
+  {
+   "official_ja": "バス",
+   "official_reading": "",
+   "official_en": "The Bus",
+   "level": "Level 1",
+   "isbn": "9784866396583",
+   "book_id": "2369",
+   "match_key": "ja:バス",
+   "candidates": [
+    "level1-the-bus"
+   ],
+   "online_tags": [
+    "level1-the-bus"
+   ],
+   "local_slugs": [
+    "level1-the-bus"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 83
+  },
+  {
+   "official_ja": "着物",
+   "official_reading": "きもの",
+   "official_en": "The Kimono",
+   "level": "Level 1",
+   "isbn": "9784866396583",
+   "book_id": "2370",
+   "match_key": "ja:着物",
+   "candidates": [
+    "level1-kimono"
+   ],
+   "online_tags": [
+    "level1-kimono"
+   ],
+   "local_slugs": [
+    "level1-kimono"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 83
+  },
+  {
+   "official_ja": "どうしてエビの体は曲がった？どうしてねこ年がない？",
+   "official_reading": "からだまどし",
+   "official_en": "Why Is the Shrimp's Back Bent? / Why Isn't There Year of the Cat?",
+   "level": "Level 1",
+   "isbn": "9784866396583",
+   "book_id": "2371",
+   "match_key": "ja:どうしてエビの体は曲がったどうしてねこ年がない",
+   "candidates": [
+    "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year"
+   ],
+   "online_tags": [
+    "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year"
+   ],
+   "local_slugs": [
+    "level1-why-did-the-shrimp-s-body-bend-why-are-there-no-cat-year"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 116
+  },
+  {
+   "official_ja": "舌切り雀",
+   "official_reading": "したきすずめ",
+   "official_en": "The Tongue-Cut Sparrow",
+   "level": "Level 1",
+   "isbn": "9784866396583",
+   "book_id": "2372",
+   "match_key": "ja:舌切り雀",
+   "candidates": [
+    "level1-the-tongue-cut-sparrow"
+   ],
+   "online_tags": [
+    "level1-the-tongue-cut-sparrow"
+   ],
+   "local_slugs": [
+    "level1-the-tongue-cut-sparrow"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 112
+  },
+  {
+   "official_ja": "ジョンさんの夏休み",
+   "official_reading": "なつやす",
+   "official_en": "John-san's Summer Vacation",
+   "level": "Level 1",
+   "isbn": "9784866396583",
+   "book_id": "2373",
+   "match_key": "ja:ジョンさんの夏休み",
+   "candidates": [
+    "level1-john-s-summer-vacation"
+   ],
+   "online_tags": [
+    "level1-john-s-summer-vacation"
+   ],
+   "local_slugs": [
+    "level1-john-s-summer-vacation"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 97
+  },
+  {
+   "official_ja": "絵姿奥さん",
+   "official_reading": "えすがたおく",
+   "official_en": "The Wife in a Portrait",
+   "level": "Level 2",
+   "isbn": "9784872176254",
+   "book_id": "2375",
+   "match_key": "ja:絵姿奥さん",
+   "candidates": [
+    "tadoku-l2-esugata"
+   ],
+   "online_tags": [
+    "tadoku-l2-esugata"
+   ],
+   "local_slugs": [
+    "tadoku-l2-esugata"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L2"
+   ],
+   "local_n_sent": 104
+  },
+  {
+   "official_ja": "桃太郎",
+   "official_reading": "ももたろう",
+   "official_en": "Momotaro",
+   "level": "Level 2",
+   "isbn": "9784872176254",
+   "book_id": "2376",
+   "match_key": "ja:桃太郎",
+   "candidates": [
+    "tadoku-l2-momotaro"
+   ],
+   "online_tags": [
+    "tadoku-l2-momotaro"
+   ],
+   "local_slugs": [
+    "tadoku-l2-momotaro"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L2"
+   ],
+   "local_n_sent": 126
+  },
+  {
+   "official_ja": "クリスマスプレゼント",
+   "official_reading": "",
+   "official_en": "The Gift of the Magi",
+   "level": "Level 2",
+   "isbn": "9784872176254",
+   "book_id": "2377",
+   "match_key": "ja:クリスマスプレゼント",
+   "candidates": [
+    "tadoku-l2-kurisu"
+   ],
+   "online_tags": [
+    "tadoku-l2-kurisu"
+   ],
+   "local_slugs": [
+    "tadoku-l2-kurisu"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L2"
+   ],
+   "local_n_sent": 119
+  },
+  {
+   "official_ja": "象のトンキー",
+   "official_reading": "ぞう",
+   "official_en": "An Elephant Called Tonky",
+   "level": "Level 2",
+   "isbn": "9784872176254",
+   "book_id": "2378",
+   "match_key": "ja:象のトンキー",
+   "candidates": [
+    "tadoku-l2-tonkii"
+   ],
+   "online_tags": [
+    "tadoku-l2-tonkii"
+   ],
+   "local_slugs": [
+    "tadoku-l2-tonkii"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L2"
+   ],
+   "local_n_sent": 176
+  },
+  {
+   "official_ja": "一休さん",
+   "official_reading": "いっきゅう",
+   "official_en": "Ikkyu-san",
+   "level": "Level 2",
+   "isbn": "9784872176254",
+   "book_id": "2379",
+   "match_key": "ja:一休さん",
+   "candidates": [
+    "tadoku-l2-ikkyu"
+   ],
+   "online_tags": [
+    "tadoku-l2-ikkyu"
+   ],
+   "local_slugs": [
+    "tadoku-l2-ikkyu"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L2"
+   ],
+   "local_n_sent": 140
+  },
+  {
+   "official_ja": "富士山",
+   "official_reading": "ふじさん",
+   "official_en": "Mt. Fuji",
+   "level": "Level 2",
+   "isbn": "9784872176421",
+   "book_id": "2381",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "batch": "batch_2（留待下一批）"
+  },
+  {
+   "official_ja": "わらしべ長者",
+   "official_reading": "ちょうじゃ",
+   "official_en": "The Straw Millionaire",
+   "level": "Level 2",
+   "isbn": "9784872176421",
+   "book_id": "2382",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "batch": "batch_2（留待下一批）"
+  },
+  {
+   "official_ja": "一寸法師",
+   "official_reading": "いっすんぼうし",
+   "official_en": "One-Inch Boy",
+   "level": "Level 2",
+   "isbn": "9784872176421",
+   "book_id": "2383",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "batch": "batch_2（留待下一批）"
+  },
+  {
+   "official_ja": "トルストイ民話集　王様とルパシカ／お父さんの物／細い糸",
+   "official_reading": "みんわしゅうおうさまとうものほそいと",
+   "official_en": "Leo Tolstoy's Fables for Chirldren",
+   "level": "Level 2",
+   "isbn": "9784872176421",
+   "book_id": "2384",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "batch": "batch_2（留待下一批）"
+  },
+  {
+   "official_ja": "最後の葉",
+   "official_reading": "さいごは",
+   "official_en": "The Last Leaf",
+   "level": "Level 2",
+   "isbn": "9784872176421",
+   "book_id": "2385",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "batch": "batch_2（留待下一批）"
+  },
+  {
+   "official_ja": "日本のお風呂",
+   "official_reading": "にほんふろ",
+   "official_en": "Japanese Baths",
+   "level": "Level 2",
+   "isbn": "9784866398419",
+   "book_id": "2387",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "batch": "batch_2（留待下一批）"
+  },
+  {
+   "official_ja": "いろいろな国の昔話 －中国－　ホウイとチャンア",
+   "official_reading": "くにむかしばなしちゅうごく",
+   "official_en": "An Old Tale from China",
+   "level": "Level 2",
+   "isbn": "9784866398419",
+   "book_id": "2388",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "batch": "batch_2（留待下一批）"
+  },
+  {
+   "official_ja": "ごん狐",
+   "official_reading": "ぎつね",
+   "official_en": "Gon the Fox",
+   "level": "Level 2",
+   "isbn": "9784866398419",
+   "book_id": "2389",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "batch": "batch_2（留待下一批）"
+  },
+  {
+   "official_ja": "ソーピーの冬の家",
+   "official_reading": "ふゆいえ",
+   "official_en": "The Cop and the Anthem",
+   "level": "Level 2",
+   "isbn": "9784866398419",
+   "book_id": "2390",
+   "match_key": "",
+   "candidates": [],
+   "online_tags": [],
+   "local_slugs": [],
+   "is_online": false,
+   "has_local_text": false,
+   "needs_zh": false,
+   "groups": [],
+   "local_n_sent": 0,
+   "batch": "batch_2（留待下一批）"
+  },
+  {
+   "official_ja": "一休さん　－その２－",
+   "official_reading": "いっきゅう",
+   "official_en": "Ikkyu-san 2",
+   "level": "Level 2",
+   "isbn": "9784866398419",
+   "book_id": "2391",
+   "match_key": "ja:一休さん",
+   "candidates": [
+    "tadoku-l2-ikkyu"
+   ],
+   "online_tags": [
+    "tadoku-l2-ikkyu"
+   ],
+   "local_slugs": [
+    "tadoku-l2-ikkyu"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L2"
+   ],
+   "local_n_sent": 140
+  },
+  {
+   "official_ja": "小泉八雲の怖い話　むじな／幽霊滝",
+   "official_reading": "こいずみやくもこわはなしゆうれいだき",
+   "official_en": "Mujina/The Legend of Yurei-Daki",
+   "level": "Level 3",
+   "isbn": "9784866397306",
+   "book_id": "2393",
+   "match_key": "ja:小泉八雲の怖い話むじな/幽霊滝",
+   "candidates": [
+    "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls"
+   ],
+   "online_tags": [
+    "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls"
+   ],
+   "local_slugs": [
+    "level3-koizumi-yakumo-s-scary-tales-mujina-and-ghost-falls"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 155
+  },
+  {
+   "official_ja": "注文の多い料理店",
+   "official_reading": "ちゅうもんおおりょうりてん",
+   "official_en": "The Restaurant of Many Orders",
+   "level": "Level 3",
+   "isbn": "9784866397306",
+   "book_id": "2394",
+   "match_key": "ja:注文の多い料理店",
+   "candidates": [
+    "level3-the-restaurant-of-many-orders"
+   ],
+   "online_tags": [
+    "level3-the-restaurant-of-many-orders"
+   ],
+   "local_slugs": [
+    "level3-the-restaurant-of-many-orders"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 145
+  },
+  {
+   "official_ja": "かぐや姫",
+   "official_reading": "ひめ",
+   "official_en": "The Bamboo Princess",
+   "level": "Level 3",
+   "isbn": "9784866397306",
+   "book_id": "2395",
+   "match_key": "ja:かぐや姫",
+   "candidates": [
+    "level3-princess-kaguya"
+   ],
+   "online_tags": [
+    "level3-princess-kaguya"
+   ],
+   "local_slugs": [
+    "level3-princess-kaguya"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 199
+  },
+  {
+   "official_ja": "この人だあれ？　～お札の話～",
+   "official_reading": "ひとさつはなし",
+   "official_en": "Who Are These People on the Banknotes?",
+   "level": "Level 3",
+   "isbn": "9784866397306",
+   "book_id": "2396",
+   "match_key": "ja:この人だあれお札の話",
+   "candidates": [
+    "level3-who-are-these-people-the-story-of-japanese-banknotes"
+   ],
+   "online_tags": [
+    "level3-who-are-these-people-the-story-of-japanese-banknotes"
+   ],
+   "local_slugs": [
+    "level3-who-are-these-people-the-story-of-japanese-banknotes"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 195
+  },
+  {
+   "official_ja": "芥川龍之介短編集　蜘蛛の糸／鼻",
+   "official_reading": "あくたがわりゅうのすけたんぺんしゅうくもいとはな",
+   "official_en": "A Spider's Thread/The Nose",
+   "level": "Level 3",
+   "isbn": "9784866397306",
+   "book_id": "2397",
+   "match_key": "ja:蜘蛛の糸",
+   "candidates": [
+    "level3-the-spider-s-thread-and-the-nose"
+   ],
+   "online_tags": [
+    "level3-the-spider-s-thread-and-the-nose"
+   ],
+   "local_slugs": [
+    "level3-the-spider-s-thread-and-the-nose"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 101
+  },
+  {
+   "official_ja": "かげのこいびと",
+   "official_reading": "",
+   "official_en": "Lovers in the Shadow",
+   "level": "Level 3",
+   "isbn": "9784866398150",
+   "book_id": "2399",
+   "match_key": "ja:かげのこいびと",
+   "candidates": [
+    "level3-the-shadow-lover"
+   ],
+   "online_tags": [
+    "level3-the-shadow-lover"
+   ],
+   "local_slugs": [
+    "level3-the-shadow-lover"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 215
+  },
+  {
+   "official_ja": "鶴の恩返し",
+   "official_reading": "つるおんがえ",
+   "official_en": "Payback by the Crane",
+   "level": "Level 3",
+   "isbn": "9784866398150",
+   "book_id": "2400",
+   "match_key": "ja:鶴の恩返し",
+   "candidates": [
+    "level3-the-crane-s-return-of-a-favor"
+   ],
+   "online_tags": [
+    "level3-the-crane-s-return-of-a-favor"
+   ],
+   "local_slugs": [
+    "level3-the-crane-s-return-of-a-favor"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 198
+  },
+  {
+   "official_ja": "魔術",
+   "official_reading": "まじゅつ",
+   "official_en": "The Magic",
+   "level": "Level 3",
+   "isbn": "9784866398150",
+   "book_id": "2401",
+   "match_key": "ja:魔術",
+   "candidates": [
+    "level3-magic"
+   ],
+   "online_tags": [
+    "level3-magic"
+   ],
+   "local_slugs": [
+    "level3-magic"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 217
+  },
+  {
+   "official_ja": "日本の神話　『古事記』より",
+   "official_reading": "にほんしんわこじき",
+   "official_en": "Tales from Japanese Myths",
+   "level": "Level 3",
+   "isbn": "9784866398150",
+   "book_id": "2402",
+   "match_key": "ja:日本の神話",
+   "candidates": [
+    "level3-japanese-mythology"
+   ],
+   "online_tags": [
+    "level3-japanese-mythology"
+   ],
+   "local_slugs": [
+    "level3-japanese-mythology"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 235
+  },
+  {
+   "official_ja": "落語",
+   "official_reading": "らくご",
+   "official_en": "Rakugo",
+   "level": "Level 3",
+   "isbn": "9784866398150",
+   "book_id": "2403",
+   "match_key": "ja:落語",
+   "candidates": [
+    "level3-rakugo-tales"
+   ],
+   "online_tags": [
+    "level3-rakugo-tales"
+   ],
+   "local_slugs": [
+    "level3-rakugo-tales"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 378
+  },
+  {
+   "official_ja": "幸せな王子　～The Happy Prince～",
+   "official_reading": "しあわおうじ",
+   "official_en": "The Happy Prince",
+   "level": "Level 3",
+   "isbn": "9784866396606",
+   "book_id": "2405",
+   "match_key": "ja:幸せな王子",
+   "candidates": [
+    "level3-the-happy-prince"
+   ],
+   "online_tags": [
+    "level3-the-happy-prince"
+   ],
+   "local_slugs": [
+    "level3-the-happy-prince"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 205
+  },
+  {
+   "official_ja": "アラジンと魔法のランプ 　～『アラビアン・ナイト』より～",
+   "official_reading": "まほう",
+   "official_en": "Aladdin and the Magic Lamp",
+   "level": "Level 3",
+   "isbn": "9784866396606",
+   "book_id": "2406",
+   "match_key": "ja:アラビアン",
+   "candidates": [
+    "level3-aladdin-and-the-magic-lamp",
+    "level4-ali-baba-and-the-40-thieves"
+   ],
+   "online_tags": [
+    "level3-aladdin-and-the-magic-lamp"
+   ],
+   "local_slugs": [
+    "level3-aladdin-and-the-magic-lamp",
+    "level4-ali-baba-and-the-40-thieves"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 388
+  },
+  {
+   "official_ja": "吉備津の釜　～『雨月物語』より～",
+   "official_reading": "きびつかまうげつものがたり",
+   "official_en": "The Kibitsu Cauldron from Tales of Moonlight and Rain",
+   "level": "Level 3",
+   "isbn": "9784866396606",
+   "book_id": "2407",
+   "match_key": "ja:吉備津の釜",
+   "candidates": [
+    "level3-the-cauldron-of-kibitsu"
+   ],
+   "online_tags": [
+    "level3-the-cauldron-of-kibitsu"
+   ],
+   "local_slugs": [
+    "level3-the-cauldron-of-kibitsu"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 281
+  },
+  {
+   "official_ja": "カップヌードル／カラオケ／ウォークマン<br>～日本で生まれて世界へ～",
+   "official_reading": "にほんうせかい",
+   "official_en": "Pot Noodle・Karaoke・Walkman: Born in Japan, Known around the World",
+   "level": "Level 3",
+   "isbn": "9784866396606",
+   "book_id": "2408",
+   "match_key": "ja:ウォークマン",
+   "candidates": [
+    "level3-cup-noodles-karaoke-and-the-walkman"
+   ],
+   "online_tags": [
+    "level3-cup-noodles-karaoke-and-the-walkman"
+   ],
+   "local_slugs": [
+    "level3-cup-noodles-karaoke-and-the-walkman"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 152
+  },
+  {
+   "official_ja": "地震と津波",
+   "official_reading": "じしんつなみ",
+   "official_en": "Earthquakes and Tsunamis",
+   "level": "Level 3",
+   "isbn": "9784866396606",
+   "book_id": "2409",
+   "match_key": "ja:地震と津波",
+   "candidates": [
+    "level3-earthquakes-and-tsunamis"
+   ],
+   "online_tags": [
+    "level3-earthquakes-and-tsunamis"
+   ],
+   "local_slugs": [
+    "level3-earthquakes-and-tsunamis"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L3"
+   ],
+   "local_n_sent": 162
+  },
+  {
+   "official_ja": "雪女",
+   "official_reading": "ゆきおんな",
+   "official_en": "The Snow Woman",
+   "level": "Level 4",
+   "isbn": "9784866396569",
+   "book_id": "2411",
+   "match_key": "ja:雪女",
+   "candidates": [
+    "level4-the-snow-woman"
+   ],
+   "online_tags": [
+    "level4-the-snow-woman"
+   ],
+   "local_slugs": [
+    "level4-the-snow-woman"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 250
+  },
+  {
+   "official_ja": "永井隆　～原爆の地長崎に生きて～",
+   "official_reading": "ながいたかしげんばくちながさきい",
+   "official_en": "Dr.Takashi Nagai : A Life in Nagasaki after the Atomic Bomb",
+   "level": "Level 4",
+   "isbn": "9784866396569",
+   "book_id": "2412",
+   "match_key": "ja:原爆の地長崎に生きて",
+   "candidates": [
+    "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site"
+   ],
+   "online_tags": [
+    "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site"
+   ],
+   "local_slugs": [
+    "level4-takashi-nagai-living-in-nagasaki-the-atomic-bomb-site"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 242
+  },
+  {
+   "official_ja": "杜子春",
+   "official_reading": "とししゅん",
+   "official_en": "Toshishun",
+   "level": "Level 4",
+   "isbn": "9784866396569",
+   "book_id": "2413",
+   "match_key": "ja:杜子春",
+   "candidates": [
+    "level4-toshishun"
+   ],
+   "online_tags": [
+    "level4-toshishun"
+   ],
+   "local_slugs": [
+    "level4-toshishun"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 301
+  },
+  {
+   "official_ja": "走れメロス",
+   "official_reading": "はし",
+   "official_en": "Run, Melos, Run",
+   "level": "Level 4",
+   "isbn": "9784866396569",
+   "book_id": "2414",
+   "match_key": "ja:走れメロス",
+   "candidates": [
+    "level4-run-melos"
+   ],
+   "online_tags": [
+    "level4-run-melos"
+   ],
+   "local_slugs": [
+    "level4-run-melos"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 464
+  },
+  {
+   "official_ja": "野菊の墓",
+   "official_reading": "のぎくはか",
+   "official_en": "The Grave of the Wild Chrysanthemum",
+   "level": "Level 4",
+   "isbn": "9784866396569",
+   "book_id": "2415",
+   "match_key": "ja:野菊の墓",
+   "candidates": [
+    "level4-the-grave-of-the-wild-chrysanthemums"
+   ],
+   "online_tags": [
+    "level4-the-grave-of-the-wild-chrysanthemums"
+   ],
+   "local_slugs": [
+    "level4-the-grave-of-the-wild-chrysanthemums"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": false,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 508
+  },
+  {
+   "official_ja": "相撲",
+   "official_reading": "すもう",
+   "official_en": "Sumo",
+   "level": "Level 4",
+   "isbn": "9784872176445",
+   "book_id": "2417",
+   "match_key": "ja:相撲",
+   "candidates": [
+    "level4-sumo"
+   ],
+   "online_tags": [
+    "level4-sumo"
+   ],
+   "local_slugs": [
+    "level4-sumo"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 175
+  },
+  {
+   "official_ja": "小泉八雲の怖い話２　耳なし芳一／梅津忠兵衛の話",
+   "official_reading": "こいずみやくもこわはなしみみほういちうめづちゅうべえはなし",
+   "official_en": "The Story of Hoichi the Earless / The Tale of Umezu Chube",
+   "level": "Level 4",
+   "isbn": "9784872176445",
+   "book_id": "2418",
+   "match_key": "ja:小泉八雲の怖い話2",
+   "candidates": [
+    "level4-koizumi-yakumo-s-scary-stories-2"
+   ],
+   "online_tags": [
+    "level4-koizumi-yakumo-s-scary-stories-2"
+   ],
+   "local_slugs": [
+    "level4-koizumi-yakumo-s-scary-stories-2"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 344
+  },
+  {
+   "official_ja": "東京を歩こう！",
+   "official_reading": "とうきょうある",
+   "official_en": "Walks around Tokyo",
+   "level": "Level 4",
+   "isbn": "9784872176445",
+   "book_id": "2419",
+   "match_key": "ja:東京を歩こう",
+   "candidates": [
+    "level4-let-s-walk-around-tokyo"
+   ],
+   "online_tags": [
+    "level4-let-s-walk-around-tokyo"
+   ],
+   "local_slugs": [
+    "level4-let-s-walk-around-tokyo"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 280
+  },
+  {
+   "official_ja": "世界のどこかで、日本のどこかで　～本当にあった話～",
+   "official_reading": "せかいにほんほんとうはなし",
+   "official_en": "True Stories from Japan and the World",
+   "level": "Level 4",
+   "isbn": "9784872176445",
+   "book_id": "2420",
+   "match_key": "ja:本当にあった話",
+   "candidates": [
+    "level4-somewhere-in-the-world-somewhere-in-japan-true-stories"
+   ],
+   "online_tags": [
+    "level4-somewhere-in-the-world-somewhere-in-japan-true-stories"
+   ],
+   "local_slugs": [
+    "level4-somewhere-in-the-world-somewhere-in-japan-true-stories"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 269
+  },
+  {
+   "official_ja": "森鷗外短編集　高瀬舟／最後の一句",
+   "official_reading": "もりおうがいたんぺんしゅうたかせぶねさいごいっく",
+   "official_en": "Takasebune/The Last Phrase",
+   "level": "Level 4",
+   "isbn": "9784872176445",
+   "book_id": "2421",
+   "match_key": "ja:森鷗外短編集",
+   "candidates": [
+    "level4-mori-ogai-s-short-stories"
+   ],
+   "online_tags": [
+    "level4-mori-ogai-s-short-stories"
+   ],
+   "local_slugs": [
+    "level4-mori-ogai-s-short-stories"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 374
+  },
+  {
+   "official_ja": "日本の食卓",
+   "official_reading": "にほんしょくたく",
+   "official_en": "Japanese Home Cooking",
+   "level": "Level 4",
+   "isbn": "9784866390659",
+   "book_id": "2423",
+   "match_key": "ja:日本の食卓",
+   "candidates": [
+    "level4-the-japanese-dining-table"
+   ],
+   "online_tags": [
+    "level4-the-japanese-dining-table"
+   ],
+   "local_slugs": [
+    "level4-the-japanese-dining-table"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 208
+  },
+  {
+   "official_ja": "坊っちゃん　上",
+   "official_reading": "ぼじょう",
+   "official_en": "Botchan (Vol. 1)",
+   "level": "Level 4",
+   "isbn": "9784866390659",
+   "book_id": "2424",
+   "match_key": "ja:坊っちゃん上",
+   "candidates": [
+    "level4-botchan-part-one"
+   ],
+   "online_tags": [
+    "level4-botchan-part-one"
+   ],
+   "local_slugs": [
+    "level4-botchan-part-one"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 424
+  },
+  {
+   "official_ja": "坊っちゃん　下",
+   "official_reading": "ぼげ",
+   "official_en": "Botchan (Vol. 2)",
+   "level": "Level 4",
+   "isbn": "9784866390659",
+   "book_id": "2425",
+   "match_key": "ja:坊っちゃん下",
+   "candidates": [
+    "level4-bocchan-part-2"
+   ],
+   "online_tags": [
+    "level4-bocchan-part-2"
+   ],
+   "local_slugs": [
+    "level4-bocchan-part-2"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 196
+  },
+  {
+   "official_ja": "四十七人の侍",
+   "official_reading": "よんじゅうしちにんさむらい",
+   "official_en": "47 Samurai",
+   "level": "Level 4",
+   "isbn": "9784866390659",
+   "book_id": "2426",
+   "match_key": "ja:四十七人の侍",
+   "candidates": [
+    "level4-the-forty-seven-samurai"
+   ],
+   "online_tags": [
+    "level4-the-forty-seven-samurai"
+   ],
+   "local_slugs": [
+    "level4-the-forty-seven-samurai"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 407
+  },
+  {
+   "official_ja": "ローマの休日",
+   "official_reading": "きゅうじつ",
+   "official_en": "Roman Holiday",
+   "level": "Level 4",
+   "isbn": "9784866390659",
+   "book_id": "2427",
+   "match_key": "ja:ローマの休日",
+   "candidates": [
+    "level4-roman-holiday"
+   ],
+   "online_tags": [
+    "level4-roman-holiday"
+   ],
+   "local_slugs": [
+    "level4-roman-holiday"
+   ],
+   "is_online": true,
+   "has_local_text": true,
+   "needs_zh": true,
+   "groups": [
+    "教材L4"
+   ],
+   "local_n_sent": 488
+  }
+ ],
+ "batch_1": {
+  "name": "教材超入門 + 入門（Level Start 全 8 + Level 0 全 12）",
+  "count": 20,
+  "isbn_volumes": [
+   "9784866394701",
+   "9784872177497",
+   "9784866398310"
+  ],
+  "levels": [
+   "Level Start",
+   "Level 0"
+  ],
+  "why": [
+   "官方 86 行里 L1/L3/L4 已被已上线的 57 本覆盖 ⇒ 缺口只在 Start 8 / L0 12 / L2 9",
+   "难度阶梯补最底层（超入門 → 入門），对初学者友好",
+   "只涉及 3 个 ISBN 卷 ⇒ 音频包/样章页各下 3 次，不重复",
+   "样章页覆盖最全：Start 17 张 / L0-A 14 张 / L0-B 7 张 ⇒ 原文+注音有权威来源"
+  ],
+  "header_rule": {
+   "sample_image": "必须【浏览器 User-Agent + Referer: https://ask-books.com/book-details/?slug=<ISBN>】（只给 Referer、或用 Python 默认 UA ⇒ 403）",
+   "audio_zip": "必须【User-Agent + Referer】（curl 默认 UA + Referer 可行；Python urllib 默认 UA ⇒ 403）"
+  },
+  "books": [
+   {
+    "official_ja": "一つ二つ三つ",
+    "official_reading": "ひとふたみっ",
+    "official_en": "",
+    "level": "Level Start",
+    "isbn": "9784866394701",
+    "book_id": "9076",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 17,
+     "audio_zip": "200 / 20270036 B / 8 tracks"
+    },
+    "audio_volume": "9784866394701"
+   },
+   {
+    "official_ja": "しりとり",
+    "official_reading": "",
+    "official_en": "",
+    "level": "Level Start",
+    "isbn": "9784866394701",
+    "book_id": "9078",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 17,
+     "audio_zip": "200 / 20270036 B / 8 tracks"
+    },
+    "audio_volume": "9784866394701"
+   },
+   {
+    "official_ja": "絵の中のねこ",
+    "official_reading": "えなか",
+    "official_en": "",
+    "level": "Level Start",
+    "isbn": "9784866394701",
+    "book_id": "9079",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 17,
+     "audio_zip": "200 / 20270036 B / 8 tracks"
+    },
+    "audio_volume": "9784866394701"
+   },
+   {
+    "official_ja": "アリとハト ～イソップ物語より～",
+    "official_reading": "ものがたり",
+    "official_en": "",
+    "level": "Level Start",
+    "isbn": "9784866394701",
+    "book_id": "9080",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 17,
+     "audio_zip": "200 / 20270036 B / 8 tracks"
+    },
+    "audio_volume": "9784866394701"
+   },
+   {
+    "official_ja": "西町交番の良さん「あぶない！」",
+    "official_reading": "にしまちこうばんりょう",
+    "official_en": "",
+    "level": "Level Start",
+    "isbn": "9784866394701",
+    "book_id": "9081",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 17,
+     "audio_zip": "200 / 20270036 B / 8 tracks"
+    },
+    "audio_volume": "9784866394701"
+   },
+   {
+    "official_ja": "西町交番の良さん「どろぼう？」",
+    "official_reading": "にしまちこうばんりょう",
+    "official_en": "",
+    "level": "Level Start",
+    "isbn": "9784866394701",
+    "book_id": "9082",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 17,
+     "audio_zip": "200 / 20270036 B / 8 tracks"
+    },
+    "audio_volume": "9784866394701"
+   },
+   {
+    "official_ja": "わかがえりの水",
+    "official_reading": "みず",
+    "official_en": "",
+    "level": "Level Start",
+    "isbn": "9784866394701",
+    "book_id": "9083",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 17,
+     "audio_zip": "200 / 20270036 B / 8 tracks"
+    },
+    "audio_volume": "9784866394701"
+   },
+   {
+    "official_ja": "森のコンサート",
+    "official_reading": "もり",
+    "official_en": "",
+    "level": "Level Start",
+    "isbn": "9784866394701",
+    "book_id": "9084",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 17,
+     "audio_zip": "200 / 20270036 B / 8 tracks"
+    },
+    "audio_volume": "9784866394701"
+   },
+   {
+    "official_ja": "風と太陽　～イソップ物語より～",
+    "official_reading": "かぜたいようものがたり",
+    "official_en": "The Wind and the Sun",
+    "level": "Level 0",
+    "isbn": "9784872177497",
+    "book_id": "2343",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 14,
+     "audio_zip": null
+    },
+    "audio_volume": "9784872177497"
+   },
+   {
+    "official_ja": "木村家の毎日「ただいま」",
+    "official_reading": "きむらけまいにち",
+    "official_en": "The Kimura Family Comes Home: Tadaima",
+    "level": "Level 0",
+    "isbn": "9784872177497",
+    "book_id": "2344",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 14,
+     "audio_zip": null
+    },
+    "audio_volume": "9784872177497"
+   },
+   {
+    "official_ja": "木村家の毎日「お正月」",
+    "official_reading": "きむらけまいにちしょうがつ",
+    "official_en": "New Year of the Kimura Family: Oshougatsu",
+    "level": "Level 0",
+    "isbn": "9784872177497",
+    "book_id": "2345",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 14,
+     "audio_zip": null
+    },
+    "audio_volume": "9784872177497"
+   },
+   {
+    "official_ja": "西町交番の良さん「にわにわに？」",
+    "official_reading": "にしまちこうばんりょう",
+    "official_en": "Ryo-san at the Nishimachi Koban: an Alligator in the Garden",
+    "level": "Level 0",
+    "isbn": "9784872177497",
+    "book_id": "2346",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 14,
+     "audio_zip": null
+    },
+    "audio_volume": "9784872177497"
+   },
+   {
+    "official_ja": "西町交番の良さん「助けて！」",
+    "official_reading": "にしまちこうばんりょうたす",
+    "official_en": "Ryo-san at the Nishimachi Koban: Help!",
+    "level": "Level 0",
+    "isbn": "9784872177497",
+    "book_id": "2347",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 14,
+     "audio_zip": null
+    },
+    "audio_volume": "9784872177497"
+   },
+   {
+    "official_ja": "これは何の数字？ ～数字で見る日本～",
+    "official_reading": "なんすうじすうじみにほん",
+    "official_en": "Japan Via Numbers",
+    "level": "Level 0",
+    "isbn": "9784872177497",
+    "book_id": "2348",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 14,
+     "audio_zip": null
+    },
+    "audio_volume": "9784872177497"
+   },
+   {
+    "official_ja": "ウサギとカメ　～イソップ物語より～",
+    "official_reading": "ものがたり",
+    "official_en": "The Hare and the Tortoise",
+    "level": "Level 0",
+    "isbn": "9784866398310",
+    "book_id": "2350",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 7,
+     "audio_zip": "200 / 19018662 B"
+    },
+    "audio_volume": "9784866398310"
+   },
+   {
+    "official_ja": "西町交番の良さん「良さんのクリスマス」",
+    "official_reading": "にしまちこうばんりょうりょう",
+    "official_en": "Ryo-san at Nishimachi Koban: The Christmas",
+    "level": "Level 0",
+    "isbn": "9784866398310",
+    "book_id": "2351",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 7,
+     "audio_zip": "200 / 19018662 B"
+    },
+    "audio_volume": "9784866398310"
+   },
+   {
+    "official_ja": "西町交番の良さん「落とし物がいっぱい」",
+    "official_reading": "にしまちこうばんりょうおもの",
+    "official_en": "Ryo-san at Nishimachi Koban: Lots of Lost Items",
+    "level": "Level 0",
+    "isbn": "9784866398310",
+    "book_id": "2352",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 7,
+     "audio_zip": "200 / 19018662 B"
+    },
+    "audio_volume": "9784866398310"
+   },
+   {
+    "official_ja": "東京の電車",
+    "official_reading": "とうきょうでんしゃ",
+    "official_en": "Trains in Tokyo",
+    "level": "Level 0",
+    "isbn": "9784866398310",
+    "book_id": "2353",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 7,
+     "audio_zip": "200 / 19018662 B"
+    },
+    "audio_volume": "9784866398310"
+   },
+   {
+    "official_ja": "木村家の毎日「結婚式」",
+    "official_reading": "きむらけまいにちけっこんしき",
+    "official_en": "The Kimura Family at a Wedding Ceremony",
+    "level": "Level 0",
+    "isbn": "9784866398310",
+    "book_id": "2354",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 7,
+     "audio_zip": "200 / 19018662 B"
+    },
+    "audio_volume": "9784866398310"
+   },
+   {
+    "official_ja": "七夕　― 織姫と彦星の話 ―",
+    "official_reading": "たなばたおりひめひこぼしはなし",
+    "official_en": "Tanabata Festival",
+    "level": "Level 0",
+    "isbn": "9784866398310",
+    "book_id": "2355",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "need": [
+     "原文（出版社样章页 OCR，图上自带逐字注音）",
+     "切句",
+     "逐字注音结构化 seg",
+     "简体中文译文"
+    ],
+    "resource": {
+     "sample_images": 7,
+     "audio_zip": "200 / 19018662 B"
+    },
+    "audio_volume": "9784866398310"
+   }
+  ]
+ },
+ "batch_2_backlog": {
+  "count": 9,
+  "books": [
+   {
+    "official_ja": "富士山",
+    "official_reading": "ふじさん",
+    "official_en": "Mt. Fuji",
+    "level": "Level 2",
+    "isbn": "9784872176421",
+    "book_id": "2381",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "batch": "batch_2（留待下一批）"
+   },
+   {
+    "official_ja": "わらしべ長者",
+    "official_reading": "ちょうじゃ",
+    "official_en": "The Straw Millionaire",
+    "level": "Level 2",
+    "isbn": "9784872176421",
+    "book_id": "2382",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "batch": "batch_2（留待下一批）"
+   },
+   {
+    "official_ja": "一寸法師",
+    "official_reading": "いっすんぼうし",
+    "official_en": "One-Inch Boy",
+    "level": "Level 2",
+    "isbn": "9784872176421",
+    "book_id": "2383",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "batch": "batch_2（留待下一批）"
+   },
+   {
+    "official_ja": "トルストイ民話集　王様とルパシカ／お父さんの物／細い糸",
+    "official_reading": "みんわしゅうおうさまとうものほそいと",
+    "official_en": "Leo Tolstoy's Fables for Chirldren",
+    "level": "Level 2",
+    "isbn": "9784872176421",
+    "book_id": "2384",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "batch": "batch_2（留待下一批）"
+   },
+   {
+    "official_ja": "最後の葉",
+    "official_reading": "さいごは",
+    "official_en": "The Last Leaf",
+    "level": "Level 2",
+    "isbn": "9784872176421",
+    "book_id": "2385",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "batch": "batch_2（留待下一批）"
+   },
+   {
+    "official_ja": "日本のお風呂",
+    "official_reading": "にほんふろ",
+    "official_en": "Japanese Baths",
+    "level": "Level 2",
+    "isbn": "9784866398419",
+    "book_id": "2387",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "batch": "batch_2（留待下一批）"
+   },
+   {
+    "official_ja": "いろいろな国の昔話 －中国－　ホウイとチャンア",
+    "official_reading": "くにむかしばなしちゅうごく",
+    "official_en": "An Old Tale from China",
+    "level": "Level 2",
+    "isbn": "9784866398419",
+    "book_id": "2388",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "batch": "batch_2（留待下一批）"
+   },
+   {
+    "official_ja": "ごん狐",
+    "official_reading": "ぎつね",
+    "official_en": "Gon the Fox",
+    "level": "Level 2",
+    "isbn": "9784866398419",
+    "book_id": "2389",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "batch": "batch_2（留待下一批）"
+   },
+   {
+    "official_ja": "ソーピーの冬の家",
+    "official_reading": "ふゆいえ",
+    "official_en": "The Cop and the Anthem",
+    "level": "Level 2",
+    "isbn": "9784866398419",
+    "book_id": "2390",
+    "match_key": "",
+    "candidates": [],
+    "online_tags": [],
+    "local_slugs": [],
+    "is_online": false,
+    "has_local_text": false,
+    "needs_zh": false,
+    "groups": [],
+    "local_n_sent": 0,
+    "batch": "batch_2（留待下一批）"
+   }
+  ]
+ }
+}
