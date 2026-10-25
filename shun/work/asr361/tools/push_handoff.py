@@ -69,6 +69,9 @@ def local_files():
     wr = os.path.join(SRC, 'word_reading.json')
     if os.path.isfile(wr):
         out["shun/tools/word_reading.json"] = wr
+        # 🔴 引擎目录副本：ruby.py 第 19 行按名字找 word_reading.json
+        #    ⇒ 网页层把引擎持久化到 shun/tools/ruby/ ⇒ 词表要跟引擎同目录（避免两处并存）
+        out["shun/tools/ruby/word_reading.json"] = wr
     return out
 
 
@@ -77,6 +80,8 @@ def main():
     ap.add_argument('--message', default='feat(shun-361): 修 3 类逐字缺陷 + 四类口径归一 + 补 p 区间 + 按 peer 契约产 7 集')
     ap.add_argument('--dry', action='store_true')
     ap.add_argument('--force', action='store_true', help='路径级 CAS 冲突时仍要覆盖')
+    ap.add_argument('--skip-conflicts', action='store_true',
+                    help='路径级 CAS 冲突时**跳过这些路径**（不覆盖），其余照推')
     a = ap.parse_args()
 
     head = api(API + "/git/ref/heads/main")['object']['sha']
@@ -167,8 +172,25 @@ def main():
             if not a.force:
                 cas_conflict += 1
     if cas_conflict:
-        print("❌ %d 个路径有冲突，未推送。确认要覆盖请加 --force" % cas_conflict)
-        sys.exit(1)
+        if a.skip_conflicts:
+            skip = set()
+            for p in sorted(lf.keys()):
+                if not p.startswith('shun-web/data/'):
+                    continue
+                e = remote.get(p)
+                if not e:
+                    continue
+                old_sha = baseline.get(p)
+                if old_sha and old_sha != e['sha']:
+                    skip.add(p)
+            lf = {k: v for k, v in lf.items() if k not in skip}
+            print("  ⚠️ 跳过 %d 个冲突路径（线上已被别人更新且内容更对 ⇒ 不覆盖）:" % len(skip))
+            for p in sorted(skip):
+                print("     ", p)
+        else:
+            print("❌ %d 个路径有冲突，未推送。确认要覆盖请加 --force；只想推其它请加 --skip-conflicts"
+                  % cas_conflict)
+            sys.exit(1)
     print("  路径级 CAS: 核对 %d 个路径，无冲突 ✅" % cas_checked)
 
     entries = []
@@ -207,6 +229,18 @@ def main():
         sys.exit(1)
 
     nt = api(API + "/git/trees", 'POST', {'base_tree': head, 'tree': entries})
+    # 🔴 空提交防护：若新 tree 与当前 HEAD 的 tree **逐字相同** ⇒ 不 commit
+    #    （每次都 commit 会白触发一次 Pages build，网页层同伴为此纠正过我）
+    old_tree = {e['path']: e['sha'] for e in api(API + "/git/trees/" + head + "?recursive=1")['tree']
+                if e['type'] == 'blob'}
+    new_tree = {e['path']: e['sha'] for e in api(API + "/git/trees/" + nt['sha'] + "?recursive=1")['tree']
+                if e['type'] == 'blob'}
+    if old_tree == new_tree:
+        print("✅ tree 与 HEAD 完全相同 ⇒ 无变化，不提交（避免白触发一次 Pages build）")
+        print("   线上 HEAD 仍是 %s" % head[:12])
+        return
+    diff = {k for k in set(old_tree) | set(new_tree) if old_tree.get(k) != new_tree.get(k)}
+    print("  tree 实际变化: %d 个路径" % len(diff))
     cm = api(API + "/git/commits", 'POST',
              {'message': a.message, 'tree': nt['sha'], 'parents': [head]})
     api(API + "/git/refs/heads/main", 'PATCH', {'sha': cm['sha'], 'force': False})

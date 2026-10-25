@@ -16,11 +16,14 @@ BR = ('[]', '［］', '〈〉', '（）')
 
 
 def main():
-    files = sorted(glob.glob(os.path.join(D, 's*.json')))
+    files = [f for f in sorted(glob.glob(os.path.join(D, 's*.json')))
+             if not f.endswith('.pred.json')]
     errs = []
     stats = {'sents': 0, 'frames': 0, 'merged_pairs': 0, 'same_adj': 0,
              'zh_empty': 0, 'no_p': 0, 'p_bad': 0, 'blocks': 0}
     for f in files:
+        if f.endswith('.pred.json'):
+            continue
         tag = os.path.basename(f)[:-5]
         d = json.load(open(f))
         for si, s in enumerate(d.get('sents', [])):
