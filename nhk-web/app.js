@@ -12,7 +12,7 @@
   var EPISODES = window.__EPISODES__ || [];
   var SUBS = window.__SUBS__ = window.__SUBS__ || {};
   // 字幕数据版本：换版时 +1，绕开浏览器/CDN 的旧缓存
-  var APP_VER = 'v30';
+  var APP_VER = 'v31';
   // 运行时配置（config.js）。🔴 这里只可能有公开信息，不会有任何 key。
   var CFG = window.CFG || {};
 

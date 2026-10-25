@@ -8,7 +8,7 @@
 /* 🔴 缓存名带内容版本：改了 sw.js 本身 ⇒ 浏览器会重装 SW ⇒ 预缓存里的
    data/episodes.js 等才会刷新。否则 stale-while-revalidate 会把**旧期数**
    先发给用户（第一次打开看不到新一期，得开第二次）—— 2026-10-24 修 */
-const CACHE = 'nhk-easynews-v30';
+const CACHE = 'nhk-easynews-v31';
 const CORE = [
   './',
   './index.html',
@@ -20,8 +20,15 @@ const CORE = [
   './data/syntax.js',
   './data/reading.js',
   './data/chains.js',
-  './data/cdn.js'
+  './data/cdn.js',
+  './icon-192.png',
+  './icon-512.png',
+  './NHK.apk'
 ];
+
+/* 全部 44 集字幕：一次预热，之后**完全离线可读**（墨水屏设备流量敏感）
+   —— 字幕是「点了哪集才看哪集」，但预热后切换任意一期都是秒开、零流量。 */
+const SUBS_GLOB = './subs/';
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -37,6 +44,33 @@ self.addEventListener('activate', e => {
       .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
+});
+
+/* 预热全部字幕（装 SW 时后台做，不阻塞首屏） */
+async function warmSubs() {
+  try {
+    const c = await caches.open(CACHE);
+    const res = await fetch('./data/episodes.js', { cache: 'no-store' });
+    if (!res || !res.ok) return;
+    const txt = await res.text();
+    const ids = [];
+    const re = /"subs"\s*:\s*"subs\/([A-Za-z0-9]+)\.js"/g;
+    let m;
+    while ((m = re.exec(txt)) !== null) ids.push(m[1]);
+    if (!ids.length) return;
+    await Promise.all(ids.map(id =>
+      c.match(SUBS_GLOB + id + '.js').then(hit => {
+        if (hit) return null;
+        return fetch(SUBS_GLOB + id + '.js').then(r => {
+          if (r && r.ok) return c.put(SUBS_GLOB + id + '.js', r.clone());
+          return null;
+        });
+      }).catch(() => null)
+    ));
+  } catch (e) { /* 预热失败不影响使用 */ }
+}
+self.addEventListener('install', e => {
+  e.waitUntil(warmSubs().catch(() => null));
 });
 
 function isAudio(url) {
