@@ -78,7 +78,13 @@ pages)
 prepare)
   echo "════ ⓪ 发版闸门（**全部必须绿**）════"
   # ① 凭据绝不能进交付包/源码包（🔴 2026-10-23 差点把签名密钥拷进源码包）
-  python3 scripts/check_no_secret_in_package.py deploy_site work/src_slim || exit 1
+  #    🔴 2026-10-25 晚修：这里**只扫 deploy_site**，不要连带扫 work/src_slim
+  #       原因：work/src_slim 是**上一轮** prepare 留下的副本（③ 才刷新它）
+  #       ⇒ 在 ③ 之前扫它 = 扫上一轮的内容 ⇒ 本轮新引入的问题要等下一轮才被抓
+  #       ⇒ 而且会把「上一轮有、这轮已修」的东西误报成当前问题（今天真踩到：
+  #          pack_html.py 的 PEM 字面量已拆开构造，但 src_slim 里还是旧副本 ⇒ 误报）
+  #       ⇒ src_slim 由 **③ 之后**那次检查负责（那才是当轮的产物）
+  python3 scripts/check_no_secret_in_package.py deploy_site || exit 1
   # ② 配方只写一遍（同一个配方写在 N 个地方 ⇒ 改了一处 = 修了 1/N）
   python3 scripts/check_audio_recipe.py || exit 1
   # ③ 瘦源码包必须当次刷新（否则发出去的是旧配方的副本）
