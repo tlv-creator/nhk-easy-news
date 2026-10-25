@@ -51,8 +51,11 @@
     {
       "domain": "x7b1kbbaa0kh0",
       "project": "(merged from keep-list)",
-      "reason": "✅ 多読絵本 Tadoku 现在的正式站（…/tadoku/，5 路径实测 200）",
-      "written_in": "keep-list.json（已合并）"
+      "reason": "⚠️ 多読絵本 Tadoku **旧 8 本版**站（2026-10-25 已被 55 本版取代）。留着不删（用户可能有旧书签），但**不再是指南页指向的站**。",
+      "written_in": "keep-list.json（已合并）",
+      "status": "SUPERSEDED",
+      "replaced_by": "0rbbjfw36hj66",
+      "note": "🔴 清理时**不要删**（旧书签）；也别 redeploy。正式站见 0rbbjfw36hj66。"
     },
     {
       "domain": "xwi3hf93nlt4p",
@@ -96,8 +99,11 @@
     {
       "domain": "zyksozpp1p7i0",
       "project": "(merged from keep-list)",
-      "reason": "✅ 多読絵本 音频 CDN（hub 的 tadoku 用它）",
-      "written_in": "keep-list.json（已合并）"
+      "reason": "⚠️ 多読絵本 **旧音频 CDN**（2026-10-25 已被新音频源站取代）。",
+      "written_in": "keep-list.json（已合并）",
+      "status": "SUPERSEDED",
+      "replaced_by": "qgozaeqvjc9l9",
+      "note": "🔴 清理时**不要删**（旧 APK 可能还指着它）；也别 redeploy。"
     },
     {
       "domain": "9kgu879p4dhy2",
@@ -471,7 +477,7 @@
       "written_in": "hub.html 的 SITE 块",
       "frozen": false,
       "status": "DELETED",
-      "note": "🔴 域名冻结（redeploy 层面）：**永不 redeploy 这个域**（redeploy = 换域名 = 引导页死链）。【2026-10-24 已删除】v1.19 站被 v1.20 站取代（fz40043h2tzaw）后删除。⚠️ 本条的 frozen=false **不是**「取消保护」：hub 的站 URL 只写在引导页 hub.html 里（已指向新站），不存在「学生/老师手里存着这个链接」的风险 ⇒ 与词汇站/听力站的 frozen=true 语义不同，那两类站**仍按永不删处理**。",
+      "note": "🔴 域名冻结（redeploy 层面）：**永不 redeploy 这个域**（redeploy = 换域名 = 引导页死链）。【2026-10-24 已删除】v1.19 站被 v1.20 站取代（fz40043h2tzaw）后删除。⚠️ 本条的 frozen=false **不是**「取消保护」：hub 的站 URL 只写在引导页 hub.html 里（已指向新站），不存在「学生/老师手里存着这个链接」的风险 ⇒ 与词汇站/听力站的 frozen=true 语义不同，那两类站**仍按永不删处理**。 【2026-10-25 补记】**tadoku 永久入口页曾指向这个域，现已改为 0rbbjfw36hj66。**",
       "replaced_by": "fz40043h2tzaw",
       "deleted_at": "2026-10-24"
     },
@@ -631,6 +637,29 @@
       "written_in": "引导页 version.json 的 site 字段",
       "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
       "frozen": false
+    },
+    {
+      "domain": "0rbbjfw36hj66",
+      "project": "多読絵本（日语泛读）55 本版",
+      "role": "content_site",
+      "reason": "🔴 **本项目现役站**（55 本 / 5668 句，中文+逐字注音 100%，34 本有音）；永久引导页 tadoku.html 指着它 ⇒ 永不删、永不 redeploy",
+      "status": "alive",
+      "frozen": true,
+      "canonical": "https://tlv-creator.github.io/nhk-easy-news/tadoku.html",
+      "site": "https://0rbbjfw36hj66.space.mcode.cn/",
+      "note": "🔴 域名冻结：**永不 redeploy**（永久入口页指着它 ⇒ 换域名 = 死链）。发新版要「新建站 + 改引导页 + 再删旧的」。站上含 tadoku-apk.zip（1.8MB，签名不变可覆盖装）。",
+      "current_as_of": "2026-10-25"
+    },
+    {
+      "domain": "qgozaeqvjc9l9",
+      "project": "多読絵本（音频源站）",
+      "role": "audio_source",
+      "reason": "🔴 **APK 的音频源站**（APK assets/site.txt 指向它 ⇒ 删了 = App 静音）；站上 media/*.mp3 = 34 本真人朗读",
+      "status": "alive",
+      "frozen": true,
+      "site": "https://qgozaeqvjc9l9.space.mcode.cn/",
+      "note": "🔴 域名冻结：**永不 redeploy、绝不删**。这是 APK 编译进去的写死地址（换域名 = 必须重打 APK）。",
+      "current_as_of": "2026-10-25"
     }
   ],
   "_status_vocab": "🔴 **status 的取值词汇表（2026-10-24 定，三个 agent 一起对过）**：\n   DELETED    = 我们说它**已经删了**    ⇒ **期望它死**   ⇒ 还活着 ⇒ 🔴「清单该更新」\n   SUPERSEDED = 旧站**被新站取代、可删** ⇒ **不判死活**   ⇒ 墓碑条目\n   ALIVE      = **显式写出来的「现役」** ⇒ **期望它活着**（语义 ≡ 没有 status）\n   （没有 status）= 现役                 ⇒ **期望它活着** ⇒ 死了   ⇒ 🔴「清单该更新」\n   ⇒ **规范写法是大写**：写入端 shun/tools/update_protected.py 会 .strip().upper() 归一，闸门 tools/check_sites_alive.py 也会 ⇒ 两种写法都能跑。\n   ⇒ ⚠️ **别写第五种取值**：闸门遇到不认识的取值会 **exit 2 不放行**（fail closed）\n      —— 假红的根源从来是「默认分支」，不是「少一个取值」。\n   ⇒ ℹ️ 清单里**还留着 4 条历史小写 `alive`**（xwi3hf93nlt4p / tcw0ti0k7p0hd / 3pqlt9tq6lrij / crb86rfrc9lmk）—— **故意没改**：\n      ① 语义完全相同（闸门两种都认）⇒ 没有功能上的必要；\n      ② 这 4 条分属 hub / ama / scenes 三家，**改别人条目的字面量有极小概率打断别人 grep `\"status\": \"alive\"` 的脚本**；\n      ③ 写入端已归一 ⇒ 这些条目下次被各自主人改动时自然会变成大写。",
