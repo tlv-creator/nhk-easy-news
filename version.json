@@ -1,9 +1,9 @@
 {
-  "ver": 28,
-  "verName": "2.3",
+  "ver": 29,
+  "verName": "2.4",
   "apkVer": 20,
-  "site": "https://hpufjp83f9cqp.space.mcode.cn",
-  "apk": "https://hpufjp83f9cqp.space.mcode.cn/NHK.apk",
-  "note": "44期 · v1.20 APK（apkVer=20）· 🔴 修「普通版字幕和音频对不上」（开关只管高亮/自动滚，不再换字幕源）· 语法讲解新格式（80 句）· 列表排序修复 + 複製整句 · 剥平台注入",
+  "site": "https://ac8e29hqy5sv5.space.mcode.cn",
+  "apk": "https://ac8e29hqy5sv5.space.mcode.cn/NHK.apk",
+  "note": "44期 · v1.20 APK（apkVer=20）· 🔴 普通版字幕/音频一致（开关只管高亮）· sp 轨 ASR 错字已校对（16 期）· 语法讲解新格式 · 列表排序修复 + 複製整句 · 剥平台注入",
   "updated": "2026-10-25"
 }
