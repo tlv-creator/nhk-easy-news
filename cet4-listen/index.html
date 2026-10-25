@@ -41,12 +41,12 @@ body{
   border-bottom:1.5px solid var(--line);
   padding:9px 0;
 }
-.top-in{max-width:720px;margin:0 auto;padding:0 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.top h1{font-size:25px;margin:0;font-weight:700;flex:1;min-width:120px;letter-spacing:.02em}
+.top-in{max-width:720px;margin:0 auto;padding:0 14px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.top h1{font-size:22px;margin:0;font-weight:700;flex:0 0 auto;letter-spacing:.02em;white-space:nowrap}
 .btn{
-  font:inherit;font-size:22px;background:var(--bg);color:var(--fg);
-  border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;cursor:pointer;
-  min-height:44px;line-height:1.5;
+  font:inherit;font-size:19px;background:var(--bg);color:var(--fg);
+  border:1.5px solid var(--line);border-radius:999px;padding:4px 11px;cursor:pointer;
+  min-height:44px;line-height:1.5;flex:0 0 auto;
 }
 .btn:active{background:var(--tint)}
 .btn.on{background:var(--fg);color:var(--bg)}
@@ -65,7 +65,8 @@ body{
 
 /* ---- 概要条 ---- */
 .summary{
-  font-size:21px;color:var(--dim);line-height:1.6;
+  display:flex;flex-wrap:wrap;gap:2px 14px;
+  font-size:19px;color:var(--dim);line-height:1.6;
   padding:8px 2px 14px;border-bottom:1.5px solid var(--soft);margin-bottom:14px;
 }
 
@@ -76,23 +77,24 @@ body{
 }
 .sec.open{border-color:var(--fg);border-width:2.5px}
 .sec-h{
-  display:flex;align-items:center;gap:12px;width:100%;
+  display:grid;grid-template-columns:auto 1fr;grid-template-areas:"n t" "n r";
+  column-gap:12px;row-gap:2px;align-items:center;width:100%;
   font:inherit;text-align:left;
   background:var(--bg);color:var(--fg);border:0;
-  padding:13px 14px;cursor:pointer;min-height:64px;
+  padding:12px 14px;cursor:pointer;min-height:64px;
 }
 .sec-h:active{background:var(--tint)}
 .sec-h .n{
+  grid-area:n;align-self:center;
   display:inline-flex;align-items:center;justify-content:center;
-  min-width:58px;height:40px;padding:0 6px;
+  min-width:54px;height:38px;padding:0 5px;
   border:1.5px solid var(--line);border-radius:9px;font-size:21px;letter-spacing:.02em;
 }
-.sec-h .t{flex:1;font-size:27px;font-weight:700;line-height:1.4}
-.sec-h .m{display:block;font-size:20px;font-weight:400;color:var(--dim);line-height:1.5}
-.sec-h .go{
-  font-size:21px;color:var(--dim);white-space:nowrap;
-  border-left:1px solid var(--soft);padding-left:12px;margin-left:2px;
-}
+.sec-h .r{grid-area:r;display:flex;justify-content:space-between;align-items:baseline;gap:10px;min-width:0}
+.sec-h .t{grid-area:t;font-size:25px;font-weight:700;line-height:1.4;min-width:0}
+.sec-h .t .tt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.sec-h .m{display:block;font-size:19px;font-weight:400;color:var(--dim);line-height:1.5;white-space:nowrap}
+.sec-h .go{font-size:20px;color:var(--dim);white-space:nowrap}
 .sec-b{padding:0 14px 14px}
 
 /* ---- 播放器 ---- */
@@ -182,6 +184,13 @@ details.fold[open]>summary::after{content:"收起"}
 .exp.show{display:block}
 .hide{display:none!important}
 
+/* ---- 页脚 ---- */
+.foot{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-top:18px;padding-top:14px;border-top:1.5px solid var(--soft);
+  font-size:19px;color:var(--dim);
+}
+
 /* ---- toast ---- */
 #toast{
   position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
@@ -193,19 +202,22 @@ details.fold[open]>summary::after{content:"收起"}
 <body>
 
 <div class="top"><div class="top-in">
-  <h1>大学英语四级 · 听力真题</h1>
+  <h1>四级听力真题</h1>
   <button class="btn" id="btnAa" type="button">字号</button>
-  <button class="btn" id="btnHc" type="button">高对比：关</button>
 </div></div>
 
 <div class="wrap">
   <div class="sets" id="sets"></div>
-  <div class="summary" id="summary">选一套真题开始。音频按题组切分，点哪组下哪组。</div>
+  <div class="summary" id="summary"><span>选一套真题开始</span><span>音频按题组切分，点哪组下哪组</span></div>
   <div id="list"></div>
-  <p style="font-size:21px;color:var(--dim);line-height:1.7;margin-top:22px">
+  <p style="font-size:20px;color:var(--dim);line-height:1.7;margin-top:22px">
     听过的音频会缓存在本机，第二次打开几乎不走流量。<br>
     答案与解析默认收起，先自己作答再对照。
   </p>
+  <div class="foot">
+    <button class="btn" id="btnHc" type="button">高对比：关</button>
+    <span>黑白屏幕上不用开</span>
+  </div>
 </div>
 
 <div id="toast"></div>
@@ -296,9 +308,9 @@ details.fold[open]>summary::after{content:"收起"}
       h.className="sec-h"; h.type="button";
       var dur=sec.audio?Math.round(sec.audio.dur):0;
       h.innerHTML='<span class="n">'+(sec.qs&&sec.qs.length?sec.qs[0]+"-"+sec.qs[sec.qs.length-1]:"")+
-                  '</span><span class="t">'+esc(sec.title)+
-                  '<span class="m">'+fmt(dur)+' · '+(sec.questions||[]).length+' 题</span></span>'+
-                  '<span class="go">点开播放</span>';
+                  '</span><span class="t"><span class="tt">'+esc(sec.title)+'</span></span>'+
+                  '<span class="r"><span class="m">'+fmt(dur)+' · '+(sec.questions||[]).length+' 题</span>'+
+                  '<span class="go">点开播放</span></span>';
       var body=document.createElement("div");
       body.className="sec-b"; body.hidden=true;
       d.appendChild(h); d.appendChild(body);
@@ -316,7 +328,8 @@ details.fold[open]>summary::after{content:"收起"}
       sec._pl=makePlayer(sec);
       body.appendChild(sec._pl.el);
       body.appendChild(sentBlock(sec));
-      if(sec.paras&&sec.paras.length) body.appendChild(paraBlock(sec));
+      body.appendChild(paraBlock(sec));
+      if(sec.paras&&sec.paras.length) body.appendChild(markedBlock(sec));
       if(sec.questions&&sec.questions.length) body.appendChild(qBlock(sec));
     }
     body.hidden=false;
@@ -333,11 +346,11 @@ details.fold[open]>summary::after{content:"收起"}
   }
   function updateSummary(){
     var el=document.getElementById("summary");
-    if(!data){ el.textContent="选一套真题开始。音频按题组切分，点哪组下哪组。"; return; }
+    if(!data){ el.innerHTML="<span>选一套真题开始</span><span>音频按题组切分，点哪组下哪组</span>"; return; }
     var secs=(data.sections||[]).length;
     var nq=0; (data.sections||[]).forEach(function(s){ nq+=(s.questions||[]).length; });
     var d=Math.round(data.total_dur||0);
-    el.textContent="共 "+secs+" 组 · "+nq+" 题 · 音频 "+mmss(d)+" · 已答 "+answered+" 题";
+    el.innerHTML="<span>共 "+secs+" 组</span><span>"+nq+" 题</span><span>音频 "+mmss(d)+"</span><span>已答 "+answered+" 题</span>";
   }
 
   /* ---------- 播放器（可拖动进度条 + 点开就播） ---------- */
@@ -537,12 +550,35 @@ details.fold[open]>summary::after{content:"收起"}
     return f;
   }
 
-  /* ---------- 原文段落 ---------- */
+  /* ---------- 整段原文 ----------
+     原来这块显示的是「解析 PDF 里标了 [n] 的句子」（就 1~3 句），却叫「听力原文」⇒ 误导。
+     现在分成两块：
+       ① 整段原文   = 这一组录音里说过的全部话，按长停顿分段（题目本来也是念出来的）
+       ② 出题点原文 = 解析里标 [n] 的那几句，也就是出题依据 */
   function paraBlock(sec){
+    var ps=[], cur=[], prev=null;
+    (sec.sentences||[]).forEach(function(x){
+      if(prev!==null && (x.s-prev)>3 && cur.length){ ps.push(cur.join(" ")); cur=[]; }
+      cur.push((x.t||"").trim()); prev=x.e;
+    });
+    if(cur.length) ps.push(cur.join(" "));
     var f=document.createElement("details");
     f.className="fold";
     var s=document.createElement("summary");
-    s.textContent="听力原文（"+((sec.paras||[]).length)+" 段）";
+    s.textContent="整段原文（"+ps.length+" 段）";
+    f.appendChild(s);
+    ps.forEach(function(p){
+      var d=document.createElement("div");
+      d.className="para"; d.textContent=p;
+      f.appendChild(d);
+    });
+    return f;
+  }
+  function markedBlock(sec){
+    var f=document.createElement("details");
+    f.className="fold";
+    var s=document.createElement("summary");
+    s.textContent="出题点原文（"+((sec.paras||[]).length)+" 句）";
     f.appendChild(s);
     (sec.paras||[]).forEach(function(p){
       var d=document.createElement("div");
