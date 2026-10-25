@@ -9,8 +9,56 @@ import os
 import re
 import sys
 
-BASE = "/workspace/listen-log/build/repo_scan/listen_lock_now.sql"
-OUT = "/workspace/listen-log/deploy/sql/05_lock_anon_delete.sql"
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def _find(env_name, rel_candidates, abs_candidates=()):
+    """按「环境变量 → 相对脚本自身位置的多个候选 → 绝对候选」找文件。
+
+    🔴 为什么要可移植（2026-10-25 修）：
+       原来这里写死 `/workspace/listen-log/...` ⇒ 别人从共享仓库拿到这份生成器，
+       一跑就 FileNotFoundError ⇒ **仓库里只有产物、没有能吃的原料** ⇒ 整条链只有我自己能跑。
+       ⇒ 共享仓库布局：tools/make_lock_sql.py + tools/listen_lock_base.sql（基底）+ tools/listen_lock_anon_delete.sql（产物）
+       ⇒ 本地工程布局：build/make_lock_sql.py + build/repo_scan/listen_lock_now.sql（基底）+ deploy/sql/05_lock_anon_delete.sql（产物）
+    """
+    env = os.environ.get(env_name)
+    if env and os.path.exists(env):
+        return os.path.abspath(env)
+    for rel in rel_candidates:
+        for base in (HERE, os.path.dirname(HERE), os.path.dirname(os.path.dirname(HERE))):
+            p = os.path.normpath(os.path.join(base, rel))
+            if os.path.exists(p):
+                return p
+    for p in abs_candidates:
+        if os.path.exists(p):
+            return p
+    return None
+
+
+def _pick_out():
+    """产物写到哪：环境变量 → 仓库布局（同目录）→ 本地工程布局（deploy/sql/）。"""
+    env = os.environ.get("LISTEN_LOCK_OUT")
+    if env:
+        return os.path.abspath(env)
+    for rel in ("listen_lock_anon_delete.sql",
+                os.path.join("deploy", "sql", "05_lock_anon_delete.sql")):
+        for base in (HERE, os.path.dirname(HERE)):
+            p = os.path.normpath(os.path.join(base, rel))
+            if os.path.exists(p):
+                return p
+    return None
+
+
+# 基底 = 生成器的原料（共享仓库：tools/listen_lock_base.sql）
+BASE = _find(
+    "LISTEN_LOCK_BASE",
+    ["listen_lock_base.sql",
+     os.path.join("build", "repo_scan", "listen_lock_now.sql"),
+     os.path.join("tools", "listen_lock_base.sql")],
+    ["/workspace/listen-log/build/repo_scan/listen_lock_now.sql"],
+)
+# 产物 = 生成器的结果
+OUT = _pick_out()
 
 OLD_POLICY = """create policy p_anon_delete_logs
     on public.vocab_history_logs
@@ -95,8 +143,12 @@ NEW_DROP = """       and cmd         = 'DELETE'
   loop"""
 
 def main():
-    if not os.path.exists(BASE):
-        print("❌ 找不到基底：%s（先从共享仓库拉一份）" % BASE)
+    if not BASE:
+        print("❌ 找不到基底（设 LISTEN_LOCK_BASE 指向它）")
+        print("   共享仓库里应该有 tools/listen_lock_base.sql")
+        return 1
+    if not OUT:
+        print("❌ 找不到产物路径（设 LISTEN_LOCK_OUT 指向它）")
         return 1
     s = open(BASE, encoding="utf-8").read()
     # 🔴 幂等：基底可能是「协作方的原版」，也可能是「我上一轮生成后推回仓库的那份」

@@ -1,21 +1,36 @@
 #!/bin/bash
 # 反向验证：把收尾 SQL 改坏 ⇒ 对应判据必须红
 # 🔴 补丁用**正则**而不是字面量（SQL 的注释文案一改，字面量锚点就失效 ⇒ 上次就是这么静默失效的）
-LISTEN_HOME="${LISTEN_HOME:-/workspace/listen-log}"
+LISTEN_HOME="${LISTEN_HOME:-$(cd "$(dirname "$0")/.." && pwd)}"
 cd "$LISTEN_HOME"
+# 🔴 路径**可移植**（2026-10-25 修）：原来写死 /workspace/listen-log ⇒ 共享仓库布局下跑不起来
+#    （仓库里只有产物、没有能吃的原料 ⇒ 整条反向验证链只有我自己能跑）
+#    两种布局都支持：本地工程（build/ + deploy/sql/）与共享仓库（tools/）
+GEN=""; SQLF=""; HARNESS=""
+for c in "$LISTEN_HOME/build/make_lock_sql.py" "$LISTEN_HOME/tools/make_lock_sql.py"; do [ -f "$c" ] && GEN="$c" && break; done
+for c in "$LISTEN_HOME/deploy/sql/05_lock_anon_delete.sql" "$LISTEN_HOME/tools/listen_lock_anon_delete.sql"; do [ -f "$c" ] && SQLF="$c" && break; done
+for c in "$LISTEN_HOME/build/pg_lock_harness.sh" "$LISTEN_HOME/tools/pg_lock_harness.sh"; do [ -f "$c" ] && HARNESS="$c" && break; done
+if [ -z "$GEN" ] || [ -z "$SQLF" ] || [ -z "$HARNESS" ]; then
+  echo "❌ 缺件：GEN=${GEN:-无} SQL=${SQLF:-无} HARNESS=${HARNESS:-无}"
+  echo "   共享仓库布局需要：tools/make_lock_sql.py + tools/listen_lock_anon_delete.sql + tools/pg_lock_harness.sh"
+  exit 9
+fi
+export LISTEN_LOCK_SQL="$SQLF"
 # 🔴 备份**必须放工作区**：/tmp 会被沙箱回收 ⇒ 还原时备份没了 ⇒
 #    「改坏的版本」留在磁盘上，还原失败还会**污染后面的用例**（我今天就这么把 SQL 带偏了）
-MUTDIR="$LISTEN_HOME/build/.mut"
+MUTDIR="${MUTDIR:-$LISTEN_HOME/build/.mut}"
 mkdir -p "$MUTDIR"
+# 🔴 中间日志也放工作区（/tmp 会被回收）
+MUTLOG="$MUTDIR/mut.log"
 run_mut () {
   name="$1"; mode="$2"; expect="${3:-}"
   # 🔴 先**从基底重新生成**再改：还原不依赖备份文件（备份会丢、还原会失败）
-  if ! python3 build/make_lock_sql.py >/dev/null; then echo "  [$name] ❌ 重新生成失败"; return 9; fi
-  cp deploy/sql/05_lock_anon_delete.sql "$MUTDIR/orig.sql" || { echo "  [$name] ❌ 备份失败"; return 9; }
+  if ! python3 "$GEN" >/dev/null; then echo "  [$name] ❌ 重新生成失败"; return 9; fi
+  cp "$SQLF" "$MUTDIR/orig.sql" || { echo "  [$name] ❌ 备份失败"; return 9; }
   python3 - "$mode" <<'PY'
 import sys, re, os
 mode = sys.argv[1]
-LISTEN_HOME = os.environ.get('LISTEN_HOME', '/workspace/listen-log')
+LISTEN_HOME = os.environ.get('LISTEN_HOME', os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 p = os.environ.get('LISTEN_LOCK_SQL', LISTEN_HOME + '/deploy/sql/05_lock_anon_delete.sql')
 s = open(p, encoding='utf-8').read()
 o = s
@@ -67,30 +82,31 @@ if s == o:
     raise SystemExit('PATCH_MISS')
 open(p, 'w', encoding='utf-8').write(s)
 PY
-  if [ $? -ne 0 ]; then echo "  [$name] ❌ 补丁没打上 ⇒ 反向验证无效"; python3 build/make_lock_sql.py >/dev/null; return 9; fi
-  if cmp -s "$MUTDIR/orig.sql" deploy/sql/05_lock_anon_delete.sql; then echo "  [$name] ❌ 文件没变化 ⇒ 无效"; return 9; fi
-  timeout 300 bash build/pg_lock_harness.sh > /tmp/mut.log 2>&1; rc=$?
-  red=$(grep -c "❌" /tmp/mut.log)
-  python3 build/make_lock_sql.py >/dev/null || { echo "  [$name] ❌ 还原失败（重新生成失败）"; return 9; }
+  if [ $? -ne 0 ]; then echo "  [$name] ❌ 补丁没打上 ⇒ 反向验证无效"; python3 "$GEN" >/dev/null; return 9; fi
+  if cmp -s "$MUTDIR/orig.sql" "$SQLF"; then echo "  [$name] ❌ 文件没变化 ⇒ 无效"; return 9; fi
+  # 🔴 timeout 300 → 600：这台机器是 NAS 挂载，initdb 慢到 >45s ⇒ 300 经常不够（会误报成「环境失败」）
+  timeout 600 bash "$HARNESS" "$SQLF" > "$MUTLOG" 2>&1; rc=$?
+  red=$(grep -c "❌" "$MUTLOG")
+  python3 "$GEN" >/dev/null || { echo "  [$name] ❌ 还原失败（重新生成失败）"; return 9; }
   # 🔴 guard 必须查**期望红的那条断言**：只查「有没有红」会把
   #    「环境失败（initdb 起不来）」误判成「反向验证成立」（今天就发生过）
   if [ -n "$expect" ]; then
-    if ! grep -q "$expect" /tmp/mut.log; then
+    if ! grep -q "$expect" "$MUTLOG"; then
       echo "  [$name] ❌ 没看到期望红的断言「$expect」⇒ 这次红是别的原因（环境/别的用例）⇒ 反向验证**无效**"
-      grep "❌" /tmp/mut.log | head -3 | sed 's/^/       /'
+      grep "❌" "$MUTLOG" | head -3 | sed 's/^/       /'
       return 9
     fi
   fi
   if [ "$rc" -ne 0 ] && [ "$red" -gt 0 ]; then
     echo "  [$name] exit=$rc 红=$red  ✅ 反向验证成立"
-    grep "❌" /tmp/mut.log | head -3 | sed 's/^/       /'
+    grep "❌" "$MUTLOG" | head -3 | sed 's/^/       /'
   else
     echo "  [$name] exit=$rc 红=$red  ❌ 改坏后仍全绿 ⇒ 判据是摆设"
   fi
 }
 echo "== 反向验证（收尾 SQL · 令牌版）=="
 # 收尾：无论中途怎样，退出前把文件恢复成「从基底生成的正式版」
-trap 'python3 build/make_lock_sql.py >/dev/null 2>&1' EXIT
+trap 'python3 "$GEN" >/dev/null 2>&1' EXIT
 run_mut "A 退回旧的宽松 policy"        wide        "无头删 LISTEN"
 run_mut "B DO 块漏删旧的宽松 policy"    nodrop      "无头删 LISTEN"
 run_mut "C 只剩探针行（砍功能那版）"    probeonly   "带对令牌"
