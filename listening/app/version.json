@@ -1,10 +1,11 @@
 {
  "app": "每日听力记录",
- "mirror": "https://irk7ibwekq8se.space.mcode.cn",
+ "mirror": "https://ul366v9i8nx0s.space.mcode.cn",
  "permanent_entry": "https://tlv-creator.github.io/nhk-easy-news/listening/",
  "student": "https://tlv-creator.github.io/nhk-easy-news/listening/app/student.html",
  "teacher": "https://tlv-creator.github.io/nhk-easy-news/listening/app/teacher.html",
- "updated": "2026-10-24 15:51:41",
- "app_version": "20261024d-clear-guard",
- "note": "删除凭证改为「原始令牌只留本机 + 库里只存 SHA-256」；学生端加了 10/22-24 补交提示"
+ "updated": "2026-10-25 17:10",
+ "app_version": "20261025b-login-resilience",
+ "note": "登录加了「15 秒超时 + 失败自动重试 3 次 + 随页面发布的静态名册兜底」⇒ 断网/弱网也能登录；姓名写错、学号不在名册仍会被挡。",
+ "mirror_note": "加速通道**落后于永久地址**（平台每次部署都新建域名 ⇒ 已部署站点无法原地更新）；登录报「连不上服务器」请用 permanent_entry。"
 }
