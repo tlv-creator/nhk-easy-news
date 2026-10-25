@@ -36,6 +36,7 @@ import os
 import struct
 import subprocess
 import sys
+import audio_recipe  # noqa: E402  （配方唯一权威）
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
@@ -58,11 +59,12 @@ def decode_f32(path):
     return list(struct.unpack("<%df" % n, d[:n * 4]))
 
 
-def encode(v, out, bitrate="96k"):
+def encode(v, out, bitrate=None):
+    bitrate = bitrate or audio_recipe.AAC_BITRATE
     raw = struct.pack("<%df" % len(v), *v)
+    # 🔴 配方只写一遍 → 从 audio_recipe 取（码率/采样率/声道）
     cmd = ["ffmpeg", "-nostdin", "-y", "-v", "error", "-f", "f32le", "-ar", str(SR), "-ac", "1",
-           "-i", "-", "-c:a", "aac", "-b:a", bitrate, "-ar", "48000", "-ac", "2",
-           "-movflags", "+faststart", out]
+           "-i", "-"] + audio_recipe.ffmpeg_encode_args() + [out]
     p = subprocess.run(cmd, input=raw, capture_output=True, timeout=600)
     if p.returncode != 0 or not os.path.exists(out) or os.path.getsize(out) < 20000:
         raise SystemExit("❌ 编码失败：%s" % p.stderr.decode()[:200])
