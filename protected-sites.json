@@ -23,8 +23,9 @@
     {
       "domain": "d7x7onv4ip0y8",
       "project": "dora",
-      "reason": "哆啦A梦**独立版**的站 —— 用户手机里的 App 可能还在用它",
-      "note": "不是 hub 的子站，是独立交付物"
+      "reason": "哆啦A梦2002 · 日中对照精读 v1.3（独立站）—— dora 项目已下线",
+      "note": "🔴 2026-10-25 用户决定「哆啦这个不要了」⇒ 项目下线，站已删除。（此站是 dora 独立 App 的站，手机上若还装着旧版 App，它会失效。）",
+      "status": "DELETED"
     },
     {
       "domain": "awcv20k80ydfb",
@@ -109,9 +110,11 @@
     },
     {
       "domain": "9kgu879p4dhy2",
-      "project": "(merged from keep-list)",
-      "reason": "✅ ドラえもん2002 音声ソース（hub 的 dora 用它）",
-      "written_in": "keep-list.json（已合并）"
+      "project": "dora",
+      "reason": "ドラえもん2002 音声ソース（hub v1.6 曾引用；dora 项目已下线 ⇒ 一并下线）",
+      "written_in": "keep-list.json（已合并）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 用户决定「哆啦这个不要了」⇒ 项目下线，站已删除。（此站是 dora 独立 App 的站，手机上若还装着旧版 App，它会失效。）"
     },
     {
       "domain": "3vpcud2aabhor",
