@@ -109,7 +109,8 @@
   var B = 'https://lszwxcmvcvbraqtrtgon.supabase.co/rest/v1/';
   var el = document.getElementById('prog');
   if (!el) return;
-  var FALLBACK = '没联上库，下面是 2026-10-25 20:57 的快照：已补交 <b>71 条 / 40 位同学</b>；名册 157 人里，还有 <b>117</b> 位同学一条都没交。';
+  var FALLBACK = '没联上库（下面这行是<b>快照</b>，数字停在 2026-10-25 20:57，可能已经过时；<b>以现查库那行为准</b>）：'
+    + '已补交 <b>71 条 / 40 位同学</b>；名册 157 人里，还有 <b>117</b> 位同学一条都没交。';
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function stamp() {
     var d = new Date();
@@ -125,11 +126,27 @@
     get('vocab_states?select=state_val&class_key=eq.__roster_v1')
   ]).then(function (res) {
     var logs = res[0] || [], i, j;
-    var byDay = {}, ids = {};
+    /* 🔴🔴 剔掉「测试探针行」（student_id = '__rls_probe__'）—— 2026-10-25 加
+       为什么：收紧 SQL **按设计就要清掉探针行** ⇒ 如果页面把探针算进统计，
+       老师跑完第 ① 步会看到「数字掉了几个」⇒ 会以为学生记录被删了 ⇒ 可能慌 / 可能重跑
+       ⇒ 探针行从一开始就不该进统计（它不是任何人的记录）
+       ⚠️ **为什么不在 URL 上加 student_id=neq.__rls_probe__**：
+          ① SQL 语义 `NULL <> '__rls_probe__'` 不成立 ⇒ **student_id 为 NULL 的行会被一起滤掉**
+             ⇒ 数字会悄悄少几行（现在看不出来，将来有人插了没填学号的行就出事）
+          ② URL 一改就换了一个查询形状 ⇒ 万一参数写错，页面直接空一行，而那时没人能连上真库验
+          ⇒ 改成前端过滤：**只精确剔掉探针**，其余行一律照旧
+       ⚠️ 护栏仍看**原始**行数（logs.length）：截断发生在服务端 ⇒ 必须看原始条数
+    */
+    var real = [];
     for (i = 0; i < logs.length; i++) {
-      var d = String(logs[i].timestamp || '').slice(0, 10);
+      if (String(logs[i].student_id) === '__rls_probe__') continue;
+      real.push(logs[i]);
+    }
+    var byDay = {}, ids = {};
+    for (i = 0; i < real.length; i++) {
+      var d = String(real[i].timestamp || '').slice(0, 10);
       byDay[d] = (byDay[d] || 0) + 1;
-      ids[String(logs[i].student_id)] = 1;
+      ids[String(real[i].student_id)] = 1;
     }
     var roster = [], rows = res[1] || [];
     for (j = 0; j < rows.length; j++) {
@@ -150,7 +167,7 @@
     var capWarn = (logs.length >= 1000)
       ? '　<b>⚠️ 本次取数正好达到单次上限（1000 行），下面的数字可能不完整 —— 请让我重新取全量。</b>'
       : '';
-    el.innerHTML = '截至 <b>' + stamp() + '</b>（现查库）：已补交 <b>' + logs.length + ' 条 / ' +
+    el.innerHTML = '截至 <b>' + stamp() + '</b>（现查库）：已补交 <b>' + real.length + ' 条 / ' +
       nSub + ' 位同学</b>（' + parts.join('、') + '）；名册 ' + roster.length + ' 人里，还有 <b>' +
       left + '</b> 位同学一条都没交。' + capWarn;
   }).catch(function () {

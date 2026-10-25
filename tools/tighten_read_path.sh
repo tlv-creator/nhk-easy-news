@@ -9,21 +9,32 @@
 #     ⇒ 原 tighten_regress 只验「能不能删」，**一条 SELECT 断言都没有**
 #
 #   本脚本在「真实库形状」上跑，跑前 / 跑后各取一次快照并逐项比对：
-#     ① anon 视角读 LISTEN 行数
+#     ① anon 视角读 LISTEN 行数（**剔除测试探针行**）
 #     ② anon 视角读名册：行数 + state_val 长度 + JSON 数组人数
 #     ③ anon 的 SELECT policy 集合（policy 名 | roles | qual）的 md5
+#     ④ **原始行数差 == 被清的探针数**（差值被解释，而不是被当成失败）
 #
-#   两条硬保证（没有它们，上面三条就是「跑绿了也说明不了什么」）：
+#   🔴🔴 关于「探针行」—— 这条是同伴实测复现后加进来的（2026-10-25 晚）：
+#     收紧 SQL **按设计就要清掉探针行** ⇒ 若 ① 直接用 count(*)（含探针），
+#     跑前 5 行 / 跑后 4 行 ⇒ **必然假红**（差的那 1 行是探针，被按设计清掉了）
+#     ⇒ 而我第一版的夹具里**没有探针行** ⇒ 这条敏感度在我这边根本看不见
+#        （**假绿-by-omission**：没造出敏感场景，测了等于没测）
+#     ⇒ 修法两条一起：
+#       ① ① 改成**剔除探针**再比（真人记录数不该变）
+#       ② ④ 把「原始行数差」和「被清的探针数」**对账**（差值被解释；多出来的才是真丢数据）
+#       ③ 脚本**自己造一行探针**（不必改共享夹具）⇒ 这一维永远显形
+#
+#   两条硬保证（没有它们，上面几条就是「跑绿了也说明不了什么」）：
 #     · **基线非空守卫**：任一基线为 0 ⇒ 本次判定无效（exit 9），
 #       不许拿「0 == 0」当「没变」（空语句假绿）
 #     · **变异体反向验证**：最后把 anon 的 SELECT policy 全删掉再测一次
-#       ⇒ ①② 必须变（读路径真的断了）⇒ 证明这两条断言有鉴别力，不是恒绿
+#       ⇒ ①② 必须变（读路径真的断了）⇒ 证明这些断言有鉴别力，不是恒绿
 #
 # 🔴 只在本地 PG 上跑，**不碰生产库**
 # 🔴 退出码三态，别混：
 #     0 = 断言全过
 #     1 = 断言红了（判据失败）
-#     9 = **环境没搭起来**（找不到 PG / 找不到 SQL / 建库失败 / 基线为 0）
+#     9 = **环境没搭起来**（找不到 PG / 找不到 SQL / 建库失败 / 基线为 0 / 没造出探针行）
 #          ⇒ 本次验证**无效**，既不是「通过」也不是「失败」
 #
 # 路径必须可移植（别人只拿共享仓库就能跑）：
@@ -59,6 +70,7 @@ PGDATA="$PGROOT/data"
 PORT="${LISTEN_PGPORT:-55455}"
 PGBIN="$(ls -d /usr/lib/postgresql/*/bin 2>/dev/null | head -1)"
 TMPD="$PGROOT/t"
+PROBE_ID='__rls_probe__'
 
 if [ -z "$PGBIN" ] || [ ! -x "$PGBIN/initdb" ]; then
   echo "❌ 找不到 PostgreSQL（$PGBIN）⇒ 环境无效"; exit 9
@@ -78,7 +90,9 @@ num() { q "$1" | tr -d '[:space:]'; }
 anon_num() { num "set role anon; $1"; }
 
 # anon 视角的读快照（每个量一条 ⇒ 缺一条就是空值，不会被当成 0）
-S_LISTEN="select count(*) from public.vocab_history_logs where class_key='LISTEN'"
+S_LISTEN_REAL="select count(*) from public.vocab_history_logs where class_key='LISTEN' and student_id <> '$PROBE_ID'"
+S_LISTEN_RAW="select count(*) from public.vocab_history_logs where class_key='LISTEN'"
+S_PROBE="select count(*) from public.vocab_history_logs where student_id='$PROBE_ID'"
 S_ROSTER_ROWS="select count(*) from public.vocab_states where class_key='__roster_v1'"
 S_ROSTER_LEN="select coalesce(max(length(state_val)),0) from public.vocab_states where class_key='__roster_v1'"
 S_ROSTER_PPL="select coalesce(max(jsonb_array_length(state_val::jsonb)),0) from public.vocab_states where class_key='__roster_v1'"
@@ -88,7 +102,9 @@ S_SEL_MD5="select md5(coalesce(string_agg(policyname||'|'||roles::text||'|'||coa
 S_SEL_N="select count(*) from pg_policies where schemaname='public' and cmd='SELECT' and 'anon'=any(roles)"
 
 snapshot() {   # 跑前 / 跑后各调一次
-  SNAP_LISTEN=$(anon_num "$S_LISTEN")
+  SNAP_LISTEN=$(anon_num "$S_LISTEN_REAL")     # 真人记录（剔探针）—— ① 用它
+  SNAP_RAW=$(anon_num "$S_LISTEN_RAW")         # 原始行数（含探针）—— ④ 用它
+  SNAP_PROBE=$(anon_num "$S_PROBE")            # 探针行数
   SNAP_ROSTER_ROWS=$(anon_num "$S_ROSTER_ROWS")
   SNAP_ROSTER_LEN=$(anon_num "$S_ROSTER_LEN")
   SNAP_ROSTER_PPL=$(anon_num "$S_ROSTER_PPL")
@@ -118,12 +134,22 @@ if ! as_pg "$PGBIN/psql -h $PGROOT -p $PORT -U postgres -d rlstest -v ON_ERROR_S
 fi
 echo "  ✅ 夹具建好（$SETUP）"
 
+# 🔴🔴 **自己造一行测试探针**（不改共享夹具）⇒ 敏感度永远显形
+#   没有探针行 ⇒ 「行数差」这一维根本没被造出来 ⇒ 测了等于没测（假绿-by-omission）
+as_pg "$PGBIN/psql -h $PGROOT -p $PORT -U postgres -d rlstest -v ON_ERROR_STOP=1 -q -c \"
+  insert into public.vocab_history_logs (class_key,class_name,student_id,timestamp,duration_sec,action)
+  values ('LISTEN','探针','$PROBE_ID','2026-10-25 23:00:00',0,'probe');\"" >/dev/null 2>&1 \
+  || { echo "❌ 造探针行失败 ⇒ 环境无效"; exit 9; }
+PROBE_MADE=$(num "$S_PROBE")
+[ "${PROBE_MADE:-0}" -ge 1 ] || { echo "❌ 探针行没造出来 ⇒ 这一维没被造出来 ⇒ 本次验证无效"; exit 9; }
+echo "  ✅ 已造 1 行测试探针（student_id=$PROBE_ID）⇒ 跑前原始行数比真人行数多 $PROBE_MADE"
+
 echo "== 跑前基线（anon 视角）=="
 snapshot
-echo "  LISTEN行数=$SNAP_LISTEN 名册行数=$SNAP_ROSTER_ROWS 名册长度=$SNAP_ROSTER_LEN 人数=$SNAP_ROSTER_PPL anonSELECTpolicy数=$SNAP_SEL_N"
+echo "  LISTEN真人行数=$SNAP_LISTEN 原始行数=$SNAP_RAW 探针行数=$SNAP_PROBE 名册行数=$SNAP_ROSTER_ROWS 名册长度=$SNAP_ROSTER_LEN 人数=$SNAP_ROSTER_PPL anonSELECTpolicy数=$SNAP_SEL_N"
 # 🔴 基线必须非空 ⇒ 否则「跑前 == 跑后」是 0 == 0 的**空语句假绿**
-if [ "${SNAP_LISTEN:-0}" -lt 1 ] || [ "${SNAP_ROSTER_ROWS:-0}" -lt 1 ] \
-   || [ "${SNAP_ROSTER_LEN:-0}" -lt 1 ] || [ "${SNAP_ROSTER_PPL:-0}" -lt 1 ] \
+if [ "${SNAP_LISTEN:-0}" -lt 1 ] || [ "${SNAP_RAW:-0}" -lt 1 ] || [ "${SNAP_PROBE:-0}" -lt 1 ] \
+   || [ "${SNAP_ROSTER_ROWS:-0}" -lt 1 ] || [ "${SNAP_ROSTER_LEN:-0}" -lt 1 ] || [ "${SNAP_ROSTER_PPL:-0}" -lt 1 ] \
    || [ "${SNAP_SEL_N:-0}" -lt 1 ] || [ -z "${SNAP_SEL_MD5:-}" ]; then
   echo "❌ 基线为空/不对 ⇒ 本次验证**无效**（不产出结论）"
   as_pg "$PGBIN/pg_ctl -D $PGDATA -m immediate stop" >/dev/null 2>&1 || true
@@ -141,12 +167,12 @@ else
 fi
 
 echo "== 断言（跑后 vs 跑前）=="
-B_LISTEN="$SNAP_LISTEN"; B_ROWS="$SNAP_ROSTER_ROWS"; B_LEN="$SNAP_ROSTER_LEN"
-B_PPL="$SNAP_ROSTER_PPL"; B_MD5="$SNAP_SEL_MD5"
+B_LISTEN="$SNAP_LISTEN"; B_RAW="$SNAP_RAW"; B_PROBE="$SNAP_PROBE"
+B_ROWS="$SNAP_ROSTER_ROWS"; B_LEN="$SNAP_ROSTER_LEN"; B_PPL="$SNAP_ROSTER_PPL"; B_MD5="$SNAP_SEL_MD5"
 snapshot
 [ "$SNAP_LISTEN" = "$B_LISTEN" ] \
-  && ok "① anon 读 LISTEN 行数不变（$SNAP_LISTEN）" \
-  || bad "① anon 读 LISTEN 行数变了：$B_LISTEN → $SNAP_LISTEN"
+  && ok "① anon 读 LISTEN 真人行数不变（$SNAP_LISTEN，剔探针）" \
+  || bad "① anon 读 LISTEN 真人行数变了：$B_LISTEN → $SNAP_LISTEN"
 if [ "$SNAP_ROSTER_ROWS" = "$B_ROWS" ] && [ "$SNAP_ROSTER_LEN" = "$B_LEN" ] && [ "$SNAP_ROSTER_PPL" = "$B_PPL" ]; then
   ok "② anon 读名册不变（行数=$SNAP_ROSTER_ROWS 长度=$SNAP_ROSTER_LEN 人数=$SNAP_ROSTER_PPL）"
 else
@@ -155,9 +181,17 @@ fi
 [ -n "$SNAP_SEL_MD5" ] && [ "$SNAP_SEL_MD5" = "$B_MD5" ] \
   && ok "③ anon 的 SELECT policy 集合逐字未变（md5=$SNAP_SEL_MD5）" \
   || bad "③ anon 的 SELECT policy 集合变了：$B_MD5 → $SNAP_SEL_MD5"
+# ④ 差值必须被解释：原始行数少了多少，正好等于清掉了多少探针
+CLEARED=$(( B_PROBE - SNAP_PROBE ))
+LOST=$(( B_RAW - SNAP_RAW ))
+if [ "$LOST" = "$CLEARED" ]; then
+  ok "④ 原始行数差($LOST) == 被清的探针数($CLEARED) ⇒ 差值被解释，没有真丢数据"
+else
+  bad "④ 原始行数差($LOST) ≠ 被清的探针数($CLEARED) ⇒ 可能真丢了数据（或者探针没清干净）"
+fi
 
 echo "== 变异体反向验证（把 anon 的 SELECT policy 全删掉）=="
-# 目的：证明上面两条断言**真的在测读路径**，不是恒绿
+# 目的：证明上面几条断言**真的在测读路径**，不是恒绿
 #   ⇒ 删完之后 ①② 必须变（读路径真的断了）⇒ 断言有鉴别力
 # 🔴 SQL 走**文件**、错误**不吞**：上一版把 DO 块塞进 psql -c，
 #    而 `su postgres -c "…"` 里的 $$ 会被内层 shell 展开成 PID ⇒ DO 块语法错
