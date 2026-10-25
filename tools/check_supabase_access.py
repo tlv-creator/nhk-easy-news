@@ -45,7 +45,12 @@ REST = 'https://lszwxcmvcvbraqtrtgon.supabase.co/rest/v1'
 
 LISTEN_SITE = 'https://irk7ibwekq8se.space.mcode.cn/'
 VOCAB_SITE = 'https://iujsgx3ci73dp.space.mcode.cn/'
-CET4_SITE = 'https://y8arnrff8t2hj.space.mcode.cn/'
+# 🔴 2026-10-25：四级日报站 y8arnrff8t2hj 已下线（用户「暂时用不着」⇒ 站已删除）
+#    ⇒ 它不能留在下面取 anon key 的站列表里：
+#    留着 = 每日更新的 cron 会看到「CET4 站取不到 key」的假警报，
+#    甚至误判成「RLS 没生效」⇒ 去重发站 ⇒ 把下线动作撤销。
+#    ⇒ 要恢复日报时，再把这一行加回来（并把新域名填进去）。
+CET4_SITE = ''  # 已退役（2026-10-25）
 
 PROBE_SID = '__rls_probe__'        # 探针 student_id
 PROBE_CK = 'LISTENPROBE'           # 探针 class_key（「清空全部」路径专用，不碰真实 LISTEN）
@@ -331,7 +336,10 @@ def main():
     print('=' * 74)
 
     # ── 0) anon key
-    for site in (VOCAB_SITE, LISTEN_SITE, CET4_SITE):
+    # 🔴 CET4 站 2026-10-25 已下线 ⇒ 不再参与取 anon key（详见上面 CET4_SITE 的注释）
+    for site in (VOCAB_SITE, LISTEN_SITE):
+        if not site:
+            continue
         code = get_text(site)
         km = re.search(r'sb_publishable_[A-Za-z0-9_]+', code)
         if km:
