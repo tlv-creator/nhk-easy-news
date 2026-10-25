@@ -51,12 +51,30 @@ TOKEN = "/workspace/.secrets/gh_token"
 FINGERPRINT_FILES = ["app.js", "style.css", "index.html", "config.js"]
 FINGERPRINT_DIRS = ["data", "subs"]
 
-# 音频站的攒批阈值：
-#   · 单站 200MB 硬上限 ⇒ 装满约 148 期（均摊 1381KB/期）
-#   · 攒到 10 期就发一次 ⇒ 每站只装 10 期（14MB）⇒ 远低于上限 ⇒ 安全余量大
-#   · 但也不至于攒太久（用户想尽快听到新一期）⇒ MAX_DAYS = 7
-AUDIO_BATCH_EPISODES = 10
-AUDIO_BATCH_MAX_DAYS = 7
+# 音频站的发布节奏（2026-10-25 22:4x 由「攒批 10 期 / 7 天」改成「每有新一期就发」）
+#
+# 🔴🔴 为什么改（算过账才改，不是拍脑袋）：
+#     每次 website_deploy 传的都是**全量**（44 期音频 59MB + 静态 4.5MB ≈ 64MB）
+#     ⇒ **跟攒多少期无关** ⇒ 「攒批」唯一收益 = 少发几次 = 给清理 cron 留缓冲
+#     ⇒ 代价却是实打实的：**用户最多等 7 天才看到新一期**（App 走 mcode 站 ⇒ 一起等）
+#     ⇒ 换成「每天发」+「清理闭环」，配额**稳态一样是 2~3 个位**：
+#         发完 ⇒ 把旧站写进共享仓库 pending-deletes.json
+#              ⇒ 20:00 清理 cron（agent=Mavis, mode=new ⇒ 有 drive 删站权限）捡起来删
+#              ⇒ 回写 protected-sites.json 的 status=DELETED
+#     ⇒ 于是「攒批」这个中间层可以退休了。
+#
+#   · 单站 200MB 硬上限 ⇒ 装满约 148 期 ⇒ 现在 44 期只占 30%，余量极大
+#   · MAX_DAYS = 1 ⇒ 就算某天有音频变化但没新期，也最多隔一天发
+AUDIO_BATCH_EPISODES = 1
+AUDIO_BATCH_MAX_DAYS = 1
+
+# 🔴 配额保险：**待删站积压**到这个数就停发 mcode 站
+#   （清理 cron 万一连着几天没跑，站会一天天堆 ⇒ 撞 ENTITLEMENT_LIMIT_EXCEEDED）
+#   ⇒ 停发只是「这一版先不占位」，Pages 照常同步（零配额）⇒ 用户第二天就能看到新文字
+MAX_PENDING_DELETES = 3
+
+# 共享仓库里的待删清单（**唯一权威**）—— 清理 cron 的 prompt 本来就会读它
+PENDING_URL = "https://tlv-creator.github.io/nhk-easy-news/pending-deletes.json"
 
 
 def md5(path):
@@ -141,6 +159,42 @@ def log(msg):
     print(msg, flush=True)
 
 
+def pending_backlog():
+    """🔴🔴 查「待删站积压」——**清理 cron 万一没跑，配额就会被一天天堆爆**
+
+    判据落在**事实量**上：
+      ① 待删清单 = 共享仓库 pending-deletes.json（发版 agent 写、清理 cron 删）
+      ② 只数**还活着**的（curl 200）⇒ 清单里已经死掉的（404）不算积压
+    ⇒ 「没登记 = 没积压」是安全的默认（登记了才可能积压）
+    """
+    import urllib.request
+    try:
+        req = urllib.request.Request(PENDING_URL, headers={"Cache-Control": "no-cache"})
+        raw = urllib.request.urlopen(req, timeout=20).read().decode("utf-8")
+        d = json.loads(raw)
+    except Exception as e:
+        log("   ⚠️ 读不到待删清单（%s）⇒ 按「无积压」处理" % e)
+        return 0
+    sites = d.get("sites") or []
+    alive = []
+    for s in sites:
+        dom = (s.get("domain") or "").strip()
+        if not dom:
+            continue
+        url = dom if dom.startswith("http") else "https://%s.space.mcode.cn/" % dom
+        try:
+            r = urllib.request.urlopen(url, timeout=10)
+            code = r.getcode()
+            r.close()
+        except Exception:
+            code = 0
+        if code == 200:
+            alive.append(dom)
+    log("   待删清单 %d 条，其中**还活着** %d 个：%s"
+        % (len(sites), len(alive), ", ".join(alive) if alive else "(无)"))
+    return len(alive)
+
+
 def plan():
     st = load_state()
     fp, items = content_fingerprint()
@@ -162,6 +216,14 @@ def plan():
         len(new_audio) >= AUDIO_BATCH_EPISODES or days_since >= AUDIO_BATCH_MAX_DAYS
     )
 
+    # 🔴🔴 配额保险：待删站积压太多 ⇒ 停发 mcode 站
+    #   （清理 cron 万一连着几天没跑，站会一天天堆 ⇒ 撞 50 上限 ⇒ 部署直接被拒）
+    #   ⇒ 停发只影响 mcode 站；**Pages 照常同步**（零配额）⇒ 用户第二天就能看到新文字
+    backlog = pending_backlog()
+    if need_audio_deploy and backlog >= MAX_PENDING_DELETES:
+        log("   ⛔ 配额保险：待删站积压 %d 个（≥ %d）⇒ **停发 mcode 站**" % (backlog, MAX_PENDING_DELETES))
+        need_audio_deploy = False
+
     log("════ NHK 日更发版决策 ════")
     log("   内容指纹 %s（%d 个文件）" % (fp[:12], len(items)))
     if old_fp is None:
@@ -181,12 +243,15 @@ def plan():
         log("   上次发音频站：%.1f 天前（%s）" % (days_since, last_domain))
     else:
         log("   上次发音频站：从来没有（首次必须发一次）")
-    log("   攒批阈值：新增 ≥ %d 期 或 距上次 ≥ %d 天" % (AUDIO_BATCH_EPISODES, AUDIO_BATCH_MAX_DAYS))
+    log("   发布节奏：新增音频 ≥ %d 期 或 距上次 ≥ %d 天（即「有新一期就发」）"
+        % (AUDIO_BATCH_EPISODES, AUDIO_BATCH_MAX_DAYS))
     if need_audio_deploy:
-        log("   ✅ 决策：**要发 mcode 站**（音频有新东西，且到阈值了）")
+        log("   ✅ 决策：**要发 mcode 站**（音频有新东西 ⇒ App 也能当天拿到新一期）")
     else:
-        if new_audio or changed_audio:
-            log("   ⏸️ 决策：**先不发 mcode 站**（音频攒着，够阈值再发）⇒ **今天 0 配额占用**")
+        if backlog >= MAX_PENDING_DELETES:
+            log("   ⏸️ 决策：**不发 mcode 站**（待删站积压 %d 个 ⇒ 等清理 cron 腾位）" % backlog)
+        elif new_audio or changed_audio:
+            log("   ⏸️ 决策：**先不发 mcode 站**（还没到发布节奏）⇒ **今天 0 配额占用**")
         else:
             log("   ⏸️ 决策：**不发 mcode 站**（音频没变）⇒ **今天 0 配额占用**")
     log("   💡 无论上面怎样，**Pages 同步永远是零配额**（同一个仓库、同一个站点）")
@@ -196,6 +261,7 @@ def plan():
         "audio_changed": bool(new_audio or changed_audio),
         "new_audio": new_audio,
         "need_audio_deploy": need_audio_deploy,
+        "pending_backlog": backlog,
         "last_audio_domain": last_domain,
         "days_since_audio_deploy": days_since,
     }

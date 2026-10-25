@@ -1,0 +1,5 @@
+{
+  "sites": [],
+  "updated": "2026-10-25",
+  "note": "待删站清单（唯一权威）。发版 agent 发完 mcode 站后，把被取代的旧站写进 sites[]；云盘配额清理 cron（20:00，agent=Mavis，mode=new）读这个文件删站，删完把该条从 sites[] 移除并把 protected-sites.json 里对应条目的 status 改成 DELETED。字段：domain（裸域名）/ node_id（云盘节点 id）/ reason（为什么该删）。"
+}
