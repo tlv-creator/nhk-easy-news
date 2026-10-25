@@ -24,6 +24,8 @@ BLOCK = 180.0          # 每块秒数（块内时间轴由模型给出，块间�
 WORKERS = 5
 EP_WORKERS = 5
 TOOL = 'connector__matrix__audios_understand'
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import frame_guard  # noqa: E402  逐字校验闸门
 
 PROMPT = """这段音频共{dur:.0f}秒。请按句输出 JSON 数组，每项一句，不要任何多余说明：
 {{"s":开始秒,"e":结束秒,"ja":"日文原文","zh":"整句中文翻译","frame":[{{"s":"片段","b":"括号","role":"角色"}}]}}
@@ -36,8 +38,15 @@ PROMPT = """这段音频共{dur:.0f}秒。请按句输出 JSON 数组，每项�
    · 保留所有标点
    · 听不清的地方照最接近的发音写，不要意译。
 3. zh：整句中文翻译。
-3. frame：语法成分分层。b 只能用这四个字符串之一："[]"（连接词/副词）、"［］"（从句）、"〈〉"（宾语内容）、"（）"（谓语）。
-   片段 s 必须逐字取自本句 ja，role 用中文短语（≤8字）。
+4. frame：语法成分分层。b 只能用这四个字符串之一："[]"（连接词/副词性修饰）、"［］"（从句）、"〈〉"（**只标宾语内容**）、"（）"（谓语）。
+   🔴 **四类是固定的，〈〉 只能标宾语**（宾语/宾语从句内容）。状语（时间/地点/方式/程度）
+      一律归入 "[]"，或并进相邻的 "［］"/"（）" 块里 —— **不要为了标状语而自造第五类**。
+   🔴 **片段 s 里不许出现任何括号字符**（`［］〈〉（）【】` 都不许），括号只由 b 字段承载。
+   🔴 **片段 s 必须是本句 ja 的一段连续文字，逐字复制**：
+      · 不许同义替换（原文「各々」就写「各々」，不要写「色々な」）
+      · 不许越界（不要多吃掉后面的助词或符号）
+      · 不许改写、翻译、补充。
+   role 用中文短语（≤8字）。
    **每个片段单独列一项，相邻同类型的也要分开列，绝对不要合并成一个片段。**
    例：ja="しあわせの神様は、この家にしあわせを置きました"
    ⇒ frame=[{{"s":"しあわせの神様は","b":"［］","role":"主语从句"}},{{"s":"この家に","b":"〈〉","role":"宾语"}},{{"s":"しあわせを","b":"〈〉","role":"宾语"}},{{"s":"置きました","b":"（）","role":"谓语"}}]"""
@@ -99,22 +108,19 @@ def do_block(audio, start, dur, tag):
     for it in arr:
         if not isinstance(it, dict) or not it.get('ja'):
             continue
-        fr = it.get('frame') or []
-        norm = []
-        for f in fr:
-            if not isinstance(f, dict) or not f.get('s'):
-                continue
-            b = (f.get('b') or '').replace(' ', '').replace('　', '')
-            bmap = {'[]': '[]', '［］': '［］', '〈〉': '〈〉', '（）': '（）',
-                    '[': '[]', '［': '［］', '〈': '〈〉', '（': '（）'}
-            b = bmap.get(b, b)
-            if b not in ('[]', '［］', '〈〉', '（）'):
-                continue
-            norm.append({'s': f['s'], 'b': b, 'role': (f.get('role') or '').strip()})
+        ja = it['ja']
+        # 🔴 2026-10-25 peer 复核抓出 3 类缺陷后的闸门：s 必须逐字是 ja 的连续子串
+        clean, probs, reps = frame_guard.check_frame(ja, it.get('frame') or [])
+        if probs or reps:
+            with open(os.path.join(OUT, 'frame_problems.log'), 'a', encoding='utf-8') as lg:
+                for p in probs:
+                    lg.write('DROP why=%s i=%d s=%r\n' % (p['why'], p['i'], p['s']))
+                for r in reps:
+                    lg.write('FIX  %r -> %r (i=%d)\n' % (r['from'], r['to'], r['i']))
         out.append({'s': round(start + float(it.get('s', 0)), 2),
                     'e': round(start + float(it.get('e', 0)), 2),
-                    'ja': it['ja'], 'zh': (it.get('zh') or '').strip(),
-                    'frame': norm})
+                    'ja': ja, 'zh': (it.get('zh') or '').strip(),
+                    'frame': clean})
     return out
 
 
