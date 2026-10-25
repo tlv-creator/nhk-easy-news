@@ -428,12 +428,14 @@
     },
     {
       "domain": "y8arnrff8t2hj",
-      "project": "四级精读日报（学生端+老师端）",
+      "project": "cet4",
       "role": "student-facing-site",
-      "reason": "🔴 **四级精读日报站** —— 老师给学生的固定入口（每天自动更新一期，链接永不变）。域名已写进 GitHub Pages 引导页 cet4.html ⇒ 删了 = 班群里的链接当场死。",
-      "written_in": "GitHub Pages 引导页 cet4.html + 云盘站名「四级精读日报」",
-      "frozen": true,
-      "note": "🔴 frozen=true = **永不删 + 永不 redeploy**（redeploy = 换域名 ⇒ 学生的链接死）。🟢 每日内容存 Supabase（vocab_states 的 __cet4_* 键）⇒ **内容更新不需要重新部署站点** ⇒ 这个域名可以一直用。⚠️ 站点配额只剩 5 个（45/50）⇒ 别的项目发版前先清旧站。"
+      "reason": "四级精读日报（学生端+老师端）—— 2026-10-25 用户指令「四级日报这个去掉。暂时用不着」⇒ 站已下线",
+      "written_in": "GitHub Pages 引导页 cet4.html（已改成「暂时停用」说明页）",
+      "frozen": false,
+      "note": "🔴 2026-10-25 用户说「暂时用不着」⇒ 站已删除 + cet4.html 改成停用说明页（不删文件 ⇒ 收藏这个地址的人点进来不 404）。🟢 内容一条没删：10 期（2026-10-24~2026-11-02）仍在 Supabase 的 __cet4_day_* 键里 ⇒ 要恢复 = 重发一次站 + 把 cet4.html 指回新域名。⚠️ 每日 06:30 的自动更新任务（cron 455686983762311）当时因平台工具故障没能停掉，恢复/停用都要先看它的状态。",
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
     },
     {
       "domain": "0een4722dqi6v",
