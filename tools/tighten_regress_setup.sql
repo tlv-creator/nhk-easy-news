@@ -46,3 +46,13 @@ create policy p_teach_select_online on public.vocab_online_status for select to 
 create policy p_teach_all_online    on public.vocab_online_status for delete to authenticated, service_role using (true);
 create policy p_teach_select_subs   on public.vocab_submissions    for select to authenticated, service_role using (true);
 create policy p_teach_all_subs      on public.vocab_submissions    for delete to authenticated, service_role using (true);
+
+-- 🔴🔴 补 anon 对 vocab_states 的 SELECT（对齐真实库形状）——
+--   生产上：ops 页底部那行「实时现查」= 用 anon 读 vocab_states 的名册（class_key='__roster_v1'）
+--   ⇒ 夹具里没有这条 policy ⇒ **「收紧有没有把读路径弄坏」这一维根本没被造出来**
+--   ⇒ 而收紧 SQL 只重建两张表的 DELETE policy（不碰 vocab_states 的 policy）
+--   ⇒ 这条 policy 收紧前后应当**逐字不变**（可作为 md5 对照项）
+create policy p_anon_select_states on public.vocab_states
+    for select to anon using (true);
+create policy p_teach_select_states on public.vocab_states
+    for select to authenticated, service_role using (true);
