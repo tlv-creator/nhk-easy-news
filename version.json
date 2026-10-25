@@ -1,9 +1,9 @@
 {
-  "ver": 29,
-  "verName": "2.4",
+  "ver": 30,
+  "verName": "2.5",
   "apkVer": 20,
-  "site": "https://ac8e29hqy5sv5.space.mcode.cn",
-  "apk": "https://ac8e29hqy5sv5.space.mcode.cn/NHK.apk",
-  "note": "44期 · v1.20 APK（apkVer=20）· 🔴 普通版字幕/音频一致（开关只管高亮）· sp 轨 ASR 错字已校对（16 期）· 语法讲解新格式 · 列表排序修复 + 複製整句 · 剥平台注入",
+  "site": "https://em8hjp6jskxyb.space.mcode.cn",
+  "apk": "https://em8hjp6jskxyb.space.mcode.cn/NHK.apk",
+  "note": "44期 · v1.20 APK（apkVer=20）· 🔴 Service Worker 缓存升版（APP_VER v30 / CACHE v30）· 普通版↔易懂版切换按钮加大到 17px/46px · sp 轨 ASR 错字已校对（16 期）· 语法讲解新格式 · 列表排序修复 + 複製整句 · 剥平台注入",
   "updated": "2026-10-25"
 }
