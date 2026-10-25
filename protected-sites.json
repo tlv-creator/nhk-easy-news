@@ -481,10 +481,23 @@
       "role": "content",
       "reason": "✅ **hub v1.20 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
       "written_in": "hub.html 的 SITE 块",
+      "frozen": false,
+      "status": "DELETED",
+      "note": "🔴 域名冻结（redeploy 层面）：**永不 redeploy 这个域**。【2026-10-25 已删除】v1.20 站被 v1.21 站取代（lbvlknqo9bzii）后删除。⚠️ frozen=false **不是**「取消保护」：hub 站的 URL 只写在引导页 hub.html 里（已指向新站），不存在「学生/老师手里存着这个链接」的风险 ⇒ 与词汇站/听力站的 frozen=true 语义不同，那两类仍按永不删处理。",
+      "current_as_of": "2026-10-24",
+      "replaced_by": "lbvlknqo9bzii",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "lbvlknqo9bzii",
+      "project": "hub",
+      "role": "content",
+      "reason": "✅ **hub v1.21 现役站**（引导页 hub.html 指着它：APK zip / 网页版）",
+      "written_in": "hub.html 的 SITE 块",
       "frozen": true,
       "status": "alive",
-      "note": "🔴 域名冻结：**永不 redeploy**（redeploy = 换域名 = 引导页死链）。发新版要「新建站 + 改引导页 + 再删旧的」。v1.20 = 瘦身版：只留 魔卡少女樱 + 若草物語（本地）+ 日常场景会话（站外永久入口）。",
-      "current_as_of": "2026-10-24"
+      "note": "🔴 域名冻结：**永不 redeploy**。发新版要「新建站 + 改引导页 + 再删旧的」。v1.21 = 瘦身版（魔卡 + 若草 + 日常会话）+ 去掉重复的「目录」浮钮（原来压住顶栏字号按钮）。",
+      "current_as_of": "2026-10-25"
     },
     {
       "domain": "qtjgfga76bu4o",
