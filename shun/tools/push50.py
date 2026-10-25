@@ -10,7 +10,7 @@
 ② **路径级 CAS**：逐路径比对基线 sha，不符即中止。
 ③ **回读校验**：推完按路径回读 blob sha 逐字比对。
 """
-import base64, hashlib, json, os, sys
+import base64, hashlib, json, os, sys, time
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 TOK = os.environ.get('GH_TOKEN')
@@ -59,7 +59,8 @@ def main():
              'refine_granularity.py', 'apply_refine.py',
              'verify_ru_audit.py', 'verify_granularity.py',
              'verify_granularity_par.py', 'apply_ru_granularity.py',
-             'fix_junk_tail.py', 'update_site_data.py']
+             'fix_junk_tail.py', 'update_site_data.py',
+             'verify_online_ru.py', 'verify_online_single.py']
     for t in TOOLS:
         lp = os.path.join(ROOT, t)
         if os.path.exists(lp):
@@ -180,27 +181,41 @@ def main():
     print('   单文件版内联 %.1f MB ✅' % (len(single_txt.encode()) / 1048576))
 
     # ⑤ 一次提交
-    entries = []
-    for rp, lp in items:
-        data = open(lp, 'rb').read()
-        blob = req('POST', API + '/git/blobs',
-                   {'content': base64.b64encode(data).decode(), 'encoding': 'base64'})
-        entries.append({'path': rp, 'mode': '100644', 'type': 'blob', 'sha': blob['sha']})
-    nt = req('POST', API + '/git/trees', {'base_tree': tree['sha'], 'tree': entries})
-    cm = req('POST', API + '/git/commits', {
-        'message': ('feat(shun-web): 19 集 → 50 集（+31 集全部零额度产出）\n\n'
-                    '新增 31 集（1717→2074 句）：\n'
-                    '- 日文转写 + 简体中文翻译 + 四类括号结构：走平台通道 audios_understand（0 订阅额度，零 MiniMax 调用）\n'
-                    '- 逐字 ruby 注音：shun/tools/ruby.py（上下文读音表 + kanjidic2 DP，词表命中整块）\n'
-                    '- 句级时间轴：交接包里 44 集词级 ASR（精确到 0.16 秒），字符级对齐回填\n'
-                    '- 第二层（inner/parts/skel）：规则引擎补齐，frame 一个字节未动\n'
-                    '修复：\n'
-                    '- s001/s006 时间轴区间交叠 25 处 → 0（排序 + 单调化）\n'
-                    '- 集序按官方真实 Ep 号 ⇒ 50 集连成难度梯度；显示序号重排 1..50\n'
-                    '- 标题清洗：保留【Genki 2】教材版本标记（原来会被洗掉，误当 Genki1）\n'
-                    '护栏：路径级 CAS + 内容级 diff + 回读校验'),
-        'tree': nt['sha'], 'parents': [head]})
-    req('PATCH', API + '/git/refs/heads/main', {'sha': cm['sha'], 'force': False})
+    #    🔴 共享仓库：**别的会话可能在这期间推进 HEAD** ⇒ PATCH ref 会 422
+    #    ⇒ 重试：每次重新取 HEAD、重新基于新 HEAD 建 tree、重新提交
+    MSG = ('feat(shun-web): 注音粒度细化（逐字优先）+ ruby.py 三处 bug 修复\n\n'
+           '粒度（用户硬要求「读音必须逐字 ruby，不是整块注音」）：\n'
+           '- 整块汉字单元 1805 → 583（15.0% → 4.4%）；972 句粒度变细，其余 2646 句一字节未动\n'
+           '- 新增 shun/tools/refine_granularity.py：**只重新分配旧读音、不重选读音**\n'
+           '  （直接用 ruby.py 重算会改坏音读/训读：風(かぜ)→(ふう)、腹(はら)→(なか)）\n'
+           '- 硬保证：读音流逐字符不变 + 表层逐字不变 ⇒ 语言内容零变化\n'
+           'ruby.py 三处真 bug：\n'
+           '- DP 不要求用尽读音 ⇒ 試合/しあい 被切成 し+あ（丢了 い）\n'
+           '- 叠字符「々」被当送り假名 ⇒ 色々 产出 色(いろいろ)・々(空)（多注一个音）\n'
+           '- 片假名（外来语）被当送り假名 ⇒ バス停 产出 バス・停(ばすてい)\n'
+           '清洗：8 行不成句标点堆（s004 ×1 / s005 ×7），只改 t + ru\n'
+           '验收：数据层 32492 项 / 浏览器层 37 项 / 线上 50 集 3618 句零差异全绿')
+    for attempt in range(4):
+        head = req('GET', API + '/git/ref/heads/main')['object']['sha']
+        tree = req('GET', API + '/git/trees/' + head + '?recursive=1')
+        entries = []
+        for rp, lp in items:
+            data = open(lp, 'rb').read()
+            blob = req('POST', API + '/git/blobs',
+                       {'content': base64.b64encode(data).decode(), 'encoding': 'base64'})
+            entries.append({'path': rp, 'mode': '100644', 'type': 'blob', 'sha': blob['sha']})
+        nt = req('POST', API + '/git/trees', {'base_tree': tree['sha'], 'tree': entries})
+        cm = req('POST', API + '/git/commits', {
+            'message': MSG, 'tree': nt['sha'], 'parents': [head]})
+        try:
+            req('PATCH', API + '/git/refs/heads/main', {'sha': cm['sha'], 'force': False})
+            break
+        except Exception as e:
+            print('   ⚠️ 第 %d 次 PATCH 失败（HEAD 被别人推进？）: %s' % (attempt + 1, e))
+            time.sleep(3)
+    else:
+        print('🔴 连续 4 次 PATCH 都失败 ⇒ 放弃')
+        sys.exit(1)
     print('\n⑤ 已提交:', cm['sha'][:12])
     print('   https://github.com/tlv-creator/nhk-easy-news/commit/' + cm['sha'])
 
