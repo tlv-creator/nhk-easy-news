@@ -11,6 +11,28 @@
 | `tests.sql` | **13 条场景断言**（每条用事务+回滚隔离）：词汇站整班删不掉 / LISTEN 整班删不掉 / **偷到的 sha256 摘要当令牌也删不掉** / 本人带原始令牌能删 / 拿别人令牌冒充删不掉 / 探针可清 / LIKE 通配符注入被挡 / 老师侧三种删除都成功 / 探针行被清 / policy 形状 / **哈希以 0 开头仍能删** | `psql -d vt -f tests.sql` |
 | `hash_parity.js` | **跨实现对拍**：浏览器形态（`crypto.subtle`，逐字照抄线上 api.js 的 `sha256Hex`）vs PG 形态（`encode(sha256(convert_to(t,'utf8')),'hex')`）—— 9 个用例（典型×3 / **哈希以 0 开头** / 空串 / 1 字符 / 64 字符 / 非 ASCII / 含大写）逐字相等；外加一个 **BigInt 不补零** 的反面对照 | `node hash_parity.js` |
 
+## ⚠️ 怎么跑（setup.sql 带闸门，**跑法有要求**）
+
+`setup.sql` 第一段有效语句是**闸门**：
+
+```sql
+\set ON_ERROR_STOP on
+do $$ begin
+  if inet_server_addr() is not null then
+    raise exception 'setup.sql 只能在本地 unix socket 的库上跑（当前是 TCP 连接）……';
+  end if;
+end $$;
+```
+
+- **必须用 unix socket**：`psql -h <socket目录> -d <你的库名> -f setup.sql`
+  （不写 `-h` 时 psql 默认也走 socket；`-h 127.0.0.1` 会被**拒**）
+- **本地但走 TCP 也会被拒** —— 这是**故意的 fail-closed**：宁可报错，也不让人误在生产库上跑
+- 判据用 `inet_server_addr()`，**不用库名白名单** —— 各人的本地库名不一样（rlstest / vt / …），
+  白名单必误伤
+- `\set ON_ERROR_STOP on` 是**闸门的一部分**：没有它，psql 报错后会继续往下跑，
+  `drop table` 照样执行 ⇒ 闸门等于装饰
+- 这个闸门**只在夹具里**：老师要跑的收尾 SQL 是**远程 TCP** 跑的，加 socket 判据会让老师直接跑不了
+
 ## 为什么要那个「BigInt 反面对照」
 
 哈希是 32 字节 ⇒ hex 是 64 字符。**若浏览器端用 `BigInt(...).toString(16)`（不补零）**，

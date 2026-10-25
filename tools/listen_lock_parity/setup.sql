@@ -10,6 +10,22 @@
 --    ⇒ 夹具本身碰不到任何真学生的行 —— 但**前提仍是本地空库**
 -- =====================================================================
 -- 本地回归台 #3：真实库形状 + sha256 行令牌 + LISTEN 三条路径
+-- ---------------------------------------------------------------------
+-- 🔴 闸门：**只允许 unix socket 连接**（= 本地库）⇒ 任何 TCP 连接一律拒。
+--    依据：unix socket 下 inet_server_addr() = NULL；走 TCP 时 = 该连接的本地地址。
+--    ⚠️ 判据必须是 inet_server_addr()，**不能靠「库名白名单」** ——
+--       每个人的本地库名都不一样（本台 rlstest / 别人的 vt / …）⇒ 白名单必误伤。
+--    ⚠️ 下面这行 \set ON_ERROR_STOP on 是**闸门的一部分**，不能少：
+--       没有它，psql 报错后会**继续往下跑** ⇒ 后面的 drop table 照样执行 ⇒ 闸门等于装饰。
+--    ⚠️ 这个闸门**只加在夹具里**：老师要跑的收尾 SQL（tools/listen_lock_anon_delete.sql、
+--       tools/tighten_rls_delete.sql）是**远程 TCP**跑的 ⇒ 那里加 socket 判据 = 老师直接跑不了。
+\set ON_ERROR_STOP on
+do $$ begin
+  if inet_server_addr() is not null then
+    raise exception 'setup.sql 只能在本地 unix socket 的库上跑（当前是 TCP 连接）—— 生产库跑这个文件会 drop 掉三张真表';
+  end if;
+end $$;
+-- ---------------------------------------------------------------------
 drop table if exists public.vocab_history_logs, public.vocab_online_status, public.vocab_states;
 
 create table public.vocab_history_logs (
