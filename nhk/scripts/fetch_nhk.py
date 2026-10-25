@@ -75,6 +75,29 @@ def known_ids():
     return set(re.findall(r'"id"\s*:\s*"([^"]+)"', s))
 
 
+def episode_objs():
+    """站点里每期的**对象**（含 audio / audioFast 字段）
+
+    🔴 2026-10-25 修：`known_ids()` 给的是 id 字符串集合 ⇒ 拿它当对象用
+       （`e.get("audio")`）会 AttributeError ⇒ **音频恢复整段崩掉**
+       ⇒ 沙箱重置后 media 永远取不回来 ⇒ build 时没音频。
+       ⇒ 这里直接解析 episodes.js 里的 JSON 数组。
+    """
+    p = os.path.join(SITE, "data", "episodes.js")
+    if not os.path.exists(p):
+        return []
+    s = open(p, encoding="utf-8").read()
+    m = re.search(r"window\.__EPISODES__\s*=\s*(\[.*\])", s, re.S)
+    if not m:
+        return []
+    try:
+        arr = json.loads(m.group(1))
+    except Exception as e:
+        print("  ⚠️ episodes.js 解析失败：%s" % e)
+        return []
+    return [e for e in arr if isinstance(e, dict)]
+
+
 def article_text(eid):
     """易懂版正文 + 标题 + 音声地址"""
     raw = http(EASY_URL % (eid, eid))
@@ -176,7 +199,7 @@ def cmd_restore_site(args):
     base = args.site.rstrip("/")
     os.makedirs(SITE, exist_ok=True)
     files = ["index.html", "app.js", "style.css", "config.js", "sw.js",
-             "manifest.webmanifest", "icon-192.png", "icon-512.png",
+             "manifest.webmanifest", "icon-192.png", "icon-512.png", "version.json",
              "data/episodes.js", "data/reading.js", "data/patterns.js",
              "data/chains.js", "data/syntax.js", "data/cdn.js"]
     eps = known_ids()
@@ -191,6 +214,11 @@ def cmd_restore_site(args):
     def one(f):
         dst = os.path.join(SITE, f)
         os.makedirs(os.path.dirname(dst), exist_ok=True)
+        # 🔴 2026-10-25 新增 --skip-existing：**已存在且非空就跳过**
+        #    ⇒ setup_env.sh 可以「每次都跑一次恢复」来把本地目录对齐线上站
+        #      （只补缺的 ⇒ 便宜）⇒ 不用再怕「本地是旧快照」
+        if args.skip_existing and os.path.exists(dst) and os.path.getsize(dst) > 0:
+            return (f, True, os.path.getsize(dst))
         try:
             urllib.request.urlretrieve("%s/%s" % (base, f), dst)
             return (f, True, os.path.getsize(dst))
@@ -207,11 +235,12 @@ def cmd_restore_site(args):
     # 音频：🔴 不进仓库（59MB）⇒ 按需从线上站整份拉
     if args.with_media:
         mfiles = []
-        for e in eps:
+        for e in episode_objs():
             if e.get("audio"):
                 mfiles.append(e["audio"])
             if e.get("audioFast"):
                 mfiles.append(e["audioFast"])
+        mfiles = sorted(set(mfiles))
         print("取回 %d 个音频 …" % len(mfiles))
         with cf.ThreadPoolExecutor(8) as ex:
             for f, ok, info in ex.map(one, mfiles):
@@ -229,6 +258,8 @@ def main():
     ap.add_argument("--site", default="", help="取回 site/app 用的线上站地址")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--with-media", action="store_true", help="连音频一起取回（默认不取）")
+    ap.add_argument("--skip-existing", action="store_true",
+                    help="已存在且非空的文件跳过（幂等自愈用）")
     args = ap.parse_args()
     if args.restore_site:
         if not args.site:
