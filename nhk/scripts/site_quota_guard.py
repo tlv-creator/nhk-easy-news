@@ -628,7 +628,10 @@ def export_pending(args):
             "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）",
         }
     out = {
-        "sites": [sites[k] for k in sorted(sites)],
+        # 🔴 清单是「唯一权威」⇒ **已死的条目必须剔除**，否则清单越积越脏
+        #   （死条目不会影响闸门：积压只数「还活着」的；但会误导人）
+        "sites": [sites[k] for k in sorted(sites)
+                  if http_code(site_url(k)) == 200],
         "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。",
     }
