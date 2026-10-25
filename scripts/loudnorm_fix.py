@@ -38,6 +38,7 @@ import os
 import re
 import subprocess
 import sys
+import audio_recipe  # noqa: E402  （配方唯一权威）
 
 NHK = "/workspace/nhk"
 MEDIA = os.path.join(NHK, "site", "app", "media")
@@ -107,7 +108,7 @@ def loudnorm_two_pass(src, dst, target_mean, tp=-1.5):
           % (target_mean, tp, lra, mi, mt, lra))
     r = subprocess.run(
         ["ffmpeg", "-nostdin", "-y", "-v", "error", "-i", src, "-af", af,
-         "-c:a", "aac", "-b:a", "96k", "-ar", "48000", "-ac", "2",
+         "-c:a", "aac", "-b:a", audio_recipe.AAC_BITRATE, "-ar", "48000", "-ac", "2",
          "-movflags", "+faststart", dst],
         capture_output=True, text=True, timeout=1800)
     return m
@@ -160,7 +161,8 @@ def process_one(fast_path, target_mean):
         try:
             r = subprocess.run(
                 ["ffmpeg", "-nostdin", "-y", "-v", "error", "-i", src, "-af", af,
-                 "-c:a", "aac", "-b:a", "96k", "-ar", "48000", "-ac", "2",
+                 "-c:a", "aac", "-b:a", audio_recipe.AAC_BITRATE,
+                 "-ar", str(audio_recipe.AAC_RATE), "-ac", str(audio_recipe.AAC_CHANNELS),
                  "-movflags", "+faststart", tmp],
                 capture_output=True, text=True, timeout=1800)
             if not os.path.exists(tmp) or os.path.getsize(tmp) < 10000:
