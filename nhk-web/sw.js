@@ -26,9 +26,16 @@ const CORE = [
   './NHK.apk'
 ];
 
-/* 全部 44 集字幕：一次预热，之后**完全离线可读**（墨水屏设备流量敏感）
-   —— 字幕是「点了哪集才看哪集」，但预热后切换任意一期都是秒开、零流量。 */
+/* 全部 44 集字幕 + 全部词库：一次预热，之后**完全离线可读**
+   （墨水屏设备流量敏感 ⇒ 一次性 4.6MB 换以后零流量，比每次开都要下划算）
+   —— 词库（vocab/lexicon/alias）是**点句详解面板**要用的：
+      不预热的话，断网点句就只剩原文没有逐词释义。 */
 const SUBS_GLOB = './subs/';
+const DATA_PRELOAD = [
+  './data/vocab.js', './data/lexicon.js', './data/alias.js',
+  './data/reading.js', './data/patterns.js', './data/syntax.js',
+  './data/chains.js', './data/episodes.js', './data/cdn.js'
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -62,6 +69,30 @@ async function warmSubs() {
     let m;
     while ((m = re.exec(txt)) !== null) ids.push(m[1]);
     if (!ids.length) return;
+    await Promise.all(DATA_PRELOAD.map(u =>
+      c.match(u).then(hit => {
+        if (hit) return null;
+        return fetch(u).then(r => { if (r && r.ok) return c.put(u, r.clone()); return null; });
+      }).catch(() => null)
+    ));
+    await Promise.all(DATA_PRELOAD.map(u =>
+      c.match(u).then(hit => {
+        if (hit) return null;
+        return fetch(u).then(r => { if (r && r.ok) return c.put(u, r.clone()); return null; });
+      }).catch(() => null)
+    ));
+    await Promise.all(DATA_PRELOAD.map(u =>
+      c.match(u).then(hit => {
+        if (hit) return null;
+        return fetch(u).then(r => { if (r && r.ok) return c.put(u, r.clone()); return null; });
+      }).catch(() => null)
+    ));
+    await Promise.all(DATA_PRELOAD.map(u =>
+      c.match(u).then(hit => {
+        if (hit) return null;
+        return fetch(u).then(r => { if (r && r.ok) return c.put(u, r.clone()); return null; });
+      }).catch(() => null)
+    ));
     await Promise.all(ids.map(id =>
       c.match(SUBS_GLOB + id + '.js').then(hit => {
         if (hit) return null;
