@@ -37,6 +37,7 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -200,17 +201,105 @@ def plan():
     }
 
 
+def dir_fingerprint(d):
+    """一个目录的内容指纹（相对路径 + md5）"""
+    items = []
+    for dp, dn, fn in os.walk(d):
+        dn[:] = [x for x in dn if x != "__pycache__"]
+        for f in sorted(fn):
+            p = os.path.join(dp, f)
+            rel = os.path.relpath(p, d).replace("\\", "/")
+            items.append([rel, md5(p)])
+    if not items:
+        return ""
+    return hashlib.md5(json.dumps(items, ensure_ascii=False).encode("utf-8")).hexdigest()
+
+
+def sync_deploy_site():
+    """🔴🔴 把 site/app 同步到 deploy_site（**Pages 推的必须是权威目录的当前快照**）
+
+    🔴 这次真踩到的坑（2026-10-25 20:2x）：
+        我改了 site/app（挂 blk），直接跑 pages ⇒ 推上去的是 **deploy_site 的旧内容**
+        ⇒ 线上 APP_VER 升到 v36（对）但 **subs 的 blk = 0**（错）
+        ⇒ 现象：网页版没有语法新格式，本地 HTML 版有 ⇒ 两边不一致
+
+    根因：**有两个「源」**（site/app 权威、deploy_site 部署产物）⇒ 忘了同步就推旧的
+    ⇒ 修法：**推之前必须同步**（等价于 prepare 的第①步，但不含那些只对 mcode 部署有意义的闸门）
+    ⇒ 并**打印两个指纹** ⇒ 不一致时一眼看出来
+    """
+    src = os.path.join(ROOT, "site", "app")
+    dst = os.path.join(ROOT, "deploy_site")
+    if not os.path.isdir(src):
+        die("权威目录不存在：%s" % src)
+    a = dir_fingerprint(src)
+    b = dir_fingerprint(dst) if os.path.isdir(dst) else ""
+    if a == b:
+        log("   deploy_site 与 site/app 已一致（指纹 %s）⇒ 无需同步" % a[:10])
+        return dst
+    log("   🔴 deploy_site 与 site/app 不一致 ⇒ 先同步（否则会推旧内容）")
+    log("      site/app     指纹 %s" % a[:10])
+    log("      deploy_site  指纹 %s" % (b[:10] if b else "(不存在)"))
+    shutil.rmtree(dst, ignore_errors=True)
+    shutil.copytree(src, dst, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
+    c = dir_fingerprint(dst)
+    if c != a:
+        die("同步后指纹仍不一致 ⇒ 停止（%s vs %s）" % (c[:10], a[:10]))
+    log("   ✅ 已同步，deploy_site 指纹 = %s" % c[:10])
+    return dst
+
+
+def remote_matches_source(src_dir):
+    """🔴🔴 判「线上 Pages 副本 == 本地源目录」——**查线上实际 blob sha，不信本地状态**
+
+    🔴 这次真踩到的坑（2026-10-25 20:2x）：
+        上一次同步推的是 **deploy_site 的旧内容**（我改了 site/app 却没同步 deploy_site）
+        ⇒ 但本地状态文件记的 `pages_synced_sha` = 源目录指纹 ⇒ **状态说「已同步」**
+        ⇒ 于是后续同步全部被「内容没变」跳过 ⇒ **错误状态被固化**
+    ⇒ 教训：**「我算过指纹」≠「线上有这个内容」** ⇒ 判据必须落在**线上**上
+    ⇒ 本地状态只作参考，不作判据
+
+    返回 (是否一致, 不一致的文件数, 线上查不到的文件数, 参与比对的文件数)
+    """
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        import sync_pages as SP
+    except Exception as e:
+        log("   ⚠️ 拿不到 sync_pages 的 GH 类（%s）⇒ 保守起见不跳过" % e)
+        return False, -1, -1, 0
+    tok_path = TOKEN
+    if not os.path.isfile(tok_path):
+        return False, -1, -1, 0
+    gh = SP.GH(open(tok_path).read().strip(), SP.REPO)
+    files = SP.collect(src_dir)
+    diff = 0
+    missing = 0
+    for path, local in files.items():
+        rsha = gh.remote_blob(path)
+        if rsha is None:
+            missing += 1
+            continue
+        lsha = SP.blob_sha(open(local, "rb").read())
+        if rsha != lsha:
+            diff += 1
+    return (diff == 0 and missing == 0), diff, missing, len(files)
+
+
 def sync_pages():
     """同步 Pages（零配额）。先过护栏，再推。"""
     st = load_state()
     fp, _ = content_fingerprint()
-    if st.get("content_sha") and st["content_sha"] == fp and st.get("pages_synced_sha") == fp:
-        log("ℹ️ 内容与上次同步完全一致 ⇒ 跳过（不升版号、不触发 build）")
+    # 🔴🔴 2026-10-25：先同步 deploy_site（Pages 推的必须是权威目录的当前快照）
+    src = sync_deploy_site()
+    # 🔴 跳过判据：**查线上实际内容**，不信本地状态
+    same, diff, missing, total = remote_matches_source(src)
+    if same:
+        log("ℹ️ 线上副本与源目录逐文件一致（%d 个文件）⇒ 跳过（不升版号、不触发 build）" % total)
+        st["content_sha"] = fp
+        st["pages_synced_sha"] = fp
+        save_state(st)
         return 0
-    src = os.path.join(ROOT, "deploy_site")
-    if not os.path.isdir(src):
-        src = SITE
-        log("⚠️ 没有 deploy_site ⇒ 用 site/app 作为源")
+    if diff or missing:
+        log("   ⇒ 线上与源目录不一致：%d 个文件内容不同、%d 个线上查不到 ⇒ 需要推" % (diff, missing))
     # ① 同步前护栏：源目录不能比线上旧（否则会把已发布的能力降级）
     r = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "check_pages_sync.py"),
                         "--before", "--src", src], capture_output=True, text=True)
