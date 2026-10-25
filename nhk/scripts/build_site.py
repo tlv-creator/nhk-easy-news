@@ -32,12 +32,27 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 
 
 # ────────────────────────── 形态切分 ──────────────────────────
+def _sudachi_tokenizer():
+    """拿一个 Sudachi tokenizer（**兼容新旧 API**）
+
+    🔴🔴 2026-10-25 实测踩到：sudachipy **0.7.0** 把 `tokenizer.Tokenizer(dic)` 废掉了
+       ⇒ 抛 `TypeError: cannot create 'sudachipy.tokenizer.Tokenizer' instances`
+       ⇒ 旧代码整个掉进 except ⇒ **退化成按字符切**（每个字一个 token）
+       ⇒ 重建出来的字幕：生词/成分块/句型全碎（而且**不报错**，只是看起来不对）。
+    ⇒ 新 API 是 `Dictionary().tokenizer()`；老版本没有这个方法 ⇒ 走 create()+Tokenizer。
+    """
+    from sudachipy import dictionary, tokenizer
+    dic = dictionary.Dictionary()
+    if hasattr(dic, "tokenizer"):
+        return dic.tokenizer()
+    dic.create()
+    return tokenizer.Tokenizer(dic)
+
+
 def tokenize(text):
     """Sudachi 形态切分 ⇒ [[起点, 长度, 片段], …]"""
     try:
-        from sudachipy import dictionary, tokenizer
-        dic = dictionary.Dictionary()
-        tok = tokenizer.Tokenizer(dic)
+        tok = _sudachi_tokenizer()
         out, pos = [], 0
         for m in tok.tokenize(text):
             surface = m.surface()
@@ -57,9 +72,7 @@ def tokenize(text):
 def content_chunks(text):
     """生词块：名词/动词/形容词/副词/固有名词"""
     try:
-        from sudachipy import dictionary, tokenizer
-        dic = dictionary.Dictionary()
-        tok = tokenizer.Tokenizer(dic)
+        tok = _sudachi_tokenizer()
         keep = ("名詞", "動詞", "形容詞", "副詞")
         out, pos = [], 0
         for m in tok.tokenize(text):
