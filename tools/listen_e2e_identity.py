@@ -29,6 +29,7 @@ import os
 import re
 import sys
 import tempfile
+import time
 import urllib.request
 
 ROSTER_URL = ("https://tlv-creator.github.io/nhk-easy-news/listening/app/data/roster.js")
@@ -49,11 +50,20 @@ def roster_entries():
         except Exception:
             pass
     if not texts:
-        try:
-            with urllib.request.urlopen(ROSTER_URL, timeout=20) as r:
-                texts.append(r.read().decode("utf-8", "replace"))
-        except Exception:
-            pass
+        # 🔴 线上兜底**必须重试**（2026-10-25 实测）：
+        #    沙箱/部分网络的 DNS 是**间歇整段挂**（ndots:6 + 多个 search 域 ⇒
+        #    任一个 search 域回 SERVFAIL ⇒ glibc 整次解析放弃 ⇒ 单次失败）
+        #    ⇒ 单次 urlopen 失败就 return None ⇒ 报「名册彻底拿不到」exit 9
+        #    ⇒ 那是**环境抖动**，不是「名册没了」⇒ 宁可多等几秒重试，
+        #      也别把一次抖动说成事实（单次失败 ≠ 东西没了）
+        for _try in range(3):
+            try:
+                with urllib.request.urlopen(ROSTER_URL, timeout=20) as r:
+                    texts.append(r.read().decode("utf-8", "replace"))
+                break
+            except Exception:
+                if _try < 2:
+                    time.sleep(1.5)
     for txt in texts:
         m = re.search(r'window\.LISTEN_ROSTER_FALLBACK\s*=\s*(\[.*?\])\s*;', txt, re.S)
         if not m:
