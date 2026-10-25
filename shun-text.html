@@ -296,7 +296,7 @@ window.SHUN={"eps":[{"tag":"ep01","ep":1,"title":"New Friends, Old Friends","des
     for (var i=0;i<n;i++) h += '<span class="fb '+bcls((fr[i].b||'（）').charAt(0))+'">'+hl(wrapBlock(fr[i]), S.kw)+'</span>';
     for (var j=0;j<n;j++) h += '<span class="fl">'+esc(fr[j].role||'')+'</span>';
     h += '</div>';
-    if (gs.skel) h += '<p class="skel">主句骨架：<b>'+hl(esc(gs.skel), S.kw)+'</b>'+(gs.skelMean?(' ＝"'+esc(gs.skelMean)+'"'):'')+'</p>';
+    if (gs.skel && n >= 2) h += '<p class="skel">主句骨架：<b>'+hl(esc(gs.skel), S.kw)+'</b>'+(gs.skelMean?(' ＝「'+esc(gs.skelMean)+'」'):'')+'</p>';
     return h;
   }
   /* 逐块拆解（弹窗用） */
