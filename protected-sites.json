@@ -55,7 +55,8 @@
       "written_in": "keep-list.json（已合并）",
       "status": "SUPERSEDED",
       "replaced_by": "0rbbjfw36hj66",
-      "note": "🔴 清理时**不要删**（旧书签）；也别 redeploy。正式站见 0rbbjfw36hj66。"
+      "note": "🔴 2026-10-25 补 frozen=true：清单 reason 里写「留着不删」是**给人看的**，删站 cron 只读 status/frozen ⇒ 光写 reason 拦不住它。⇒ 保护必须落成机器读得懂的字段。  | 旧 8 本版站：用户可能有旧书签。",
+      "frozen": true
     },
     {
       "domain": "xwi3hf93nlt4p",
@@ -103,7 +104,8 @@
       "written_in": "keep-list.json（已合并）",
       "status": "SUPERSEDED",
       "replaced_by": "qgozaeqvjc9l9",
-      "note": "🔴 清理时**不要删**（旧 APK 可能还指着它）；也别 redeploy。"
+      "note": "🔴 2026-10-25 补 frozen=true：清单 reason 里写「留着不删」是**给人看的**，删站 cron 只读 status/frozen ⇒ 光写 reason 拦不住它。⇒ 保护必须落成机器读得懂的字段。  | 旧音频 CDN：hub v1.6 的 links.js 仍引用 3 处。",
+      "frozen": true
     },
     {
       "domain": "9kgu879p4dhy2",
