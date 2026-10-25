@@ -76,6 +76,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--message', default='feat(shun-361): 修 3 类逐字缺陷 + 四类口径归一 + 补 p 区间 + 按 peer 契约产 7 集')
     ap.add_argument('--dry', action='store_true')
+    ap.add_argument('--force', action='store_true', help='路径级 CAS 冲突时仍要覆盖')
     a = ap.parse_args()
 
     head = api(API + "/git/ref/heads/main")['object']['sha']
@@ -119,15 +120,57 @@ def main():
     for m in mine_idx:
         if m['tag'] not in have:
             eps.append(m); have.add(m['tag'])
+    # 🔴 移除**重号**条目：s361 与 peer 的 ep13 是同一集（真实 Ep278）⇒ 列表里不能出现两次
+    ALLOW_DEL = {'s361'}
+    dropped = [e.get('tag') for e in eps if e.get('tag') in ALLOW_DEL]
+    eps = [e for e in eps if e.get('tag') not in ALLOW_DEL]
+    mine_idx = [m for m in mine_idx if m['tag'] not in ALLOW_DEL]
+    if dropped:
+        print("  从 index 移除（与 ep13 重号，同为 Ep278）: %s" % dropped)
     merged = dict(base); merged['eps'] = eps
     new_raw = json.dumps(merged, ensure_ascii=False, separators=(',', ':')).encode()
-    lost = old_tags - {e['tag'] for e in merged['eps']}
+    lost = (old_tags - {e['tag'] for e in merged['eps']}) - ALLOW_DEL
     assert not lost, "合并后丢了原有条目 %s ⇒ 中止" % sorted(lost)
     print("index.json: eps %d → %d（我的 %d 条；原有 13 集全部保留: %s）"
           % (len(base['eps']), len(merged['eps']), len(mine_idx),
              '✅' if all(t in have for t in ['ep%02d' % i for i in range(1, 14)]) else '❌'))
 
     # ---- 3. 构造 tree ----
+    # 🔴 路径级 CAS（2026-10-25 网页层同伴提醒）：推 data/*.json 之前，
+    #    先比对线上这些路径的 blob sha 是否**还是我上次推的那份**。
+    #    否则「别人先改了同一路径」会被我静默覆盖（这次是 luck：我的版本更好）。
+    BASELINE = os.path.join(SRC, 'pushed_shas.json')
+    baseline = {}
+    if os.path.isfile(BASELINE):
+        baseline = json.load(open(BASELINE, encoding='utf-8'))
+    cas_checked = cas_conflict = 0
+    if not baseline:
+        # 🔴 首次建基线：把**当前线上**的 sha 记为基线。
+        #    前提：当前线上确实是我上次推的那份（本次已由网页层同伴实测确认）。
+        #    ⚠️ 空基线时「无冲突」是假绿 ⇒ 明确打印，不假装校验过了。
+        for p, e in remote.items():
+            if p.startswith('shun-web/data/'):
+                baseline[p] = e['sha']
+        print("  ⚠️ 无 CAS 基线（首次）⇒ 已用当前线上 sha 建基线（%d 个路径），本次不算校验过"
+              % len(baseline))
+    for p in sorted(lf.keys()):
+        if not p.startswith('shun-web/data/'):
+            continue
+        e = remote.get(p)
+        if not e:
+            continue
+        cas_checked += 1
+        old_sha = baseline.get(p)
+        if old_sha and old_sha != e['sha']:
+            print("⛔ 路径级 CAS 冲突: %s" % p)
+            print("   基线 sha=%s  线上 sha=%s ⇒ 线上已被别人改过 ⇒ 中止" % (old_sha[:8], e['sha'][:8]))
+            if not a.force:
+                cas_conflict += 1
+    if cas_conflict:
+        print("❌ %d 个路径有冲突，未推送。确认要覆盖请加 --force" % cas_conflict)
+        sys.exit(1)
+    print("  路径级 CAS: 核对 %d 个路径，无冲突 ✅" % cas_checked)
+
     entries = []
     n_add = n_mod = 0
     for p, lp in sorted(lf.items()):
@@ -168,6 +211,15 @@ def main():
              {'message': a.message, 'tree': nt['sha'], 'parents': [head]})
     api(API + "/git/refs/heads/main", 'PATCH', {'sha': cm['sha'], 'force': False})
     print("✅ 已推 commit=%s" % cm['sha'])
+    # 更新路径级 CAS 基线（记下我这次写的 blob sha）
+    tr2 = api(API + "/git/trees/" + cm['sha'] + "?recursive=1")
+    newbase = {e['path']: e['sha'] for e in tr2['tree'] if e['type'] == 'blob'}
+    for p in list(lf.keys()) + [ipath]:
+        if p in newbase:
+            baseline[p] = newbase[p]
+    with open(os.path.join(SRC, 'pushed_shas.json'), 'w', encoding='utf-8') as f:
+        json.dump(baseline, f, ensure_ascii=False, indent=1, sort_keys=True)
+    print("   CAS 基线已更新: %d 个路径" % len(baseline))
 
     # ---- 5. 回读复核 ----
     time.sleep(2)
