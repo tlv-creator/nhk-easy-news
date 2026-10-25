@@ -1,9 +1,9 @@
 {
-  "ver": 26,
-  "verName": "2.1",
+  "ver": 27,
+  "verName": "2.2",
   "apkVer": 20,
-  "site": "https://u5kzfuj1hiiht.space.mcode.cn",
-  "apk": "https://u5kzfuj1hiiht.space.mcode.cn/NHK.apk",
-  "note": "44期 · v1.20 APK（apkVer=20）· 语法讲解新格式（大框架/逐块拆解/整句意思）+ 複製整句 · 列表排序修复 · sp 轨块中文补齐 · 剥平台注入",
+  "site": "https://jhtywvkn1vzil.space.mcode.cn",
+  "apk": "https://jhtywvkn1vzil.space.mcode.cn/NHK.apk",
+  "note": "44期 · v1.20 APK（apkVer=20）· 语法讲解新格式接线修复（frame 也能渲染）+ 列表排序修复 + 複製整句 · 剥平台注入",
   "updated": "2026-10-25"
 }
