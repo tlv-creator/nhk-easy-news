@@ -54,7 +54,7 @@
         sid: l.student_id, cls: l.class_name || '', sec: 0, pairs: 0, clicks: 0, wall: 0,
         segs: 0, units: {}, pages: {}, last: '', mode: {},
         /* 🔴 班级以**日志自己**的 class_key / class_name 为准
-           （名册的班 ≠ 日志的班：26235106 名册 CWZT1，日志 WL_CW） */
+           （名册的班 ≠ 日志的班：某位同学名册 CWZT1，日志 WL_CW） */
         clsKey: l.class_key || '', clsName: l.class_name || ''
       });
       it.sec += sec; it.pairs += pairs; it.clicks += clicks; it.wall += wall; it.segs += segs;
