@@ -52,11 +52,44 @@ def load_word_reading():
 
 
 @lru_cache(maxsize=1)
-def load_kanjidic():
-    """{字: [候选读音(平假名)]}：音读 + 训读(去掉送り假名部分) + 名乗り + misc"""
+def load_curated():
+    """上下文读音表 {字: 读音}（kanji_readings.json）——线上逐字读音的主要来源（74% 命中）"""
+    f = os.path.join(HERE, "kanji_readings.json")
+    if not os.path.exists(f):
+        return {}
+    with open(f, encoding="utf-8") as fh:
+        raw = json.load(fh)
     out = {}
+    for k, v in raw.items():
+        if isinstance(v, str):
+            out.setdefault(k, []).append(v)
+        elif isinstance(v, list):
+            for x in v:
+                if isinstance(x, str):
+                    out.setdefault(k, []).append(x)
+    return out
+
+
+CURATED = {}
+
+
+@lru_cache(maxsize=1)
+def load_kanjidic():
+    """{字: [候选读音(平假名)]}：音读 + 训读(去掉送り假名部分) + 名乗り + misc
+
+    🔴 分两级（2026-10-25 修）：
+       primary   = 音读 + 训读 + 名乗り  ← 词典读音，DP 首选
+       fallback  = misc（熟字訓）        ← **只能兜底，不能当首选**
+          理由：熟字訓是「上下文读音表」（会→あ / 人→ひと / 国→くに），
+                而已发布数据用的是词典读音（会→カイ）⇒ 拿它当首选必然错
+       返回 (primary, fallback)
+    """
+    out = {}
+    fb = {}
+    global CURATED
+    CURATED = load_curated()
     if not os.path.exists(KANJI_FILE):
-        return out
+        return out, fb
     with gzip.open(KANJI_FILE, "rt", encoding="utf-8") as f:
         data = f.read()
     for m in re.finditer(r"<character>(.*?)</character>", data, re.S):
@@ -77,6 +110,11 @@ def load_kanjidic():
             if s:
                 cands.add(s)
 
+        # 🔴 上下文读音表（kanji_readings.json）：线上逐字读音的**主要来源**
+        #    实证：线上单字读音 74% 能在本表里逐字对上（日→に 38次 / 会→あ 28次 vs かい 7次 / 人→ひと 61次）
+        #    ⇒ 它必须进 primary 候选（读音本身决定唯一解，顺序不影响 DP 选择）
+        for crd in CURATED.get(ch, []):
+            cands.add(crd)
         for rm in re.finditer(r"<rmgroup>(.*?)</rmgroup>", blk, re.S):
             for r in re.finditer(r'<reading[^>]*r_type="(?:ja_on|ja_kun)"[^>]*>(.*?)</reading>',
                                  rm.group(1), re.S):
@@ -87,9 +125,11 @@ def load_kanjidic():
         for mm in re.finditer(r"<misc>(.*?)</misc>", blk, re.S):
             for r in re.finditer(r"<reading>(.*?)</reading>", mm.group(1), re.S):
                 add(r.group(1))
+                if cands:
+                    fb.setdefault(ch, []).append(cands[-1])
         if cands:
             out.setdefault(ch, []).extend(sorted(cands))
-    return out
+    return out, fb
 
 
 def split_surface(surface):
@@ -117,10 +157,18 @@ def okurigana_reading(q, reading):
     return "", reading
 
 
-def dp_split(chars, reading, kd):
+def dp_split(chars, reading, kd, fb=None):
     """把 reading 逐字分给 chars。返回 [(字,读音)] 或 None。
     约束：每字分配到的段必须以该字某个候选读音开头（候选读音是段的 prefix）。
+    🔴 两级：先只用 primary（词典读音）；无解才用 fallback（熟字訓）兜底。
     """
+    res = _dp_split(chars, reading, kd)
+    if res is None and fb:
+        res = _dp_split(chars, reading, fb)
+    return res
+
+
+def _dp_split(chars, reading, kd):
     n = len(chars)
     if n == 0 or not reading:
         return None
@@ -182,18 +230,44 @@ def annotate_token(surface, reading):
     _, r2 = okurigana_reading(post, r)
 
     wr = load_word_reading()
-    parts = None
+    # 🔴 规则①：词表命中 ⇒ **整块 emit 一个单元**，用表里的读音
+    #    （旧代码要求 len(读音)==len(汉字) 才生效 ⇒ 187 条里 170 条被静默跳过；
+    #      而且等长时是 zip 拆开读（馬鹿→ば+か），与已发布数据的整块读法不符）
     v = wr.get(kanji)
-    if v and len(v) == len(kanji):
-        parts = list(zip(kanji, v))
-    if parts is None:
-        parts = dp_split(list(kanji), r2, load_kanjidic())
-    if parts is None:
-        # 整块兜底：整个汉字串共用一个读音
+    if v:
         out = []
         if pre:
             out.append((pre, ""))
-        out.append((kanji, r2))
+        out.append((kanji, v))
+        if post:
+            out.append((post, ""))
+        return out
+    # 规则②：否则逐字 DP（primary 优先，熟字訓兜底）
+    kd, kd_fb = load_kanjidic()
+    parts = dp_split(list(kanji), r2, kd, kd_fb)
+    if parts is None:
+        # 🔴 逐字兜底：DP 无解时**仍然逐字拆**，每字各取一个读音
+        #    （旧版这里直接整块 ⇒ 「日本人」会变成一个 ruby 单元）
+        #    注：读音可能不是词级读音的正确切分（词典差异，如 IPADIC「ニッポンジン」
+        #    vs 词典「ニホンジン」）⇒ 但表层粒度必须是逐字（用户硬要求）
+        parts = []
+        for ch in kanji:
+            cands = CURATED.get(ch) or kd.get(ch) or kd_fb.get(ch) or []
+            parts.append((ch, cands[0] if cands else ""))
+        out = []
+        if pre:
+            out.append((pre, ""))
+        p_ = 0
+        for ch, rd in parts:
+            idx = kanji.find(ch, p_)
+            if idx < 0:
+                idx = p_
+            if idx > p_:
+                out.append((kanji[p_:idx], ""))
+            out.append((ch, rd))
+            p_ = idx + 1
+        if p_ < len(kanji):
+            out.append((kanji[p_:], ""))
         if post:
             out.append((post, ""))
         return out
@@ -252,7 +326,7 @@ def coverage(tokens):
 
 
 if __name__ == "__main__":
-    kd = load_kanjidic()
+    kd, kd_fb = load_kanjidic()
     print("kanji dict:", len(kd), "字; word table:", len(load_word_reading()))
     tests = ["日本語教師のシュンです。", "友達", "新しい友達。", "温泉に行きました。",
              "跳ねている", "急いで", "下さい", "今日", "世界", "カメラ",
