@@ -21,12 +21,10 @@ a.dl{display:inline-block;margin-top:10px;padding:11px 18px;background:#fff;colo
   <div class="row"><span>内容站</span><b id="site" style="font-size:13px"></b></div>
   <div class="row"><span>更新日期</span><b id="up">-</b></div>
   <div class="row"><span>说明</span><b id="note" style="font-size:13px"></b></div>
-  <a class="btn" id="go" href="./nhk-web/">打开学习站（永久地址）</a>
+  <a class="btn" id="go" href="#">打开学习站</a>
   <a class="dl" id="apk" href="#">下载新版 APK</a>
-  <div style="font-size:13px;margin-top:10px"><a href="#" id="site2" style="color:#2f6f4f">打开内容站（mcode 域名）</a></div>
 </div>
 <div class="note">
-  <b>「打开学习站（永久地址）」这个地址永远不变</b>，收藏它就行 —— 以后每天新一期会自动出现在这里。<br>
   你的 App 每次打开会来这个页面读一下「内容站在哪」，所以域名换了也不用你操心 ——
   收藏、生词本、观看进度都会自动搬过去。<br>
   如果 App 提示「發現新版本」，点一下就能下载安装（覆盖安装，不丢数据）。
@@ -37,9 +35,9 @@ fetch('version.json',{cache:'no-store'}).then(r=>r.json()).then(j=>{
   document.getElementById('site').textContent=j.site;
   document.getElementById('up').textContent=j.updated||'-';
   document.getElementById('note').textContent=j.note||'';
-  document.getElementById('site2').href=j.site;
+  document.getElementById('go').href=j.site;
   var a=document.getElementById('apk');
-  a.href='./nhk-web/NHK.apk';
+  if(j.apk){a.href=j.apk;}else{a.style.display='none';}
 }).catch(()=>{document.getElementById('v').textContent='配置读取中…';});
 </script>
 </body></html>
