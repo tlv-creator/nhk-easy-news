@@ -31,6 +31,14 @@
   .warn { font-weight:700; }
   .muted { color:#333; }
   .foot { margin-top:30px; padding-top:14px; border-top:2px solid rgba(0,0,0,.3); font-size:.92rem; color:#333; }
+  /* 🔴 本机缓存区：显示「上次现查」的时刻 + 一个能清掉的入口 */
+  .cachebox { margin-top:10px; padding:10px 12px; border:2px solid rgba(0,0,0,.3); border-radius:10px; }
+  .cachebox .t { font-weight:700; display:block; }
+  .cachebox .d { display:block; margin-top:2px; color:#333; }
+  .cachebox button { font:inherit; font-size:.95rem; margin-top:8px; padding:8px 14px;
+    background:#fff; color:#000; border:2px solid #000; border-radius:8px; cursor:pointer; }
+  .cachebox button:active { background:#000; color:#fff; }
+  .cachebox button[disabled] { border-color:rgba(0,0,0,.3); color:#666; }
 </style></head>
 <body><div class="wrap">
 <h1>每日听力记录站 · 老师操作页</h1>
@@ -100,6 +108,11 @@
 <div class="foot">
   这一页是给你一个人用的操作页，随时可以收藏。<br>
   补交进度：<span id="prog">正在现查库…</span>
+  <div class="cachebox" id="cachebox" hidden>
+    <span class="t" id="cacheTitle">本机记着上次现查的结果</span>
+    <span class="d" id="cacheDesc"></span>
+    <button type="button" id="btnClearCache">清掉本机这份记录</button>
+  </div>
 </div>
 <script>
 /* 补交进度：打开页面时现查库，不写死数字
@@ -109,8 +122,44 @@
   var B = 'https://lszwxcmvcvbraqtrtgon.supabase.co/rest/v1/';
   var el = document.getElementById('prog');
   if (!el) return;
+  /* 🔴🔴 三层兜底（2026-10-26 改）
+     ① 现查成功        → 「截至 X（现查库）」，并把这一份记到本机
+     ② 现查失败 + 本机有上次成功的记录 → 「上次现查到的是…（记于 X）」
+        ⚠️ **必须显示「它自己的时间戳」** ⇒ 否则老师会把隔夜的数当今天的看
+           （这比显示老快照更危险 —— 它看起来更新）
+     ③ 都没有          → 页面里写死的快照（最后一道，不删）
+     + 「清掉本机这份记录」入口（老师的设备长期开着 ⇒ 记录会一直留着 ⇒ 必须能手动清）
+     ⚠️ localStorage 在 file:// / 隐私模式下会抛 SecurityError ⇒ 一律 try/catch，不致命
+  */
   var FALLBACK = '没联上库（下面这行是<b>快照</b>，数字停在 2026-10-26 00:14，可能已经过时；<b>以现查库那行为准</b>）：'
     + '已补交 <b>87 条 / 43 位同学</b>；名册 157 人里，还有 <b>114</b> 位同学一条都没交。';
+  var LSKEY = 'listen_ops_last_good_v1';
+  var cachebox = document.getElementById('cachebox');
+  var cacheTitle = document.getElementById('cacheTitle');
+  var cacheDesc = document.getElementById('cacheDesc');
+  var btnClear = document.getElementById('btnClearCache');
+  function lsGet() {
+    try { return window.localStorage.getItem(LSKEY); } catch (e) { return null; }
+  }
+  function lsSet(v) {
+    try { window.localStorage.setItem(LSKEY, v); } catch (e) { /* 存不了就算了，不致命 */ }
+  }
+  function lsDel() {
+    try { window.localStorage.removeItem(LSKEY); } catch (e) { }
+  }
+  function showCacheBox(title, desc, canClear) {
+    if (!cachebox) return;
+    cachebox.hidden = false;
+    if (cacheTitle) cacheTitle.textContent = title;
+    if (cacheDesc) cacheDesc.textContent = desc;
+    if (btnClear) btnClear.disabled = !canClear;
+  }
+  function renderCached(obj) {
+    var t = obj.stamp || '(时间不明)';
+    return '没联上库（下面是<b>你上次现查到的</b>，记于 ' + t + '，可能已经过时；<b>以现查库那行为准</b>）：'
+      + '已补交 <b>' + obj.n + ' 条 / ' + obj.sub + ' 位同学</b>（' + (obj.parts || '') + '）；'
+      + '名册 ' + obj.roster + ' 人里，还有 <b>' + obj.left + '</b> 位同学一条都没交。';
+  }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function stamp() {
     var d = new Date();
@@ -167,12 +216,46 @@
     var capWarn = (logs.length >= 1000)
       ? '　<b>⚠️ 本次取数正好达到单次上限（1000 行），下面的数字可能不完整 —— 请让我重新取全量。</b>'
       : '';
-    el.innerHTML = '截至 <b>' + stamp() + '</b>（现查库）：已补交 <b>' + real.length + ' 条 / ' +
+    var now = stamp();
+    el.innerHTML = '截至 <b>' + now + '</b>（现查库）：已补交 <b>' + real.length + ' 条 / ' +
       nSub + ' 位同学</b>（' + parts.join('、') + '）；名册 ' + roster.length + ' 人里，还有 <b>' +
       left + '</b> 位同学一条都没交。' + capWarn;
+    /* 🔴 记到本机：万一下次连不上库，页面还能给出「上次现查到的真值」而不是一页老快照 */
+    lsSet(JSON.stringify({
+      stamp: now, n: real.length, sub: nSub, roster: roster.length,
+      left: left, parts: parts.join('、')
+    }));
+    showCacheBox('本机记着上次现查的结果',
+      '上面这行数字已存在这台设备上（记于 ' + now + '）。断网时页面会拿它顶上来。', true);
   }).catch(function () {
-    el.innerHTML = FALLBACK;
+    var raw = lsGet(), obj = null;
+    if (raw) { try { obj = JSON.parse(raw); } catch (e) { obj = null; } }
+    if (obj && typeof obj.n === 'number') {
+      el.innerHTML = renderCached(obj);
+      showCacheBox('本机记着上次现查的结果',
+        '刚才没联上库，下面显示的是这台设备上 <b>' + (obj.stamp || '(时间不明)') + '</b> 存下来的那次结果。', true);
+    } else {
+      el.innerHTML = FALLBACK;
+      showCacheBox('本机还没有存过现查结果',
+        '这台设备一次都没连上过库 ⇒ 现在只能显示页面里写死的快照。等你成功打开一次本页面，这里会自动记下。', false);
+    }
   });
+  /* 🔴 清除本机记录的入口（老师的设备长期开着 ⇒ 必须能手动清掉）*/
+  if (btnClear) {
+    btnClear.addEventListener('click', function () {
+      var raw = lsGet();
+      if (!raw) { showCacheBox('本机已经是空的', '这台设备上没有存过任何现查结果。', false); return; }
+      var obj = null;
+      try { obj = JSON.parse(raw); } catch (e) { obj = null; }
+      if (obj && typeof obj.n === 'number') {
+        el.innerHTML = renderCached(obj);   /* 先回落到「上次现查」，再清 ⇒ 不给老师一个空白页 */
+      } else {
+        el.innerHTML = FALLBACK;
+      }
+      lsDel();
+      showCacheBox('已清掉本机这份记录', '这台设备上不再保存现查结果。下次成功打开本页面时会重新记。', false);
+    });
+  }
 })();
 </script>
 </div></body></html>
