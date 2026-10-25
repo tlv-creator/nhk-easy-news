@@ -52,7 +52,7 @@ with sync_playwright() as pw:
     n = pg.locator('.cue').count()
     ck('新增集渲染出句子', n > 50, '= %d 句' % n)
 
-    print('\n【3】弹窗三段 + 注音')
+    print('\n【3】弹窗四段 + 注音')
     pg.locator('.cue').first.click()
     pg.wait_for_timeout(900)
     ck('弹窗打开', pg.locator('#sheet').is_visible())
@@ -60,6 +60,14 @@ with sync_playwright() as pw:
     ck('① 分层大框架', '分层大框架' in h)
     ck('② 逐块拆解', '逐块拆解' in h)
     ck('③ 主句骨架与修饰链', '主句骨架与修饰链' in h)
+    ck('④ 谓语细分与形态链', '谓语细分与形态链' in h)
+    # ④ 段必须有**实际内容**（不能只有空标题）
+    s4 = pg.locator('#sheet .sh-sec').nth(3)
+    t4 = s4.inner_text() if s4.count() else ''
+    ck('④ 段有实际内容', len(t4.strip()) > len('④ 谓语细分与形态链') + 2,
+       '= %d 字' % len(t4.strip()))
+    ck('④ 含细分/形态链条目',
+       ('句末类型' in t4) or ('谓语细分' in t4) or ('形态链' in t4))
     ck('注音 ruby', pg.locator('#sheet .jp ruby').count() > 0,
         '= %d' % pg.locator('#sheet .jp ruby').count())
     ck('中文', pg.locator('#sheet .zh').count() > 0)

@@ -146,15 +146,44 @@ def load_kanjidic():
     return out, fb
 
 
+def is_iterative(c):
+    """叠字符「々」（U+3005）——它是表意文字，**重复前一个汉字**。
+    🔴 不能当送り假名（否则「色々」会被切成 漢字串「色」+ 送り假名「々」
+       ⇒ DP 让「色」独吞整个读音 ⇒ 色(いろいろ) —— 多注了一个音）。"""
+    return c == "々"
+
+
+def is_okurigana(c):
+    """送り假名只能是**平假名**。
+    🔴 片假名是外来语（バス/コーヒー…），**不能当送り假名**：
+       「バス停」若把「バス」当送り假名剥掉 ⇒ 剩下「停」配整读音「ばすてい」
+       ⇒ 产出「バス・停(ばすてい)」＝ 读音挂在错的字上。
+    """
+    return "ぁ" <= c <= "ゖ"
+
+
 def split_surface(surface):
-    """→ (前导假名, 汉字串, 尾部送り假名)"""
-    i = 0
-    while i < len(surface) and not is_kanji(surface[i]):
-        i += 1
-    j = len(surface)
-    while j > i and not is_kanji(surface[j - 1]):
-        j -= 1
-    return surface[:i], surface[i:j], surface[j:]
+    """→ (前导假名, 汉字串, 尾部送り假名)
+
+    🔴 边界只认**平假名**（送り假名）与**汉字/叠字符**：
+       片假名（外来语）既不算前导假名也不算送り假名
+       ⇒ 「バス停」会切成 ('', '停', 'バス')？ 不对 —— 实测要保证
+         片假名留在**汉字串之外但不被当送り假名**。
+       做法：先把片假名段**锚定**，只在其余部分找汉字边界。
+    """
+    # ① 找出所有「汉字/叠字符」的位置
+    kpos = [i for i, c in enumerate(surface)
+            if is_kanji(c) or is_iterative(c)]
+    if not kpos:
+        return surface, "", ""
+    i = kpos[0]
+    j = kpos[-1] + 1
+    pre = surface[:i]
+    kanji = surface[i:j]
+    post = surface[j:]
+    # ② 送り假名只允许平假名；片假名段要**保留在 pre/post 里**
+    #    （外来语不做注音，读音由 token.reading 提供）
+    return pre, kanji, post
 
 
 def okurigana_reading(q, reading):
@@ -180,6 +209,28 @@ def dp_split(chars, reading, kd, fb=None):
     if res is None and fb:
         res = _dp_split(chars, reading, fb)
     return res
+
+
+def ruby_dp_split(kanji, reading, kd, kd_fb, kd_dp):
+    """把**词级读音**当「读音预算」，试逐字切分。
+
+    返回 [(字,读音)] 或 None：
+      · 能切出且拼回来的读音流与 reading **逐字相同** ⇒ 返回逐字切分
+      · 切不出 / 读音流对不上 ⇒ 返回 None（交上层整块兜底）
+
+    🔴 这是「词表当读音预算、不当整块覆盖」的实现：
+       逐字化是**纯粒度细化**，读音流一个假名都不变。
+    """
+    if not kanji or not reading:
+        return None
+    parts = dp_split(list(kanji), reading, kd, kd_fb)
+    if parts is None:
+        parts = dp_split(list(kanji), reading, kd_dp, kd_fb)
+    if parts is None:
+        return None
+    if "".join(r for _, r in parts) != reading:
+        return None
+    return parts
 
 
 def _dp_split(chars, reading, kd):
@@ -213,7 +264,16 @@ def _dp_split(chars, reading, kd):
                 best = (j, dp[n][j])
     if best is None:
         return None
-    j = best[0]
+    # 🔴 2026-10-25 修正（实测抓到）：
+    #   旧代码取「消耗最多」的那个 j，**不要求把整个 reading 用完**
+    #   ⇒ reading 尾部剩余的假名被**静默丢弃**
+    #   ⇒ 例：試合/しあい 被切成 試(し)・合(あ) ⇒ 读音流变成「しあ」（丢了 い）
+    #   修法：**必须 j == len(reading)**（读音流必须逐字用尽，一个假名都不能剩）
+    #        否则返回 None（交由上层走并集候选 / 整块兜底，不产出半截读音）
+    j_best = best[0]
+    if j_best != len(reading):
+        return None
+    j = j_best
     res = []
     i = n
     while i > 0:
@@ -225,7 +285,33 @@ def _dp_split(chars, reading, kd):
         j = pj
         i -= 1
     res.reverse()
+    # 自证：拼回来的读音流必须与输入逐字相同
+    if "".join(r for _, r in res) != reading:
+        return None
     return res
+
+
+def _annotate_iterative(surface, reading):
+    """含叠字符「々」的**汉字串**的注音 —— **整块 emit**。
+
+    规则（日本語的叠字符）与🔴 关键事实：
+      「々」表示重复 ⇒ 但**读音常常发生音变**，不能机械复制：
+        色々 = いろ+いろ  （复制对）
+        時々 = とき+どき  （❗不是 とき+とき ⇒ 音变「ときどき」）
+        人々 = ひと+びと  （❗不是 ひと+ひと ⇒ 音变「ひとびと」）
+      ⇒ 所以「X々」应当**整块读**（词典就是这么标的）
+      ⇒ emit 一个单元：表层 = 原串，读音 = 词级读音
+
+    🔴 为什么必须这么做（2026-10-25 实测，两版踩坑）：
+      ① 把 々 当送り假名 ⇒ 汉字串只剩「色」，读音流仍是「いろいろ」
+         ⇒ DP 让「色」独吞 4 个音 ⇒ 产出「色(いろいろ)・々()」＝ **多注了一个音**
+      ② 机械复制前字读音 ⇒ 「時々」产出「時(とき)・々(とき)」＝ ときとき（错）
+      ③ 展开成重复字再 DP ⇒ 「時々」产出「時(とき)・々(どき)」＝ ときどき（读音流对，
+         但**表层与读音的对应关系是错的**：々 并不是「どき」那个音）
+      ✅ 正确：**整块 emit** —— 「時々(ときどき)」「人々(ひとびと)」「色々(いろいろ)」
+         ⇒ 读音流必然与词典一致（本来就是词级读音），且不撒谎。
+    """
+    return [(surface, reading)]
 
 
 def annotate_token(surface, reading):
@@ -235,6 +321,19 @@ def annotate_token(surface, reading):
     pre, kanji, post = split_surface(surface)
     if not kanji:
         return [(surface, "")]
+    # 🔴 叠字符「々」（U+3005）必须**继承前一个字的读音**（2026-10-25 实测）：
+    #   「色々」= いろ+いろ ⇒ 若把 々 当送り假名，
+    #   汉字串只剩「色」而读音流仍是「いろいろ」⇒ DP 让「色」独吞 4 个音
+    #   ⇒ 产出 色(いろいろ)・々(空)  ← **多注了一个音**
+    #   ⇒ 正确是 色(iro)・々(いろ)
+    if is_iterative(kanji[0]) or is_iterative(kanji[-1]):
+        out = []
+        if pre:
+            out.append((pre, ""))
+        out.extend(_annotate_iterative(kanji, reading))
+        if post:
+            out.append((post, ""))
+        return out
 
     # 前导假名：从读音头部剥离
     r = reading
@@ -244,15 +343,39 @@ def annotate_token(surface, reading):
     _, r2 = okurigana_reading(post, r)
 
     wr = load_word_reading()
-    # 🔴 规则①：词表命中 ⇒ **整块 emit 一个单元**，用表里的读音
-    #    （旧代码要求 len(读音)==len(汉字) 才生效 ⇒ 187 条里 170 条被静默跳过；
-    #      而且等长时是 zip 拆开读（馬鹿→ば+か），与已发布数据的整块读法不符）
+    kd, kd_fb = load_kanjidic()
+    pri = load_published_reading()
+    # 🔴 候选并集（词典 ∪ 上下文表 ∪ 已发布反推表）
+    kd_dp = {}
+    for ch in set(list(kd.keys()) + list(pri.keys())):
+        cl = list(kd.get(ch, []))
+        for x in pri.get(ch, []):
+            if x not in cl:
+                cl.append(x)
+        if cl:
+            kd_dp[ch] = cl
+
+    # 🔴 规则①（2026-10-25 改版）：词表命中 ⇒ **先用表里的读音当「读音预算」试逐字 DP**
+    #    —— 切得出且读音流逐字相同 ⇒ 逐字 emit（用户硬要求「逐字 ruby，不是整块注音」）
+    #    —— 切不出（真不规则/促音变体，如 今日/きょう、日本人/にっぽんじん）
+    #       ⇒ 才整块 emit 一个单元（用户口径「不规则词整块兜底」）
+    #
+    #    ⚠️ 旧版是「词表命中 ⇒ 直接整块」⇒ 把 144 个**本来能逐字**的词也整块了
+    #       （如  treasurer 教師/きょうし ⇒ 教(きょう)・師(し) 就能切且读音流相同）
+    #       ⇒ 违反用户「逐字 ruby」硬要求。
+    #    ⚠️ 但**读音流一个假名都不变**（逐字切分只是把同一串读音重新分配到各字）
+    #       ⇒ 这是纯粒度细化，不是改读音。
     v = wr.get(kanji)
     if v:
+        parts = ruby_dp_split(kanji, v, kd, kd_fb, kd_dp)
         out = []
         if pre:
             out.append((pre, ""))
-        out.append((kanji, v))
+        if parts is not None:
+            for ch, rd in parts:
+                out.append((ch, rd))
+        else:
+            out.append((kanji, v))
         if post:
             out.append((post, ""))
         return out
@@ -264,17 +387,14 @@ def annotate_token(surface, reading):
     #       ⇒ 它含**促音便形态**（学=がく/がっ），这是词典里没有的
     #       ⇒ 实测：「小学校/しょうがっこう」靠 ③ 的「がっ」才切得出逐字
     #          （只有 ①② ⇒ DP 无解 ⇒ 落整块 ⇒ 粒度退化）
-    kd, kd_fb = load_kanjidic()
-    pri = load_published_reading()
-    kd_dp = {}
-    for ch in set(list(kd.keys()) + list(pri.keys())):
-        cl = list(kd.get(ch, []))
-        for x in pri.get(ch, []):
-            if x not in cl:
-                cl.append(x)
-        if cl:
-            kd_dp[ch] = cl
-    parts = dp_split(list(kanji), r2, kd_dp, kd_fb)
+    # 🔴 两段式（2026-10-25 定案）：
+    #    第一段：**原候选集**（词典 + 上下文表）⇒ 与线上口径一致，粒度不变
+    #    第二段：原 DP 无解时，才用**并集候选**（加上已发布优先表）再试一次
+    #             ⇒ 并集里含**促音便形态**（学=がく/がっ）⇒ 「学校/がっこう」能切出逐字
+    #             ⇒ 只在「原来切不出」时生效 ⇒ **已能切出的句子粒度零漂移**
+    parts = dp_split(list(kanji), r2, kd, kd_fb)
+    if parts is None:
+        parts = dp_split(list(kanji), r2, kd_dp, kd_fb)
     if parts is None:
         # 🔴 DP 无解 ⇒ **整块 emit 一个单元**（用词级读音 r2），不再硬凑逐字。
         #    硬凑的两宗罪（2026-10-25 全量实测，11 处缺陷）：

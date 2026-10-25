@@ -53,7 +53,13 @@ def main():
              'fix_ep16_timeline.py',
              # 🔴 2026-10-25：ruby 引擎（修了 11 处空读音 + 1 处错读音 + 依赖硬失败）
              #    ⚠️ 权威位置是 shun/tools/ruby/ruby.py（不是 shun/tools/ruby.py）
-             'gen_pred_mc_new.py', 'merge_pred_mc.py']
+             'gen_pred_mc_new.py', 'merge_pred_mc.py',
+             # 🔴 2026-10-25 粒度细化轮：粒度细化器 + 判据 + 清洗器
+             #    （refine_granularity.py = 只重新分配旧读音、不重选音读/训读）
+             'refine_granularity.py', 'apply_refine.py',
+             'verify_ru_audit.py', 'verify_granularity.py',
+             'verify_granularity_par.py', 'apply_ru_granularity.py',
+             'fix_junk_tail.py', 'update_site_data.py']
     for t in TOOLS:
         lp = os.path.join(ROOT, t)
         if os.path.exists(lp):
