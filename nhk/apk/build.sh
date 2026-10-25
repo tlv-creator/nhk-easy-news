@@ -11,7 +11,12 @@ ROOT=/workspace/nhk
 APK_DIR=$ROOT/apk
 OUT=$APK_DIR/out
 KS_PASS_FILE=/workspace/.secrets/nhk_ks_pass
-SITES_REG=$ROOT/data/sites.json
+# 🔴 2026-10-25：**登记表 = sites_nhk.json（唯一权威 · 手册 §"站点 URL 记录"）**
+#    ⇒ site_quota_guard.py / update_protected_sites.py 都读它
+#    ⇒ 但 build.sh 原来读的是旧路径 data/sites.json ⇒ **两个脚本读两份表** ⇒ 迟早不一致
+#    ⇒ 现在：优先 sites_nhk.json；没有才回退旧路径（兼容旧沙箱）
+SITES_REG=$ROOT/sites_nhk.json
+[ -f "$SITES_REG" ] || SITES_REG=$ROOT/data/sites.json
 
 say()  { printf '\n\033[1;36m== %s\033[0m\n' "$*"; }
 warn() { printf '\n\033[1;33m! %s\033[0m\n' "$*"; }
