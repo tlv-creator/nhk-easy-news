@@ -33,6 +33,9 @@ end $$;
 - `\set ON_ERROR_STOP on` 是**闸门的一部分**：没有它，psql 报错后会继续往下跑，
   `drop table` 照样执行 ⇒ 闸门等于装饰
 - 这个闸门**只在夹具里**：老师要跑的收尾 SQL 是**远程 TCP** 跑的，加 socket 判据会让老师直接跑不了
+- ⚠️ **端点判据不能只看 405**：**打错主机也会回 405**（OSS 静态托管的 XML
+  `<Code>MethodNotAllowed</Code>`）⇒ 必须是 **405 + 响应里含 `"service":"vocab-ops"` 双条件**；
+  地址要认准 `vocab-test-…service.tcloudbase.com` 那个**云函数域名**，不是学生镜像站
 - `setup.sql` 会**幂等先建** `anon` / `authenticated` / `service_role` 三个角色
   （**全新本地库里没有这三个角色** ⇒ `grant` 会报错 ⇒ 配合 `ON_ERROR_STOP` ⇒ 脚本会**死在一半**：
   表建好了但 policy 一条没建）⇒ 现在 `initdb → createdb → psql -f setup.sql` 能一次跑完
