@@ -60,5 +60,14 @@ function pg_form(str) {
   const badBig = rows.filter(r => !r.eq_browser_bigint);
   console.log('\n浏览器形态 == PG 形态：' + (allEq ? `✅ 全部 ${rows.length}/${rows.length} 逐字相等` : '❌ 有不等'));
   console.log('BigInt 变体失败的用例：' + (badBig.length ? badBig.map(r => `${r.name}(长度 ${r.len_b}→${r.len_g})`).join('、') : '无'));
-  require('fs').writeFileSync('/workspace/vocab/pkg_private/verify/hash_cases.json', JSON.stringify(rows, null, 1));
+  // 🔴 写到**脚本同目录**（原来写死了一个沙箱里的绝对路径
+  //    ⇒ 别人从共享仓库跑会 ENOENT 直接崩掉）
+  //    写失败**不致命**（这个文件只是留档，不该让整个校验挂掉）
+  try {
+    const outFile = require('path').join(__dirname, 'hash_cases.json');
+    require('fs').writeFileSync(outFile, JSON.stringify(rows, null, 1));
+    console.log('\n留档：' + outFile);
+  } catch (e) {
+    console.log('\n（留档跳过，不影响校验结论：' + e.message + '）');
+  }
 })();
