@@ -127,6 +127,12 @@ html[data-k="bw"] #dot{background:#000}
 /* ---------- 结构分层：四类括号（[方]连接词 ［方］从句 〈方〉宾语 （方）谓语） ---------- */
 .frame{display:inline-grid;grid-template-columns:repeat(var(--cols),auto);
   gap:0 8px;margin:8px 0 2px;align-items:start;max-width:100%}
+/* 🔴 墨水屏 412px 宽：分层行的块是「短语」，但平台偶尔给整句当一块
+   （如「〈しゅんと日本語ポッドキャスト41〉」18 字）⇒ auto 列宽 + nowrap 必然横向溢出，
+   文字被截断、老花眼用户根本读不全（实测 13 集 66 行里 50 行溢出、新集 101 行里 77 行）。
+   ⇒ **只在真正溢出的那一行收紧**：等分列 + 块内换行；正常行保持原样（零视觉变化）。 */
+.frame.tight{grid-template-columns:repeat(var(--cols),minmax(0,1fr))}
+.frame.tight .fb{white-space:normal;overflow-wrap:anywhere;word-break:break-word;min-width:0}
 .fb{font-size:var(--fs);line-height:1.55;white-space:nowrap}
 .fl{font-size:14px;line-height:1.45;color:var(--fg2);text-align:center;
   white-space:normal;max-width:20ch;margin:3px auto 0;word-break:break-word}
@@ -290,9 +296,24 @@ window.SHUN={"eps":[{"tag":"s001","ep":1,"realEp":1,"title":"Ep1 Self-introducti
     var c = (b.length >= 2) ? b.charAt(b.length-1) : (BEND[o] || o);
     return o + f.s + c;
   }
+  /* 🔴 溢出收紧：只有横向超出容器的分层行才等分列 + 块内换行（其余行零变化）
+     ⚠️ .frame 自身有 max-width:100% ⇒ 永远不溢出；真正溢出的是**块**（列宽按 max-content 算） */
+  function sweepTight(root){
+    var box = root || document.getElementById('main');
+    if(!box) return;
+    var lim = box.getBoundingClientRect().right + 1;
+    var fr = box.querySelectorAll('.frame');
+    for (var i=0;i<fr.length;i++){
+      var f = fr[i];
+      f.classList.remove('tight');
+      var fbs = f.querySelectorAll('.fb');
+      for (var k=0;k<fbs.length;k++){
+        if (fbs[k].getBoundingClientRect().right > lim){ f.classList.add('tight'); break; }
+      }
+    }
+  }
   /* 大框架行：块与角色标签两行对齐（inline-grid） */
-  function frameHtml(gs){
-    if (!gs || !gs.frame || !gs.frame.length) return '';
+  function frameHtml(gs){    if (!gs || !gs.frame || !gs.frame.length) return '';
     var fr = gs.frame, n = fr.length, h = '<div class="frame" style="--cols:'+n+'">';
     for (var i=0;i<n;i++) h += '<span class="fb '+bcls((fr[i].b||'（）').charAt(0))+'">'+hl(wrapBlock(fr[i]), S.kw)+'</span>';
     for (var j=0;j<n;j++) h += '<span class="fl">'+esc(fr[j].role||'')+'</span>';
@@ -374,6 +395,7 @@ window.SHUN={"eps":[{"tag":"s001","ep":1,"realEp":1,"title":"Ep1 Self-introducti
             + '</div>';
     }
     $('#main').innerHTML = h + rows;
+    sweepTight($('#main'));
     $('#epBtn').textContent = '第'+(e.ep)+'集' + (e.realEp ? (' · Ep'+e.realEp) : '');
     $('#brand p').textContent = '日语播客 · 日中对照文本版 · 共'+e.sents.length+'句';
     S.cur = -1;
@@ -514,6 +536,8 @@ window.SHUN={"eps":[{"tag":"s001","ep":1,"realEp":1,"title":"Ep1 Self-introducti
     document.documentElement.style.setProperty('--fs', S.fs+'px');
     document.documentElement.style.setProperty('--fszh', Math.round(S.fs*0.73)+'px');
     try { localStorage.setItem('shun.txt.fs', String(S.fs)); } catch(e){}
+    /* 字号变了 ⇒ 行的宽度也变了 ⇒ 要重新判断哪些行溢出 */
+    sweepTight($('#main')); sweepTight($('#sheet'));
   }
   function syncK(){
     var k = document.documentElement.getAttribute('data-k');
@@ -547,6 +571,7 @@ window.SHUN={"eps":[{"tag":"s001","ep":1,"realEp":1,"title":"Ep1 Self-introducti
     }
     $('#sheet').innerHTML = h;
     $('#sheet').classList.add('on');
+    sweepTight($('#sheet'));   /* ⚠️ 必须在显示之后：未显示时 getBoundingClientRect 全是 0 */
     $('#sheet').scrollTop = 0;
   }
   function closeSheet(){ $('#sheet').classList.remove('on'); $('#sheet').innerHTML = ''; }

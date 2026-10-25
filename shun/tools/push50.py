@@ -45,10 +45,12 @@ def main():
         items.append((BASE + e['tag'] + '.json',
                       os.path.join(site, 'data', e['tag'] + '.json')))
     # 工具脚本与说明（一次提交 = 一次 Pages build ⇒ 一起推最省）
-    TOOLS = ['platform_post.py', 'enrich_new.py', 'prep_tokens.py', 'fix_timeline.py',
-             'fix_p_positions.py', 'verify_data50.py', 'verify_site50.py',
-             'push50.py', 'run_platform.py', 'fetch_audio.py', 'fetch_base50.py',
-             'build_site50.py', 'fix_ep16_timeline.py']
+    TOOLS = ['build.py', 'platform_post.py', 'enrich_new.py', 'prep_tokens.py',
+             'fix_timeline.py', 'fix_p_positions.py', 'fix_brackets.py',
+             'verify_data50.py', 'verify_site50.py', 'verify_online50.py',
+             'verify_online_site50.py', 'push50.py', 'run_platform.py',
+             'fetch_audio.py', 'fetch_base50.py', 'build_site50.py',
+             'fix_ep16_timeline.py']
     for t in TOOLS:
         lp = os.path.join(ROOT, t)
         if os.path.exists(lp):

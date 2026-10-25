@@ -1,0 +1,771 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+生成 Japanese with Shun · 日中对照文本版（单文件自包含 HTML）
+数据源：线上站 data/eps/epNN.json（t/ru/zh/s/e）
+硬校验：每句 ru 拼接 == t；zh 非空
+"""
+import json, os, html, shutil, subprocess, sys
+
+BASE = os.path.dirname(os.path.abspath(__file__))
+
+def _pipeline():
+    """抽取 → 译文校订 → 构建（幂等：每次都从线上源重来，校订必跑）
+    合并版（data-merged.json）已是成品 ⇒ SHUN_SKIP_PIPELINE=1 跳过重抽"""
+    if os.environ.get('SHUN_SKIP_PIPELINE') == '1':
+        print('⏭ 跳过抽取流水线（SHUN_SKIP_PIPELINE=1，数据已是成品）')
+        return
+    for step in ('extract.py', 'fix_translation.py'):
+        r = subprocess.run([sys.executable, os.path.join(BASE, step)],
+                           capture_output=True, text=True)
+        sys.stdout.write(r.stdout)
+        if r.returncode != 0:
+            sys.stderr.write(r.stderr)
+            raise SystemExit('❌ 流水线步骤失败：%s' % step)
+
+
+# 🔴 数据源可配：默认仍是 13 集版（data-min.json）；合并版用环境变量指过去
+#    ⇒ 避免「同一件事两处实现」：build 只有一份代码，两种数据走同一条流水线
+DATA_FILE = os.environ.get('SHUN_DATA', 'data-min.json')
+SITE_DIR  = os.environ.get('SHUN_SITE_DIR', 'site-web')
+SINGLE_OUT = os.environ.get('SHUN_SINGLE_OUT', 'output/Japanese-with-Shun-Text.html')
+data = json.load(open(os.path.join(BASE, DATA_FILE), encoding='utf-8'))
+
+# ---------- 硬校验（不通过就 exit 1，绝不带着坏数据出包） ----------
+n = 0
+for e in data['eps']:
+    for s in e['sents']:
+        n += 1
+        j = ''.join(p[0] for p in s['ru'])
+        if j != s['t']:
+            raise SystemExit('❌ 注音拼接 != 原文: %r vs %r' % (j, s['t']))
+        if not s['zh'].strip():
+            raise SystemExit('❌ 缺中文: %r' % s['t'])
+print('✅ 硬校验通过：%d 句，注音拼接全等，中文全有' % n)
+
+CSS = r"""
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+html{
+  --fs:30px;          /* 日文正文，30px 起（老花眼） */
+  --fszh:22px;        /* 中文对照 */
+  --bg:#fdf3fb; --fg:#1a1a1a; --fg2:#444; --zhc:#333;
+  --line:rgba(0,0,0,.26); --line2:rgba(0,0,0,.18);
+  --acc:#c2185b; --accbg:rgba(194,24,91,.10);
+  --c1:#6a1b9a; --c2:#1565c0; --c3:#2e7d32; --c4:#b71c1c;   /* 结构四类：连接/从句/宾语/谓语 */
+  --chip:rgba(0,0,0,.06); --sel:rgba(194,24,91,.16);
+  --top:46px; --bar:54px; --pb:48px;
+}
+html[data-k="bw"]{
+  --bg:#fff; --fg:#000; --fg2:#222; --zhc:#000;
+  --line:rgba(0,0,0,.30); --line2:rgba(0,0,0,.20);
+  --acc:#000; --accbg:rgba(0,0,0,.08);
+  --chip:rgba(0,0,0,.07); --sel:rgba(0,0,0,.14);
+}
+body{
+  background:var(--bg); color:var(--fg);
+  font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP","Noto Serif CJK SC",serif;
+  font-size:var(--fs); line-height:1.9;
+  background-image:none !important;   /* 墨水屏：渐变糊成脏灰块 */
+  -webkit-text-size-adjust:100%;
+}
+button{font-family:inherit;color:inherit}
+
+/* ---------- 顶栏 46px：剧名常驻 ---------- */
+#top{position:fixed;top:0;left:0;right:0;height:var(--top);z-index:30;
+  display:flex;align-items:center;gap:8px;padding:0 6px;
+  background:var(--bg);border-bottom:1px solid var(--line)}
+#epBtn{min-width:74px;height:36px;padding:0 10px;border:1px solid var(--line);
+  border-radius:8px;background:var(--chip);font-size:17px;font-weight:700;cursor:pointer}
+#brand{flex:1;min-width:0}
+#brand h1{margin:0;font-size:17px;line-height:1.25;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#brand p{margin:0;font-size:12px;line-height:1.2;color:var(--fg2);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbtn{min-width:44px;height:36px;padding:0 8px;border:1px solid var(--line);border-radius:8px;
+  background:var(--chip);font-size:17px;font-weight:700;cursor:pointer;flex:0 0 auto}
+
+/* ---------- 主体 ---------- */
+#main{padding:calc(var(--top) + 14px) 12px 8px}
+body{padding-bottom:calc(var(--bar) + var(--pb) + 24px)}
+#epTitle{font-size:20px;font-weight:700;line-height:1.45;margin:0 0 4px}
+#epDesc{font-size:15px;line-height:1.6;color:var(--fg2);margin:0 0 16px}
+.hr{height:1px;background:var(--line2);margin:18px 0;border:0}
+
+.cue{border-left:4px solid transparent;padding:6px 0 6px 10px;margin:0 0 4px;scroll-margin-top:70px}
+.cue .jp{margin:0;font-size:var(--fs);line-height:1.85;word-break:break-word}
+.cue .jp ruby{ruby-position:over}
+.cue .jp rt{font-size:.56em;color:var(--acc);font-weight:400;letter-spacing:0}
+html[data-k="bw"] .cue .jp rt{color:#000}
+.cue .zh{margin:4px 0 0;font-size:var(--fszh);line-height:1.7;color:var(--zhc);
+  word-break:break-word;padding-left:.1em}
+html[data-b="ja"] .cue .zh{display:none}
+.cue.on{border-left-color:var(--acc)}          /* 当前句：只留 4px 竖条，不变色 */
+html[data-k="bw"] .cue.on{border-left-color:#000}
+mark{background:var(--sel);color:inherit;border-radius:3px;padding:0 1px}
+
+/* ---------- 底部工具条 54px：文字按钮，横向可滚 ---------- */
+#tools{position:fixed;left:0;right:0;bottom:0;height:var(--bar);z-index:30;
+  display:flex;align-items:center;gap:8px;padding:0 10px;
+  background:var(--bg);border-top:1px solid var(--line);
+  overflow-x:auto;overflow-y:hidden;white-space:nowrap}
+.tool{flex:0 0 auto;min-width:64px;height:44px;padding:0 14px;border:1px solid var(--line);
+  border-radius:9px;background:var(--chip);font-size:16px;font-weight:600;cursor:pointer}
+.tool.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+html[data-k="bw"] .tool.on{background:#000;color:#fff;border-color:#000}
+
+/* ---------- 播放条 48px ---------- */
+#pb{position:fixed;left:0;right:0;bottom:var(--bar);height:var(--pb);z-index:29;
+  display:flex;align-items:center;gap:9px;padding:0 10px;
+  background:var(--bg);border-top:1px solid var(--line)}
+#play{width:42px;height:40px;flex:0 0 auto;border:1px solid var(--line);border-radius:8px;
+  background:var(--chip);font-size:17px;cursor:pointer}
+#scrub{flex:1;height:30px;position:relative;cursor:pointer;min-width:40px}
+#scrub:before{content:"";position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;
+  border-radius:2px;background:var(--chip)}
+#fill{position:absolute;left:0;top:50%;height:4px;margin-top:-2px;border-radius:2px;background:var(--acc);width:0}
+html[data-k="bw"] #fill{background:#000}
+#dot{position:absolute;top:50%;margin-top:-8px;left:0;width:16px;height:16px;border-radius:50%;
+  background:var(--acc);margin-left:-8px}
+html[data-k="bw"] #dot{background:#000}
+#tm{font-size:14px;color:var(--fg2);flex:0 0 auto;font-variant-numeric:tabular-nums}
+
+/* ---------- 选集抽屉 ---------- */
+#mask{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:40;display:none}
+#mask.on{display:block}
+#drawer{position:fixed;left:0;right:0;bottom:0;max-height:82vh;z-index:41;
+  background:var(--bg);border-top:1px solid var(--line);
+  border-radius:14px 14px 0 0;padding:12px 10px 20px;overflow-y:auto;display:none}
+#drawer.on{display:block}
+#drawer h2{margin:0 0 10px;font-size:18px}
+.eitem{display:block;width:100%;text-align:left;padding:11px 12px;margin:0 0 8px;
+  border:1px solid var(--line);border-radius:10px;background:var(--chip);
+  font-size:17px;line-height:1.5;cursor:pointer}
+.eitem.on{border-color:var(--acc);background:var(--accbg);font-weight:700}
+.eitem small{display:block;font-size:13px;color:var(--fg2);font-weight:400;margin-top:3px}
+#closeDrawer{margin-top:6px}
+
+/* ---------- 搜索面板 ---------- */
+#search{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;flex-direction:column}
+#search.on{display:flex}
+#sHead{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--line);align-items:center}
+#q{flex:1;height:44px;font-size:18px;padding:0 12px;border:1px solid var(--line);
+  border-radius:9px;background:var(--bg);color:var(--fg);font-family:inherit}
+#sInfo{padding:8px 12px;font-size:14px;color:var(--fg2);border-bottom:1px solid var(--line2)}
+#sList{flex:1;overflow-y:auto;padding:8px 12px 20px}
+.srow{padding:10px 0;border-bottom:1px solid var(--line2);cursor:pointer}
+.srow .jp{font-size:22px;line-height:1.7}
+.srow .zh{font-size:16px;color:var(--fg2);line-height:1.6;margin-top:2px}
+.srow .where{font-size:13px;color:var(--fg2);margin-bottom:3px}
+
+#foot{max-width:760px;margin:26px auto 0;padding:14px 12px 8px;border-top:1px solid var(--line2);
+  font-size:13px;line-height:1.8;color:var(--fg2)}
+#foot p{margin:0 0 4px}
+/* ---------- 结构分层：四类括号（[方]连接词 ［方］从句 〈方〉宾语 （方）谓语） ---------- */
+.frame{display:inline-grid;grid-template-columns:repeat(var(--cols),auto);
+  gap:0 8px;margin:8px 0 2px;align-items:start;max-width:100%}
+/* 🔴 墨水屏 412px 宽：分层行的块是「短语」，但平台偶尔给整句当一块
+   （如「〈しゅんと日本語ポッドキャスト41〉」18 字）⇒ auto 列宽 + nowrap 必然横向溢出，
+   文字被截断、老花眼用户根本读不全（实测 13 集 66 行里 50 行溢出、新集 101 行里 77 行）。
+   ⇒ **只在真正溢出的那一行收紧**：等分列 + 块内换行；正常行保持原样（零视觉变化）。 */
+.frame.tight{grid-template-columns:repeat(var(--cols),minmax(0,1fr))}
+.frame.tight .fb{white-space:normal;overflow-wrap:anywhere;word-break:break-word;min-width:0}
+.fb{font-size:var(--fs);line-height:1.55;white-space:nowrap}
+.fl{font-size:14px;line-height:1.45;color:var(--fg2);text-align:center;
+  white-space:normal;max-width:20ch;margin:3px auto 0;word-break:break-word}
+.fb.b1{color:var(--c1)} .fb.b2{color:var(--c2)} .fb.b3{color:var(--c3)} .fb.b4{color:var(--c4)}
+/* 黑白（墨水屏）：不能靠颜色 ⇒ 靠「线/字重」区分四类（装饰必须零） */
+html[data-k="bw"] .fb{color:#000}
+html[data-k="bw"] .fb.b2{text-decoration:underline;text-underline-offset:5px}
+html[data-k="bw"] .fb.b3{border-top:2px solid rgba(0,0,0,.85);padding-top:3px}
+html[data-k="bw"] .fb.b4{font-weight:700}
+html[data-k="bw"] .fl{color:#000}
+.skel{font-size:17px;line-height:1.75;color:var(--fg2);margin:6px 0 0;word-break:break-word}
+.skel b{color:var(--fg);font-weight:700}
+.chain{font-size:16px;line-height:1.9;color:var(--fg2);margin:4px 0 0;word-break:break-word}
+.chain i{font-style:normal;color:var(--fg)}
+
+/* ---------- 点句 → 底部大弹窗（占屏 90%+） ---------- */
+#sheet{position:fixed;left:0;right:0;bottom:0;max-height:90vh;z-index:70;
+  background:var(--bg);border-top:1px solid var(--line);border-radius:14px 14px 0 0;
+  padding:12px 12px 26px;overflow-y:auto;overscroll-behavior:contain;display:none}
+#sheet.on{display:block}
+#sheet h3{margin:0 0 8px;font-size:18px;line-height:1.5}
+.sh-sec{margin:16px 0 0;padding-top:12px;border-top:1px solid var(--line2)}
+.sh-sec>h4{margin:0 0 8px;font-size:16px;color:var(--fg);font-weight:700}
+.sh-blk{margin:0 0 12px;padding:0 0 10px;border-bottom:1px solid var(--line2)}
+.sh-blk:last-child{border-bottom:0}
+.sh-blk .bh{font-size:19px;line-height:1.6;margin:0 0 4px}
+.sh-blk .bm{font-size:16px;line-height:1.7;color:var(--fg2);margin:0}
+.sh-part{font-size:15px;line-height:1.75;color:var(--fg2);margin:4px 0 0;padding-left:10px;
+  border-left:2px solid var(--line2)}
+.sh-part b{color:var(--fg)}
+.sh-inner{font-size:16px;line-height:1.8;color:var(--fg);margin:4px 0 0}
+#sheetClose{position:absolute;right:12px;top:12px}
+
+#toast{position:fixed;left:50%;bottom:calc(var(--bar) + var(--pb) + 16px);transform:translateX(-50%);
+  background:var(--fg);color:var(--bg);font-size:15px;padding:9px 16px;border-radius:9px;
+  z-index:60;display:none;max-width:88vw;text-align:center;line-height:1.5}
+"""
+
+JS = r"""
+(function(){
+  var D = window.SHUN || {eps:[]};
+  var MODE = (window.SHUN_MODE === 'site');   /* site=按集懒加载 / single=单文件离线 */
+  var EPS = D.eps.map(function(e){
+    var o = {tag:e.tag, ep:e.ep, title:e.title, desc:e.desc, dur:e.dur, audio:e.audio, n:(e.sents?e.sents.length:e.n)};
+    if (!MODE) o.sents = e.sents;
+    return o;
+  });
+  var AUDIO_BASE = 'https://qtjgfga76bu4o.space.mcode.cn/media/';
+  var $ = function(s){ return document.querySelector(s); };
+
+  var S = { ep: 0, cur: -1, on: false, au: null, fs: 30, kw: '', struct: true };
+  try { S.fs = parseInt(localStorage.getItem('shun.txt.fs') || '30', 10) || 30; } catch(e){}
+
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  /* ---------- ruby 渲染：注音读音为空时只出表层；支持关键词高亮 ---------- */
+  function ruby(pairs){
+    var out = '';
+    for (var i=0;i<pairs.length;i++){
+      var t = pairs[i][0], r = pairs[i][1];
+      if (!t) continue;
+      out += r ? '<ruby>'+esc(t)+'<rt>'+esc(r)+'</rt></ruby>' : esc(t);
+    }
+    return out;
+  }
+  /* 🔴 关键词高亮必须按「整句区间」落回 ruby 段：
+     注音把「友達」拆成「友」「達」两段 ⇒ 逐段匹配永远命中不了 */
+  function rubyHl(pairs, kw){
+    if (!kw) return ruby(pairs);
+    var full = '', i;
+    for (i=0;i<pairs.length;i++) full += pairs[i][0];
+    var re = new RegExp(esc(kw).replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi');
+    var ranges = [], m;
+    while ((m = re.exec(full)) !== null){
+      ranges.push([m.index, m.index + m[0].length]);
+      if (m[0].length === 0) re.lastIndex++;
+    }
+    if (!ranges.length) return ruby(pairs);
+    var out = '', pos = 0, j, k;
+    for (j=0;j<pairs.length;j++){
+      var t = pairs[j][0], r = pairs[j][1];
+      if (!t) continue;
+      var a = pos, b = pos + t.length, hit = false;
+      for (k=0;k<ranges.length;k++){
+        if (ranges[k][0] < b && ranges[k][1] > a){ hit = true; break; }
+      }
+      var inner = hit ? '<mark>'+esc(t)+'</mark>' : esc(t);
+      out += r ? '<ruby>'+inner+'<rt>'+esc(r)+'</rt></ruby>' : inner;
+      pos = b;
+    }
+    return out;
+  }
+  function hl(text, kw){
+    var e = esc(text);
+    if (!kw) return e;
+    var k = esc(kw);
+    var re = new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi');
+    return e.replace(re, function(m){ return '<mark>'+m+'</mark>'; });
+  }
+
+  /* ---------- 四类括号（设计文档：[]连接词 ［］从句 〈〉宾语 （）谓语） ---------- */
+  var BCLS = { '[':'b1', '［':'b2', '〈':'b3', '（':'b4' };
+  var BEND = { '[':']', '［':'］', '〈':'〉', '（':'）' };
+  function bcls(o){ return BCLS[o] || 'b4'; }
+  function wrapBlock(f){
+    var b = f.b || '（）';
+    var o = b.charAt(0);
+    var c = (b.length >= 2) ? b.charAt(b.length-1) : (BEND[o] || o);
+    return o + f.s + c;
+  }
+  /* 🔴 溢出收紧：只有横向超出容器的分层行才等分列 + 块内换行（其余行零变化）
+     ⚠️ .frame 自身有 max-width:100% ⇒ 永远不溢出；真正溢出的是**块**（列宽按 max-content 算） */
+  function sweepTight(root){
+    var box = root || document.getElementById('main');
+    if(!box) return;
+    var lim = box.getBoundingClientRect().right + 1;
+    var fr = box.querySelectorAll('.frame');
+    for (var i=0;i<fr.length;i++){
+      var f = fr[i];
+      f.classList.remove('tight');
+      var fbs = f.querySelectorAll('.fb');
+      for (var k=0;k<fbs.length;k++){
+        if (fbs[k].getBoundingClientRect().right > lim){ f.classList.add('tight'); break; }
+      }
+    }
+  }
+  /* 大框架行：块与角色标签两行对齐（inline-grid） */
+  function frameHtml(gs){    if (!gs || !gs.frame || !gs.frame.length) return '';
+    var fr = gs.frame, n = fr.length, h = '<div class="frame" style="--cols:'+n+'">';
+    for (var i=0;i<n;i++) h += '<span class="fb '+bcls((fr[i].b||'（）').charAt(0))+'">'+hl(wrapBlock(fr[i]), S.kw)+'</span>';
+    for (var j=0;j<n;j++) h += '<span class="fl">'+esc(fr[j].role||'')+'</span>';
+    h += '</div>';
+    if (gs.skel && n >= 2) h += '<p class="skel">主句骨架：<b>'+hl(esc(gs.skel), S.kw)+'</b>'+(gs.skelMean?(' ＝「'+esc(gs.skelMean)+'」'):'')+'</p>';
+    return h;
+  }
+  /* 逐块拆解（弹窗用） */
+  function blocksHtml(gs){
+    if (!gs || !gs.blocks || !gs.blocks.length) return '';
+    var h = '';
+    for (var i=0;i<gs.blocks.length;i++){
+      var b = gs.blocks[i];
+      h += '<div class="sh-blk"><p class="bh">'+esc(b.s||'')+'</p>';
+      if (b.inner) h += '<p class="sh-inner">'+esc(b.inner)+'</p>';
+      if (b.parts && b.parts.length){
+        for (var k=0;k<b.parts.length;k++){
+          h += '<p class="sh-part"><b>'+esc(b.parts[k].s||'')+'</b>：'+esc(b.parts[k].note||'')+'</p>';
+        }
+      }
+      if (b.mean) h += '<p class="bm">整块意思：'+esc(b.mean)+'</p>';
+      h += '</div>';
+    }
+    return h;
+  }
+  function chainHtml(gs){
+    if (!gs || !gs.chain || !gs.chain.length) return '';
+    var h = '';
+    for (var i=0;i<gs.chain.length;i++) h += (i?' <i>→</i> ':'<i>') + esc(gs.chain[i]) + '</i>';
+    return '<p class="chain">层层修饰：'+h+'</p>';
+  }
+
+  /* ---------- 按集加载（site 模式） ---------- */
+  function loadEp(i, cb){
+    var e = EPS[i];
+    if (!e) return;
+    if (e.sents) { cb(e); return; }
+    if (e._loading){ e._pending = cb; return; }
+    e._loading = true;
+    e._pending = cb;                     /* 🔴 首次也要挂上，否则回调永远接不上（页面卡在「正在加载」） */
+    fetch('data/' + e.tag + '.json').then(function(r){ return r.json(); }).then(function(d){
+      e.sents = d.sents; e._loading = false;
+      var pend = e._pending; e._pending = null;
+      if (pend) pend(e);
+    }).catch(function(){
+      e._loading = false;
+      toast('这一集加载失败（网络问题）');
+    });
+  }
+  function loadAll(cb){
+    var i = 0;
+    function next(){
+      if (i >= EPS.length) return cb();
+      var e = EPS[i++];
+      if (e.sents) return next();
+      loadEp(EPS.indexOf(e), next);
+    }
+    next();
+  }
+
+  /* ---------- 渲染一集 ---------- */
+  function renderEp(){
+    var e = EPS[S.ep];
+    if (!e) return;
+    if (!e.sents){
+      $('#main').innerHTML = '<p class="skel">正在加载本集…</p>';
+      loadEp(S.ep, function(){ renderEp(); });
+      return;
+    }
+    var h = '<h2 id="epTitle">'+esc(e.title)+'</h2><p id="epDesc">'+esc(e.desc||'')+'</p>';
+    h += '<hr class="hr">';
+    var rows = '';
+    for (var i=0;i<e.sents.length;i++){
+      var s = e.sents[i];
+      rows += '<div class="cue" id="c'+i+'" data-i="'+i+'">'
+            +   '<p class="jp">'+rubyHl(s.ru, S.kw)+'</p>'
+            +   (S.struct ? frameHtml(s.gs) : '')
+            +   '<p class="zh">'+hl(s.zh, S.kw)+'</p>'
+            + '</div>';
+    }
+    $('#main').innerHTML = h + rows;
+    sweepTight($('#main'));
+    $('#epBtn').textContent = '第'+(e.ep)+'集' + (e.realEp ? (' · Ep'+e.realEp) : '');
+    $('#brand p').textContent = '日语播客 · 日中对照文本版 · 共'+e.sents.length+'句';
+    S.cur = -1;
+    /* 🔴 换集时同步音频状态：无音频集 ⇒ 播放键写「无音频」、时间显示「— / —」、
+          并把上一集的 audio src 摘掉（否则残留播放/404） */
+    S.hasAudio = hasAudio();
+    $('#play').textContent = S.hasAudio ? '▶' : '无音频';
+    if (!S.hasAudio && S.au){ try{ S.au.pause(); S.au.removeAttribute('src'); S.au.load(); }catch(e){} }
+    $('#tm').textContent = S.hasAudio ? ('0:00 / ' + fmt(e.dur)) : '— / —';
+  }
+
+  function curEp(){ return EPS[S.ep]; }
+
+  /* ---------- 音频 ---------- */
+  /* 🔴 无音频的集必须返回空串：原来这里兜底拼 tag+'.m4a'，
+        会让「没有音频」变成「去请求一个不存在的 mp3」（点了没声音还以为是坏的） */
+  function audioUrl(){
+    var e = curEp();
+    if (!e || !e.audio) return '';
+    return AUDIO_BASE + e.audio;
+  }
+  function hasAudio(){ var e = curEp(); return !!(e && e.audio); }
+  function fmt(s){ s=Math.max(0,Math.floor(s||0)); var m=Math.floor(s/60), x=s%60; return m+':'+(x<10?'0':'')+x; }
+
+  function play(){
+    if (!hasAudio()){
+      toast('这一集没有音频 · 文本照常可读');
+      return;
+    }
+    if (!S.au){
+      S.au = new Audio();
+      S.au.preload = 'none';
+      S.au.addEventListener('timeupdate', onTick);
+      S.au.addEventListener('ended', function(){ S.on=false; if (hasAudio()) $('#play').textContent='▶'; });
+      S.au.addEventListener('error', function(){
+        toast('音频加载失败（可能是网络或站点问题）· 文本照常可读');
+      });
+    }
+    if (S.au.src !== audioUrl()){
+      S.au.src = audioUrl();
+      S.on = true;
+      S.au.play().catch(function(){ toast('无法播放（跨域或网络限制）· 文本照常可读'); S.on=false; if (hasAudio()) $('#play').textContent='▶'; });
+    } else if (S.au.paused){
+      S.on = true;
+      S.au.play().catch(function(){ toast('无法播放 · 文本照常可读'); });
+    } else { S.au.pause(); S.on = false; }
+    if (hasAudio()) $('#play').textContent = S.on ? '❚❚' : '▶';
+  }
+  function onTick(){
+    var a = S.au; if (!a) return;
+    var t = a.currentTime, d = (a.duration && isFinite(a.duration)) ? a.duration : curEp().dur;
+    $('#fill').style.width = (d ? (t/d*100) : 0) + '%';
+    $('#dot').style.left = (d ? (t/d*100) : 0) + '%';
+    $('#tm').textContent = fmt(t) + ' / ' + fmt(d);
+    var s = curEp().sents, i = -1;
+    for (var k=0;k<s.length;k++){ if (t >= s[k].s && t < s[k].e){ i=k; break; } }
+    if (i !== S.cur){
+      var old = $('#c'+S.cur); if (old) old.classList.remove('on');
+      S.cur = i;
+      var el = $('#c'+i);
+      if (el){
+        el.classList.add('on');
+        var r = el.getBoundingClientRect();
+        if (r.top < 70 || r.bottom > window.innerHeight - 130) el.scrollIntoView({block:'center'});
+      }
+    }
+  }
+  function seek(ev){
+    if (!S.au || !S.au.duration) return;
+    var b = $('#scrub').getBoundingClientRect();
+    var p = Math.min(1, Math.max(0, (ev.clientX - b.left)/b.width));
+    S.au.currentTime = p * S.au.duration;
+  }
+
+  /* ---------- 选集 ---------- */
+  function openDrawer(){
+    var h = '<h2>选集（'+EPS.length+' 集）</h2>';
+    for (var i=0;i<EPS.length;i++){
+      var e = EPS[i];
+      var ns = e.sents ? e.sents.length : (e.n || 0);   /* 站点版：集未加载时用索引里的句数 */
+      h += '<button class="eitem'+(i===S.ep?' on':'')+'" data-i="'+i+'">'
+         +   '第'+e.ep+'集'+(e.realEp?(' · Ep'+e.realEp):'')+'　'+esc(e.title)
+         +   '<small>'+ns+' 句 · '+Math.round(e.dur/60)+' 分钟</small></button>';
+    }
+    h += '<button class="tool" id="closeDrawer" style="width:100%">关闭</button>';
+    $('#drawer').innerHTML = h;
+    $('#drawer').classList.add('on'); $('#mask').classList.add('on');
+  }
+  function closeDrawer(){ $('#drawer').classList.remove('on'); $('#mask').classList.remove('on'); }
+
+  /* ---------- 搜索 ---------- */
+  function openSearch(){
+    $('#search').classList.add('on');
+    setTimeout(function(){ $('#q').focus(); }, 30);
+  }
+  function closeSearch(){ $('#search').classList.remove('on'); }
+  function doSearch(){
+    var q = ($('#q').value || '').trim();
+    S.kw = q;
+    if (!q){ $('#sInfo').textContent = '输入关键词，跨 '+EPS.length+' 集检索日文 / 中文'; $('#sList').innerHTML=''; renderEp(); return; }
+    if (MODE){
+      $('#sInfo').textContent = '正在加载全部 ' + EPS.length + ' 集…';
+      loadAll(function(){ searchNow(q); });
+      return;
+    }
+    searchNow(q);
+  }
+  function searchNow(q){
+    var res = [];
+    for (var i=0;i<EPS.length;i++){
+      var ss = EPS[i].sents || [];
+      for (var j=0;j<ss.length;j++){
+        var s = ss[j];
+        if (s.t.indexOf(q)>=0 || s.zh.indexOf(q)>=0){
+          res.push({e:i, j:j, s:s});
+        }
+      }
+    }
+    var h = '「'+esc(q)+'」命中 '+res.length+' 句';
+    $('#sInfo').textContent = h;
+    var l = '';
+    for (var k=0;k<res.length && k<300;k++){
+      var r = res[k];
+      l += '<div class="srow" data-e="'+r.e+'" data-j="'+r.j+'">'
+         +   '<div class="where">第'+EPS[r.e].ep+'集 · '+esc(EPS[r.e].title)+'</div>'
+         +   '<div class="jp">'+rubyHl(r.s.ru, q)+'</div>'
+         +   '<div class="zh">'+hl(r.s.zh,q)+'</div>'
+         + '</div>';
+    }
+    if (res.length > 300) l += '<div class="where" style="padding:10px 0">（只显示前 300 条）</div>';
+    $('#sList').innerHTML = l;
+    renderEp();
+  }
+
+  /* ---------- 字号 / 主题 / 双语 ---------- */
+  function setFs(v){
+    S.fs = Math.min(46, Math.max(30, v));
+    document.documentElement.style.setProperty('--fs', S.fs+'px');
+    document.documentElement.style.setProperty('--fszh', Math.round(S.fs*0.73)+'px');
+    try { localStorage.setItem('shun.txt.fs', String(S.fs)); } catch(e){}
+    /* 字号变了 ⇒ 行的宽度也变了 ⇒ 要重新判断哪些行溢出 */
+    sweepTight($('#main')); sweepTight($('#sheet'));
+  }
+  function syncK(){
+    var k = document.documentElement.getAttribute('data-k');
+    $('#btnK').textContent = (k === 'bw') ? '彩色' : '黑白';
+  }
+  function toast(m){
+    var t = $('#toast'); t.textContent = m; t.style.display='block';
+    clearTimeout(t._t); t._t = setTimeout(function(){ t.style.display='none'; }, 2600);
+  }
+
+  /* ---------- 点句 → 底部大弹窗（原文全注音 + 中文 + ①分层大框架 ②逐块拆解 ③骨架与修饰链） ---------- */
+  function openSheet(i){
+    var s = curEp().sents[i];
+    if (!s) return;
+    var h = '<button class="tbtn" id="sheetClose">×</button>';
+    var _ce = curEp();
+    h += '<h3>第'+(S.ep+1)+'集' + (_ce && _ce.realEp ? (' · Ep'+_ce.realEp) : '') + ' · 第'+(i+1)+'句</h3>';
+    h += '<p class="jp">'+rubyHl(s.ru, '')+'</p>';
+    h += '<p class="zh" style="font-size:var(--fszh);line-height:1.7;color:var(--zhc)">'+esc(s.zh)+'</p>';
+    if (s.gs && s.gs.frame && s.gs.frame.length){
+      var hasBlocks = !!(s.gs.blocks && s.gs.blocks.length);
+      var hasChain  = !!((s.gs.chain && s.gs.chain.length) || s.gs.whole);
+      h += '<div class="sh-sec"><h4>① 分层大框架（四类括号）</h4>'+frameHtml(s.gs)+'</div>';
+      h += '<div class="sh-sec"><h4>② 逐块拆解</h4>'
+         + (hasBlocks ? blocksHtml(s.gs) : '<p class="skel">这一集只做了成分切分，没有逐块拆解。</p>') + '</div>';
+      h += '<div class="sh-sec"><h4>③ 主句骨架与修饰链</h4>'
+         + (hasChain ? chainHtml(s.gs) + (s.gs.whole ? ('<p class="skel">整句意思：<b>'+esc(s.gs.whole)+'</b></p>') : '')
+                      : '<p class="skel">这一集没有骨架/修饰链标注。</p>') + '</div>';
+    } else {
+      h += '<div class="sh-sec"><h4>结构分层</h4><p class="skel">这一句没有结构标注。</p></div>';
+    }
+    $('#sheet').innerHTML = h;
+    $('#sheet').classList.add('on');
+    sweepTight($('#sheet'));   /* ⚠️ 必须在显示之后：未显示时 getBoundingClientRect 全是 0 */
+    $('#sheet').scrollTop = 0;
+  }
+  function closeSheet(){ $('#sheet').classList.remove('on'); $('#sheet').innerHTML = ''; }
+
+  /* ---------- 事件 ---------- */
+  document.addEventListener('click', function(ev){
+    var t = ev.target;
+    if (t.closest('#epBtn')) { openDrawer(); return; }
+    if (t.closest('#mask')) { closeDrawer(); return; }
+    if (t.closest('#closeDrawer')) { closeDrawer(); return; }
+    var ei = t.closest('.eitem');
+    if (ei){
+      S.ep = parseInt(ei.getAttribute('data-i'),10);
+      if (S.au){ try{ S.au.pause(); }catch(e){} S.au.removeAttribute('src'); }
+      S.on=false; $('#play').textContent='▶';
+      closeDrawer(); renderEp(); window.scrollTo(0,0);
+      return;
+    }
+    var sr = t.closest('.srow');
+    if (sr){
+      S.ep = parseInt(sr.getAttribute('data-e'),10);
+      closeSearch(); renderEp();
+      var el = $('#c'+sr.getAttribute('data-j'));
+      if (el) el.scrollIntoView({block:'center'});
+      return;
+    }
+    if (t.closest('#btnFs')) { setFs(S.fs-3); toast('字号 '+S.fs+'px'); return; }
+    if (t.closest('#btnFb')) { setFs(S.fs+3); toast('字号 '+S.fs+'px'); return; }
+    if (t.closest('#btnK')) {
+      var k = document.documentElement.getAttribute('data-k');
+      document.documentElement.setAttribute('data-k', k==='bw' ? 'color' : 'bw');
+      try{ localStorage.setItem('shun.txt.k', document.documentElement.getAttribute('data-k')); }catch(e){}
+      syncK();
+      toast(k==='bw' ? '已切到彩色' : '已切到黑白（墨水屏）');
+      return;
+    }
+    if (t.closest('#btnBi')) {
+      var b = document.documentElement.getAttribute('data-b');
+      document.documentElement.setAttribute('data-b', b==='ja' ? 'bi' : 'ja');
+      var on = document.documentElement.getAttribute('data-b')==='ja';
+      $('#btnBi').textContent = on ? '只看日文' : '中日对照';
+      try{ localStorage.setItem('shun.txt.b', document.documentElement.getAttribute('data-b')); }catch(e){}
+      return;
+    }
+    if (t.closest('#btnSearch') || t.closest('#btnSearch2')) { openSearch(); return; }
+    if (t.closest('#sClose')) { closeSearch(); return; }
+    if (t.closest('#sheetClose') || t === $('#sheet')) { closeSheet(); return; }
+    if (t.closest('#btnStruct')) {
+      S.struct = !S.struct;
+      $('#btnStruct').classList.toggle('on', S.struct);
+      try{ localStorage.setItem('shun.txt.struct', S.struct ? '1' : '0'); }catch(e){}
+      renderEp();
+      toast(S.struct ? '结构分层：开' : '结构分层：关');
+      return;
+    }
+    var cue = t.closest('.cue');
+    if (cue && !t.closest('button')) { openSheet(parseInt(cue.getAttribute('data-i'), 10)); return; }
+    if (t.closest('#play')) { play(); return; }
+  });
+  $('#scrub').addEventListener('click', seek);
+  $('#q').addEventListener('input', doSearch);
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === 'Escape'){ closeSearch(); closeDrawer(); }
+  });
+
+  /* ---------- 初始化 ---------- */
+  function afterInit(){
+    try {
+      var k = localStorage.getItem('shun.txt.k'); if (k) document.documentElement.setAttribute('data-k', k);
+      var b = localStorage.getItem('shun.txt.b'); if (b) document.documentElement.setAttribute('data-b', b);
+      var st = localStorage.getItem('shun.txt.struct'); if (st !== null) S.struct = (st === '1');
+    } catch(e){}
+    $('#btnStruct').classList.toggle('on', S.struct);
+    setFs(S.fs);
+    syncK();
+    $('#btnBi').textContent = document.documentElement.getAttribute('data-b')==='ja' ? '只看日文' : '中日对照';
+    var totalS = 0;
+    for (var ti=0; ti<EPS.length; ti++) totalS += (EPS[ti].sents ? EPS[ti].sents.length : (EPS[ti].n || 0));
+    var se = $('#statEps'), ss = $('#statSents');
+    if (se) se.textContent = EPS.length;
+    if (ss) ss.textContent = totalS;
+    renderEp();
+    $('#tm').textContent = hasAudio() ? ('0:00 / ' + fmt(curEp().dur)) : '— / —';
+    $('#play').textContent = hasAudio() ? '▶' : '无音频';
+    window.__shun = { S:S, EPS:EPS, renderEp:renderEp, loadEp:loadEp, loadAll:loadAll };
+  }
+  function boot(){
+    if (!MODE){ afterInit(); return; }
+    fetch('data/index.json').then(function(r){ return r.json(); }).then(function(d){
+      EPS.length = 0;                       /* 保持数组引用（测试与外部都持有它） */
+      d.eps.forEach(function(e){ EPS.push(e); });
+      afterInit();
+    }).catch(function(){
+      $('#main').innerHTML = '<p class="skel">索引加载失败，请检查网络后刷新。</p>';
+    });
+  }
+  boot();
+})();
+"""
+
+TEMPLATE = """<!DOCTYPE html>
+<html lang="ja" data-theme="light" data-k="color" data-b="bi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fdf3fb">
+<!-- 🔴 内联 favicon：否则浏览器会去请求域名根 /favicon.ico ⇒ 404 噪音（GitHub Pages 根目录没有） -->
+<link rel="icon" href="data:image/svg+xml,%%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%%3E%%3Ctext y='.9em' font-size='90'%%3E%%F0%%9F%%8E%%99%%3C/text%%3E%%3C/svg%%3E">
+<title>Japanese with Shun · 日中对照文本版</title>
+<style>%s</style>
+</head>
+<body>
+
+<header id="top">
+  <button id="epBtn">第1集</button>
+  <div id="brand">
+    <h1>Japanese with Shun</h1>
+    <p>日语播客 · 日中对照文本版</p>
+  </div>
+  <button class="tbtn" id="btnSearch" title="搜索">搜</button>
+  <button class="tbtn" id="btnK" title="黑白 / 彩色">黑白</button>
+</header>
+
+<main id="main"></main>
+
+<div id="pb">
+  <button id="play">▶</button>
+  <div id="scrub"><div id="fill"></div><div id="dot"></div></div>
+  <span id="tm">0:00 / 0:00</span>
+</div>
+
+<div id="tools">
+  <button class="tool" id="btnBi">中日对照</button>
+  <button class="tool on" id="btnStruct">结构分层</button>
+  <button class="tool" id="btnFs">A－</button>
+  <button class="tool" id="btnFb">A＋</button>
+  <button class="tool" id="btnSearch2">搜索</button>
+</div>
+
+<div id="mask"></div>
+<div id="drawer"></div>
+
+<div id="search">
+  <div id="sHead">
+    <input id="q" type="search" placeholder="搜日文或中文">
+    <button class="tbtn" id="sClose">×</button>
+  </div>
+  <div id="sInfo">输入关键词，跨集检索日文 / 中文</div>
+  <div id="sList"></div>
+</div>
+
+<div id="sheet"></div>
+<div id="toast"></div>
+
+<footer id="foot">
+  <p>Japanese with Shun · 日中对照文本版 · <span id="statEps">…</span> 集 / <span id="statSents">…</span> 句 · 音频直连 Shun 官方播客源</p>
+  <p>已校订源数据 6 处译文错位（第 1/8/9/13 集）：3 处串行重复、2 处「精神状态」错译、1 处截断。</p>
+  <p>新增 31 集（Genki 教材课 + 正式集）：日文转写、中文翻译、语法结构分层、逐字注音、词级时间轴，全部逐句校验通过。</p>
+  <p>注音为逐字 ruby 标注 · 全部句子已逐句校验「注音拼接 == 原文」</p>
+  <p>结构分层按四类括号标注：<b>[方]</b> 连接词/副词 ｜ <b>［方］</b> 从句 ｜ <b>〈方〉</b> 宾语内容 ｜ <b>（方）</b> 谓语</p>
+</footer>
+
+<script>%s</script>
+<script>%s</script>
+</body>
+</html>
+"""
+
+
+def build():
+    # 🔴 排序：按真实 Ep 号（realEp）升序；没有 realEp 的按 ep 升序
+    eps = sorted(data['eps'], key=lambda e: (e.get('realEp') or e.get('ep') or 0, e.get('ep') or 0))
+    out = os.path.join(BASE, os.path.dirname(SINGLE_OUT)) or os.path.join(BASE, 'output')
+    os.makedirs(out, exist_ok=True)
+
+    # ---------- ① 单文件离线版（一个 HTML，数据全内联，断网可读） ----------
+    payload = {'eps': eps}
+    inj_single = ("window.SHUN_MODE='single';\nwindow.SHUN="
+                  + json.dumps(payload, ensure_ascii=False, separators=(',', ':')) + ';')
+    p1 = os.path.join(BASE, SINGLE_OUT)
+    with open(p1, 'w', encoding='utf-8') as f:
+        f.write(TEMPLATE % (CSS, inj_single, JS))
+    print('✅ 单文件离线版 %s（%.0f KB）' % (p1, os.path.getsize(p1) / 1024))
+
+    # ---------- ② 站点版（按集懒加载，首屏只 ~60KB） ----------
+    site = os.path.join(BASE, SITE_DIR)
+    datadir = os.path.join(site, 'data')
+    if os.path.isdir(site):
+        shutil.rmtree(site)
+    os.makedirs(datadir, exist_ok=True)
+    idx = {'eps': []}
+    for e in eps:
+        one = {k: e[k] for k in ('tag', 'ep', 'title', 'desc', 'dur', 'audio')}
+        if e.get('realEp'): one['realEp'] = e['realEp']      # 官方真实集号（显示用）
+        one['sents'] = e['sents']
+        with open(os.path.join(datadir, e['tag'] + '.json'), 'w', encoding='utf-8') as f:
+            json.dump(one, f, ensure_ascii=False, separators=(',', ':'))
+        one_idx = {'tag': e['tag'], 'ep': e['ep'], 'title': e['title'],
+                   'desc': e['desc'], 'dur': e['dur'], 'audio': e['audio'],
+                   'n': len(e['sents'])}
+        if e.get('realEp'): one_idx['realEp'] = e['realEp']
+        idx['eps'].append(one_idx)
+    with open(os.path.join(datadir, 'index.json'), 'w', encoding='utf-8') as f:
+        json.dump(idx, f, ensure_ascii=False, separators=(',', ':'))
+    with open(os.path.join(site, 'index.html'), 'w', encoding='utf-8') as f:
+        f.write(TEMPLATE % (CSS, "window.SHUN_MODE='site';", JS))
+    ip = os.path.join(datadir, 'index.json')
+    total = sum(os.path.getsize(os.path.join(datadir, x)) for x in os.listdir(datadir))
+    print('✅ 站点版 %s/index.html（首屏 %.0f KB；13 集数据共 %.1f MB，按需取）'
+          % (site, os.path.getsize(os.path.join(site, 'index.html')) / 1024, total / 1048576))
+    return p1
+
+if __name__ == '__main__':
+    build()

@@ -115,6 +115,43 @@ try:
         pg.locator('#sheetClose').click()
         pg.wait_for_timeout(300)
 
+        print('\n【3.5】横向溢出（墨水屏 412px：长块必须换行，不能被截断）')
+        over = pg.evaluate("""() => {
+          const bad = {over: 0, tight: 0, mis: 0, total: 0};
+          document.querySelectorAll('.frame').forEach(f => {
+            bad.total++;
+            if (f.classList.contains('tight')) bad.tight++;
+            const fbs = f.querySelectorAll('.fb');
+            for (let k=0;k<fbs.length;k++){
+              if (fbs[k].getBoundingClientRect().right > window.innerWidth + 1){ bad.over++; break; }
+            }
+            const fls = f.querySelectorAll('.fl');
+            for (let i=0;i<Math.min(fbs.length,fls.length);i++){
+              const a=fbs[i].getBoundingClientRect(), c=fls[i].getBoundingClientRect();
+              if (Math.abs((a.left+a.width/2)-(c.left+c.width/2)) > 2) bad.mis++;
+            }
+          });
+          return bad;
+        }""")
+        print('     ', json.dumps(over))
+        chk(over['over'] == 0, '主区无横向溢出（块被换行，不截断）', '溢出 %d 行' % over['over'])
+        chk(over['mis'] == 0, '角色标签仍水平居中于对应块', '错位 %d' % over['mis'])
+        chk(not pg.evaluate("()=>document.documentElement.scrollWidth>window.innerWidth+1"),
+            '页面无横向滚动条')
+        # 弹窗内同样
+        pg.locator('.cue').first.click(); pg.wait_for_timeout(700)
+        sh = pg.evaluate("""() => {
+          const s=document.getElementById('sheet'), lim=s.getBoundingClientRect().right;
+          let over=0;
+          document.querySelectorAll('#sheet .frame').forEach(f=>{
+            const fb=f.querySelectorAll('.fb');
+            for(let k=0;k<fb.length;k++){ if(fb[k].getBoundingClientRect().right>lim-2){over++;break;} }
+          });
+          return over;
+        }""")
+        chk(sh == 0, '弹窗内无横向溢出', '溢出 %d' % sh)
+        pg.locator('#sheetClose').click(); pg.wait_for_timeout(300)
+
         print('\n【4】墨水屏（黑白）下四类仍可区分')
         pg.click('#btnK')
         pg.wait_for_timeout(500)
