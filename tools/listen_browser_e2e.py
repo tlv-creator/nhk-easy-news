@@ -14,7 +14,7 @@
     python3 browser_e2e.py [BASE_URL]
     BASE_URL 默认 = 线上永久入口
 """
-import sys, os, re, json, time, tempfile, urllib.request, urllib.error
+import sys, os, re, json, time, urllib.request, urllib.error
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 
@@ -28,86 +28,18 @@ if LOCKED:
     sys.argv = [a for a in sys.argv if a != "--locked"]
 SU = "https://lszwxcmvcvbraqtrtgon.supabase.co"
 AK = os.environ.get("SB_KEY", "sb_publishable_3LuLZXWMadqYH3SLYOenig_ECHa51Mo")
-# 🔴🔴 公开仓库里**不写死真实学生的学号/姓名**（仓库是 public，Pages 公开可读）
-#    ⇒ 运行时再取：① 环境变量 E2E_SID / E2E_NAME  ② 否则取随站发布的静态名册第一条
-#    （名册本来就对 anon 可读，不算新增暴露；取到的还是同一个学生，行为完全不变）
-#    ③ 两条路都拿不到 ⇒ exit 9（**环境没搭起来**，不是断言红）
-ROSTER_URL = ("https://tlv-creator.github.io/nhk-easy-news/listening/app/data/roster.js")
+# 🔴 身份解析 + 落盘目录：**唯一权威实现**在 tools/listen_e2e_identity.py
+#    （之前这里和 listen_browser_e2e.py 各存了一份逐字相同的实现 ⇒ 改一处忘另一处就会漂移）
+#    ⇒ 三个文件要**一起拉**（本脚本 + 那个模块）；自测：`python3 tools/listen_e2e_identity.py`
+try:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from listen_e2e_identity import pick_identity, WORKDIR, SHOTS, SNAPS
+except ImportError:
+    print("❌ 缺少 tools/listen_e2e_identity.py ⇒ 把三个文件一起拉下来（脚本 + 共用模块）")
+    raise
 
-# 🔴 落盘目录：**默认写系统临时目录**
-#    （快照里是**真实学生记录** ⇒ 绝不能落在仓库里被人 commit 进去 ⇒ 不是仓库同目录）
-#    要换位置：E2E_WORKDIR=/your/dir
-WORKDIR = os.environ.get("E2E_WORKDIR") or os.path.join(tempfile.gettempdir(), "listen-e2e")
-SHOTS = os.path.join(WORKDIR, "shots")
-SNAPS = os.path.join(WORKDIR, "snapshots")
+SID, NAME = pick_identity()
 
-
-def _roster_entries():
-    """取静态名册（本地仓库版 → 线上版）⇒ 返回 list；取不到返回 None"""
-    here = os.path.dirname(os.path.abspath(__file__))
-    texts = []
-    for p in (os.path.join(here, "..", "listening", "app", "data", "roster.js"),
-              os.path.join(here, "roster.js")):
-        try:
-            texts.append(open(p, encoding="utf-8").read())
-        except Exception:
-            pass
-    if not texts:
-        try:
-            with urllib.request.urlopen(ROSTER_URL, timeout=20) as r:
-                texts.append(r.read().decode("utf-8", "replace"))
-        except Exception:
-            pass
-    for txt in texts:
-        m = re.search(r'window\.LISTEN_ROSTER_FALLBACK\s*=\s*(\[.*?\])\s*;', txt, re.S)
-        if not m:
-            continue
-        try:
-            arr = json.loads(m.group(1))
-        except Exception:
-            continue
-        if arr:
-            return arr
-    return None
-
-
-def _first_roster_entry():
-    """名册第一条（默认就演这名学生）"""
-    arr = _roster_entries()
-    return arr[0] if arr else None
-
-
-def _pick_identity():
-    """🔴 只给 E2E_SID 时，**去名册里查这个学号对应的姓名** ——
-       原来会把它和「名册第一条的姓名」凑成一对 ⇒ 登录必然报「姓名与名册不一致」
-       ⇒ 现在：两个都给了就直接用；只给一个就去名册里配另一个；都不给就取第一条。"""
-    sid = os.environ.get("E2E_SID", "").strip()
-    nm = os.environ.get("E2E_NAME", "").strip()
-    if sid and nm:
-        return sid, nm
-    arr = _roster_entries()
-    if not arr:
-        print("❌ 拿不到名册（本地没有 listening/app/data/roster.js，线上也取不到）")
-        print("   ⇒ 没法登录 ⇒ 本次验收**无效**（不是断言红）")
-        print("   临时指定：E2E_SID=<学号> E2E_NAME=<姓名> python3 %s" % os.path.basename(__file__))
-        sys.exit(9)
-    if sid:
-        hit = next((s for s in arr if str(s.get("id")) == sid), None)
-        if not hit:
-            print("❌ 名册里没有学号 %s ⇒ 换个 E2E_SID，或两个都设（E2E_SID + E2E_NAME）" % sid)
-            sys.exit(9)
-        return sid, str(hit.get("name"))
-    if nm:
-        hit = next((s for s in arr if str(s.get("name")) == nm), None)
-        if not hit:
-            print("❌ 名册里没有姓名 %s ⇒ 换个 E2E_NAME，或两个都设（E2E_SID + E2E_NAME）" % nm)
-            sys.exit(9)
-        return str(hit.get("id")), nm
-    first = arr[0]
-    return str(first.get("id")), str(first.get("name"))
-
-
-SID, NAME = _pick_identity()
 MARK = "浏览器闭环测试"
 CHROME = "/root/.cache/ms-playwright/chromium-1243/chrome-linux/chrome"
 
