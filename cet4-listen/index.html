@@ -395,6 +395,12 @@ details.fold[open]>summary::after{content:"收起"}
       if(curAudio && curAudio!==au && !curAudio.paused){ try{curAudio.pause();}catch(e){} }
       curAudio=au;
     }
+    /* 按钮状态：下载慢的时候必须给出反馈，否则用户以为没反应 */
+    function syncBtn(){
+      if(au.ended){ btnP.textContent="重播"; return; }
+      if(au.paused){ btnP.textContent="播放"; return; }
+      btnP.textContent=(au.readyState>=3)?"暂停":"加载中…";
+    }
     function play(fromT){
       takeOver();
       if(fromT!=null){
@@ -402,6 +408,7 @@ details.fold[open]>summary::after{content:"收起"}
         else pending=fromT;
       }
       if(au.readyState===0){ au.preload="metadata"; au.load(); }
+      syncBtn();
       var pr=au.play();
       if(pr&&pr.catch) pr.catch(function(){ toast("浏览器拦住了自动播放，再点一次「播放」"); });
     }
@@ -415,14 +422,18 @@ details.fold[open]>summary::after{content:"收起"}
 
     au.addEventListener("loadedmetadata",function(){
       if(pending!=null){ au.currentTime=pending; pending=null; }
+      syncBtn();
     });
     au.addEventListener("timeupdate",function(){
       paint(au.currentTime);
       markCurrent(sec, au.currentTime);
     });
-    au.addEventListener("play",function(){ btnP.textContent="暂停"; });
-    au.addEventListener("pause",function(){ btnP.textContent="播放"; });
-    au.addEventListener("ended",function(){ btnP.textContent="重播"; paint(dur); });
+    au.addEventListener("play",syncBtn);
+    au.addEventListener("playing",syncBtn);
+    au.addEventListener("pause",syncBtn);
+    au.addEventListener("ended",syncBtn);
+    au.addEventListener("waiting",syncBtn);
+    au.addEventListener("canplay",syncBtn);
     au.addEventListener("error",function(){ toast("音频没加载出来，检查一下网络"); });
 
     btnP.addEventListener("click",function(){
@@ -473,23 +484,26 @@ details.fold[open]>summary::after{content:"收起"}
     return {el:el, au:au, play:play, pause:pause};
   }
 
-  /* 本地时间 → 句子（本地时间 = 原曲时间 - ss） */
-  function sentenceAt(sec,lt){
+  /* 本地时间 → 句子
+     🔴 句子首尾相接（上一句的 e == 下一句的 s），而 seek 到的目标就是某个句首
+     ⇒ 浮点误差会让「当前句」落到上一句。判据取「最后一条已经开始的句子」，
+        并且只标记一条（不许两条同时带竖条）。 */
+  function startedSentence(sec,lt,tol){
     var ss=(typeof sec.audio.ss==="number")?sec.audio.ss:(sec.audio.start-0.4);
     var best=null;
     (sec.sentences||[]).forEach(function(s){
-      var a=s.s-ss, b=s.e-ss;
-      if(lt>=a-0.2 && lt<b){ if(!best||a>best.s) best=s; }
+      if(s.s-ss<=lt+(tol||0)) best=s;
     });
     return best;
   }
+  function sentenceAt(sec,lt){ return startedSentence(sec,lt,0.05); }
   function markCurrent(sec,lt){
     var ss=(typeof sec.audio.ss==="number")?sec.audio.ss:(sec.audio.start-0.4);
+    var cur=startedSentence(sec,lt,0.08);
     (sec.sentences||[]).forEach(function(s){
       var el=document.getElementById("s-"+curSet+"-"+sec.id+"-"+s.s);
       if(!el) return;
-      var a=s.s-ss, b=s.e-ss;
-      if(lt>=a && lt<b) el.classList.add("cur");
+      if(cur && s.s===cur.s) el.classList.add("cur");
       else el.classList.remove("cur");
     });
   }
