@@ -17,7 +17,8 @@
     "start": 38.84,
     "end": 154.52,
     "dur": 116.48,
-    "kb": 455
+    "kb": 455,
+    "ss": 38.44
    },
    "sentences": [
     {
@@ -90,10 +91,10 @@
      "en": "Why was Keith Stonehouse left with a $1,000 bill?",
      "cn": "",
      "opts": {
-      "A": "He had bought meals wi由 his ouline food or.dering account.",
-      "B": "1丑s son had used his cell phone to pay f，田 playing a g副卫e",
-      "C": "His son had ordered food 齿。，m several restaurants.",
-      "D": "He had dined out at a fa皿QUS five-star restaurant."
+      "A": "He had bought meals with his online food ordering account.",
+      "B": "His son had used his cell phone to pay for playing a game.",
+      "C": "His son had ordered food from several restaurants.",
+      "D": "He had dined out at a famous five-star restaurant."
      },
      "ans": "C",
      "exp": ""
@@ -103,10 +104,10 @@
      "en": "What does the news report say Keith Stonehouse is planning to do?",
      "cn": "",
      "opts": {
-      "A": "T四ch his son a lesson.",
-      "C": "Ask his neighbors for help.",
+      "A": "Teach his son a lesson.",
       "B": "Change his password.",
-      "D": "Buy a bigger re缸gerat田-"
+      "C": "Ask his neighbors for help.",
+      "D": "Buy a bigger refrigerator."
      },
      "ans": "B",
      "exp": ""
@@ -126,7 +127,8 @@
     "start": 154.52,
     "end": 256.19,
     "dur": 102.47,
-    "kb": 400
+    "kb": 400,
+    "ss": 154.12
    },
    "sentences": [
     {
@@ -209,10 +211,10 @@
      "en": "What did animal behavior experts do according to the news report?",
      "cn": "",
      "opts": {
-      "A": "τ\"hey examined how visitors aff国腼d animal behaviour in z∞s.",
-      "B": "τ\"hey studied when 由e best time 阳 feed animals in public was.",
-      "C": "τ\"hey studied how animals adap恒d themselves 阳 life 皿 zoos.",
-      "D": "They examined what behaviours indica面dani皿al boredo皿."
+      "A": "They examined how visitors affected animal behaviour in zoos.",
+      "B": "They studied when the best time to feed animals in public was.",
+      "C": "They studied how animals adapted themselves to life in zoos.",
+      "D": "They examined what behaviours indicated animal boredom."
      },
      "ans": "A",
      "exp": ""
@@ -222,12 +224,12 @@
      "en": "Why have some animal species likely become used through the presence of humans?",
      "cn": "",
      "opts": {
-      "A": "τ\"hey socialise wi也 zookeepers 困 well as wi由 each 0也已r.",
-      "B": "τ\"hey show good adaptability to living with hurnans.",
-      "C": "τ\"hey have been kept as pe臼 by humans.",
-      "D": "τ\"hey have been born and raised in zoos."
+      "A": "They socialise with zookeepers as well as with each other.",
+      "B": "They show good adaptability to living with humans.",
+      "C": "They have been kept as pets by humans.",
+      "D": "They have been born and raised in zoos."
      },
-     "ans": "B",
+     "ans": "D",
      "exp": ""
     }
    ]
@@ -246,7 +248,8 @@
     "start": 256.19,
     "end": 462.61,
     "dur": 207.22,
-    "kb": 810
+    "kb": 810,
+    "ss": 255.79
    },
    "sentences": [
     {
@@ -405,12 +408,12 @@
      "en": "What is Denver doing with its popular electric bike incentive program?",
      "cn": "",
      "opts": {
-      "A": "Adjus由19 it.",
+      "A": "Adjusting it.",
       "B": "Suspending it.",
-      "C": "Reevalua咀ng it",
+      "C": "Reevaluating it.",
       "D": "Expanding it."
      },
-     "ans": "C",
+     "ans": "B",
      "exp": ""
     },
     {
@@ -418,10 +421,10 @@
      "en": "How did the Electric Bike Incentive Program benefit residents?",
      "cn": "",
      "opts": {
-      "A": "They could buy an electric bike f，哑 $400 in A回1.",
-      "B": "τ\"hey co叫d buy 也.eir first electric bike at a discount.",
-      "C": "τ\"hey could e:咱oy 仕ee after-sale servi四 for 也eir purch田e.",
-      "D": "They could get $ 1 ， 200 齿。m govemment 且mds 汪也.ey qualified"
+      "A": "They could buy an electric bike for $400 in April.",
+      "B": "They could buy their first electric bike at a discount.",
+      "C": "They could enjoy free after-sale service for their purchase.",
+      "D": "They could get $1,200 from government funds if they qualified."
      },
      "ans": "D",
      "exp": ""
@@ -431,10 +434,10 @@
      "en": "What does the City of Denver expect to do early next year?",
      "cn": "",
      "opts": {
-      "A": "Put 400 more el，叫c bikes on its s阳也.",
-      "B": "In，口ease 也e program funding by 8 阳'Cent.",
+      "A": "Put 400 more electric bikes on its streets.",
+      "B": "Increase the program funding by 8 percent.",
       "C": "Resume its electric bike incentive program.",
-      "D": "Invest millions of dollars inωthe local ∞onomy."
+      "D": "Invest millions of dollars into the local economy."
      },
      "ans": "C",
      "exp": ""
@@ -456,7 +459,8 @@
     "start": 462.61,
     "end": 647.25,
     "dur": 185.44,
-    "kb": 724
+    "kb": 724,
+    "ss": 462.21
    },
    "sentences": [
     {
@@ -641,9 +645,9 @@
      "cn": "",
      "opts": {
       "A": "The coin collection.",
-      "C": "咀le ancient ornaments.",
-      "B": "The primitiveωols.",
-      "D": "The 2 ，则-year-old clothes."
+      "B": "The primitive tools.",
+      "C": "The ancient ornaments.",
+      "D": "The 2,000-year-old clothes."
      },
      "ans": "A",
      "exp": ""
@@ -653,10 +657,10 @@
      "en": "What does the woman say about the old city centre?",
      "cn": "",
      "opts": {
-      "A": "It is charming wi也 E缸。w but beau曲1 s田础.",
-      "B": "It a阳ts 四i阳台omev町 comer of the world.",
-      "C": "It has flowers displayed around 也 Trevi Foun回n.",
-      "D": "It is more a阳ctive 也m 也e pictures in 伊idebooks."
+      "A": "It is charming with narrow but beautiful streets.",
+      "B": "It attracts visitors from every corner of the world.",
+      "C": "It has flowers displayed around the Trevi Fountain.",
+      "D": "It is more attractive than the pictures in guidebooks."
      },
      "ans": "A",
      "exp": ""
@@ -666,10 +670,10 @@
      "en": "What does the man say about the square with the Spanish steps?",
      "cn": "",
      "opts": {
-      "A": "It is covered wi也 wild grass.",
-      "C": "It is located aw町 from an old church.",
-      "B": "It is very famous and pre句.",
-      "D": "It is surrounded by Spani血-style houses."
+      "A": "It is covered with wild grass.",
+      "B": "It is very famous and pretty.",
+      "C": "It is located away from an old church.",
+      "D": "It is surrounded by Spanish-style houses."
      },
      "ans": "B",
      "exp": ""
@@ -680,9 +684,9 @@
      "cn": "",
      "opts": {
       "A": "Ask Kathy what her plan is.",
-      "B": "Tell Kathy Mike will join 由em.",
-      "C": "Ask Kathy if she' d likeωsee the square.",
-      "D": "Tell Kathy Mike would like ωhave a change."
+      "B": "Tell Kathy Mike will join them.",
+      "C": "Ask Kathy if she'd like to see the square.",
+      "D": "Tell Kathy Mike would like to have a change."
      },
      "ans": "C",
      "exp": ""
@@ -704,7 +708,8 @@
     "start": 647.25,
     "end": 838.34,
     "dur": 191.89,
-    "kb": 750
+    "kb": 750,
+    "ss": 646.85
    },
    "sentences": [
     {
@@ -858,9 +863,9 @@
      "en": "What advice does the man want to get from the woman?",
      "cn": "",
      "opts": {
-      "A": "How ωfit int，。他 bigger picture.",
-      "C": "How ωcreate a solid first impression.",
-      "B": "How to get on wi也 colleagues.",
+      "A": "How to fit into the bigger picture.",
+      "B": "How to get on with colleagues.",
+      "C": "How to create a solid first impression.",
       "D": "How to succeed in a new job."
      },
      "ans": "D",
@@ -871,9 +876,9 @@
      "en": "What does the woman say is the most important thing for the man to do at first?",
      "cn": "",
      "opts": {
-      "A": "Get famili缸响也 d 也e details of his job description.",
-      "B": "Leam about 由e relations wi恤他吨anization.",
-      "C": "Recogn国 his own limitations and weaknesses.",
+      "A": "Get familiar with all the details of his job description.",
+      "B": "Learn about the relations within the organization.",
+      "C": "Recognize his own limitations and weaknesses.",
       "D": "Understand his role from various perspectives."
      },
      "ans": "D",
@@ -884,10 +889,10 @@
      "en": "What does the man say he is feeling a bit uneasy about?",
      "cn": "",
      "opts": {
-      "A": "L巳aming history.",
-      "C": "。因.ting repo血 for other d叩缸恤entsωu四.",
+      "A": "Learning history.",
       "B": "Meeting his boss.",
-      "D": "Leavi鸣 his ∞，workers 扭曲e presentα皿明ny."
+      "C": "Creating reports for other departments to use.",
+      "D": "Leaving his coworkers in the present company."
      },
      "ans": "B",
      "exp": ""
@@ -897,10 +902,10 @@
      "en": "What does the woman suggest the man do to gain insight about the running of the business?",
      "cn": "",
      "opts": {
-      "A": "Getωknow the decision-makers.",
-      "C": "Promote its products and services.",
-      "B": "Acquire decision-making au也ority.",
-      "D": "Ob田:rve its overall management."
+      "A": "They do not tell marketers their feeling about a product.",
+      "B": "They do not compare competing brands and prices.",
+      "C": "They are not hesitant to contradict themselves.",
+      "D": "They are not sure what they really like to buy."
      },
      "ans": "A",
      "exp": ""

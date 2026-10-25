@@ -11,153 +11,200 @@
    · 正文 30px 起，行距宽松
    · 渐变全关，描边半透明
    · 控件用文字不用图标
-   · 当前项只用左侧 4px 竖条，不变色
+   · 当前句不变色，只用左侧 4px 竖条
    ============================================================ */
 :root{
-  --fg:#000; --bg:#fff; --line:rgba(0,0,0,.32); --soft:rgba(0,0,0,.18);
-  --hl:#000;
+  --fg:#000; --bg:#fff;
+  --line:rgba(0,0,0,.34);      /* 描边半透明 */
+  --soft:rgba(0,0,0,.16);
+  --dim:rgba(0,0,0,.62);
+  --track:rgba(0,0,0,.13);     /* 进度槽 */
+  --tint:rgba(0,0,0,.05);
 }
-html.hc{ --fg:#000; --bg:#fff; --line:rgba(0,0,0,.55); --soft:rgba(0,0,0,.3); }
+html.hc{
+  --line:rgba(0,0,0,.62); --soft:rgba(0,0,0,.3);
+  --dim:rgba(0,0,0,.82); --track:rgba(0,0,0,.22); --tint:rgba(0,0,0,.09);
+}
 *{box-sizing:border-box;-webkit-text-size-adjust:100%}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--fg)}
 body{
   font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
   font-size:30px;line-height:1.75;
   padding-bottom:env(safe-area-inset-bottom);
+  -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:760px;margin:0 auto;padding:0 16px 80px}
+.wrap{max-width:720px;margin:0 auto;padding:0 14px 96px}
 
 /* ---- 顶栏 ---- */
 .top{
-  position:sticky;top:0;z-index:20;background:var(--bg);
-  border-bottom:1px solid var(--line);
-  padding:10px 0;margin-bottom:14px;
+  position:sticky;top:0;z-index:30;background:var(--bg);
+  border-bottom:1.5px solid var(--line);
+  padding:9px 0;
 }
-.top-in{max-width:760px;margin:0 auto;padding:0 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.top h1{font-size:26px;margin:0;font-weight:700;flex:1;min-width:130px}
+.top-in{max-width:720px;margin:0 auto;padding:0 14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.top h1{font-size:25px;margin:0;font-weight:700;flex:1;min-width:120px;letter-spacing:.02em}
 .btn{
-  font:inherit;font-size:24px;background:var(--bg);color:var(--fg);
-  border:1.5px solid var(--line);border-radius:8px;padding:6px 14px;cursor:pointer;
-  min-height:44px;
+  font:inherit;font-size:22px;background:var(--bg);color:var(--fg);
+  border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;cursor:pointer;
+  min-height:44px;line-height:1.5;
 }
-.btn:active{background:rgba(0,0,0,.08)}
+.btn:active{background:var(--tint)}
 .btn.on{background:var(--fg);color:var(--bg)}
 
-/* ---- 集选择 ---- */
-.sets{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+/* ---- 选集 ---- */
+.sets{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 10px}
 .set{
-  flex:1;min-width:200px;text-align:left;font:inherit;font-size:26px;
+  flex:1;min-width:210px;text-align:left;font:inherit;
   background:var(--bg);color:var(--fg);border:1.5px solid var(--line);
-  border-radius:10px;padding:12px 14px;cursor:pointer;
+  border-radius:14px;padding:12px 14px;cursor:pointer;min-height:76px;
 }
-.set b{display:block;font-size:26px}
-.set span{display:block;font-size:22px;color:rgba(0,0,0,.62);margin-top:2px}
+.set b{display:block;font-size:25px;font-weight:700;line-height:1.4}
+.set span{display:block;font-size:21px;color:var(--dim);margin-top:1px;line-height:1.5}
+.set.on{border-color:var(--fg);border-width:2.5px;padding:11px 13px}
+.set.on b::after{content:" · 已选";font-size:20px;font-weight:400;color:var(--dim)}
 
-/* ---- 题组 ---- */
-.sec{
-  border:1.5px solid var(--line);border-radius:10px;
-  margin-bottom:18px;padding:0;overflow:hidden;
+/* ---- 概要条 ---- */
+.summary{
+  font-size:21px;color:var(--dim);line-height:1.6;
+  padding:8px 2px 14px;border-bottom:1.5px solid var(--soft);margin-bottom:14px;
 }
+
+/* ---- 题组卡片 ---- */
+.sec{
+  border:1.5px solid var(--line);border-radius:14px;
+  margin-bottom:14px;overflow:hidden;background:var(--bg);
+}
+.sec.open{border-color:var(--fg);border-width:2.5px}
 .sec-h{
   display:flex;align-items:center;gap:12px;width:100%;
-  font:inherit;font-size:28px;font-weight:700;text-align:left;
-  background:var(--bg);color:var(--fg);border:0;border-bottom:1.5px solid var(--line);
-  padding:12px 14px;cursor:pointer;min-height:56px;
+  font:inherit;text-align:left;
+  background:var(--bg);color:var(--fg);border:0;
+  padding:13px 14px;cursor:pointer;min-height:64px;
 }
+.sec-h:active{background:var(--tint)}
 .sec-h .n{
-  display:inline-block;min-width:44px;height:44px;line-height:42px;text-align:center;
-  border:1.5px solid var(--line);border-radius:8px;font-size:24px;
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:58px;height:40px;padding:0 6px;
+  border:1.5px solid var(--line);border-radius:9px;font-size:21px;letter-spacing:.02em;
 }
-.sec-h .t{flex:1}
-.sec-h .m{font-size:22px;color:rgba(0,0,0,.6);font-weight:400}
-.sec-b{padding:14px}
+.sec-h .t{flex:1;font-size:27px;font-weight:700;line-height:1.4}
+.sec-h .m{display:block;font-size:20px;font-weight:400;color:var(--dim);line-height:1.5}
+.sec-h .go{
+  font-size:21px;color:var(--dim);white-space:nowrap;
+  border-left:1px solid var(--soft);padding-left:12px;margin-left:2px;
+}
+.sec-b{padding:0 14px 14px}
 
 /* ---- 播放器 ---- */
 .player{
-  border:1.5px solid var(--line);border-radius:10px;padding:12px;margin-bottom:14px;
+  border:1.5px solid var(--line);border-radius:14px;padding:12px 13px;margin:14px 0;
   background:var(--bg);
 }
-.p-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.p-time{font-size:24px;font-variant-numeric:tabular-nums;min-width:110px}
-.p-ctl{
-  font:inherit;font-size:24px;background:var(--bg);color:var(--fg);
-  border:1.5px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;min-height:44px;
+.pl-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.pl-btn{
+  font:inherit;font-size:23px;background:var(--bg);color:var(--fg);
+  border:1.5px solid var(--line);border-radius:999px;padding:6px 15px;
+  cursor:pointer;min-height:48px;line-height:1.5;
 }
-.p-ctl:active{background:rgba(0,0,0,.08)}
-.p-note{font-size:22px;color:rgba(0,0,0,.6);margin-top:8px;line-height:1.5}
+.pl-btn:active{background:var(--tint)}
+.pl-btn.main{
+  background:var(--fg);color:var(--bg);border-color:var(--fg);
+  font-weight:700;min-width:104px;padding:6px 18px;
+}
+.pl-time{margin-left:auto;font-size:23px;font-variant-numeric:tabular-nums;color:var(--dim);letter-spacing:.01em}
+
+/* 可拖动进度条 */
+.pl-bar{padding:14px 0 2px;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;outline:none}
+.pl-bar:focus-visible .pl-track{border-color:var(--fg)}
+.pl-track{position:relative;height:14px;border-radius:7px;background:var(--track);border:1.5px solid var(--line)}
+.pl-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--fg);border-radius:7px}
+.pl-thumb{
+  position:absolute;top:50%;left:0;width:24px;height:24px;margin-left:-12px;margin-top:-12px;
+  border-radius:50%;background:var(--fg);border:2.5px solid var(--bg);
+}
+.pl-bar.drag .pl-thumb{width:30px;height:30px;margin-left:-15px;margin-top:-15px}
+.pl-ticks{position:relative;height:11px;margin-top:5px}
+.pl-tick{position:absolute;top:0;width:2px;height:9px;background:var(--soft);transform:translateX(-1px)}
+.pl-note{font-size:20px;color:var(--dim);line-height:1.55;margin-top:9px}
+
+/* ---- 折叠块 ---- */
+details.fold{border-top:1.5px solid var(--soft);padding:9px 0}
+details.fold>summary{
+  font-size:24px;cursor:pointer;list-style:none;min-height:46px;
+  display:flex;align-items:center;color:var(--fg);
+}
+details.fold>summary::-webkit-details-marker{display:none}
+details.fold>summary::after{content:"展开";font-size:21px;color:var(--dim);margin-left:auto}
+details.fold[open]>summary::after{content:"收起"}
 
 /* ---- 逐句 ---- */
 .sent{
-  display:block;width:100%;text-align:left;font:inherit;font-size:28px;line-height:1.6;
+  display:block;width:100%;text-align:left;font:inherit;font-size:26px;line-height:1.62;
   background:var(--bg);color:var(--fg);border:0;border-left:4px solid transparent;
-  padding:4px 6px 4px 12px;cursor:pointer;margin:0;
+  padding:3px 4px 3px 12px;cursor:pointer;margin:0;
 }
-.sent:active{background:rgba(0,0,0,.06)}
-.sent.cur{border-left-color:var(--hl)}   /* 当前句：只加竖条，不变色 */
-.sent .no{font-size:22px;color:rgba(0,0,0,.5);margin-right:6px}
+.sent:active{background:var(--tint)}
+.sent.cur{border-left-color:var(--fg)}   /* 当前句：只加竖条，不变色 */
+.sent .no{font-size:20px;color:var(--dim);margin-right:6px;font-variant-numeric:tabular-nums}
 
-/* ---- 原文 ---- */
-.para{
-  border-left:4px solid var(--soft);padding:2px 0 2px 12px;margin:10px 0;
-  font-size:28px;line-height:1.7;
-}
-.para .no{font-size:22px;color:rgba(0,0,0,.55);margin-right:6px}
+/* ---- 原文段落 ---- */
+.para{border-left:4px solid var(--soft);padding:1px 0 1px 12px;margin:9px 0;font-size:26px;line-height:1.68}
+.para .no{font-size:20px;color:var(--dim);margin-right:6px}
 
 /* ---- 题目 ---- */
-.q{border-top:1.5px solid var(--line);padding:14px 0 4px}
+.q{border-top:1.5px solid var(--soft);padding:14px 0 6px}
 .q:first-child{border-top:0}
-.q-stem{font-size:29px;font-weight:700;line-height:1.6}
-.q-stem .cn{display:block;font-size:26px;font-weight:400;color:rgba(0,0,0,.72);margin-top:3px}
+.q-stem{font-size:27px;font-weight:700;line-height:1.58}
+.q-stem .cn{display:block;font-size:23px;font-weight:400;color:var(--dim);margin-top:2px;line-height:1.6}
 .opts{margin:10px 0 0}
 .opt{
-  display:block;width:100%;text-align:left;font:inherit;font-size:28px;line-height:1.6;
+  display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;
+  font:inherit;font-size:25px;line-height:1.58;
   background:var(--bg);color:var(--fg);border:1.5px solid var(--line);
-  border-radius:8px;padding:8px 12px;margin-bottom:8px;cursor:pointer;
-  min-height:48px;
+  border-radius:10px;padding:8px 12px;margin-bottom:8px;cursor:pointer;min-height:48px;
 }
-.opt:active{background:rgba(0,0,0,.06)}
-.opt.sel{border-color:var(--fg);border-width:2.5px}
-.opt.right{border-color:var(--fg);border-width:2.5px}
+.opt:active{background:var(--tint)}
+.opt .k{
+  flex:0 0 auto;min-width:34px;height:34px;line-height:32px;text-align:center;
+  border:1.5px solid var(--line);border-radius:8px;font-weight:700;font-size:22px;margin-top:1px;
+}
+.opt.sel{border-color:var(--fg);border-width:2.5px;padding:7px 11px}
+.opt.sel .k{background:var(--fg);color:var(--bg)}
+.opt.right .k{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .opt.wrong{border-style:dashed;border-width:2.5px}
-.opt .k{font-weight:700;margin-right:8px}
-.q-foot{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:6px 0 10px}
-.q-ans{font-size:24px}
+.q-foot{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:4px 0 8px}
+.q-ans{font-size:22px;font-weight:700}
 .exp{
-  font-size:25px;line-height:1.7;color:rgba(0,0,0,.82);
-  border:1.5px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;
-  display:none;
+  font-size:23px;line-height:1.68;color:rgba(0,0,0,.85);
+  border-left:4px solid var(--soft);border-radius:0 8px 8px 0;
+  padding:6px 0 6px 12px;margin-top:6px;display:none;
 }
 .exp.show{display:block}
-
-/* ---- 折叠 ---- */
-details.fold{border-top:1.5px solid var(--line);padding:10px 0}
-details.fold>summary{font-size:26px;cursor:pointer;list-style:none;min-height:44px;
-  display:flex;align-items:center}
-details.fold>summary::-webkit-details-marker{display:none}
-details.fold>summary::after{content:" 展开";font-size:22px;color:rgba(0,0,0,.55);margin-left:auto}
-details.fold[open]>summary::after{content:" 收起"}
 .hide{display:none!important}
+
+/* ---- toast ---- */
 #toast{
-  position:fixed;left:50%;bottom:28px;transform:translateX(-50%);
-  background:var(--fg);color:var(--bg);font-size:24px;padding:10px 18px;border-radius:8px;
-  display:none;z-index:50;max-width:88vw;
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
+  background:var(--fg);color:var(--bg);font-size:22px;padding:9px 18px;border-radius:999px;
+  display:none;z-index:60;max-width:88vw;line-height:1.5;
 }
 </style>
 </head>
 <body>
 
 <div class="top"><div class="top-in">
-  <h1>四级听力真题</h1>
+  <h1>大学英语四级 · 听力真题</h1>
   <button class="btn" id="btnAa" type="button">字号</button>
   <button class="btn" id="btnHc" type="button">高对比：关</button>
 </div></div>
 
 <div class="wrap">
   <div class="sets" id="sets"></div>
+  <div class="summary" id="summary">选一套真题开始。音频按题组切分，点哪组下哪组。</div>
   <div id="list"></div>
-  <p style="font-size:24px;color:rgba(0,0,0,.6);line-height:1.6;margin-top:24px">
-    音频按题组切分，点哪组下哪组；听过的会自动缓存在本机，第二次打开不再走流量。<br>
-    所有答案与解析默认收起，先自己作答再对照。
+  <p style="font-size:21px;color:var(--dim);line-height:1.7;margin-top:22px">
+    听过的音频会缓存在本机，第二次打开几乎不走流量。<br>
+    答案与解析默认收起，先自己作答再对照。
   </p>
 </div>
 
@@ -167,20 +214,23 @@ details.fold[open]>summary::after{content:" 收起"}
 (function(){
   "use strict";
   var ZOOM_KEY="cet4listen.zoom", HC_KEY="cet4listen.hc";
-  var baseZoom=1, curSet=null, data=null, cache={};
+  var SETS=[
+    {id:"2026-06-set1",name:"2026年6月 第1套",note:"15题 · 原版录音"},
+    {id:"2025-12-set1",name:"2025年12月 第1套",note:"15题 · 原版录音"}
+  ];
+  var curSet=null, data=null, cache={}, curAudio=null, answered=0;
 
   /* ---------- 字号 ---------- */
   function applyZoom(){
     var z=parseFloat(localStorage.getItem(ZOOM_KEY))||1;
-    baseZoom=z; document.body.style.zoom=z;
+    document.body.style.zoom=z;
     document.getElementById("btnAa").textContent="字号 "+Math.round(z*100)+"%";
   }
   document.getElementById("btnAa").addEventListener("click",function(){
     var steps=[1,1.15,1.3,1.5,1.75];
     var cur=parseFloat(localStorage.getItem(ZOOM_KEY))||1;
     var i=steps.indexOf(cur);
-    var next=steps[(i+1)%steps.length];
-    localStorage.setItem(ZOOM_KEY,next);
+    localStorage.setItem(ZOOM_KEY,steps[(i+1)%steps.length]);
     applyZoom();
   });
   /* ---------- 高对比 ---------- */
@@ -204,35 +254,34 @@ details.fold[open]>summary::after{content:" 收起"}
     toastT=setTimeout(function(){t.style.display="none";},2200);
   }
   function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function fmt(s){
+    s=Math.max(0,Math.floor(s||0));
+    var m=Math.floor(s/60), x=s%60;
+    return m+":"+(x<10?"0":"")+x;
+  }
+  function mmss(s){ return fmt(s); }
 
   /* ---------- 集列表 ---------- */
-  var SETS=[
-    {id:"2026-06-set1",name:"2026年6月 第1套",note:"15题 · 原版录音"},
-    {id:"2025-12-set1",name:"2025年12月 第1套",note:"15题 · 原版录音"}
-  ];
   function renderSets(){
     var box=document.getElementById("sets");
     box.innerHTML="";
     SETS.forEach(function(s){
       var b=document.createElement("button");
-      b.className="set"; b.type="button";
+      b.className="set"+(curSet===s.id?" on":""); b.type="button";
       b.innerHTML="<b>"+esc(s.name)+"</b><span>"+esc(s.note)+"</span>";
       b.addEventListener("click",function(){ load(s.id); });
       box.appendChild(b);
     });
   }
-
   function load(id){
-    if(cache[id]){ data=cache[id]; curSet=id; render(); return; }
+    if(cache[id]){ data=cache[id]; curSet=id; answered=0; render(); return; }
     fetch("data/"+id+".json",{cache:"no-store"}).then(function(r){
       if(!r.ok) throw new Error("HTTP "+r.status);
       return r.json();
     }).then(function(j){
-      cache[id]=j; data=j; curSet=id; render();
+      cache[id]=j; data=j; curSet=id; answered=0; render();
       window.scrollTo(0,0);
-    }).catch(function(e){
-      toast("加载失败："+e.message);
-    });
+    }).catch(function(e){ toast("加载失败："+e.message); });
   }
 
   /* ---------- 渲染 ---------- */
@@ -245,78 +294,202 @@ details.fold[open]>summary::after{content:" 收起"}
       d.className="sec";
       var h=document.createElement("button");
       h.className="sec-h"; h.type="button";
+      var dur=sec.audio?Math.round(sec.audio.dur):0;
       h.innerHTML='<span class="n">'+(sec.qs&&sec.qs.length?sec.qs[0]+"-"+sec.qs[sec.qs.length-1]:"")+
-                  '</span><span class="t">'+esc(sec.title)+'</span>'+
-                  '<span class="m">'+(sec.audio?Math.round(sec.audio.dur)+"秒":"")+'</span>';
+                  '</span><span class="t">'+esc(sec.title)+
+                  '<span class="m">'+fmt(dur)+' · '+(sec.questions||[]).length+' 题</span></span>'+
+                  '<span class="go">点开播放</span>';
       var body=document.createElement("div");
-      body.className="sec-b";
-      body.appendChild(player(sec));
+      body.className="sec-b"; body.hidden=true;
+      d.appendChild(h); d.appendChild(body);
+      h.addEventListener("click",function(){
+        if(body.hidden){ openSection(sec,d,h,body); }
+        else{ closeSection(sec,d,h,body); }
+      });
+      box.appendChild(d);
+    });
+    updateSummary();
+  }
+  function openSection(sec,card,h,body){
+    if(!sec._built){
+      sec._built=true;
+      sec._pl=makePlayer(sec);
+      body.appendChild(sec._pl.el);
       body.appendChild(sentBlock(sec));
       if(sec.paras&&sec.paras.length) body.appendChild(paraBlock(sec));
       if(sec.questions&&sec.questions.length) body.appendChild(qBlock(sec));
-      h.addEventListener("click",function(){
-        var open=body.style.display!=="none";
-        body.style.display=open?"none":"block";
-      });
-      d.appendChild(h); d.appendChild(body);
-      box.appendChild(d);
-    });
+    }
+    body.hidden=false;
+    card.classList.add("open");
+    h.querySelector(".go").textContent="收起";
+    /* 🔴 点开就播放：这是用户明确要的交互 */
+    sec._pl.play(null);
+  }
+  function closeSection(sec,card,h,body){
+    body.hidden=true;
+    card.classList.remove("open");
+    h.querySelector(".go").textContent="点开播放";
+    if(sec._pl) sec._pl.pause();
+  }
+  function updateSummary(){
+    var el=document.getElementById("summary");
+    if(!data){ el.textContent="选一套真题开始。音频按题组切分，点哪组下哪组。"; return; }
+    var secs=(data.sections||[]).length;
+    var nq=0; (data.sections||[]).forEach(function(s){ nq+=(s.questions||[]).length; });
+    var d=Math.round(data.total_dur||0);
+    el.textContent="共 "+secs+" 组 · "+nq+" 题 · 音频 "+mmss(d)+" · 已答 "+answered+" 题";
   }
 
-  /* ---------- 播放器 ---------- */
-  function fmt(s){
-    s=Math.max(0,Math.floor(s||0));
-    var m=Math.floor(s/60), x=s%60;
-    return m+":"+(x<10?"0":"")+x;
-  }
-  function player(sec){
-    var wrap=document.createElement("div");
-    wrap.className="player";
+  /* ---------- 播放器（可拖动进度条 + 点开就播） ---------- */
+  function makePlayer(sec){
+    var dur=sec.audio.dur;
+    /* 🔴 切片起点：音频是按 [-0.4s, +0.4s] 切的，所以片内 0 秒 = 原曲 ss 秒。
+       句子的时间是原曲时间 ⇒ 本地时间 = 句子时间 - ss（以前直接用原曲时间 ⇒ 整体偏移 38 秒） */
+    var ss=(typeof sec.audio.ss==="number")?sec.audio.ss:(sec.audio.start-0.4);
+    var el=document.createElement("div");
+    el.className="player";
     var au=document.createElement("audio");
-    au.preload="none";
-    au.src=sec.audio.file;
-    var row=document.createElement("div");
-    row.className="p-row";
-    var btnPlay=document.createElement("button");
-    btnPlay.className="p-ctl"; btnPlay.type="button"; btnPlay.textContent="播放";
-    var btnR=document.createElement("button");
-    btnR.className="p-ctl"; btnR.type="button"; btnR.textContent="重听本句";
-    var t=document.createElement("span");
-    t.className="p-time"; t.textContent="0:00 / "+fmt(sec.audio.dur);
-    row.appendChild(btnPlay); row.appendChild(btnR); row.appendChild(t);
-    var note=document.createElement("div");
-    note.className="p-note";
-    note.textContent="整组共 "+Math.round(sec.audio.dur)+" 秒 · "+sec.audio.kb+" KB · 点句子可单句重听";
-    wrap.appendChild(row); wrap.appendChild(note);
-    wrap.appendChild(au);
+    au.preload="none"; au.src=sec.audio.file; au.setAttribute("playsinline","");
+    el.appendChild(au);
 
+    var row=document.createElement("div"); row.className="pl-row";
+    var btnP=document.createElement("button");
+    btnP.className="pl-btn main"; btnP.type="button"; btnP.textContent="播放";
+    var btnR=document.createElement("button");
+    btnR.className="pl-btn"; btnR.type="button"; btnR.textContent="重听本句";
+    var tm=document.createElement("span");
+    tm.className="pl-time"; tm.textContent="0:00 / "+fmt(dur);
+    row.appendChild(btnP); row.appendChild(btnR); row.appendChild(tm);
+
+    var bar=document.createElement("div");
+    bar.className="pl-bar"; bar.tabIndex=0;
+    bar.setAttribute("role","slider");
+    bar.setAttribute("aria-label","播放进度，可拖动或用左右方向键");
+    var track=document.createElement("div"); track.className="pl-track";
+    var fill=document.createElement("div"); fill.className="pl-fill";
+    var thumb=document.createElement("div"); thumb.className="pl-thumb";
+    track.appendChild(fill); track.appendChild(thumb);
+    var ticks=document.createElement("div"); ticks.className="pl-ticks";
+    (sec.sentences||[]).forEach(function(s){
+      var d=document.createElement("span");
+      d.className="pl-tick";
+      var r=(s.s-ss)/dur;
+      d.style.left=(Math.min(1,Math.max(0,r))*100)+"%";
+      ticks.appendChild(d);
+    });
+    bar.appendChild(track); bar.appendChild(ticks);
+
+    var note=document.createElement("div");
+    note.className="pl-note";
+    note.textContent="整组 "+Math.round(dur)+" 秒 · "+sec.audio.kb+" KB · 拖动进度条定位 · 点句子从该句开始播";
+    el.appendChild(row); el.appendChild(bar); el.appendChild(note);
+
+    var pending=null;
+    function paint(t){
+      var r=dur>0?Math.min(1,Math.max(0,t/dur)):0;
+      fill.style.width=(r*100)+"%";
+      thumb.style.left=(r*100)+"%";
+      tm.textContent=fmt(t)+" / "+fmt(dur);
+    }
+    function takeOver(){
+      if(curAudio && curAudio!==au && !curAudio.paused){ try{curAudio.pause();}catch(e){} }
+      curAudio=au;
+    }
+    function play(fromT){
+      takeOver();
+      if(fromT!=null){
+        if(au.readyState>=1) au.currentTime=fromT;
+        else pending=fromT;
+      }
+      if(au.readyState===0){ au.preload="metadata"; au.load(); }
+      var pr=au.play();
+      if(pr&&pr.catch) pr.catch(function(){ toast("浏览器拦住了自动播放，再点一次「播放」"); });
+    }
+    function pause(){ try{au.pause();}catch(e){} }
+    function seekLocal(t){
+      if(t<0) t=0; if(t>dur) t=dur;
+      paint(t);
+      if(au.readyState>=1) au.currentTime=t;
+      else pending=t;
+    }
+
+    au.addEventListener("loadedmetadata",function(){
+      if(pending!=null){ au.currentTime=pending; pending=null; }
+    });
     au.addEventListener("timeupdate",function(){
-      t.textContent=fmt(au.currentTime)+" / "+fmt(sec.audio.dur);
+      paint(au.currentTime);
       markCurrent(sec, au.currentTime);
     });
-    au.addEventListener("ended",function(){ btnPlay.textContent="重播"; });
-    btnPlay.addEventListener("click",function(){
-      if(au.paused){ au.play(); btnPlay.textContent="暂停"; }
-      else { au.pause(); btnPlay.textContent="继续"; }
+    au.addEventListener("play",function(){ btnP.textContent="暂停"; });
+    au.addEventListener("pause",function(){ btnP.textContent="播放"; });
+    au.addEventListener("ended",function(){ btnP.textContent="重播"; paint(dur); });
+    au.addEventListener("error",function(){ toast("音频没加载出来，检查一下网络"); });
+
+    btnP.addEventListener("click",function(){
+      if(au.paused){ play(au.currentTime>0?au.currentTime:null); }
+      else { pause(); }
     });
     btnR.addEventListener("click",function(){
-      var cur=lastSpoken(sec, au.currentTime);
-      if(cur){ au.currentTime=cur.s; au.play(); btnPlay.textContent="暂停"; }
-      else toast("先播放一下再点重听");
+      var cur=sentenceAt(sec, au.currentTime);
+      if(cur){ play(cur.s-ss); }
+      else toast("先播一下，再点「重听本句」");
     });
-    return wrap;
+
+    /* ---- 拖动进度条（指针事件：鼠标 + 手指都支持） ---- */
+    var dragging=false;
+    function ratioAt(e){
+      var r=track.getBoundingClientRect();
+      if(!r.width) return 0;
+      return Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
+    }
+    bar.addEventListener("pointerdown",function(e){
+      e.preventDefault();
+      dragging=true; bar.classList.add("drag");
+      try{ bar.setPointerCapture(e.pointerId); }catch(_){}
+      seekLocal(ratioAt(e)*dur);
+    });
+    bar.addEventListener("pointermove",function(e){
+      if(!dragging) return;
+      e.preventDefault();
+      seekLocal(ratioAt(e)*dur);
+    });
+    function endDrag(e){
+      if(!dragging) return;
+      dragging=false; bar.classList.remove("drag");
+      try{ bar.releasePointerCapture(e.pointerId); }catch(_){}
+    }
+    bar.addEventListener("pointerup",endDrag);
+    bar.addEventListener("pointercancel",endDrag);
+    bar.addEventListener("keydown",function(e){
+      var d=0;
+      if(e.key==="ArrowRight"||e.key==="ArrowUp") d=5;
+      else if(e.key==="ArrowLeft"||e.key==="ArrowDown") d=-5;
+      else if(e.key===" "||e.key==="Enter"){ e.preventDefault(); btnP.click(); return; }
+      else return;
+      e.preventDefault();
+      play(Math.min(dur,Math.max(0,(au.currentTime||0)+d)));
+    });
+
+    return {el:el, au:au, play:play, pause:pause};
   }
 
-  function lastSpoken(sec,cur){
+  /* 本地时间 → 句子（本地时间 = 原曲时间 - ss） */
+  function sentenceAt(sec,lt){
+    var ss=(typeof sec.audio.ss==="number")?sec.audio.ss:(sec.audio.start-0.4);
     var best=null;
-    (sec.sentences||[]).forEach(function(s){ if(s.s<=cur+0.05) best=s; });
+    (sec.sentences||[]).forEach(function(s){
+      var a=s.s-ss, b=s.e-ss;
+      if(lt>=a-0.2 && lt<b){ if(!best||a>best.s) best=s; }
+    });
     return best;
   }
-  function markCurrent(sec,cur){
+  function markCurrent(sec,lt){
+    var ss=(typeof sec.audio.ss==="number")?sec.audio.ss:(sec.audio.start-0.4);
     (sec.sentences||[]).forEach(function(s){
       var el=document.getElementById("s-"+curSet+"-"+sec.id+"-"+s.s);
       if(!el) return;
-      if(cur>=s.s && cur<s.e) el.classList.add("cur");
+      var a=s.s-ss, b=s.e-ss;
+      if(lt>=a && lt<b) el.classList.add("cur");
       else el.classList.remove("cur");
     });
   }
@@ -335,9 +508,9 @@ details.fold[open]>summary::after{content:" 收起"}
       b.id="s-"+curSet+"-"+sec.id+"-"+x.s;
       b.innerHTML='<span class="no">'+(i+1)+'</span>'+esc(x.t);
       b.addEventListener("click",function(){
-        var au=document.querySelector("audio[src='"+sec.audio.file+"']");
-        if(!au) return;
-        au.currentTime=x.s; au.play();
+        if(!sec._pl) return;
+        var ss=(typeof sec.audio.ss==="number")?sec.audio.ss:(sec.audio.start-0.4);
+        sec._pl.play(x.s-ss);
       });
       box.appendChild(b);
     });
@@ -377,12 +550,12 @@ details.fold[open]>summary::after{content:" 收起"}
       ["A","B","C","D"].forEach(function(k){
         var b=document.createElement("button");
         b.type="button"; b.className="opt";
-        b.innerHTML='<span class="k">'+k+')</span>'+esc((q.opts||{})[k]||"");
+        b.innerHTML='<span class="k">'+k+'</span><span class="tx">'+esc((q.opts||{})[k]||"")+'</span>';
         b.addEventListener("click",function(){
           if(d.getAttribute("data-done")) return;
           Object.keys(buttons).forEach(function(x){buttons[x].classList.remove("sel");});
           b.classList.add("sel");
-          // 判对错
+          answered++; updateSummary();
           if(q.ans){
             d.setAttribute("data-done","1");
             var right=buttons[q.ans];
@@ -397,7 +570,7 @@ details.fold[open]>summary::after{content:" 收起"}
       var foot=document.createElement("div");
       foot.className="q-foot";
       var ab=document.createElement("button");
-      ab.className="p-ctl"; ab.type="button"; ab.textContent="看答案与解析";
+      ab.className="pl-btn"; ab.type="button"; ab.textContent="看答案与解析";
       ab.addEventListener("click",function(){ showAns(d,q); });
       foot.appendChild(ab);
       var as=document.createElement("span");
@@ -409,15 +582,10 @@ details.fold[open]>summary::after{content:" 收起"}
   }
   function showAns(d,q){
     var as=d.querySelector(".q-ans");
-    if(q.ans) as.textContent="正确答案："+q.ans;
-    else as.textContent="（这题暂无解析）";
+    as.textContent=q.ans?("正确答案："+q.ans):"（这题暂无解析）";
     var e=d.querySelector(".exp");
-    if(!e){
-      e=document.createElement("div");
-      e.className="exp";
-      d.appendChild(e);
-    }
-    e.innerHTML = q.exp ? esc(q.exp) : "（本题解析待补）";
+    if(!e){ e=document.createElement("div"); e.className="exp"; d.appendChild(e); }
+    e.innerHTML=q.exp?esc(q.exp):"（本题解析待补）";
     e.classList.add("show");
   }
 
