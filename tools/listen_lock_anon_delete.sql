@@ -57,13 +57,23 @@ do $$
 declare r record;
 begin
   for r in
-    select policyname
+    select policyname, roles, qual
       from pg_policies
      where schemaname = 'public'
        and tablename   = 'vocab_history_logs'
        and cmd         = 'DELETE'
        and ( 'anon' = any(roles) or roles = ARRAY['public']::name[] )
   loop
+    -- 🔴 若这条 policy **同时**含 anon 之外的角色（authenticated / service_role …）
+    --    ⇒ 先按**原判据**重建一条只给那些角色的（`_teacher` 副本）
+    --    （直接 drop 会把老师/云函数那一半也带走 ⇒ 权限被削 ⇒ 而这不是收紧该做的事）
+    if coalesce(array_length(array_remove(array_remove(r.roles::text[], 'anon'), 'public'), 1), 0) > 0 then
+      execute format('drop policy if exists %I on public.vocab_history_logs', r.policyname || '_teacher');
+      execute format('create policy %I on public.vocab_history_logs for delete to %s using (%s)',
+                     r.policyname || '_teacher',
+                     array_to_string(array_remove(array_remove(r.roles::text[], 'anon'), 'public'), ', '),
+                     coalesce(r.qual, 'true'));
+    end if;
     execute format('drop policy %I on public.vocab_history_logs', r.policyname);
   end loop;
 end $$;
@@ -80,12 +90,12 @@ create policy p_anon_delete_logs
       or (
         -- ② 学生删**自己那一条**：学号 + **行令牌** 两个都要对得上
         class_key = 'LISTEN'
-        and student_id = nullif(current_setting('request.headers', true)::json->>'x-student-id', '')
+        and student_id = nullif(nullif(current_setting('request.headers', true), '')::json->>'x-student-id', '')
         -- 🔴 行令牌 = 提交时由浏览器随机生成、藏在 action 末尾（#tk=…）
         --    ⇒ 光知道学号**删不掉**（拿不到那一行的令牌）
         --    ⇒ 令牌先过白名单正则（只允许 16~64 位字母数字）⇒
         --       杜绝把 LIKE 通配符（% / _）塞进令牌来「匹配任意行」
-        and nullif((current_setting('request.headers', true)::json->>'x-row-token'), '') ~ '^[A-Za-z0-9]{16,64}$'
+        and nullif((nullif(current_setting('request.headers', true), '')::json->>'x-row-token'), '') ~ '^[A-Za-z0-9]{16,64}$'
         -- 🔴🔴🔴 库里只存 **SHA-256(原始令牌)**，比对时算哈希
         --    为什么不存明文：action 列对 anon **可读**（老师看板要读）⇒ 明文令牌人人可读
         --    ⇒ 而名册也在 anon 可读的 vocab_states 里 ⇒ 任何学生都能拿到同学的学号 + 令牌
@@ -95,7 +105,7 @@ create policy p_anon_delete_logs
         -- 🔴🔴 下面这行**必须加括号**：PostgreSQL 里 `||` 与 `->>` **同优先级且左结合**
         --    ⇒ 不加括号会解析成 (('%#tk=' || text::json) ->> 'x-row-token') || '%'
         --    ⇒ 报「operator does not exist: text ->> unknown」（本地 PG 实测踩到）
-        and action like ('%#tk=' || encode(sha256(convert_to(nullif(current_setting('request.headers', true)::json->>'x-row-token', ''), 'utf8')), 'hex') || '%')
+        and action like ('%#tk=' || encode(sha256(convert_to(nullif(nullif(current_setting('request.headers', true), '')::json->>'x-row-token', ''), 'utf8')), 'hex') || '%')
       )
     );
 
@@ -106,17 +116,29 @@ do $$
 declare r record;
 begin
   for r in
-    select policyname
+    select policyname, roles, qual
       from pg_policies
      where schemaname = 'public'
        and tablename   = 'vocab_online_status'
        and cmd         = 'DELETE'
        and ( 'anon' = any(roles) or roles = ARRAY['public']::name[] )
   loop
+    -- 🔴 若这条 policy **同时**含 anon 之外的角色（authenticated / service_role …）
+    --    ⇒ 先按**原判据**重建一条只给那些角色的（`_teacher` 副本）
+    --    （直接 drop 会把老师/云函数那一半也带走 ⇒ 权限被削 ⇒ 而这不是收紧该做的事）
+    if coalesce(array_length(array_remove(array_remove(r.roles::text[], 'anon'), 'public'), 1), 0) > 0 then
+      execute format('drop policy if exists %I on public.vocab_online_status', r.policyname || '_teacher');
+      execute format('create policy %I on public.vocab_online_status for delete to %s using (%s)',
+                     r.policyname || '_teacher',
+                     array_to_string(array_remove(array_remove(r.roles::text[], 'anon'), 'public'), ', '),
+                     coalesce(r.qual, 'true'));
+    end if;
     execute format('drop policy %I on public.vocab_online_status', r.policyname);
   end loop;
 end $$;
 
+-- 🔴 同上：显式 drop 同名 policy
+drop policy if exists p_anon_delete_online on public.vocab_online_status;
 -- 🔴 同上：显式 drop 同名 policy
 drop policy if exists p_anon_delete_online on public.vocab_online_status;
 create policy p_anon_delete_online
@@ -157,10 +179,25 @@ select '② 总数 ' || count(*) || ' / 基线 2462 → '
        || case when count(*) >= 2462 then '✅ 没丢数据（比基线多是正常的：学生在补交/在练）' else '⛔ 少了数据！' end as x
   from public.vocab_history_logs;
 --
--- ③ 现在每张表的 DELETE policy（应该每张表只剩一条收紧的）
-select tablename, policyname, cmd, roles::text, qual
+-- ③ 一眼看懂：每张表各有多少条 **anon** 的 DELETE policy、名字是什么
+--    👉 期望：vocab_history_logs = 1 条（p_anon_delete_logs）、vocab_online_status = 1 条（p_anon_delete_online）
+--    ⚠️ 出现 **2 条以上** ⇒ 收尾没生效（旧的宽松 policy 还在 ⇒ 那是能一键清空全班的那条）
+select '③ ' || tablename || ' 的 anon DELETE policy：' || count(*) || ' 条' || case when count(*) = 1 then '  ✅' else '  ⛔ 还有多余的！' end
+       || '  → ' || coalesce(string_agg(policyname, ' / '), '（无）') as x
   from pg_policies
  where schemaname = 'public' and cmd = 'DELETE'
+   and ('anon' = any(roles) or roles = ARRAY['public']::name[])
+ group by tablename
+ order by tablename;
+--
+-- ③b 老师侧的删除权限**一根都不许少**（收紧只动 anon）
+--     👉 期望：vocab_history_logs = 2 条、vocab_online_status = 2 条（各一张 FOR ALL + 一张 FOR DELETE）
+select '③b 老师侧(authenticated) DELETE/ALL policy：' || tablename || ' = ' || count(*) || ' 条'
+       || case when count(*) >= 2 then '  ✅ 还在' else '  ⛔ 少了！' end as x
+  from pg_policies
+ where schemaname = 'public' and tablename in ('vocab_history_logs','vocab_online_status')
+   and 'authenticated' = any(roles)
+ group by tablename
  order by tablename;
 --
 -- ④ 老师的 p_teach_all_* 还在吗（应该都在，cmd='ALL'）

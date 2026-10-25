@@ -81,6 +81,10 @@ alter table public.vocab_online_status enable row level security;
 --    ⇒ 收尾 SQL 的 DO 块必须把**所有**对 anon 生效的 DELETE policy 都抓掉
 --    ⇒ 只按名字 drop 同名的那条是不够的（名字可以不一样）
 create policy p_anon_delete_logs_old on public.vocab_history_logs for delete to anon using (class_key ~ '^[A-Z][A-Z0-9_]*$');
+-- 🔴🔴 **混合型** policy：roles 同时含 anon 与 authenticated
+--    ⇒ 收尾 SQL 的 DO 块直接 drop 会把**老师那一半**也带走 ⇒ 老师权限被削
+--    ⇒ 正确做法：drop 之前先按原判据重建一条只给 authenticated 的（`_teacher` 副本）
+create policy p_anon_mixed_logs on public.vocab_history_logs for delete to anon, authenticated using (class_key = 'LISTEN');
 create policy p_teach_all_logs on public.vocab_history_logs for all to authenticated using (true) with check (true);
 create policy p_teach_all_online on public.vocab_online_status for all to authenticated using (true) with check (true);
 create policy p_teach_del_logs on public.vocab_history_logs for delete to authenticated using (true);
@@ -208,6 +212,12 @@ v=$(num "select count(*) from public.vocab_states where class_key='__roster_v1'"
 echo
 echo "【判据 8】policy 现状"
 run_sql "select tablename||' | cmd='||cmd||' | '||policyname||' | roles='||roles::text from pg_policies where schemaname='public' and (cmd='DELETE' or policyname like 'p_teach_all%') order by 1;" | sed 's/^/     /'
+# 🔴 混合型 policy：anon 那半边必须被收掉、authenticated 那半边必须**按原判据重建**
+_mixed_gone=$(run_sql "select count(*) from pg_policies where policyname='p_anon_mixed_logs'" | tr -d '[:space:]')
+ck "混合型 policy 的 anon 那半边被收掉了" "$([ "$_mixed_gone" = "0" ] && echo 1 || echo 0)" "$_mixed_gone"
+_mixed_teacher=$(run_sql "select count(*) from pg_policies where policyname='p_anon_mixed_logs_teacher' and 'authenticated' = any(roles) and qual like '%LISTEN%'" | tr -d '[:space:]')
+ck "混合型 policy 的 authenticated 那半边**按原判据重建**了（_teacher 副本）" "$([ "$_mixed_teacher" = "1" ] && echo 1 || echo 0)" "$_mixed_teacher"
+
 n_del=$(run_sql "select count(*) from pg_policies where schemaname='public' and cmd='DELETE' and tablename in ('vocab_history_logs','vocab_online_status') and 'anon' = any(roles)" | tr -d '[:space:]')
 n_teach=$(run_sql "select count(*) from pg_policies where schemaname='public' and policyname like 'p_teach_all%'" | tr -d '[:space:]')
 [ "$n_del" = "2" ] && ck "两张表各只剩一条 **anon** DELETE policy" 1 || ck "两张表各只剩一条 **anon** DELETE policy" 0 "$n_del"

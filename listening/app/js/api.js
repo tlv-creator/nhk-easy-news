@@ -615,8 +615,14 @@
       for (var i = 0; i < a.length; i++) s += ('0' + a[i].toString(16)).slice(-2);
       return s;
     } catch (e) {
+      // 🔴 兜底分支也必须是**32 位 hex、字符集 [0-9a-f]**：
+      //    ① RLS 的白名单是 ^[A-Za-z0-9]{16,64}$ ⇒ base36 虽然能过，但 4 段各至少 1 字符
+      //       ⇒ 理论上可能短于 16 位 ⇒ 被白名单挡掉 ⇒ 自己的记录永远删不掉（静默失效）
+      //    ② 形状与主分支统一 ⇒ 两条路径的哈希/白名单行为一致
       var t = '';
-      for (var j = 0; j < 4; j++) t += Math.floor(Math.random() * 0x100000000).toString(36);
+      for (var j = 0; j < 32; j++) {
+        t += Math.floor(Math.random() * 16).toString(16);
+      }
       return t;
     }
   }

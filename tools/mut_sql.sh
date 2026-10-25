@@ -26,6 +26,9 @@ def swap_policy(new_using):
                "create policy p_anon_delete_logs\n    on public.vocab_history_logs\n    for delete to anon\n    using (" + new_using + ");",
                s, flags=re.S)
 
+# 🔴 定位「哈希比对」那段（不写死文本 ⇒ 文本漂移不会让补丁失配）
+_HASH_RE = re.compile(r"encode\(sha256\(convert_to\(.*?, 'utf8'\)\), 'hex'\)")
+
 if mode == 'wide':              # 退回旧的宽松 policy
     swap_policy("class_key ~ '^[A-Z][A-Z0-9_]*(\\|u[0-9]+)?$'")
 elif mode == 'probeonly':       # 只剩探针行（=「砍掉学生删除功能」那版）
@@ -33,15 +36,15 @@ elif mode == 'probeonly':       # 只剩探针行（=「砍掉学生删除功能
 elif mode == 'notoken':         # 去掉令牌条件
     s = "\n".join(l for l in s.split("\n") if 'x-row-token' not in l)
 elif mode == 'nostudent':       # 去掉学号条件
-    s = "\n".join(l for l in s.split("\n") if "and student_id = nullif(current_setting" not in l)
+    s = "\n".join(l for l in s.split("\n") if "and student_id = nullif(" not in l)
 elif mode == 'plainhash':       # 把 sha256 比对换成**明文**比对（= 明文令牌落库的老做法）
-    s = s.replace("encode(sha256(convert_to(nullif(current_setting('request.headers', true)::json->>'x-row-token', ''), 'utf8')), 'hex')",
-                  "nullif(current_setting('request.headers', true)::json->>'x-row-token', '')")
+    # 🔴 用**正则**定位（文本形式会随加固改动漂移 ⇒ 补丁失配 ⇒ 误判成「验证无效」）
+    s = _HASH_RE.sub(lambda _m: "nullif(nullif(current_setting('request.headers', true), '')::json->>'x-row-token', '')", s, count=1)
 elif mode == 'loosetoken':      # 🔴 令牌**两处一起**放宽：正则放开 + 哈希比对换成通配符
     # ⚠ 只放宽正则**没有语义**了（sha256 比对仍然精确 ⇒ 攻击照样失败）⇒
     #   那样这条 mutation 就是摆设（会全绿）⇒ 必须改成「两处一起放宽」才是真实的攻击面
     s = s.replace("~ '^[A-Za-z0-9]{16,64}$'", "~ '^.*$'")
-    s = s.replace("encode(sha256(convert_to(nullif(current_setting('request.headers', true)::json->>'x-row-token', ''), 'utf8')), 'hex')", "'%'")
+    s = _HASH_RE.sub(lambda _m: "'%'", s, count=1)
 elif mode == 'nodrop':          # DO 块漏删旧的宽松 policy
     s = s.replace("and ( 'anon' = any(roles) or roles = ARRAY['public']::name[] )",
                   "and ( 'anon' = any(roles) and roles = ARRAY['public']::name[] )")
