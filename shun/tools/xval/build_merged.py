@@ -12,7 +12,7 @@ import hashlib, json, os, re, sys
 HERE = '/workspace/tools/shun'
 OLD = '/workspace/attachments/98db9ef04c3d952c/Japanese-with-Shun-Text.html'
 BASE_HTML = '/workspace/attachments/2c146f4d301de83e/1.html'
-PEER = '/workspace/tools/shun/repo3/nhk-easy-news-2ea927d3/shun-web/data'
+PEER = os.environ.get('SHUN_PEER_DIR') or '/workspace/tools/shun/repo4x/nhk-easy-news-main/shun-web/data'
 OUT = os.path.join(HERE, 'shun-grammar-merged.html')
 TAGS6 = ['s001', 's002', 's003', 's004', 's005', 's006']
 
@@ -67,6 +67,21 @@ def monotonicize(sents):
     return fixed
 
 for d in eps6:
+    if d.get('realEp') is not None and d.get('epReal') is None:
+        d['epReal'] = d['realEp']
+
+# 6 集的 ruby 用「整词表 + 候选并集 DP」重算（peer 那份是旧引擎＝熟字訓优先）
+#   ⇒ 会社: 会/かい·社/しゃ（旧: 整块 会社/かいしゃ）｜ 一番/卒業 → 整词
+RUBY6 = os.environ.get('RUBY6') or os.path.join(HERE, 'ruby_peer6.json')
+if os.path.exists(RUBY6):
+    _r6 = json.load(open(RUBY6, encoding='utf-8'))
+    for d in eps6:
+        ru = _r6.get(d['tag']) or []
+        for s, r in zip(d['sents'], ru):
+            s['ru'] = r
+    print('6 集 ruby 已换成并集 DP 版（整词表命中⇒整块）')
+
+for d in eps6:
     before = overlaps(d['sents'])
     fixed = monotonicize(d['sents'])
     after = overlaps(d['sents'])
@@ -116,8 +131,10 @@ def fill_parts(o, gi):
 
 # ---------- 3. 排序（真实集号） ----------
 def ep_real(e):
-    if e.get('epReal') is not None:
-        return e['epReal']
+    # 🔴 字段名有两版：epReal（旧）/ realEp（peer 现用）⇒ 两个都认
+    for k in ('epReal', 'realEp'):
+        if e.get(k) is not None:
+            return e[k]
     return EPREAL[e['tag']]
 order = sorted(eps13 + eps6, key=ep_real)
 print('合并后集序（真实集号）:', [ep_real(e) for e in order])

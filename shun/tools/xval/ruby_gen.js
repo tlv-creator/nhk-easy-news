@@ -38,23 +38,30 @@ for (const k in KANJI_JSON) {
   };
 }
 
-/* 候选读音：词典（音读/训读/名乗り）优先；熟字訓表只在词典无候选时兜底。
-   🔴 已发布数据用的是**词典读音**（会→カイ），不是熟字訓表的上下文读音（会→あ）⇒ 顺序不能反 */
-function candidates(ch, useCuratedFirst) {
-  if (useCuratedFirst && CURATED[ch]) return [hira2kata(CURATED[ch])];
+/* 候选读音（两遍 DP 的第一遍：词典）
+   🔴 已发布数据用的是**词典读音**（会→カイ），不是熟字訓表的上下文读音（会→あ）⇒ 词典必须优先
+   —— 否则「会社」的 DP 在「会→あ」上直接失败 ⇒ 落进整块兜底 ⇒ 与已发布不一致 */
+function dictCandidates(ch) {
   const k = KANJI[ch];
   const out = [];
   if (k) for (const x of [...k.on, ...k.kun, ...k.nan]) if (x && !out.includes(x)) out.push(x);
-  if (!out.length && CURATED[ch]) out.push(hira2kata(CURATED[ch]));
   return out;
 }
-let CURATED_FIRST = false;   // 全局开关：true = 熟字訓优先（旧行为）
+/* 第二遍：熟字訓表（熟字专读，如 日本語=にほんご）⇒ 只在词典 DP 无解时用 */
+function curatedCandidates(ch) {
+  const out = [];
+  if (CURATED[ch]) out.push(hira2kata(CURATED[ch]));
+  for (const x of dictCandidates(ch)) if (!out.includes(x)) out.push(x);
+  return out;
+}
+let CURATED_FIRST = false;   // 兼容开关：true = 熟字訓优先（旧行为，仅用于对照实测）
 
 // DP：把 reading 切成 n 段分给 n 个汉字
-function splitKanji(kanjiStr, reading) {
-  const n = kanjiStr.length, m = reading.length;
-  const cand = [];
-  for (let i = 0; i < n; i++) cand.push(candidates(kanjiStr[i], CURATED_FIRST));
+// 🔴 **两遍**：第一遍只用词典候选；无解才用熟字訓候选（第二遍）
+//   「会社」：词典 カイ+シャ ✓ 第一遍就成（若熟字訓优先：会→あ ⇒ 失败 ⇒ 整块 ✗）
+//   「日本語」：词典无「ニホンゴ」的切法 ⇒ 第二遍熟字訓 に+ほん+ご ✓
+function dpWith(cand, reading) {
+  const n = cand.length, m = reading.length;
   const memo = new Map();
   function go(i, j) {
     if (i === n) return j === m ? [] : null;
@@ -73,6 +80,31 @@ function splitKanji(kanjiStr, reading) {
     return res;
   }
   return go(0, 0);
+}
+/* 🔴 候选并集（词典 ∪ 熟字訓表）—— **一次 DP**
+   已发布 13 集的三种现象由它同时解释（peer 全量裁决 + 我复核）：
+     会(会う)  → あ   ×28  ← 熟字訓（会→あ）
+     会(会社)  → かい ×7   ← 词典音读（会→カイ）
+     日(日本語) → に       ← 熟字訓（**kanjidic2 里「日」没有「に」** ⇒ 词典单遍必无解）
+   ⇒ 「二选一」（词典优先 / 熟字訓优先）都会错一边；**并集 + 读音预算来消歧**才是对的 */
+function unionCandidates(ch) {
+  const out = [];
+  for (const x of dictCandidates(ch)) if (!out.includes(x)) out.push(x);
+  if (CURATED[ch]) { const c = hira2kata(CURATED[ch]); if (!out.includes(c)) out.push(c); }
+  return out;
+}
+function splitKanji(kanjiStr, reading) {
+  const chars = [...kanjiStr];
+  if (CURATED_FIRST) {
+    const c1 = chars.map(ch => curatedCandidates(ch));
+    const r1 = dpWith(c1, reading);
+    if (r1) return r1;
+  }
+  const cUni = chars.map(ch => unionCandidates(ch));
+  const rUni = dpWith(cUni, reading);
+  if (rUni) return rUni;
+  const cCur = chars.map(ch => curatedCandidates(ch));
+  return dpWith(cCur, reading);
 }
 
 function rubyForToken(surface, reading) {
