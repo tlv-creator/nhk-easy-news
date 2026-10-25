@@ -3,6 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>每日听力记录站 · 老师操作页</title>
+<link rel="icon" href="data:,">
 <style>
   /* 黑白屏 + 老花眼：大字、强对比、按钮够大、渐变全关、描边半透明 */
   html { --fs: 19px; }
@@ -98,6 +99,58 @@
 
 <div class="foot">
   这一页是给你一个人用的操作页，随时可以收藏。<br>
-  补交进度：10-25 18:00 已补交 <b>66 条 / 37 位同学</b>（10/22 13 条、10/23 17 条、10/24 27 条、10/25 9 条）；还有 121 位同学一条都没交。
+  补交进度：<span id="prog">正在现查库…</span>
 </div>
+<script>
+/* 补交进度：打开页面时现查库，不写死数字
+   （anon publishable key 本来就公开在 listening/app/js/api.js 里，这里不新增暴露） */
+(function () {
+  var K = 'sb_publishable_3LuLZXWMadqYH3SLYOenig_ECHa51Mo';
+  var B = 'https://lszwxcmvcvbraqtrtgon.supabase.co/rest/v1/';
+  var el = document.getElementById('prog');
+  if (!el) return;
+  var FALLBACK = '没联上库，下面是 2026-10-25 19:55 的快照：已补交 <b>67 条 / 37 位同学</b>；名册 157 人里，还有 <b>120</b> 位同学一条都没交。';
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function stamp() {
+    var d = new Date();
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+           ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+  function get(path) {
+    return fetch(B + path, { headers: { apikey: K, Authorization: 'Bearer ' + K } })
+      .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); });
+  }
+  Promise.all([
+    get('vocab_history_logs?select=student_id,timestamp&class_key=eq.LISTEN'),
+    get('vocab_states?select=state_val&class_key=eq.__roster_v1')
+  ]).then(function (res) {
+    var logs = res[0] || [], i, j;
+    var byDay = {}, ids = {};
+    for (i = 0; i < logs.length; i++) {
+      var d = String(logs[i].timestamp || '').slice(0, 10);
+      byDay[d] = (byDay[d] || 0) + 1;
+      ids[String(logs[i].student_id)] = 1;
+    }
+    var roster = [], rows = res[1] || [];
+    for (j = 0; j < rows.length; j++) {
+      try {
+        var v = JSON.parse(rows[j].state_val);
+        if (Array.isArray(v) && v.length > roster.length) roster = v;
+      } catch (e) { /* 这一行不是名册 JSON，跳过 */ }
+    }
+    var rid = {}, k;
+    for (k = 0; k < roster.length; k++) rid[String(roster[k].id)] = 1;
+    var left = 0;
+    for (k in rid) { if (!ids[k]) left++; }
+    var days = Object.keys(byDay).sort(), parts = [], p;
+    for (p = 0; p < days.length; p++) parts.push(days[p].slice(5) + ' ' + byDay[days[p]] + ' 条');
+    var nSub = Object.keys(ids).length;
+    el.innerHTML = '截至 <b>' + stamp() + '</b>（现查库）：已补交 <b>' + logs.length + ' 条 / ' +
+      nSub + ' 位同学</b>（' + parts.join('、') + '）；名册 ' + roster.length + ' 人里，还有 <b>' +
+      left + '</b> 位同学一条都没交。';
+  }).catch(function () {
+    el.innerHTML = FALLBACK;
+  });
+})();
+</script>
 </div></body></html>
