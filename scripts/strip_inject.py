@@ -26,6 +26,7 @@ if not TARGET:
 
 s = open(TARGET, encoding='utf-8').read()
 orig_len = len(s)
+orig_bytes = os.path.getsize(TARGET)
 report = []
 
 
@@ -40,13 +41,17 @@ FEATURES = ['字幕', '收藏', '字号', '墨水屏', '播放', '详解', '跟�
 feat_before = {f: s.count(f) for f in FEATURES}
 
 # ── ① 删统计脚本整块 ──
+# 🔴 2026-10-25：平台的注入属性名有两种写法（data-minimax-analytics / minimax-website-analytics）
+#    ⇒ 两种都要删（只删一种 ⇒ 另一种漏网）
 n = 0
-while True:
-    m = re.search(r'<script[^>]*data-minimax-analytics[^>]*>.*?</script>', s, re.S)
-    if not m:
-        break
-    s = s[:m.start()] + s[m.end():]
-    n += 1
+for pat in (r'<script[^>]*\bdata-minimax-analytics[^>]*>.*?</script>',
+            r'<script[^>]*\bminimax-website-analytics[^>]*>.*?</script>'):
+    while True:
+        m = re.search(pat, s, re.S)
+        if not m:
+            break
+        s = s[:m.start()] + s[m.end():]
+        n += 1
 report.append("删统计脚本块 ×%d" % n)
 
 # ── ② 删悬浮球 HTML ──
@@ -97,10 +102,30 @@ must('navigator.sendBeacon' in s and 'window.fetch' in s, "🔴 拦截器内容�
 
 # ② 统计 token 必须没了
 must('eyJ2Ijox' not in s, "🔴 统计 token 还在")
-must(not re.search(r'data-minimax-analytics', s), "🔴 统计脚本还在")
+# 🔴🔴 2026-10-25 修（**闸门自指**）：这一条原来判的是「文件里还有没有 data-minimax-analytics
+#    这个**字面量**」⇒ 而**拦截器自己的代码里就有这个字面量**
+#    （querySelector('script[data-minimax-analytics]') + 注释）⇒ 永远判红 ⇒ strip 永远 exit 1
+#    ⇒ deploy_nhk.sh prepare 的第 ①b 步永远挂 ⇒ **发版流程整个死掉**。
+#    ⇒ 正确判据：**注入的 <script 标签> 还在不在**（不是字面量在不在）。
+must(not re.search(r'<script[^>]*\bdata-minimax-analytics', s), "🔴 统计脚本还在")
+must(not re.search(r'<script[^>]*\bminimax-website-analytics', s), "🔴 统计脚本还在（变体）")
 
 # ③ 悬浮球必须不可见、不可点
-must('window.open(\'https://agent.minimax.cn/' not in s, "🔴 悬浮球的 window.open 还在（会把用户甩出 App）")
+# 🔴🔴 2026-10-25 修（**闸门自指 · 第二处**）：原来判「文件里有没有 window.open('https://agent.minimax.cn/」
+#    这个**字面量**」⇒ 而**运行时兜底脚本的注释里就写着它**
+#    （"③ 它的初始化 JS：点球会 window.open('https://agent.minimax.cn/','_blank')"）
+#    ⇒ 永远判红 ⇒ strip 永远 exit 1 ⇒ prepare 永远挂。
+#    ⇒ 正确判据：**剥掉注释之后**还有没有真的 window.open 调用。
+def strip_comments(t):
+    """去掉 HTML 注释 / JS 块注释 / JS 整行注释（只用于判据，不改文件）"""
+    t = re.sub(r'<!--.*?-->', '', t, flags=re.S)
+    t = re.sub(r'/\*.*?\*/', '', t, flags=re.S)
+    t = re.sub(r'(?m)^\s*//.*$', '', t)
+    return t
+
+CODE = strip_comments(s)
+must('window.open(\'https://agent.minimax.cn/' not in CODE,
+     "🔴 悬浮球的 window.open 还在（会把用户甩出 App）")
 must(not re.search(r'<div[^>]*id=["\']minimax-floating-ball', s), "🔴 悬浮球 HTML 还在")
 if 'minimax-floating-ball' in s:
     must(re.search(r'#minimax-floating-ball\s*\{[^}]*display\s*:\s*none\s*!important', s),
@@ -128,7 +153,10 @@ for i, code in enumerate(scripts):
 must(bad == 0, "🔴 有 %d 个内联 script 语法错" % bad)
 
 open(TARGET, 'w', encoding='utf-8').write(s)
-print("✅ 剥除完成（%d → %d 字节，-%d）" % (orig_len, len(s), orig_len - len(s)))
+# 🔴 2026-10-25：口径修正（手册 §"测量口径的坑"）—— 之前把**字符数**当字节数报
+#    （日文是 UTF-8 ⇒ 1 字符 3 字节 ⇒ 报出来的数比真实文件小 2/3 ⇒ 看着像"剥少了"）
+print("✅ 剥除完成（%d → %d 字符；文件 %d → %d 字节）"
+      % (orig_len, len(s), orig_bytes, os.path.getsize(TARGET)))
 for r in report:
     print("   ·", r)
 print("   · 内联 script %d 段，node --check 全过" % len(scripts))
