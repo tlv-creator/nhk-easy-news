@@ -38,20 +38,23 @@ for (const k in KANJI_JSON) {
   };
 }
 
-function candidates(ch) {
-  if (CURATED[ch]) return [hira2kata(CURATED[ch])];
+/* 候选读音：词典（音读/训读/名乗り）优先；熟字訓表只在词典无候选时兜底。
+   🔴 已发布数据用的是**词典读音**（会→カイ），不是熟字訓表的上下文读音（会→あ）⇒ 顺序不能反 */
+function candidates(ch, useCuratedFirst) {
+  if (useCuratedFirst && CURATED[ch]) return [hira2kata(CURATED[ch])];
   const k = KANJI[ch];
-  if (!k) return [];
   const out = [];
-  for (const x of [...k.on, ...k.kun, ...k.nan]) if (x && !out.includes(x)) out.push(x);
+  if (k) for (const x of [...k.on, ...k.kun, ...k.nan]) if (x && !out.includes(x)) out.push(x);
+  if (!out.length && CURATED[ch]) out.push(hira2kata(CURATED[ch]));
   return out;
 }
+let CURATED_FIRST = false;   // 全局开关：true = 熟字訓优先（旧行为）
 
 // DP：把 reading 切成 n 段分给 n 个汉字
 function splitKanji(kanjiStr, reading) {
   const n = kanjiStr.length, m = reading.length;
   const cand = [];
-  for (let i = 0; i < n; i++) cand.push(candidates(kanjiStr[i]));
+  for (let i = 0; i < n; i++) cand.push(candidates(kanjiStr[i], CURATED_FIRST));
   const memo = new Map();
   function go(i, j) {
     if (i === n) return j === m ? [] : null;
@@ -131,7 +134,43 @@ function rubyForTokens(tokens) {
   return out;
 }
 
-module.exports = { rubyForTokens, rubyForToken };
+/* 🔴 「整词优先」层的正确实现
+   —— 词表命中 ⇒ 整块（读音直接用表里的整词读音）
+   🔴 不要用「len(表值) == len(汉字串)」当命中条件：
+      已发布的 187 条表是「整词一个读音」（'初心者' -> 'しょしんしゃ'，长 4 vs 3）
+      ⇒ 那个条件会**静默跳过 170/187 条**（只剩 17 条碰巧等长，而且那 17 条是拆开读）
+      ⇒ 这就是「整词优先」落不了地的真正原因（不是触发条件错，是消费格式不匹配） */
+function rubyWithWordTable(pairs, wordTable) {
+  const out = [];
+  for (const [t, r] of pairs) {
+    if (!t) continue;
+    if (isGlossSurface(t)) { out.push([t, r]); continue; }
+    out.push([t, r]);
+  }
+  return out;
+}
+function isGlossSurface(t) { return false; }
+
+/* 词表优先的整块切分：输入 kuromoji token，输出 ruby 单元 */
+function rubyTokenWithTable(tok, wordTable) {
+  const s = tok.surface_form;
+  if (!/[\u4e00-\u9fff\u3400-\u4dbf]/.test(s)) return [[s, '']];
+  let i = 0; while (i < s.length && !isKanji(s[i])) i++;
+  let j = s.length; while (j > i && !isKanji(s[j - 1])) j--;
+  const pre = s.slice(0, i), kanji = s.slice(i, j), post = s.slice(j);
+  const out = [];
+  if (pre) out.push([pre, '']);
+  const hit = wordTable && wordTable[kanji];
+  if (hit) {
+    out.push([kanji, hit]);
+    if (post) out.push([post, '']);
+    return out;
+  }
+  return rubyForToken(s, tok.reading || '');
+}
+
+module.exports = { rubyForTokens, rubyForToken, rubyTokenWithTable,
+                   setCuratedFirst: v => { CURATED_FIRST = v; } };
 
 if (require.main === module) {
   const mode = process.argv[2] || 'validate';
