@@ -671,14 +671,56 @@
     },
     {
       "domain": "em8hjp6jskxyb",
-      "status": "ACTIVE",
+      "status": "alive",
       "frozen": false,
       "deploy_url": "https://em8hjp6jskxyb.space.mcode.cn",
       "role": "现役站（v1.30 · SW缓存v30 · 切换按钮加大）",
       "created_at": "2026-10-25"
+    },
+    {
+      "domain": "hoglwc3wwd3jm",
+      "project": "texta",
+      "reason": "Text A 精读平台的「当前地址」指路页（给集成方查 URL 用）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "k9wj8ullzur44",
+      "project": "texta",
+      "reason": "Text A 精读 · 教案与样卷 v4",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "jhdnng0v2xmdy",
+      "project": "texta",
+      "reason": "Text A 精读平台（独立站）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "89tcygmpuosvd",
+      "project": "texta",
+      "reason": "quizcheck 跨语种通用出题校验器（Text A 配套工具）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "rkw1x077uih9s",
+      "project": "tadoku",
+      "reason": "日语泛读精读（55 本版的中间版，2026-10-25 10:01 部署）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
+    },
+    {
+      "domain": "vt15310hxrx4e",
+      "project": "tadoku",
+      "reason": "日语泛读精读（55 本版的中间版，2026-10-25 08:32 部署）",
+      "status": "DELETED",
+      "note": "🔴 2026-10-25 配额清理时删除（删前已扫五层引用：站内 JS/JSON 依赖链、现役 APK 的 dex+assets、全部引导页、protected-sites.json、存活探活 ⇒ 零引用）"
     }
   ],
-  "_status_vocab": "🔴 **status 的取值词汇表（2026-10-24 定，三个 agent 一起对过）**：\n   DELETED    = 我们说它**已经删了**    ⇒ **期望它死**   ⇒ 还活着 ⇒ 🔴「清单该更新」\n   SUPERSEDED = 旧站**被新站取代、可删** ⇒ **不判死活**   ⇒ 墓碑条目\n   ALIVE      = **显式写出来的「现役」** ⇒ **期望它活着**（语义 ≡ 没有 status）\n   （没有 status）= 现役                 ⇒ **期望它活着** ⇒ 死了   ⇒ 🔴「清单该更新」\n   ⇒ **规范写法是大写**：写入端 shun/tools/update_protected.py 会 .strip().upper() 归一，闸门 tools/check_sites_alive.py 也会 ⇒ 两种写法都能跑。\n   ⇒ ⚠️ **别写第五种取值**：闸门遇到不认识的取值会 **exit 2 不放行**（fail closed）\n      —— 假红的根源从来是「默认分支」，不是「少一个取值」。\n   ⇒ ℹ️ 清单里**还留着 4 条历史小写 `alive`**（xwi3hf93nlt4p / tcw0ti0k7p0hd / 3pqlt9tq6lrij / crb86rfrc9lmk）—— **故意没改**：\n      ① 语义完全相同（闸门两种都认）⇒ 没有功能上的必要；\n      ② 这 4 条分属 hub / ama / scenes 三家，**改别人条目的字面量有极小概率打断别人 grep `\"status\": \"alive\"` 的脚本**；\n      ③ 写入端已归一 ⇒ 这些条目下次被各自主人改动时自然会变成大写。",
+  "_status_vocab": "🔴 **status 的取值词汇表（2026-10-24 定，三个 agent 一起对过）**：\n   DELETED    = 我们说它**已经删了**    ⇒ **期望它死**   ⇒ 还活着 ⇒ 🔴「清单该更新」\n   SUPERSEDED = 旧站**被新站取代、可删** ⇒ **不判死活**   ⇒ 墓碑条目\n   ALIVE      = **显式写出来的「现役」** ⇒ **期望它活着**（语义 ≡ 没有 status）\n   （没有 status）= 现役                 ⇒ **期望它活着** ⇒ 死了   ⇒ 🔴「清单该更新」\n   ⇒ **规范写法是大写**：写入端 shun/tools/update_protected.py 会 .strip().upper() 归一，闸门 tools/check_sites_alive.py 也会 ⇒ 两种写法都能跑。\n   ⇒ ⚠️ **别写第五种取值**：闸门遇到不认识的取值会 **exit 2 不放行**（fail closed）\n      —— 假红的根源从来是「默认分支」，不是「少一个取值」。\n   ⇒ ℹ️ 清单里**还留着 4 条历史小写 `alive`**（xwi3hf93nlt4p / tcw0ti0k7p0hd / 3pqlt9tq6lrij / crb86rfrc9lmk）—— **故意没改**：\n      ① 语义完全相同（闸门两种都认）⇒ 没有功能上的必要；\n      ② 这 4 条分属 hub / ama / scenes 三家，**改别人条目的字面量有极小概率打断别人 grep `\"status\": \"alive\"` 的脚本**；\n      ③ 写入端已归一 ⇒ 这些条目下次被各自主人改动时自然会变成大写。\n   🔴 **合法取值只有四种**：DELETED / SUPERSEDED / alive / 没有 status 字段。\n   出现别的值（例如 2026-10-25 误写的 ACTIVE）= 写法错了 ⇒ 要归一成 alive，否则删站闸门按「穷举取值」判定时会当成未知值直接不放行。",
   "how_to_check_before_deleting": {
     "step1": "拉本清单（本文件）",
     "step2": "🔴 **dex 和 assets 都要扫**（两个都要！）：\n   ① dex（原生 App 写死的地址）：python3 -c \"import zipfile,re,sys;print(sorted(set(m.decode() for m in re.findall(rb'[a-z0-9]{4,}\\.space\\.mcode\\.cn', zipfile.ZipFile(sys.argv[1]).read('classes.dex')))))\" x.apk\n   ② assets（🔴 WebView 型 App 的「编译进去的依赖」在这里 —— NHK/Shun/**hub**/多読絵本 都是）:\n      unzip -o -q x.apk -d ex && grep -rhoaE '[a-z0-9]{4,}\\.space\\.mcode\\.cn' ex/ | sort | uniq -c\n   ⚠️ **只扫 dex 会把 hub 判成「零依赖」** —— 实测 hub v1.15 的 13 个域**全在 assets 里，dex 里一个都没有**。",
