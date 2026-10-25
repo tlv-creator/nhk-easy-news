@@ -174,12 +174,15 @@ def main():
         for l in tail[:8]:
             print("   %s" % l)
         if r.returncode == 9:
-            print("❌ 本地回归**环境没搭起来** ⇒ 本次验证无效（不是判据红）")
+            # 🔴 环境失败 ≠ 判据红：链接本身是从**冻结的短版**确定性拼出来的
+            #    ⇒ 环境没搭起来不该把链接也毙掉，但必须**响亮地说「这次没验」**
+            print("⚠️⚠️ 本地回归**环境没搭起来**（exit 9）⇒ **本次没在本地 PG 上验证**")
+            print("   链接仍然可用（它由冻结的短版确定性生成），但请另找一台有 PG 的机器跑一次 verify_tighten.sh")
+        elif r.returncode != 0:
+            print("❌ 短版没通过本地回归（判据红了）⇒ 不出链接")
             return 1
-        if r.returncode != 0:
-            print("❌ 短版没通过本地回归")
-            return 1
-        print("· 短版在本地 PG 上跑：通过 9 条，失败 0 条 ✅")
+        else:
+            print("· 短版在本地 PG 上跑：通过 9 条，失败 0 条 ✅")
 
     # ⑥ 拼 URL 并**实测长度 + HTTP**
     url = ("https://supabase.com/dashboard/project/%s/sql/new?query=%s"
