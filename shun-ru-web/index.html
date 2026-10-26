@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>日語精読 Shun — 日中对照注音版</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23fff'/%3E%3Ctext x='8' y='12' font-size='11' text-anchor='middle' fill='%23000'%3ES%3C/text%3E%3C/svg%3E">
+<style>
+/* 🔴 墨水屏铁律：渐变全关 / 描边半透明 / 正文大字号 / 不用图标色块 */
+:root{
+  --fg:#000; --bg:#fff; --dim:#3a3a3a; --line:rgba(0,0,0,.30); --chip:#f0f0f0;
+}
+*{box-sizing:border-box;-webkit-text-size-adjust:100%}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg)}
+body{
+  font-family:"Noto Serif CJK JP","Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",
+              "Songti SC","Noto Serif CJK SC",serif;
+  line-height:2.0; font-size:19px;
+}
+button{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);
+  border-radius:4px;padding:.35em .9em;cursor:pointer}
+button:active{background:var(--chip)}
+a{color:var(--fg)}
+header{
+  position:sticky;top:0;z-index:9;background:var(--bg);
+  border-bottom:1px solid var(--line);padding:.6em .9em;
+  display:flex;align-items:center;gap:.7em;flex-wrap:wrap;
+}
+header h1{font-size:1.05em;margin:0;font-weight:600}
+header .sp{flex:1}
+#search{font:inherit;font-size:.92em;padding:.3em .6em;border:1px solid var(--line);
+  border-radius:4px;width:8.5em;background:var(--bg);color:var(--fg)}
+main{padding:.8em .9em 3em;max-width:44em;margin:0 auto}
+.hide{display:none !important}
+
+/* ── 目录 ── */
+.toc{margin:0;padding:0;list-style:none}
+.toc li{margin:.1em 0;border-bottom:1px solid rgba(0,0,0,.13)}
+.toc a{display:block;padding:.55em .2em;text-decoration:none;color:var(--fg)}
+.toc .row{display:flex;gap:.7em;align-items:baseline}
+.toc .no{font-family:"Noto Sans CJK JP",sans-serif;font-size:.82em;color:var(--dim);
+  min-width:3.4em}
+.toc .ti{flex:1}
+.toc .zi{display:block;font-size:.86em;color:var(--dim);margin-top:.1em}
+.toc .meta{font-size:.78em;color:var(--dim);white-space:nowrap}
+
+/* ── 正文 ── */
+.ep h2{font-size:1.22em;margin:.2em 0 .1em;line-height:1.5}
+.ep .sub{font-size:.9em;color:var(--dim);margin-bottom:1em}
+.blk{margin:0 0 1.05em;padding:0}
+.ja{display:block}
+.w{margin-right:.34em;white-space:nowrap}
+ruby{ruby-align:center}
+rt{font-size:.52em;color:#111;letter-spacing:.02em}
+.zh{display:block;font-size:.9em;color:#222;margin:.05em 0 .1em .2em;line-height:1.75}
+.back{margin:0 0 1em}
+.empty{color:var(--dim);padding:2em 0;text-align:center}
+@media (max-width:380px){ body{font-size:18px} .w{margin-right:.28em} }
+</style>
+</head>
+<body>
+<header>
+  <button id="backBtn" class="hide">← 目录</button>
+  <h1>日語精読 Shun — 日中对照注音版</h1>
+  <span class="sp"></span>
+  <input id="search" type="search" placeholder="搜索集名…">
+</header>
+<main id="main"><div class="empty">正在载入…</div></main>
+
+<script>
+var IDX = null, CUR = null, ALL = [];
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+  .replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmt(sec){sec=Math.max(0,Math.floor(sec||0));var m=Math.floor(sec/60),x=sec%60;
+  return m+':'+(x<10?'0':'')+x;}
+
+/* 词 + 读音 → ruby（只有含汉字的词才挂读音） */
+function renderJa(words){
+  var out='';
+  for(var i=0;i<words.length;i++){
+    var w=words[i][0], r=words[i][1]||'';
+    if(r && r!==w && /[一-鿿々〆]/.test(w)){
+      out+='<span class="w"><ruby>'+esc(w)+'<rt>'+esc(r)+'</rt></ruby></span>';
+    }else{
+      out+='<span class="w">'+esc(w)+'</span>';
+    }
+  }
+  return out;
+}
+
+function renderToc(q){
+  var list=ALL, m=$('#main');
+  if(q){var s=q.toLowerCase();
+    list=list.filter(function(e){
+      return (e.title||'').toLowerCase().indexOf(s)>=0 ||
+             (e.zh_title||'').toLowerCase().indexOf(s)>=0;});}
+  if(!list.length){m.innerHTML='<div class="empty">没有匹配的集</div>';return;}
+  var h='<ul class="toc">';
+  for(var i=0;i<list.length;i++){
+    var e=list[i];
+    h+='<li><a href="#ep-'+esc(e.tag)+'" data-tag="'+esc(e.tag)+'"><div class="row">'+
+       '<span class="no">'+esc(e.ep!=null?('Ep'+e.ep):'')+'</span>'+
+       '<span class="ti">'+esc(e.title)+
+       (e.zh_title?'<span class="zi">'+esc(e.zh_title)+'</span>':'')+
+       '</span><span class="meta">'+e.n+'句 · '+fmt(e.dur)+'</span></div></a></li>';
+  }
+  h+='</ul>';
+  m.innerHTML=h;
+  var as=m.querySelectorAll('a[data-tag]');
+  for(var j=0;j<as.length;j++){as[j].addEventListener('click',function(ev){
+    ev.preventDefault(); openEp(this.getAttribute('data-tag'));});}
+}
+
+function openEp(tag){
+  var m=$('#main');
+  m.innerHTML='<div class="empty">载入中…</div>';
+  fetch('data/'+tag+'.json').then(function(r){return r.json();}).then(function(d){
+    CUR=d;
+    var ti=String(d.title||'');
+    var pre='';
+    if(d.ep!=null && ti.indexOf('Ep'+d.ep)<0) pre='Ep'+d.ep+' ';
+    var h='<div class="ep">'+
+      '<h2>'+esc(pre)+esc(ti)+
+      (d.zh_title?'<div class="sub">'+esc(d.zh_title)+'</div>':'')+'</h2>';
+    for(var i=0;i<d.sents.length;i++){
+      h+='<p class="blk"><span class="ja">'+renderJa(d.sents[i][0])+'</span>'+
+         '<span class="zh">'+esc(d.sents[i][1])+'</span></p>';
+    }
+    h+='</div>';
+    m.innerHTML=h;
+    window.scrollTo(0,0);
+    $('#backBtn').classList.remove('hide');
+    location.hash='ep-'+tag;
+  }).catch(function(e){
+    m.innerHTML='<div class="empty">这一集没载入成功（'+esc(e)+'）</div>';});
+}
+
+function showToc(){
+  $('#backBtn').classList.add('hide');
+  location.hash='';
+  renderToc($('#search').value.trim());
+  window.scrollTo(0,0);
+}
+
+function $(s){return document.querySelector(s);}
+
+$('#backBtn').addEventListener('click',showToc);
+$('#search').addEventListener('input',function(){renderToc(this.value.trim());});
+
+fetch('data/index.json').then(function(r){return r.json();}).then(function(d){
+  ALL=d.eps||[];
+  renderToc('');
+  var h=(location.hash||'').replace('#ep-','');
+  if(h){openEp(h);}
+}).catch(function(e){
+  $('#main').innerHTML='<div class="empty">目录载入失败：'+esc(e)+'</div>';});
+
+window.addEventListener('hashchange',function(){
+  var h=(location.hash||'').replace('#ep-','');
+  if(h && (!CUR || CUR.tag!==h)) openEp(h);
+  else if(!h && CUR){showToc();}
+});
+</script>
+</body>
+</html>
