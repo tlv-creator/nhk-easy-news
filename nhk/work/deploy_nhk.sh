@@ -93,6 +93,10 @@ prepare)
   # ④ 🔴 媒体库闸门：跨期 md5 重复 = 抓到了**别的新闻**的音轨
   #    （NHK 新闻页底部挂着最新一期的播放器 ⇒ 抓页面 m3u8 极易张冠李戴，详见手册 §6.9）
   python3 scripts/check_fast_audio.py --dir site/app/media/fast || exit 1
+  # 🔴🔴 2026-10-26 新增：哑站闸门（逐期核对音频文件真实存在）
+  #    背景：build 拷音频是「源缺失就静默跳过」⇒ 沙箱重置后恢复的工程没音频
+  #          ⇒ 发出来是「有字幕没声音」的站，**且不报错**
+  python3 scripts/check_audio_count.py --dir site/app || exit 1
 
   # ⑤ 🔴🔴 2026-10-25 新增：**站点配额体检**
   #    为什么放在部署**前**：配额是 50 个站，今天从 v1.24 连发 6 次从不删旧的
@@ -213,9 +217,14 @@ finish)
 
   echo "════ ③ 推永久引导页 ════"
   export GH_TOKEN="$(cat /workspace/.secrets/gh_token)"
-  python3 push_boot.py --site "${S}" \
-      --apk "${S}/NHK.apk" \
-      --ver "$VER" --vername "$SITEVERNAME" --note "$NOTE" 2>&1 | tail -3
+  # 🔴🔴 2026-10-26 修：原来调的是 `push_boot.py`（**相对当前目录，根本不存在**）
+  #    ⇒ finish 第③步必挂 ⇒ **发完的站用户看不到**（等于白更新）
+  #    ⇒ NHK 侧本来就有等价脚本 scripts/update_nhk_guide.py（且是 Git Data API 一次提交 = 一次 build）
+  #    ⇒ 收敛到它，**不另造第二份实现**（同一件事两处实现必漂移）
+  APKVER=$(python3 -c "import json;print(json.load(open('site/app/version.json')).get('apkVer',''))" 2>/dev/null)
+  python3 scripts/update_nhk_guide.py --site "${S}" \
+      --ver "$VER" --ver-name "$SITEVERNAME" --apk-ver "$APKVER" \
+      --note "$NOTE" --push 2>&1 | tail -5
 
   echo "════ ③b 等 Pages 渲染端追上（源端先到，渲染端慢一拍）════"
   for i in $(seq 1 12); do
@@ -228,7 +237,13 @@ finish)
 
   echo "════ ④ 线上验收 ════"
   python3 test_online.py "$S" 2>&1 | tail -3
-  python3 test_audio_sync.py "$S" 2>&1 | tail -3
+  # 🔴 2026-10-26：test_audio_sync.py 目前不在工程里 ⇒ 直接调会挂 ⇒ 改成「存在才跑」
+  #    （覆盖没丢：普通版跟音那条断言在 test_native_tick.py 的 ⑬ 里，已实测 18/18）
+  if [ -f scripts/test_audio_sync.py ]; then
+    python3 scripts/test_audio_sync.py "$S" 2>&1 | tail -3
+  else
+    echo "   （跳过 test_audio_sync.py：脚本不在工程里 ⇒ 跟音断言由 test_native_tick.py ⑬ 覆盖）"
+  fi
   python3 test_native_tick.py "$S" 2>&1 | tail -3
 
   echo "════ ④b 线上缓存三件套（APP_VER / CACHE / ver 同号？）════"
