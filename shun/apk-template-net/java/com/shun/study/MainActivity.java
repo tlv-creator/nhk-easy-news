@@ -108,6 +108,16 @@ public class MainActivity extends Activity {
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        // 🔴🔴 **WebView 是静态复用的**（ShunRuntime）⇒ Activity 被系统重建时（内存回收 /
+        //    「不保留活动」）会拿到**同一个** WebView 对象。
+        //    而 ViewGroup.addView() 遇到「已经有 parent 的 child」会直接抛
+        //    IllegalStateException: The specified child already has a parent.
+        //    ⇒ 必须先把旧 parent 摘掉再挂上去。
+        ViewGroup oldParent = (ViewGroup) web.getParent();
+        if (oldParent != null) {
+            try { oldParent.removeView(web); } catch (Throwable ignored) { }
+        }
+
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setBackgroundColor(Color.WHITE);
@@ -294,28 +304,40 @@ public class MainActivity extends Activity {
         } catch (Throwable ignored) { }
     }
 
-    /** 锁屏 / 通知栏按钮 → 反向控制页面里的 <audio> */
-    public class Bridge {
+    /**
+     * 锁屏 / 通知栏按钮 → 反向控制页面里的 &lt;audio&gt;
+     *
+     * 🔴🔴 **必须是 static 内部类**：
+     *   非 static 内部类隐式持有外部 MainActivity ⇒
+     *   ShunRuntime（静态）→ WebView（静态）→ JS 接口 → Activity
+     *   ⇒ **Activity 永远无法回收**（泄漏）。
+     *   改成 static 后，这里只用 ShunRuntime，不碰 Activity。
+     */
+    public static class Bridge {
         @JavascriptInterface
         public String playerState() {
-            return null;   // 同步取不到；PlaybackService 走 poll 路径
+            // 同步取不到；PlaybackService 走 poll 路径（异步读页面里的 <audio>）
+            return "{\"has\":false,\"playing\":false,\"pos\":0,\"dur\":0,\"ended\":false}";
         }
 
         @JavascriptInterface
         public String play() {
-            inject("try{if(window.__shunAu){window.__shunAu.play();return 'ok';}}catch(e){}return 'no';");
+            ShunRuntime.eval(
+                "try{if(window.__shunAu){window.__shunAu.play();return 'ok';}}catch(e){}return 'no';", null);
             return "ok";
         }
 
         @JavascriptInterface
         public String pause() {
-            inject("try{if(window.__shunAu){window.__shunAu.pause();return 'ok';}}catch(e){}return 'no';");
+            ShunRuntime.eval(
+                "try{if(window.__shunAu){window.__shunAu.pause();return 'ok';}}catch(e){}return 'no';", null);
             return "ok";
         }
 
         @JavascriptInterface
         public String seekTo(double ms) {
-            inject("try{if(window.__shunAu){window.__shunAu.currentTime=" + (ms / 1000.0) + ";return 'ok';}}catch(e){}return 'no';");
+            ShunRuntime.eval(
+                "try{if(window.__shunAu){window.__shunAu.currentTime=" + (ms / 1000.0) + ";return 'ok';}}catch(e){}return 'no';", null);
             return "ok";
         }
 

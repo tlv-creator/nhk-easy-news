@@ -29,7 +29,21 @@ const os = require('os');
 const { execFileSync, spawnSync } = require('child_process');
 
 const ROOT = __dirname;
-const TPL = process.env.TPL_DIR || path.join(ROOT, 'apk-template');
+// 🔴 模板目录：本地开发布局是 apkbuild/apk-template，仓库布局是 scripts/../apk-template-net
+//    （peer 实测：只写死一个 ⇒ 在仓库布局下 fs.cpSync 直接 ENOENT）
+const TPL_CANDIDATES = [
+  process.env.TPL_DIR,
+  path.join(ROOT, 'apk-template'),
+  path.join(ROOT, 'apk-template-net'),
+  path.join(ROOT, '..', 'apk-template-net'),
+].filter(Boolean);
+const TPL = TPL_CANDIDATES.find(p => fs.existsSync(p) && fs.statSync(p).isDirectory());
+if (!TPL) {
+  console.error('❌ 找不到原生层模板目录。试过：\n' +
+    TPL_CANDIDATES.map(p => '     ' + p).join('\n') +
+    '\n  ⇒ 用 TPL_DIR=<目录> 显式指定');
+  process.exit(1);
+}
 const APP_VERSION = process.env.APP_VERSION || '1.3.0';
 const VERSION_CODE = process.env.VERSION_CODE || '8';
 const MIN_SDK = '24';
@@ -250,8 +264,27 @@ function main() {
         '  ⇒ 绝不自动生成一把新的');
   }
   const signed = path.join(work, 'signed.apk');
-  run(bt.apksigner, ['sign', '--ks', KEYSTORE, '--ks-pass', 'pass:' + KEYSTORE_PASS,
-    '--ks-key-alias', 'SHUN', '--out', signed, aligned]);
+  // 🔴 别名大小写：Java KeyStore 的别名**大小写不敏感**，但 apksigner 匹配失败会报
+  //    "alias not found" ⇒ 依次试，先成功者为准（peer 实测：小写 shun / 大写 SHUN 都能碰上，
+  //    不同 keystore 存的写法不一样 ⇒ 别写死一个）。
+  const aliasCandidates = (process.env.KS_ALIAS ? [process.env.KS_ALIAS] : [])
+    .concat(['SHUN', 'shun']);
+  let signErr = null, usedAlias = null;
+  for (const al of aliasCandidates) {
+    try {
+      run(bt.apksigner, ['sign', '--ks', KEYSTORE, '--ks-pass', 'pass:' + KEYSTORE_PASS,
+        '--ks-key-alias', al, '--out', signed, aligned]);
+      usedAlias = al;
+      signErr = null;
+      break;
+    } catch (e) {
+      signErr = e;
+    }
+  }
+  if (!usedAlias) {
+    die('签名失败（试过别名: ' + aliasCandidates.join(', ') + '）\n' + (signErr || ''));
+  }
+  log('  ✓ 用别名签名: ' + usedAlias);
   // 验证书指纹（签完立刻验，不要只信 apksigner 退出码）
   const v = run(bt.apksigner, ['verify', '--print-certs', signed]);
   const m = v.match(/SHA-?1[^:]*:\s*([0-9a-fA-F:]+)/);
