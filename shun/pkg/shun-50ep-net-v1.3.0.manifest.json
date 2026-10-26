@@ -11,20 +11,28 @@
  "site": "https://tlv-creator.github.io/nhk-easy-news/shun-web/",
  "apk": {
   "path": "shun/pkg/shun-50ep-net-v1.3.0.apk",
-  "bytes": 20942,
-  "md5": "1f46318b0cfd616d6cbb136e3a63bb03"
+  "bytes": 25038,
+  "md5": "19111303528490c67b26afe08111ecd8"
  },
  "zip": {
   "path": "shun/pkg/shun-50ep-net-v1.3.0.apk.zip",
-  "bytes": 16843,
-  "md5": "13d67dac3429ce82960c9a3ce3708dc0",
+  "bytes": 17435,
+  "md5": "da19dd908a2a26b914215f067fc79632",
   "inner_name": "shun.apk"
  },
+ "classes_dex_bytes": 18616,
  "notes": [
-  "网络版：APK 内不内置任何音频/数据（7 个文件，20.9KB）",
+  "网络版：APK 内不内置任何音频/数据（7 个文件，25.0KB）",
   "与用户手机里那把密钥一致 ⇒ 可覆盖安装 13 集内置版 v1.2.4（vc7）",
   "覆盖后 13 集内置音频不再随 App 提供（本版无离线缓存）",
-  "API 等级闸门：109 个框架方法 / 38 个框架类全部在 API 24 内",
-  "build 脚本已知要改的两处：TPL_DIR 必须显式给；--ks-key-alias 是小写 shun"
+  "🔴 本次重签原因：上一份 dex=17552（旧模板）⇒ 锁屏没有播放/暂停键",
+  "本份 dex=18616 ⇒ 含 Android13+ 通知权限询问 + Notification.MediaStyle",
+  "另修两处真 bug：① Activity 重建时 addView 抛 'child already has a parent'",
+  "  ② JS 桥接类改 static 内部类 ⇒ 不再泄漏 Activity",
+  "API 等级闸门：117 个框架方法 / 43 个框架类全部在 API 24 内",
+  "dex 凭据扫描 0 命中；dex 内唯一 URL = shun-web；音频钩子 __shunAu 14 处",
+  "图标用旧内置版那个（3419B, md5 e1e2ed72…）⇒ 覆盖安装后桌面图标不变",
+  "build 脚本两处坑已由 peer 修好：TPL 多路查找 / 别名依次试 SHUN→shun",
+  "打包脚本：shun/scripts/package_net_delivery.sh（含 ZIP 内 APK 逐字对账）"
  ]
 }
