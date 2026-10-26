@@ -501,7 +501,11 @@ def main():
                     (g is not None and g[1] == 'new')
                     or method_only_called_guarded((c, mn, md), callers_of)
                     for (c, mn, md, g) in refs):
-                guarded_classes.append((cls, added, refs[0][3][0]))
+                # 🔴 refs[0][3] 可能是 None（该类没有自己的守卫，
+                #    只是「所在方法只从守卫分支被调用」）⇒ 直接取 [0] 会崩
+                #    ⇒ 取「第一个有守卫的引用的阈值」；都没有则留 None（由调用点守卫）
+                _thrs = [g[0] for (_c, _mn, _md, g) in refs if g is not None]
+                guarded_classes.append((cls, added, _thrs[0] if _thrs else None))
             else:
                 missing_classes.append((cls, added))
 
@@ -583,7 +587,7 @@ def main():
                 print('   ── 已被版本守卫包住（安全，仅供参考）%d 条 ──' % (len(guarded) + len(guarded_classes)))
                 for (cls, added, thr) in guarded_classes:
                     print('   %s' % cls)
-                    print('       ☠️ 类缺失，API %s 才引入 —— 但引用都在 `if (SDK_INT >= %d)` 分支内 ✅' % (added, thr))
+                    print('       ☠️ 类缺失，API %s 才引入 —— 但%s' % (added, ('引用都在 `if (SDK_INT >= %d)` 分支内 ✅' % thr) if thr is not None else '只从**被守卫的调用点**可达 ✅'))
                 for (cls, mname, desc, caller, added, why) in guarded:
                     print('   %s.%s %s' % (cls, mname, desc))
                     print('       ⚠️ API %s 才引入' % added)
@@ -612,7 +616,7 @@ def main():
                 print('   ── 已被版本守卫包住（安全，仅供参考）%d 条 ──' % (len(guarded) + len(guarded_classes)))
                 for (cls, added, thr) in guarded_classes:
                     print('   %s' % cls)
-                    print('       ☠️ 类缺失，API %s 才引入 —— 但引用都在 `if (SDK_INT >= %d)` 分支内 ✅' % (added, thr))
+                    print('       ☠️ 类缺失，API %s 才引入 —— 但%s' % (added, ('引用都在 `if (SDK_INT >= %d)` 分支内 ✅' % thr) if thr is not None else '只从**被守卫的调用点**可达 ✅'))
             if guarded:
                 print('   ── 已被版本守卫包住（安全，仅供参考）%d 条 ──' % len(guarded))
                 for (cls, mname, desc, caller, added, why) in guarded:
