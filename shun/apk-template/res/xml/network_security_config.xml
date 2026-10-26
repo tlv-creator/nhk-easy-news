@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  音频代理跑在 App 内的 127.0.0.1:随机端口，必须允许明文 http。
+  注意：<audio> / 原生 MediaPlayer 都要能访问它，所以这里放开 127.0.0.1 与 localhost；
+  base-config 也保留明文许可，避免某些 ROM 上 NSC 对 IP 字面量匹配不一致导致代理连不上
+  （症状就是"装了 App 没声音"）。
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">localhost</domain>
+    </domain-config>
+</network-security-config>
