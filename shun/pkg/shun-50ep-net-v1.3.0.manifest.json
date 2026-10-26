@@ -1,0 +1,30 @@
+{
+ "artifact": "shun-50ep-net-v1.3.0",
+ "built_by": "Mavis 会话（用原密钥 build+sign；密钥未出工程）",
+ "app_version": "1.3.0",
+ "version_code": 8,
+ "package": "com.shun.study",
+ "min_sdk": 24,
+ "target_sdk": 34,
+ "cert_sha1": "9c04f344921d31fd7258a571e263b6e475e42f94",
+ "cert_sha256": "f6e6a793f6afabe8fe30eee958f62f14a52ac5d9e8448b9519b4180aeede8d08",
+ "site": "https://tlv-creator.github.io/nhk-easy-news/shun-web/",
+ "apk": {
+  "path": "shun/pkg/shun-50ep-net-v1.3.0.apk",
+  "bytes": 20942,
+  "md5": "1f46318b0cfd616d6cbb136e3a63bb03"
+ },
+ "zip": {
+  "path": "shun/pkg/shun-50ep-net-v1.3.0.apk.zip",
+  "bytes": 16843,
+  "md5": "13d67dac3429ce82960c9a3ce3708dc0",
+  "inner_name": "shun.apk"
+ },
+ "notes": [
+  "网络版：APK 内不内置任何音频/数据（7 个文件，20.9KB）",
+  "与用户手机里那把密钥一致 ⇒ 可覆盖安装 13 集内置版 v1.2.4（vc7）",
+  "覆盖后 13 集内置音频不再随 App 提供（本版无离线缓存）",
+  "API 等级闸门：109 个框架方法 / 38 个框架类全部在 API 24 内",
+  "build 脚本已知要改的两处：TPL_DIR 必须显式给；--ks-key-alias 是小写 shun"
+ ]
+}
