@@ -31,6 +31,22 @@ BT = os.path.join(SDK, "build-tools", "34.0.0")
 AAPT2 = os.path.join(BT, "aapt2")
 APKSIGNER = os.path.join(BT, "apksigner")
 
+
+def tool_env():
+    """apksigner / aapt2 是**壳脚本**，需要 java 在 PATH 上
+    🔴 不给的话它自己起不来 ⇒ verify 返回非 0 ⇒ **假红**（踩过：沙箱重置后 JDK 挪到了 /opt/jdk）
+    """
+    env = dict(os.environ)
+    cands = [os.environ.get("JAVA_HOME"), "/opt/jdk", "/usr/lib/jvm/java-17-openjdk-amd64",
+             "/usr/lib/jvm/default-java"]
+    for jh in cands:
+        if jh and os.path.exists(os.path.join(jh, "bin", "java")):
+            env["JAVA_HOME"] = jh
+            env["PATH"] = os.path.join(jh, "bin") + os.pathsep + env.get("PATH", "")
+            return env
+    # 退一步：系统 PATH 上有 java 就行
+    return env
+
 EXPECT_PKG = "com.shun.study"
 EXPECT_VC = "8"
 EXPECT_VN = "1.3.0"
@@ -83,7 +99,7 @@ def launchable_ok(apk_path, badging):
     if "com.shun.study.MainActivity" not in badging:
         return False
     r = subprocess.run([AAPT2, "dump", "xmltree", "--file", "AndroidManifest.xml", apk_path],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, env=tool_env())
     if r.returncode != 0:
         return False
     t = r.stdout
@@ -142,7 +158,7 @@ def main():
     # ---------- 2. Manifest ----------
     print("\n[2] APK Manifest（从二进制读，不看构建日志）")
     r = subprocess.run([AAPT2, "dump", "badging", apk_real],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, env=tool_env())
     bd = r.stdout
     check("aapt2 能读出 badging", r.returncode == 0 and "package:" in bd)
     import re
@@ -189,7 +205,7 @@ def main():
     # ---------- 5. 签名 ----------
     print("\n[5] 签名")
     r = subprocess.run([APKSIGNER, "verify", "--print-certs", apk_real],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, env=tool_env())
     check("apksigner verify 通过", r.returncode == 0, r.stderr.strip()[:120])
     mm = re.search(r"SHA-?1[^:]*:\s*([0-9a-fA-F:]+)", r.stdout)
     cert = mm.group(1).replace(":", "").lower() if mm else ""
