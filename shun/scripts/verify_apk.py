@@ -22,6 +22,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 import urllib.request
 import zipfile
 
@@ -59,9 +60,35 @@ def check(name, cond, detail_ok="", detail_bad=""):
 
 
 def http_json(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "shun-apk-verify"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode("utf-8"))
+    """网络抖动重试 3 次（沙箱偶发 TLS EOF；别把网络抖动当代码 bug）"""
+    last = None
+    for i in range(3):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "shun-apk-verify"})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return json.loads(r.read().decode("utf-8"))
+        except Exception as e:
+            last = e
+            time.sleep(2)
+    raise last
+
+
+def launchable_ok(apk_path, badging):
+    """启动 Activity 判据
+
+    🔴 `aapt2 dump badging` **不输出 intent 类别** ⇒ 只在里面找
+       "android.intent.category.LAUNCHER" 会永远假红（实测踩过）。
+    ⇒ LAUNCHER 类别必须读 **manifest 树**（aapt2 dump xmltree）。
+    """
+    if "com.shun.study.MainActivity" not in badging:
+        return False
+    r = subprocess.run([AAPT2, "dump", "xmltree", "--file", "AndroidManifest.xml", apk_path],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        return False
+    t = r.stdout
+    return ("android.intent.category.LAUNCHER" in t
+            and "android.intent.action.MAIN" in t)
 
 
 def main():
@@ -128,8 +155,8 @@ def main():
     else:
         bad("解析 package 行")
     check("有 INTERNET 权限", "android.permission.INTERNET" in bd)
-    check("启动 Activity 正确",
-          "com.shun.study.MainActivity" in bd and "android.intent.category.LAUNCHER" in bd)
+    check("启动 Activity 正确", launchable_ok(apk_real, bd),
+          "com.shun.study.MainActivity + LAUNCHER")
     m = re.search(r"application-label:'([^']*)'", bd)
     check("应用名非空", bool(m and m.group(1).strip()), m.group(1) if m else "空")
     check("minSdkVersion = 24", "sdkVersion:'24'" in bd)

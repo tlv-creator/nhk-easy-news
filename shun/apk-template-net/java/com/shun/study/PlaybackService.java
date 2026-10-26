@@ -107,6 +107,15 @@ public class PlaybackService extends Service {
             });
             session.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS);
             session.setActive(true);
+            // 🔴 锁屏上的播放控制条来自 **MediaStyle 通知**
+            //   （普通通知也能进前台服务，但锁屏只有一行字，按不了）
+            //   ⇒ session 建好后立刻把通知升级成 MediaStyle
+            try {
+                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                if (nm != null) {
+                    nm.notify(NOTIF_ID, buildMediaNotification());
+                }
+            } catch (Throwable ignored) { }
         } catch (Throwable ignored) { }
 
         startTicker();
@@ -232,6 +241,29 @@ public class PlaybackService extends Service {
                 .setOngoing(true)
                 .build();
         }
+    }
+
+    /**
+     * MediaStyle 通知 —— 锁屏 / 通知栏里出现**播放、暂停、进度条**。
+     * 🔴 MediaSession.Callback（onPlay/onPause/onSeekTo）就是被这些按钮触发的。
+     */
+    private Notification buildMediaNotification() {
+        Notification n = buildNotification("日語精読 Shun", "正在播放…");
+        try {
+            if (session != null) {
+                Notification.Builder b = new Notification.Builder(this);
+                if (Build.VERSION.SDK_INT >= 26) {
+                    b = new Notification.Builder(this, "shun_playback");
+                }
+                b.setSmallIcon(android.R.drawable.ic_media_play)
+                    .setContentTitle("日語精読 Shun")
+                    .setContentText("正在播放…")
+                    .setOngoing(true)
+                    .setStyle(new Notification.MediaStyle().setMediaSession(session.getSessionToken()));
+                return b.build();
+            }
+        } catch (Throwable ignored) { }
+        return n;
     }
 
     private void stopForegroundCompat() {

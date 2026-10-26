@@ -180,6 +180,20 @@ public class MainActivity extends Activity {
 
         web.loadUrl(SITE_URL);
         startWatch();
+        requestNotifPermission();
+    }
+
+    /**
+     * Android 13+ 通知权限。
+     * 🔴 不给也能播（前台服务照跑），但**锁屏上的播放控制条不显示** ⇒ 要问。
+     */
+    private void requestNotifPermission() {
+        try {
+            if (Build.VERSION.SDK_INT >= 33) {
+                requestPermissions(new String[]{
+                    "android.permission.POST_NOTIFICATIONS"}, 1001);
+            }
+        } catch (Throwable ignored) { }
     }
 
     private void inject(String js) {
