@@ -157,7 +157,14 @@
    "status": "ALIVE",
    "frozen": true,
    "reason": "官方朗読音频包（9784872177497 / 9784866398310）的 12 条轨，按书改名后统一托管；App 数据里的 audio 指向这里"
+  },
+  {
+   "domain": "qtjgfga76bu4o.space.mcode.cn",
+   "project": "shun",
+   "reason": "旧内置版 v1.2.4 APK 的音频站：域名写死在 APK assets/app.js 的 AUDIO_BASE_LOCAL 里 ⇒ frozen 永不删、也不可 redeploy（redeploy 会换域名 ⇒ 用户旧 App 直接断声）role=audio-source",
+   "frozen": true
   }
  ],
- "_meta_note": "2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED"
+ "_meta_note": "2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED",
+ "updated": "2026-10-28"
 }
