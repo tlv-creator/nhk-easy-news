@@ -1,0 +1,16 @@
+{
+  "name": "日語精読 Shun — 日中对照注音版",
+  "short_name": "日語精読 Shun",
+  "description": "309 集日语播客日中对照 · 逐字注音 · 整集音频跟读",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
+  ]
+}

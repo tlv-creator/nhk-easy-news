@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>日語精読 Shun — 日中对照注音版</title>
+<link rel="manifest" href="app.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="日語精読 Shun">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23fff'/%3E%3Ctext x='8' y='12' font-size='11' text-anchor='middle' fill='%23000'%3ES%3C/text%3E%3C/svg%3E">
 <style>
 /* 🔴 墨水屏铁律：渐变全关 / 描边半透明 / 正文大字号 / 不用图标色块 */
@@ -54,6 +60,23 @@ ruby{ruby-align:center}
 rt{font-size:.52em;color:#111;letter-spacing:.02em}
 .zh{display:block;font-size:.9em;color:#222;margin:.05em 0 .1em .2em;line-height:1.75}
 .back{margin:0 0 1em}
+
+/* ── 音频播放器（整集）── */
+#player{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bg);
+  border-top:1px solid var(--line);padding:.5em .9em calc(.5em + env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;gap:.35em}
+#player.hide{display:none !important}
+#player .row{display:flex;align-items:center;gap:.6em;flex-wrap:wrap}
+#player .pt{font-size:.86em;color:var(--dim);flex:1;min-width:6em;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#player button{font-size:.95em;padding:.4em 1em;white-space:nowrap}
+#player .tm{font-family:"Noto Sans CJK JP",sans-serif;font-size:.85em;color:var(--dim);
+  white-space:nowrap;font-variant-numeric:tabular-nums}
+#bar{height:.55em;border:1px solid var(--line);border-radius:3px;overflow:hidden;
+  background:var(--bg)}
+#bar i{display:block;height:100%;width:0;background:#000}
+body{padding-bottom:0}
+body.playing{padding-bottom:8.2em}
 .empty{color:var(--dim);padding:2em 0;text-align:center}
 @media (max-width:380px){ body{font-size:18px} .w{margin-right:.28em} }
 </style>
@@ -65,10 +88,31 @@ rt{font-size:.52em;color:#111;letter-spacing:.02em}
   <span class="sp"></span>
   <input id="search" type="search" placeholder="搜索集名…">
 </header>
+<div id="player" class="hide">
+  <div class="row">
+    <span class="pt" id="pTitle">未选择</span>
+    <span class="tm" id="pTime">00:00 / 00:00</span>
+  </div>
+  <div class="row">
+    <button id="pPlay" type="button">播放</button>
+    <button id="pStop" type="button">停止</button>
+    <span class="tm" id="pMsg"></span>
+  </div>
+  <div id="bar"><i></i></div>
+</div>
 <main id="main"><div class="empty">正在载入…</div></main>
 
 <script>
 var IDX = null, CUR = null, ALL = [];
+function cleanTitle(ti, ep){
+  // 目录行左边已经写了 "EpN"，标题里若也以 "EpN " 开头就去掉（免得显示成 "Ep1 Ep1 …"）
+  var t=String(ti||'');
+  if(ep!=null){
+    t=t.replace(new RegExp('^Ep\\s*'+ep+'\\s*','i'),'');
+    t=t.replace(/^【[^】]*】\s*Ep\s*\d+\s*/,'');
+  }
+  return t.trim();
+}
 function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
   .replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fmt(sec){sec=Math.max(0,Math.floor(sec||0));var m=Math.floor(sec/60),x=sec%60;
@@ -100,7 +144,7 @@ function renderToc(q){
     var e=list[i];
     h+='<li><a href="#ep-'+esc(e.tag)+'" data-tag="'+esc(e.tag)+'"><div class="row">'+
        '<span class="no">'+esc(e.ep!=null?('Ep'+e.ep):'')+'</span>'+
-       '<span class="ti">'+esc(e.title)+
+       '<span class="ti">'+esc(cleanTitle(e.title,e.ep))+
        (e.zh_title?'<span class="zi">'+esc(e.zh_title)+'</span>':'')+
        '</span><span class="meta">'+e.n+'句 · '+fmt(e.dur)+'</span></div></a></li>';
   }
@@ -111,6 +155,63 @@ function renderToc(q){
     ev.preventDefault(); openEp(this.getAttribute('data-tag'));});}
 }
 
+/* ── 音频播放器（整集 / 在线直连，不烧任何 token）── */
+var AU=null, PT=null;
+function fmtT(x){
+  x=Math.max(0,Math.floor(x||0));
+  var m=Math.floor(x/60), s=x%60;
+  return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+}
+function pStop(){
+  if(AU){try{AU.pause();AU.currentTime=0;}catch(e){}}
+  document.body.classList.remove('playing');
+  $('#pPlay').textContent='播放';
+  $('#bar i').style.width='0%';
+  $('#pTime').textContent='00:00 / '+(AU&&AU.duration?fmtT(AU.duration):'00:00');
+}
+function pBind(d){
+  PT=d; AU=null;
+  $('#player').classList.remove('hide');
+  $('#pTitle').textContent='Ep'+(d.ep!=null?d.ep:'')+' '+(d.title||'');
+  $('#pMsg').textContent='';
+  $('#pTime').textContent='00:00 / 00:00';
+  $('#bar i').style.width='0%';
+  $('#pPlay').textContent='播放';
+}
+function pToggle(){
+  var d=PT; if(!d||!d.audio){$('#pMsg').textContent='这一集没有音频';return;}
+  if(!AU){
+    // 🔴 用 new Audio()：APK 原生层靠覆写 window.Audio 来接管播放/锁屏控制
+    try{AU=new Audio(d.audio);}catch(e){$('#pMsg').textContent='这个浏览器放不了音频';return;}
+    AU.preload='metadata';
+    AU.addEventListener('timeupdate',function(){
+      var dur=AU.duration||0;
+      $('#pTime').textContent=fmtT(AU.currentTime)+' / '+(dur?fmtT(dur):'??:??');
+      $('#bar i').style.width=(dur?Math.min(100,AU.currentTime/dur*100):0)+'%';
+    });
+    AU.addEventListener('ended',function(){
+      $('#pPlay').textContent='播放'; document.body.classList.remove('playing');
+      $('#bar i').style.width='0%';
+    });
+    AU.addEventListener('error',function(){
+      $('#pMsg').textContent='音频加载失败（检查网络）';
+      $('#pPlay').textContent='播放'; document.body.classList.remove('playing');
+    });
+  }
+  if(AU.paused){
+    AU.play().then(function(){
+      $('#pPlay').textContent='暂停';
+      document.body.classList.add('playing');
+    }).catch(function(e){
+      $('#pMsg').textContent='播放被浏览器拦了，再点一次播放';
+    });
+  }else{
+    AU.pause(); $('#pPlay').textContent='播放';
+  }
+}
+$('#pPlay').addEventListener('click',pToggle);
+$('#pStop').addEventListener('click',pStop);
+
 function openEp(tag){
   var m=$('#main');
   m.innerHTML='<div class="empty">载入中…</div>';
@@ -118,6 +219,7 @@ function openEp(tag){
     var d=window['SHUN_'+tag.replace(/-/g,'_')];
     if(!d){$('#main').innerHTML='<div class="empty">这一集没载入成功</div>';return;}
     CUR=d;
+    pStop(); pBind(d);
     var ti=String(d.title||'');
     var pre='';
     if(d.ep!=null && ti.indexOf('Ep'+d.ep)<0) pre='Ep'+d.ep+' ';
@@ -138,6 +240,8 @@ function openEp(tag){
 }
 
 function showToc(){
+  pStop();
+  $('#player').classList.add('hide');
   $('#backBtn').classList.add('hide');
   location.hash='';
   renderToc($('#search').value.trim());
@@ -152,11 +256,15 @@ $('#search').addEventListener('input',function(){renderToc(this.value.trim());})
 /* 🔴 用 <script> 标签加载数据（不是 fetch）
    ⇒ file:// 下也能开（fetch 会被 CORS 拦 ⇒ 双击打开就是空白页） */
 function loadScript(src, ok, bad){
-  var s=document.createElement('script');
-  s.src=src;
-  s.onload=function(){ok&&ok();};
-  s.onerror=function(){bad&&bad();};
-  document.head.appendChild(s);
+  // 🔴 必须返回 Promise：调用方用 .catch(...) 兜底
+  //    （旧代码返回 undefined ⇒ openEp 里 .catch 抛 "Cannot read properties of undefined"）
+  return new Promise(function(resolve, reject){
+    var s=document.createElement('script');
+    s.src=src;
+    s.onload=function(){ try{ ok&&ok(); }catch(e){ reject(e); } resolve(); };
+    s.onerror=function(){ var e=new Error('载入失败: '+src); if(bad) bad(e); reject(e); };
+    document.head.appendChild(s);
+  });
 }
 loadScript('data/index.js', function(){
   ALL=(window.SHUN_INDEX&&window.SHUN_INDEX.eps)||[];
