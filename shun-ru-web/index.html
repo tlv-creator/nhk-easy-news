@@ -114,7 +114,9 @@ function renderToc(q){
 function openEp(tag){
   var m=$('#main');
   m.innerHTML='<div class="empty">载入中…</div>';
-  fetch('data/'+tag+'.json').then(function(r){return r.json();}).then(function(d){
+  loadScript('data/'+tag+'.js', function(){
+    var d=window['SHUN_'+tag.replace(/-/g,'_')];
+    if(!d){$('#main').innerHTML='<div class="empty">这一集没载入成功</div>';return;}
     CUR=d;
     var ti=String(d.title||'');
     var pre='';
@@ -147,13 +149,23 @@ function $(s){return document.querySelector(s);}
 $('#backBtn').addEventListener('click',showToc);
 $('#search').addEventListener('input',function(){renderToc(this.value.trim());});
 
-fetch('data/index.json').then(function(r){return r.json();}).then(function(d){
-  ALL=d.eps||[];
+/* 🔴 用 <script> 标签加载数据（不是 fetch）
+   ⇒ file:// 下也能开（fetch 会被 CORS 拦 ⇒ 双击打开就是空白页） */
+function loadScript(src, ok, bad){
+  var s=document.createElement('script');
+  s.src=src;
+  s.onload=function(){ok&&ok();};
+  s.onerror=function(){bad&&bad();};
+  document.head.appendChild(s);
+}
+loadScript('data/index.js', function(){
+  ALL=(window.SHUN_INDEX&&window.SHUN_INDEX.eps)||[];
   renderToc('');
   var h=(location.hash||'').replace('#ep-','');
   if(h){openEp(h);}
-}).catch(function(e){
-  $('#main').innerHTML='<div class="empty">目录载入失败：'+esc(e)+'</div>';});
+}, function(){
+  $('#main').innerHTML='<div class="empty">目录载入失败（data/index.js 没找到）</div>';
+});
 
 window.addEventListener('hashchange',function(){
   var h=(location.hash||'').replace('#ep-','');
