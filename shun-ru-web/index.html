@@ -43,12 +43,13 @@ main{padding:.8em .9em 3em;max-width:44em;margin:0 auto}
 .toc{margin:0;padding:0;list-style:none}
 .toc li{margin:.1em 0;border-bottom:1px solid rgba(0,0,0,.13)}
 .toc a{display:block;padding:.55em .2em;text-decoration:none;color:var(--fg)}
-.toc .row{display:flex;gap:.7em;align-items:baseline}
+.toc .row{display:flex;gap:.7em;align-items:baseline;flex-wrap:wrap}
 .toc .no{font-family:"Noto Sans CJK JP",sans-serif;font-size:.82em;color:var(--dim);
-  min-width:3.4em}
-.toc .ti{flex:1}
+  min-width:3.4em;flex:0 0 auto}
+.toc .ti{flex:1 1 9em;min-width:0;overflow-wrap:anywhere;word-break:break-word}
 .toc .zi{display:block;font-size:.86em;color:var(--dim);margin-top:.1em}
-.toc .meta{font-size:.78em;color:var(--dim);white-space:nowrap}
+.toc .meta{font-size:.78em;color:var(--dim);white-space:nowrap;flex:0 0 auto;
+  margin-left:auto}
 
 /* ── 正文 ── */
 .ep h2{font-size:1.22em;margin:.2em 0 .1em;line-height:1.5}
@@ -57,7 +58,7 @@ main{padding:.8em .9em 3em;max-width:44em;margin:0 auto}
 .ja{display:block}
 .w{margin-right:.34em;white-space:nowrap}
 ruby{ruby-align:center}
-rt{font-size:.52em;color:#111;letter-spacing:.02em}
+rt{font-size:.58em;color:#111;letter-spacing:.02em}
 .zh{display:block;font-size:.9em;color:#222;margin:.05em 0 .1em .2em;line-height:1.75}
 .back{margin:0 0 1em}
 
@@ -76,9 +77,12 @@ rt{font-size:.52em;color:#111;letter-spacing:.02em}
   background:var(--bg)}
 #bar i{display:block;height:100%;width:0;background:#000}
 body{padding-bottom:0}
-body.playing{padding-bottom:8.2em}
+/* 播放器在底部 ⇒ 正文要留出空间（显示中就留，不等播放） */
+body.hasp{padding-bottom:8.2em}
 .empty{color:var(--dim);padding:2em 0;text-align:center}
-@media (max-width:380px){ body{font-size:18px} .w{margin-right:.28em} }
+/* 🔴 窄屏也**不降正文**（老花眼）：只收紧词间距
+   （之前的 18px 会把注音压到 9.3px ⇒ 太小） */
+@media (max-width:380px){ .w{margin-right:.26em} .toc .no{min-width:3em} }
 </style>
 </head>
 <body>
@@ -164,7 +168,7 @@ function fmtT(x){
 }
 function pStop(){
   if(AU){try{AU.pause();AU.currentTime=0;}catch(e){}}
-  document.body.classList.remove('playing');
+  
   $('#pPlay').textContent='播放';
   $('#bar i').style.width='0%';
   $('#pTime').textContent='00:00 / '+(AU&&AU.duration?fmtT(AU.duration):'00:00');
@@ -172,7 +176,8 @@ function pStop(){
 function pBind(d){
   PT=d; AU=null;
   $('#player').classList.remove('hide');
-  $('#pTitle').textContent='Ep'+(d.ep!=null?d.ep:'')+' '+(d.title||'');
+  document.body.classList.add('hasp');
+  $('#pTitle').textContent='Ep'+(d.ep!=null?d.ep:'')+' '+cleanTitle(d.title,d.ep);
   $('#pMsg').textContent='';
   $('#pTime').textContent='00:00 / 00:00';
   $('#bar i').style.width='0%';
@@ -190,18 +195,18 @@ function pToggle(){
       $('#bar i').style.width=(dur?Math.min(100,AU.currentTime/dur*100):0)+'%';
     });
     AU.addEventListener('ended',function(){
-      $('#pPlay').textContent='播放'; document.body.classList.remove('playing');
+      $('#pPlay').textContent='播放'; 
       $('#bar i').style.width='0%';
     });
     AU.addEventListener('error',function(){
       $('#pMsg').textContent='音频加载失败（检查网络）';
-      $('#pPlay').textContent='播放'; document.body.classList.remove('playing');
+      $('#pPlay').textContent='播放'; 
     });
   }
   if(AU.paused){
     AU.play().then(function(){
       $('#pPlay').textContent='暂停';
-      document.body.classList.add('playing');
+      document.body.classList.add('hasp');
     }).catch(function(e){
       $('#pMsg').textContent='播放被浏览器拦了，再点一次播放';
     });
@@ -242,6 +247,7 @@ function openEp(tag){
 function showToc(){
   pStop();
   $('#player').classList.add('hide');
+  document.body.classList.remove('hasp');
   $('#backBtn').classList.add('hide');
   location.hash='';
   renderToc($('#search').value.trim());
