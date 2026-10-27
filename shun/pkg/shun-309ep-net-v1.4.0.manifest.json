@@ -1,0 +1,35 @@
+{
+ "artifact": "shun-309ep-net-v1.4.0",
+ "built_by": "Mavis 会话（用原密钥 build+sign；密钥未出工程）",
+ "app_version": "1.4.0",
+ "version_code": 9,
+ "package": "com.shun.study",
+ "min_sdk": 24,
+ "target_sdk": 34,
+ "cert_sha1": "9c04f344921d31fd7258a571e263b6e475e42f94",
+ "cert_sha256": "f6e6a793f6afabe8fe30eee958f62f14a52ac5d9e8448b9519b4180aeede8d08",
+ "site": "https://tlv-creator.github.io/nhk-easy-news/shun-ru-web/",
+ "apk": {
+  "path": "shun/pkg/shun-309ep-net-v1.4.0.apk",
+  "bytes": 25038,
+  "md5": "e84cce17c4ddb4373cb341df10bff590"
+ },
+ "zip": {
+  "path": "shun/pkg/shun-309ep-net-v1.4.0.apk.zip",
+  "bytes": 17438,
+  "md5": "7339695fe8eef3677bdd49ab9749004f",
+  "inner_name": "shun.apk"
+ },
+ "classes_dex_bytes": 18620,
+ "notes": [
+  "309 集日中对照注音版（280 集 N5-N4 主系列 + 29 集特别篇）",
+  "网络版：APK 内不内置任何音频/数据（7 个文件，无 assets）",
+  "与用户手机里那把密钥一致 ⇒ 证书 DER 与旧内置版逐字相同 ⇒ 可覆盖安装",
+  "唯一 URL = shun-ru-web/；音频是官方 CDN 直链（redcircle）⇒ 不需要 AUDIO_BASE 注入",
+  "沿用 50 集网络版那套：覆写 window.Audio 的钩子 / MediaStyle 锁屏控制 / POST_NOTIFICATIONS",
+  "图标用旧内置版那个（3419B, md5 e1e2ed72…）⇒ 覆盖安装后桌面图标不变",
+  "API 等级闸门：117 个框架方法 / 43 个框架类全部在 API 24 内",
+  "模板：shun/apk-template-ru/（只改 SITE_URL 与版本号，其余与 apk-template-net 一致）",
+  "打包脚本：shun/scripts/package_net_delivery.sh（参数化 + ZIP 内 APK 逐字对账）"
+ ]
+}
