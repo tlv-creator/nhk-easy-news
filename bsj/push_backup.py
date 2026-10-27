@@ -16,12 +16,27 @@ SKIP_FILES = {"kanjidic2.xml", "kanjidic2.xml.gz", "apple_ssd.json", "ep737.mp3"
               "match_and_probe.py"}
 
 def put(path, data: bytes):
-    url = f"{API}/{path}?branch={BRANCH}"
-    body = json.dumps({
+    from urllib.parse import quote
+    url = f"{API}/{quote(path)}?branch={BRANCH}"
+    payload = {
         "message": f"bsj: {path}",
         "content": base64.b64encode(data).decode(),
         "branch": BRANCH,
-    }).encode()
+    }
+    # 已存在的文件必须带 sha
+    try:
+        from urllib.parse import quote
+        g = urllib.request.Request(f"{API}/{quote(path)}?branch={BRANCH}", headers={
+            "Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github+json",
+            "User-Agent": "mavis-bsj"})
+        with urllib.request.urlopen(g, timeout=60) as r:
+            ex = json.loads(r.read().decode())
+        if isinstance(ex, dict) and ex.get("sha"):
+            payload["sha"] = ex["sha"]
+    except urllib.error.HTTPError as e:
+        if e.code != 404:
+            raise
+    body = json.dumps(payload).encode()
     req = urllib.request.Request(url, data=body, method="PUT", headers={
         "Authorization": f"Bearer {TOKEN}",
         "Accept": "application/vnd.github+json",
