@@ -49,23 +49,44 @@ def fetch_list():
         if isinstance(j, dict) and j.get("content"):
             import base64
             j = json.loads(base64.b64decode(j["content"]).decode("utf-8"))
-        if isinstance(j, dict) and "protected_sites" in j:
+        if isinstance(j, dict) and ("sites" in j or "protected_sites" in j):
             return j, "源端(contents-api)"
     except Exception:
         pass
     try:
         j = json.loads(_get(LIST_RAW).decode("utf-8"))
-        if isinstance(j, dict) and "protected_sites" in j:
+        if isinstance(j, dict) and ("sites" in j or "protected_sites" in j):
             return j, "源端(raw)"
     except Exception:
         pass
     try:
         j = json.loads(_get(LIST_PAGES).decode("utf-8"))
-        if isinstance(j, dict) and "protected_sites" in j:
+        if isinstance(j, dict) and ("sites" in j or "protected_sites" in j):
             return j, "⚠️ 渲染端(Pages，可能慢一拍)"
     except Exception as e:
         raise RuntimeError("拉不到受保护清单（源端和渲染端都试过了）：%s" % e)
-    raise RuntimeError("拉到的清单里没有 protected_sites 字段")
+    raise RuntimeError("拉到的清单里既没有 sites 也没有 protected_sites 字段")
+
+
+# 🔴 2026-10-26（跨会话修复）：清单里条目数组的键名有两个
+#    · `sites`            —— **线上权威键**（2026-10-25 的 diff 证明老版本就是它）
+#    · `protected_sites`  —— 老代码在用，但**线上从来就没有这个键**
+#    ⇒ 只认旧键的老实现会读到**空列表**：
+#      清理脚本的「冻结保护集」为空 ⇒ 可能误删现役站；
+#      闸门则变成「校验代码在、校验对象是空的」⇒ **恒绿**。
+#    ⇒ 两个键都认（收进词汇表，不是把线上的改回去）。
+#    ⚠️ 两个都没有 ⇒ **报错不放行**（不能当成空清单，那正是恒绿的成因）。
+def _sites_of(obj, strict=False):
+    if not isinstance(obj, dict):
+        if strict:
+            raise ValueError('清单不是对象（实际 %s）' % type(obj).__name__)
+        return []
+    for _k in ('sites', 'protected_sites'):
+        if isinstance(obj.get(_k), list):
+            return obj[_k]
+    if strict:
+        raise ValueError('清单里既没有 sites 也没有 protected_sites 字段')
+    return []
 
 
 def _req(url, method, timeout):
@@ -82,13 +103,34 @@ def _req(url, method, timeout):
         return 0
 
 
+def _site_url(domain):
+    """把清单里的 domain 变成可探活的 URL。
+
+    🔴 2026-10-27 修（被「闸门读不到清单」掩盖很久的 bug）：
+       清单里的 `domain` **本来就是全域名**（如 `rkw1x077uih9s.space.mcode.cn`），
+       而旧代码无条件再拼一次 `.space.mcode.cn`
+       ⇒ `https://rkw1x077uih9s.space.mcode.cn.space.mcode.cn/` ⇒ **每个域名都探不到**
+       ⇒ 13 个域名一个没真验，最后却报「✅ 全部活着」⇒ **恒绿**。
+    ⇒ 修法：按形态分三种（全 URL / 全域名 / 短名）；env 覆盖优先（自检要用 mock）。
+    """
+    base = os.environ.get("LISTEN_PROBE_BASE")
+    if base:
+        return (base if base.endswith("/") else base + "/") % domain
+    d = str(domain or "").strip()
+    if d.startswith("http://") or d.startswith("https://"):
+        return d if d.endswith("/") else d + "/"
+    if "." in d:                      # 已经是全域名
+        return "https://%s/" % d
+    return "https://%s.space.mcode.cn/" % d     # 老式短名
+
+
 def head(domain, timeout=8):
     """→ (code, kind)  kind: alive / dead / blocked / neterr
     🔴 **HEAD 不准**：并发压测时中间层会回 403/429/501（实测：NHK 内容站被并发 HEAD 打成 403，
        GET 和浏览器都是 200）⇒ **只要 HEAD 不是 200/404，必须用 GET 复验**。
     ⇒ 「403/429/501」= 被挡/限流，**不是站死了**。"""
     # 🔴 端点可覆盖（为了能拿 mock 做自检 —— 「HEAD 不准」这条必须能测）
-    url = (os.environ.get("LISTEN_PROBE_BASE") or "https://%s.space.mcode.cn/") % domain
+    url = _site_url(domain)
     code = _req(url, "HEAD", timeout)
     if code == 200:
         return 200, "alive", url
@@ -133,14 +175,14 @@ def main():
     # 🔴🔴 类型归一（2026-10-24 patch，Shun 会话报的洞②）：
     #   「清单被写成 dict」⇒ 迭代出来是 key 字符串 ⇒ e.get() 直接 AttributeError 崩
     #   ⇒ 这里**显式校验**，坏清单必须**报错不放行**（不能崩、也不能静默当空）
-    entries = data.get("protected_sites", [])
+    entries = _sites_of(data, strict=True)
     if not isinstance(entries, list):
-        print("❌ protected_sites 必须是数组，实际是 %s ⇒ **不放行**"
+        print("❌ 清单条目必须是数组，实际是 %s ⇒ **不放行**"
               % type(entries).__name__)
         return 2
     for i, e in enumerate(entries):
         if not isinstance(e, dict):
-            print("❌ protected_sites 第 %d 条不是对象（%s）⇒ **不放行**"
+            print("❌ 清单第 %d 条不是对象（%s）⇒ **不放行**"
                   % (i, type(e).__name__))
             return 2
     # 🔴🔴🔴 2026-10-24 补丁（主线会话）：**status 取值必须穷举** ——
@@ -165,13 +207,13 @@ def main():
         elif isinstance(raw, str):
             st = raw.strip().upper()
         else:
-            print("❌ protected_sites 第 %d 条（%s）的 status **类型不对**：%s"
+            print("❌ 清单第 %d 条（%s）的 status **类型不对**：%s"
                   % (i, dom, type(raw).__name__))
             print("   status 要么不写，要么写字符串（DELETED / SUPERSEDED / ALIVE）")
             print("   ⇒ **不放行**（类型不对的字段不能被默默当成现役）")
             return 2
         if st not in KNOWN:
-            print("❌ protected_sites 第 %d 条（%s）的 status=%r 不认识"
+            print("❌ 清单第 %d 条（%s）的 status=%r 不认识"
                   % (i, dom, raw))
             print("   只认这四个：DELETED（期望它死）/ SUPERSEDED（墓碑，不判死活）"
                   "/ ALIVE（现役）/ 没有 status（现役）")

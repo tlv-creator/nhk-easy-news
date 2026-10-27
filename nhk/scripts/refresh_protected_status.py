@@ -111,13 +111,14 @@ def main():
         req = urllib.request.Request(LIVE, headers={"Cache-Control": "no-cache"})
         with urllib.request.urlopen(req, timeout=30) as r:
             data = json.loads(r.read().decode())
-        print("✅ 取到线上清单（%d 条）" % len(data.get("protected_sites", [])))
+        print("✅ 取到线上清单（%d 条）" % len(data.get("sites") or data.get("protected_sites") or []))
     except Exception as e:
         print("⚠️ 线上取不到（%s）⇒ 用本地副本" % e)
         data = json.load(open(LOCAL, encoding="utf-8"))
-    if not isinstance(data, dict) or "protected_sites" not in data:
+    if not isinstance(data, dict) or not (isinstance(data.get("sites"), list)
+                                    or isinstance(data.get("protected_sites"), list)):
         sys.exit("❌ 清单结构不对 ⇒ 拒绝写入")
-    ps = data["protected_sites"]
+    ps = data["sites"] if isinstance(data.get("sites"), list) else data["protected_sites"]
     before = len(ps)
     before_doms = {s.get("domain") for s in ps}
     cur = current_site()

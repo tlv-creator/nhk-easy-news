@@ -192,14 +192,35 @@ def _flag(v):
     return False
 
 
+# 🔴 2026-10-26（跨会话修复）：清单里条目数组的键名有两个
+#    · `sites`            —— **线上权威键**（2026-10-25 的 diff 证明老版本就是它）
+#    · `protected_sites`  —— 老代码在用，但**线上从来就没有这个键**
+#    ⇒ 只认旧键的老实现会读到**空列表**：
+#      清理脚本的「冻结保护集」为空 ⇒ 可能误删现役站；
+#      闸门则变成「校验代码在、校验对象是空的」⇒ **恒绿**。
+#    ⇒ 两个键都认（收进词汇表，不是把线上的改回去）。
+#    ⚠️ 两个都没有 ⇒ **报错不放行**（不能当成空清单，那正是恒绿的成因）。
+def _sites_of(obj, strict=False):
+    if not isinstance(obj, dict):
+        if strict:
+            raise ValueError('清单不是对象（实际 %s）' % type(obj).__name__)
+        return []
+    for _k in ('sites', 'protected_sites'):
+        if isinstance(obj.get(_k), list):
+            return obj[_k]
+    if strict:
+        raise ValueError('清单里既没有 sites 也没有 protected_sites 字段')
+    return []
+
+
 def _sites(obj):
     """清单里的 protected_sites：必须是数组、每条必须是对象。类型不对 ⇒ 抛错（调用方必须不放行）。"""
-    lst = obj.get('protected_sites') if isinstance(obj, dict) else None
+    lst = _sites_of(obj, strict=True)
     if not isinstance(lst, list):
-        raise ValueError('protected_sites 不是数组（实际 %s）' % type(lst).__name__)
+        raise ValueError('清单条目不是数组（实际 %s）' % type(lst).__name__)
     for e in lst:
         if not isinstance(e, dict):
-            raise ValueError('protected_sites 里有非对象条目：%r' % (e,))
+            raise ValueError('清单里有非对象条目：%r' % (e,))
     return lst
 
 

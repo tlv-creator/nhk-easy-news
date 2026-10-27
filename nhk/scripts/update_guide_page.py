@@ -169,7 +169,7 @@ def main():
             # 🔴 **校验清单本身拉不到 ⇒ 也要拒绝**（「查不到就不能放行」= exit 2 的延伸）
             raise SystemExit('❌ 线上拉不到，且**保护清单也拉不到**（%s）\n'
                              '   ⇒ 不许用未校验的兜底模板写入（查不到就不能放行）' % _e)
-        _dead = [s2.get('domain') for s2 in _pl.get('protected_sites', [])
+        _dead = [s2.get('domain') for s2 in (_pl.get('sites') or _pl.get('protected_sites') or [])
                  if (s2.get('status') or '').strip().upper() == 'DELETED' and s2.get('domain')]
         _bad = [d for d in _dead if d in html]
         if _bad:

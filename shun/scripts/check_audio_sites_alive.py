@@ -37,10 +37,37 @@ def get_protected():
     except Exception as e:  # noqa: BLE001
         return None, str(e)
     out = {}
-    for x in d.get("protected_sites") or []:
+    # 🔴 两个键都认（线上权威键是 `sites`；`protected_sites` 线上从来不存在）
+    _lst = d.get("sites") if isinstance(d.get("sites"), list) else d.get("protected_sites")
+    for x in (_lst or []):
         if isinstance(x, dict) and x.get("domain"):
             out[x["domain"]] = x
     return out, ""
+
+
+# 🔴 2026-10-27（跨会话修复）：清单里条目数组的键名有两个
+#    · `sites`            —— **线上权威键**（清单现在就是这个结构）
+#    · `protected_sites`  —— 老代码在用，但**线上从来就没有这个键**
+#    ⇒ 只认旧键的实现一律读到**空列表**：
+#      清理脚本的「冻结保护集」为空 ⇒ 可能误删现役站；
+#      闸门则变成「校验代码在、校验对象是空的」⇒ **恒绿**。
+#    ⇒ 两个键都认（收进词汇表，不是把线上的改回去）；
+#      写端**必须写进线上实际在用的那个键**，否则又写进没人读的数组。
+def _sites_key(obj):
+    for _k in ("sites", "protected_sites"):
+        if isinstance(obj.get(_k), list):
+            return _k
+    return "sites"          # 两个都没有 ⇒ 建 `sites`（与线上结构一致）
+
+
+def _sites_of(obj):
+    """取条目数组（并保证写回时用的是同一个键）。"""
+    _k = _sites_key(obj)
+    _v = obj.get(_k)
+    if not isinstance(_v, list):
+        _v = []
+        obj[_k] = _v
+    return _v
 
 
 def probe(base, tag):

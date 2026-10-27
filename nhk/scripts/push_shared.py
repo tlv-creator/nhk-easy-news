@@ -86,19 +86,22 @@ def put_file(path, text, sha, message):
 def update_protected():
     sha, text = get_file("protected-sites.json")
     j = json.loads(text)
-    before = len(j["protected_sites"])
-    doms_before = [s.get("domain") for s in j["protected_sites"]]
+    # 🔴 2026-10-26：线上权威键是 `sites`；`protected_sites` 线上从来不存在
+    #    ⇒ 老写法 j["protected_sites"] 直接 **KeyError** ⇒ 这个脚本一直是哑的
+    _key = "sites" if isinstance(j.get("sites"), list) else "protected_sites"
+    before = len(j[_key])
+    doms_before = [s.get("domain") for s in j[_key]]
 
     # ① 旧站标 DELETED（不删条目 —— 清单放永久事实）
     changed = False
-    for s in j["protected_sites"]:
+    for s in j[_key]:
         if s.get("domain") == OLD_SITE and s.get("status") != "DELETED":
             s["status"] = "DELETED"
             s["note"] = ("2026-10-23 已被 v1.26 取代并删除（curl 404 验过）；"
                          "现役内容站以引导页 version.json 的 site 字段为准")
             changed = True
     if OLD_SITE not in doms_before:
-        j["protected_sites"].append({
+        j[_key].append({
             "domain": OLD_SITE, "project": "nhk", "status": "DELETED",
             "reason": "NHK 内容站 v1.25（已被 4r0zazix2auz0 取代）",
             "note": "2026-10-23 已删（curl 404 验过）"})
@@ -106,7 +109,7 @@ def update_protected():
 
     # ② 新站登记（现役内容站：域名每次发版都换 ⇒ 以引导页为准）
     if NEW_SITE not in doms_before:
-        j["protected_sites"].append({
+        j[_key].append({
             "domain": NEW_SITE, "project": "nhk", "role": "current_site",
             "reason": "NHK 内容站 v1.27（17 期坏帧已修 + 音频四维体检全过 0 削平 0 过冲 + 字幕同步修好）",
             "note": "现役内容站：域名每次发版都换 ⇒ 以引导页 version.json 的 site 字段为准；"
@@ -127,15 +130,16 @@ def update_protected():
     time.sleep(1.5)
     _sha2, back = get_file("protected-sites.json")
     j2 = json.loads(back)
-    doms2 = [s.get("domain") for s in j2["protected_sites"]]
+    _key2 = "sites" if isinstance(j2.get("sites"), list) else "protected_sites"
+    doms2 = [s.get("domain") for s in j2[_key2]]
     ok2 = True
-    print("   回读：条数 %d → %d" % (before, len(j2["protected_sites"])))
-    if len(j2["protected_sites"]) != before + (1 if OLD_SITE not in doms_before else 0) + \
+    print("   回读：条数 %d → %d" % (before, len(j2[_key2])))
+    if len(j2[_key2]) != before + (1 if OLD_SITE not in doms_before else 0) + \
        (1 if NEW_SITE not in doms_before else 0):
         print("   ❌ 条目数不对"); ok2 = False
     if NEW_SITE not in doms2:
         print("   ❌ 新站没进去"); ok2 = False
-    old = [s for s in j2["protected_sites"] if s.get("domain") == OLD_SITE]
+    old = [s for s in j2[_key2] if s.get("domain") == OLD_SITE]
     if not old or old[0].get("status") != "DELETED":
         print("   ❌ 旧站没标 DELETED"); ok2 = False
     # 对方的特征还在吗（清单里有别的 agent 的条目）

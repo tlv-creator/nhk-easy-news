@@ -58,6 +58,31 @@ def api(method, url, token, payload=None):
             return e.code, {"raw": body[:200]}
 
 
+# 🔴 2026-10-27（跨会话修复）：清单里条目数组的键名有两个
+#    · `sites`            —— **线上权威键**（清单现在就是这个结构）
+#    · `protected_sites`  —— 老代码在用，但**线上从来就没有这个键**
+#    ⇒ 只认旧键的实现一律读到**空列表**：
+#      清理脚本的「冻结保护集」为空 ⇒ 可能误删现役站；
+#      闸门则变成「校验代码在、校验对象是空的」⇒ **恒绿**。
+#    ⇒ 两个键都认（收进词汇表，不是把线上的改回去）；
+#      写端**必须写进线上实际在用的那个键**，否则又写进没人读的数组。
+def _sites_key(obj):
+    for _k in ("sites", "protected_sites"):
+        if isinstance(obj.get(_k), list):
+            return _k
+    return "sites"          # 两个都没有 ⇒ 建 `sites`（与线上结构一致）
+
+
+def _sites_of(obj):
+    """取条目数组（并保证写回时用的是同一个键）。"""
+    _k = _sites_key(obj)
+    _v = obj.get(_k)
+    if not isinstance(_v, list):
+        _v = []
+        obj[_k] = _v
+    return _v
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", required=True)
@@ -91,7 +116,7 @@ def main():
 
     for attempt in range(4):
         obj, sha = load()
-        sites = obj.setdefault("protected_sites", [])
+        sites = _sites_of(obj)          # 🔴 写进线上实际在用的键（见 _sites_key）
         by_dom = {e.get("domain"): e for e in sites}
 
         for spec in args.add:
@@ -153,7 +178,7 @@ def main():
         raise SystemExit("❌ 连续冲突，放弃")
 
     obj, _ = load()
-    mine = [e for e in obj["protected_sites"] if e.get("project") == args.project]
+    mine = [e for e in _sites_of(obj) if e.get("project") == args.project]
     print("🟢 复核：%s 项目 %d 条" % (args.project, len(mine)))
     for e in mine:
         print("   %-14s %-10s %s" % (e.get("domain"), e.get("status", "alive"),
