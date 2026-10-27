@@ -64,7 +64,15 @@ public class MainActivity extends Activity {
         + "if(window.__shunAuHooked) return 'hooked';"
         + "window.__shunAuHooked=true;"
         + "var O=window.Audio; if(!O) return 'noAudio';"
-        + "function W(){var a=new O(); try{window.__shunAu=a;}catch(e){} return a;}"
+        // 🔴🔴 2026-10-27 修（**真 bug：会让 App 完全没声音**）：
+        //    旧写法 `function W(){var a=new O(); ...}` 把 `new Audio(url)` 变成 `new Audio()`
+        //    ⇒ **构造参数（音频 URL）被吞掉** ⇒ 实例.src 为空 ⇒ play() 不报错但一点声音都没有。
+        //    50 集站是 `new Audio()`（无参，之后再设 .src）⇒ 没暴露；
+        //    309 集站是 `new Audio(d.audio)`（带 URL）⇒ 直接踩中。
+        //    ⇒ 修法：**透传构造参数**（Reflect.construct 保 new 语义；无参时行为与旧版完全一致）。
+        + "function W(){var a; try{a=Reflect.construct(O,Array.prototype.slice.call(arguments));}"
+        + "catch(e){a=(arguments.length>0)?new O(arguments[0]):new O();}"
+        + "try{window.__shunAu=a;}catch(e){} return a;}"
         + "W.prototype=O.prototype;"
         + "try{Object.defineProperty(W,'length',{value:O.length});}catch(e){}"
         + "window.Audio=W; return 'ok';"

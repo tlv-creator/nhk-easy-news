@@ -12,24 +12,32 @@
  "apk": {
   "path": "shun/pkg/shun-309ep-net-v1.4.0.apk",
   "bytes": 25038,
-  "md5": "e84cce17c4ddb4373cb341df10bff590"
+  "md5": "cda2baf4b1757971eadf7e9d2fe1ff8f"
  },
  "zip": {
   "path": "shun/pkg/shun-309ep-net-v1.4.0.apk.zip",
-  "bytes": 17438,
-  "md5": "7339695fe8eef3677bdd49ab9749004f",
+  "bytes": 17496,
+  "md5": "5e2da85331f46147cbbdf4fb1555d0d2",
   "inner_name": "shun.apk"
  },
- "classes_dex_bytes": 18620,
+ "classes_dex_bytes": 18736,
  "notes": [
   "309 集日中对照注音版（280 集 N5-N4 主系列 + 29 集特别篇）",
   "网络版：APK 内不内置任何音频/数据（7 个文件，无 assets）",
   "与用户手机里那把密钥一致 ⇒ 证书 DER 与旧内置版逐字相同 ⇒ 可覆盖安装",
   "唯一 URL = shun-ru-web/；音频是官方 CDN 直链（redcircle）⇒ 不需要 AUDIO_BASE 注入",
   "沿用 50 集网络版那套：覆写 window.Audio 的钩子 / MediaStyle 锁屏控制 / POST_NOTIFICATIONS",
+  "🔴🔴 本次修了一个**会让 App 完全没声音**的真 bug：",
+  "  旧钩子 `function W(){var a=new O();}` 把 `new Audio(url)` 变成 `new Audio()`",
+  "  ⇒ **音频 URL 被吞掉** ⇒ 实例.src 为空 ⇒ play() 不报错但一点声音都没有。",
+  "  50 集站是 `new Audio()`（无参）所以没暴露；309 集站是 `new Audio(d.audio)` ⇒ 直接踩中。",
+  "  修法：透传构造参数（Reflect.construct 保 new 语义；无参时行为与旧版完全一致）。",
+  "  实证：Playwright 端到端 —— src=redcircle 直链、dur=307644ms、currentTime 4.49→8.49 在推进。",
+  "  同款修复也同步到 shun/apk-template-net/（50 集模板，防将来踩同一个坑）",
   "图标用旧内置版那个（3419B, md5 e1e2ed72…）⇒ 覆盖安装后桌面图标不变",
   "API 等级闸门：117 个框架方法 / 43 个框架类全部在 API 24 内",
   "模板：shun/apk-template-ru/（只改 SITE_URL 与版本号，其余与 apk-template-net 一致）",
-  "打包脚本：shun/scripts/package_net_delivery.sh（参数化 + ZIP 内 APK 逐字对账）"
+  "打包脚本：shun/scripts/package_net_delivery.sh（参数化 + ZIP 内 APK 逐字对账）",
+  "钩子级自检：shun/scripts/test_audio_hook.py（无参/带参两种形态都验）"
  ]
 }
