@@ -225,19 +225,45 @@ $('#pStop').addEventListener('click',pStop);
 
 /* ── 跟随朗读 ── */
 var FOLLOW=false, TL=null, CUR_I=-1;
+/* 🔴🔴 TL 数组里有 **null**（没对上时间轴的句子，178/185 集都有）
+   ⇒ 旧代码 `TL[mid].s` 会抛 "Cannot read properties of null" ⇒ **跟随整个不工作**
+   ⇒ 修法：另外建一个「只含有效项」的升序表再二分 */
+var TLS=[];
+/* 🔴 没有时间轴的集（源时间轴不可信 ⇒ 宁缺勿错位）⇒ **不是错误**：
+   ① 不再抛 JS 异常（原来 404 会被当成「载入失败」抛出去）
+   ② 按钮显示「跟随：无」，并禁用 ⇒ 用户不会以为按了没反应 */
 function tlLoad(tag){
-  TL=null; CUR_I=-1;
+  TL=null; CUR_I=-1; TLS=[];
   return new Promise(function(res){
-    loadScript('data/tl/'+tag+'.js', function(){ TL=window['SHUN_TL_'+tag.replace(/-/g,'_')]||null; res(); },
-                            function(){ res(); });
+    var s=document.createElement('script');
+    s.src='data/tl/'+tag+'.js';
+    s.onload=function(){
+      TL=window['SHUN_TL_'+tag.replace(/-/g,'_')]||null;
+      TLS=[];
+      for(var i=0;i<(TL?TL.length:0);i++){
+        if(TL[i] && TL[i].s!=null) TLS.push({i:i, s:TL[i].s});
+      }
+      TLS.sort(function(a,b){return a.s-b.s;});
+      res();
+    };
+    s.onerror=function(){ TL=null; TLS=[]; res(); };   // 404 = 这一集没有跟随（正常）
+    document.head.appendChild(s);
+  }).then(function(){
+    var b=$('#pFollow');
+    if(TL&&TL.length){
+      b.disabled=false; b.textContent='跟随：'+(FOLLOW?'开':'关');
+      if(FOLLOW) followTick();          // 上一集开着跟随 ⇒ 这一集接着跟
+    }else{
+      b.disabled=true; b.textContent='跟随：无';
+    }
   });
 }
 function tlFind(t){
-  if(!TL||!TL.length) return -1;
-  var lo=0,hi=TL.length-1,r=-1;
+  if(!TLS.length) return -1;
+  var lo=0,hi=TLS.length-1,r=-1;
   while(lo<=hi){
     var mid=(lo+hi)>>1;
-    if(TL[mid].s<=t+0.15){ r=mid; lo=mid+1; } else hi=mid-1;
+    if(TLS[mid].s<=t+0.15){ r=TLS[mid].i; lo=mid+1; } else hi=mid-1;
   }
   return r;
 }
@@ -284,7 +310,9 @@ function followTick(){
 }
 function setFollow(on){
   FOLLOW=on;
-  $('#pFollow').textContent='跟随：'+(on?'开':'关');
+  var b=$('#pFollow');
+  if(!TL||!TL.length){ b.disabled=true; b.textContent='跟随：无'; FOLLOW=false; return; }
+  b.disabled=false; b.textContent='跟随：'+(on?'开':'关');
   if(on){ followTick(); } else {
     var ps=document.querySelectorAll('.blk');
     for(var k=0;k<ps.length;k++) ps[k].classList.remove('cur');
@@ -323,7 +351,12 @@ function openEp(tag){
         var i=parseInt(this.getAttribute('data-i'),10);
         if(!TL||!TL[i]) return;          // 没时间轴 ⇒ 不动
         if(!AU){ pToggle(); }
-        if(AU){ try{ AU.currentTime=TL[i].s; AU.play(); }catch(e){} }
+        if(AU){ try{
+          AU.currentTime=TL[i].s;
+          // 🔴 play() 返回 Promise，被 pause() 打断时会 reject ⇒ 不 catch 会变成
+          //    「Unhandled promise rejection」的控制台报错（用户端看得见）
+          var pr=AU.play(); if(pr&&pr.catch) pr.catch(function(){});
+        }catch(e){} }
         markCur(i);
       });
     }
