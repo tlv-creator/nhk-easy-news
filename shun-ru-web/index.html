@@ -62,6 +62,10 @@ rt{font-size:.58em;color:#111;letter-spacing:.02em}
 .zh{display:block;font-size:.9em;color:#222;margin:.05em 0 .1em .2em;line-height:1.75}
 .back{margin:0 0 1em}
 
+/* ── 跟随朗读：当前句只留左侧 4px 竖条，**不改变颜色** ── */
+.blk.cur{border-left:4px solid #000;padding-left:.5em;margin-left:-.7em}
+@media (max-width:380px){ .blk.cur{padding-left:.35em;margin-left:-.55em} }
+
 /* ── 音频播放器（整集）── */
 #player{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bg);
   border-top:1px solid var(--line);padding:.5em .9em calc(.5em + env(safe-area-inset-bottom));
@@ -100,6 +104,7 @@ body.hasp{padding-bottom:8.2em}
   <div class="row">
     <button id="pPlay" type="button">播放</button>
     <button id="pStop" type="button">停止</button>
+    <button id="pFollow" type="button">跟随：关</button>
     <span class="tm" id="pMsg"></span>
   </div>
   <div id="bar"><i></i></div>
@@ -190,6 +195,7 @@ function pToggle(){
     try{AU=new Audio(d.audio);}catch(e){$('#pMsg').textContent='这个浏览器放不了音频';return;}
     AU.preload='metadata';
     AU.addEventListener('timeupdate',function(){
+      followTick();
       var dur=AU.duration||0;
       $('#pTime').textContent=fmtT(AU.currentTime)+' / '+(dur?fmtT(dur):'??:??');
       $('#bar i').style.width=(dur?Math.min(100,AU.currentTime/dur*100):0)+'%';
@@ -217,6 +223,53 @@ function pToggle(){
 $('#pPlay').addEventListener('click',pToggle);
 $('#pStop').addEventListener('click',pStop);
 
+/* ── 跟随朗读 ── */
+var FOLLOW=false, TL=null, CUR_I=-1;
+function tlLoad(tag){
+  TL=null; CUR_I=-1;
+  return new Promise(function(res){
+    loadScript('data/tl/'+tag+'.js', function(){ TL=window['SHUN_TL_'+tag.replace(/-/g,'_')]||null; res(); },
+                            function(){ res(); });
+  });
+}
+function tlFind(t){
+  if(!TL||!TL.length) return -1;
+  var lo=0,hi=TL.length-1,r=-1;
+  while(lo<=hi){
+    var mid=(lo+hi)>>1;
+    if(TL[mid].s<=t+0.15){ r=mid; lo=mid+1; } else hi=mid-1;
+  }
+  return r;
+}
+function markCur(i){
+  if(i===CUR_I) return;
+  CUR_I=i;
+  var ps=document.querySelectorAll('.blk');
+  for(var k=0;k<ps.length;k++){ ps[k].classList.toggle('cur', k===i); }
+  if(i>=0 && FOLLOW){
+    var el=ps[i];
+    if(el){
+      var top=el.getBoundingClientRect().top+window.pageYOffset;
+      var h=el.offsetHeight||40;
+      if(top<80 || top+h>window.innerHeight-120) window.scrollTo(0, top-120);
+    }
+  }
+}
+function followTick(){
+  if(!AU||AU.paused||!FOLLOW) return;
+  markCur(tlFind(AU.currentTime));
+}
+function setFollow(on){
+  FOLLOW=on;
+  $('#pFollow').textContent='跟随：'+(on?'开':'关');
+  if(on){ followTick(); } else {
+    var ps=document.querySelectorAll('.blk');
+    for(var k=0;k<ps.length;k++) ps[k].classList.remove('cur');
+    CUR_I=-1;
+  }
+}
+$('#pFollow').addEventListener('click',function(){ setFollow(!FOLLOW); });
+
 function openEp(tag){
   var m=$('#main');
   m.innerHTML='<div class="empty">载入中…</div>';
@@ -225,6 +278,7 @@ function openEp(tag){
     if(!d){$('#main').innerHTML='<div class="empty">这一集没载入成功</div>';return;}
     CUR=d;
     pStop(); pBind(d);
+    tlLoad(tag);
     var ti=String(d.title||'');
     var pre='';
     if(d.ep!=null && ti.indexOf('Ep'+d.ep)<0) pre='Ep'+d.ep+' ';
@@ -232,13 +286,24 @@ function openEp(tag){
       '<h2>'+esc(pre)+esc(ti)+
       (d.zh_title?'<div class="sub">'+esc(d.zh_title)+'</div>':'')+'</h2>';
     for(var i=0;i<d.sents.length;i++){
-      h+='<p class="blk"><span class="ja">'+renderJa(d.sents[i][0])+'</span>'+
+      h+='<p class="blk" data-i="'+i+'"><span class="ja">'+renderJa(d.sents[i][0])+'</span>'+
          '<span class="zh">'+esc(d.sents[i][1])+'</span></p>';
     }
     h+='</div>';
     m.innerHTML=h;
     window.scrollTo(0,0);
     $('#backBtn').classList.remove('hide');
+    // 点句子 ⇒ 跳到那句的音频（有时间轴才有 start）
+    var blks=m.querySelectorAll('.blk');
+    for(var bi=0;bi<blks.length;bi++){
+      blks[bi].addEventListener('click',function(){
+        var i=parseInt(this.getAttribute('data-i'),10);
+        if(!TL||!TL[i]) return;          // 没时间轴 ⇒ 不动
+        if(!AU){ pToggle(); }
+        if(AU){ try{ AU.currentTime=TL[i].s; AU.play(); }catch(e){} }
+        markCur(i);
+      });
+    }
     location.hash='ep-'+tag;
   }).catch(function(e){
     m.innerHTML='<div class="empty">这一集没载入成功（'+esc(e)+'）</div>';});
