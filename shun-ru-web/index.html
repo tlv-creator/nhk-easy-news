@@ -248,12 +248,35 @@ function markCur(i){
   for(var k=0;k<ps.length;k++){ ps[k].classList.toggle('cur', k===i); }
   if(i>=0 && FOLLOW){
     var el=ps[i];
-    if(el){
-      var top=el.getBoundingClientRect().top+window.pageYOffset;
-      var h=el.offsetHeight||40;
-      if(top<80 || top+h>window.innerHeight-120) window.scrollTo(0, top-120);
-    }
+    if(el) centerTo(el);
   }
+}
+/* 🔴 跟随时：当前句要落在**屏幕中间的阅读区**里
+   —— 之前是 window.scrollTo(0, top-120) ⇒ 那句总被顶到**最上面**（用户反馈"老跑到上面去了"）
+   阅读区 = 顶部 sticky header 之下 ↔ 底部固定播放器之上
+*/
+function readArea(){
+  var hd=document.querySelector('header');
+  var pl=document.getElementById('player');
+  var top=hd?(hd.getBoundingClientRect().height||0):0;
+  var bot=pl&&!pl.classList.contains('hide')?(pl.getBoundingClientRect().height||0):0;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  return {top:top, bottom:bot, h:Math.max(120, vh-top-bot), vh:vh};
+}
+function centerTo(el){
+  var r=el.getBoundingClientRect();
+  var h=r.height||el.offsetHeight||40;
+  var a=readArea();
+  var pageTop=r.top+window.pageYOffset;
+  var want;
+  if(h>=a.h){                 // 句子比阅读区还高 ⇒ 顶到阅读区顶端，别把它顶出屏幕
+    want=pageTop-a.top-8;
+  }else{
+    want=pageTop-a.top-(a.h-h)/2;   // 垂直居中
+  }
+  var maxTop=Math.max(0,(document.documentElement.scrollHeight||0)-a.vh);
+  want=Math.max(0,Math.min(want,maxTop));
+  window.scrollTo(0,want);
 }
 function followTick(){
   if(!AU||AU.paused||!FOLLOW) return;
