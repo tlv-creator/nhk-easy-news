@@ -1,5 +1,391 @@
 window.__EPISODES__=[
  {
+  "id": "20261102de69516",
+  "no": 64,
+  "title": "「防災庁」が新しくできた",
+  "easyTitle": "大きい災害が起きたときのための「防災庁」が2日、できました",
+  "date": "2026-11-02",
+  "week": "",
+  "time": "20:30",
+  "duration": 63.45,
+  "durFast": 0.0,
+  "subs": "subs/20261102de69516.js",
+  "audio": "media/slow/20261102de69516.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261102de69517",
+  "no": 65,
+  "title": "スペイン政府「高速鉄道の事故で日本人が1人亡くなった」",
+  "easyTitle": "",
+  "date": "2026-11-02",
+  "week": "",
+  "time": "20:29",
+  "duration": 59.09,
+  "durFast": 69.5,
+  "subs": "subs/20261102de69517.js",
+  "audio": "media/slow/20261102de69517.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261102de69517.m4a"
+ },
+ {
+  "id": "20261102de69671",
+  "no": 66,
+  "title": "GMOの不正アクセス　「システムに問題があった」",
+  "easyTitle": "",
+  "date": "2026-11-02",
+  "week": "",
+  "time": "20:28",
+  "duration": 66.52,
+  "durFast": 436.61,
+  "subs": "subs/20261102de69671.js",
+  "audio": "media/slow/20261102de69671.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261102de69671.m4a"
+ },
+ {
+  "id": "ne2026110212459",
+  "no": 67,
+  "title": "外国人の旅行者　1度消費税を払ってから返してもらう",
+  "easyTitle": "",
+  "date": "2026-11-02",
+  "week": "",
+  "time": "20:27",
+  "duration": 47.02,
+  "durFast": 258.84,
+  "subs": "subs/ne2026110212459.js",
+  "audio": "media/slow/ne2026110212459.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/ne2026110212459.m4a"
+ },
+ {
+  "id": "20261030de68380",
+  "no": 60,
+  "title": "富士山が雪で白くなった",
+  "easyTitle": "",
+  "date": "2026-10-30",
+  "week": "",
+  "time": "20:05",
+  "duration": 52.14,
+  "durFast": 69.59,
+  "subs": "subs/20261030de68380.js",
+  "audio": "media/slow/20261030de68380.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261030de68380.m4a"
+ },
+ {
+  "id": "20261030de68382",
+  "no": 61,
+  "title": "電気代とガス代に国がお金を出す",
+  "easyTitle": "寒くなると、電気やガスを使うことが多くなります",
+  "date": "2026-10-30",
+  "week": "",
+  "time": "20:04",
+  "duration": 66.99,
+  "durFast": 0.0,
+  "subs": "subs/20261030de68382.js",
+  "audio": "media/slow/20261030de68382.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261030de68387",
+  "no": 63,
+  "title": "ハロウィーン　渋谷の「ハチ公」をシートで隠す",
+  "easyTitle": "10月31日は、ハロウィーンです",
+  "date": "2026-10-30",
+  "week": "",
+  "time": "20:03",
+  "duration": 59.05,
+  "durFast": 0.0,
+  "subs": "subs/20261030de68387.js",
+  "audio": "media/slow/20261030de68387.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261030de68384",
+  "no": 62,
+  "title": "法隆寺　国の宝になっている仏像を見ることができる",
+  "easyTitle": "奈良県にある法隆寺で、国の宝になっている仏像、「救世観音像」を見ることができます",
+  "date": "2026-10-30",
+  "week": "",
+  "time": "20:02",
+  "duration": 55.42,
+  "durFast": 0.0,
+  "subs": "subs/20261030de68384.js",
+  "audio": "media/slow/20261030de68384.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261029de67652",
+  "no": 57,
+  "title": "スペイン　高速鉄道でまた列車の事故　60人以上が亡くなった",
+  "easyTitle": "",
+  "date": "2026-10-29",
+  "week": "",
+  "time": "20:10",
+  "duration": 29.61,
+  "durFast": 29.74,
+  "subs": "subs/20261029de67652.js",
+  "audio": "media/slow/20261029de67652.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261029de67652.m4a"
+ },
+ {
+  "id": "20261029de67658",
+  "no": 58,
+  "title": "GMO「会社を攻撃しているハッカーについての情報が入った」",
+  "easyTitle": "",
+  "date": "2026-10-29",
+  "week": "",
+  "time": "20:09",
+  "duration": 58.92,
+  "durFast": 213.01,
+  "subs": "subs/20261029de67658.js",
+  "audio": "media/slow/20261029de67658.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261029de67658.m4a"
+ },
+ {
+  "id": "20261029de67649",
+  "no": 56,
+  "title": "韓国のイテウォン　たくさんの人が亡くなった事故から4年",
+  "easyTitle": "",
+  "date": "2026-10-29",
+  "week": "",
+  "time": "20:08",
+  "duration": 67.84,
+  "durFast": 39.38,
+  "subs": "subs/20261029de67649.js",
+  "audio": "media/slow/20261029de67649.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261029de67649.m4a"
+ },
+ {
+  "id": "20261029de67659",
+  "no": 59,
+  "title": "茨城県常陸大宮市　美しい「雲海」が見えた",
+  "easyTitle": "日本に冷たい空気が入って、29日の朝は、この秋いちばん気温が下がりました",
+  "date": "2026-10-29",
+  "week": "",
+  "time": "20:07",
+  "duration": 43.48,
+  "durFast": 0.0,
+  "subs": "subs/20261029de67659.js",
+  "audio": "media/slow/20261029de67659.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261028de66914",
+  "no": 53,
+  "title": "熊本県の地震から3か月　今も1000人以上が避難している",
+  "easyTitle": "今年7月に熊本県で大きい地震がありました",
+  "date": "2026-10-28",
+  "week": "",
+  "time": "20:10",
+  "duration": 63.79,
+  "durFast": 0.0,
+  "subs": "subs/20261028de66914.js",
+  "audio": "media/slow/20261028de66914.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261028de66912",
+  "no": 52,
+  "title": "札幌市などで初めての雪　東京などは「木枯らし」が吹いた",
+  "easyTitle": "",
+  "date": "2026-10-28",
+  "week": "",
+  "time": "20:09",
+  "duration": 52.14,
+  "durFast": 153.56,
+  "subs": "subs/20261028de66912.js",
+  "audio": "media/slow/20261028de66912.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261028de66912.m4a"
+ },
+ {
+  "id": "20261028de66922",
+  "no": 55,
+  "title": "卵の値段が今まででいちばん高くなった",
+  "easyTitle": "",
+  "date": "2026-10-28",
+  "week": "",
+  "time": "20:08",
+  "duration": 60.72,
+  "durFast": 129.11,
+  "subs": "subs/20261028de66922.js",
+  "audio": "media/slow/20261028de66922.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261028de66922.m4a"
+ },
+ {
+  "id": "20261028de66918",
+  "no": 54,
+  "title": "栃木県日光の中禅寺湖　紅葉がきれい",
+  "easyTitle": "紅葉がきれいな季節です",
+  "date": "2026-10-28",
+  "week": "",
+  "time": "20:07",
+  "duration": 54.61,
+  "durFast": 0.0,
+  "subs": "subs/20261028de66918.js",
+  "audio": "media/slow/20261028de66918.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261027de66256",
+  "no": 50,
+  "title": "GMOの不正アクセス問題　ハッカー集団が1人の情報を出した",
+  "easyTitle": "",
+  "date": "2026-10-27",
+  "week": "",
+  "time": "20:10",
+  "duration": 67.11,
+  "durFast": 369.11,
+  "subs": "subs/20261027de66256.js",
+  "audio": "media/slow/20261027de66256.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261027de66256.m4a"
+ },
+ {
+  "id": "20261027de66253",
+  "no": 48,
+  "title": "漫画家のちばてつやさん亡くなる 「あしたのジョー」が有名",
+  "easyTitle": "",
+  "date": "2026-10-27",
+  "week": "",
+  "time": "20:09",
+  "duration": 52.86,
+  "durFast": 103.28,
+  "subs": "subs/20261027de66253.js",
+  "audio": "media/slow/20261027de66253.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261027de66253.m4a"
+ },
+ {
+  "id": "20261027de66255",
+  "no": 49,
+  "title": "日本で去年生まれた外国人の子ども　3年続いていちばん多い",
+  "easyTitle": "",
+  "date": "2026-10-27",
+  "week": "",
+  "time": "20:08",
+  "duration": 64.9,
+  "durFast": 286.19,
+  "subs": "subs/20261027de66255.js",
+  "audio": "media/slow/20261027de66255.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261027de66255.m4a"
+ },
+ {
+  "id": "20261027de66267",
+  "no": 51,
+  "title": "10月26日は「柿の日」 奈良県のＪＡが柿を無料で配った",
+  "easyTitle": "日本でよく食べる秋の果物、柿のニュースです",
+  "date": "2026-10-27",
+  "week": "",
+  "time": "20:07",
+  "duration": 55.13,
+  "durFast": 0.0,
+  "subs": "subs/20261027de66267.js",
+  "audio": "media/slow/20261027de66267.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261026de65650",
+  "no": 47,
+  "title": "いろいろな所で雨が降った　災害に気をつけて",
+  "easyTitle": "台風30号は、低気圧になりました",
+  "date": "2026-10-26",
+  "week": "",
+  "time": "20:05",
+  "duration": 52.14,
+  "durFast": 0.0,
+  "subs": "subs/20261026de65650.js",
+  "audio": "media/slow/20261026de65650.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261026de65648",
+  "no": 46,
+  "title": "将棋のプロ棋士　初めて女性がなる",
+  "easyTitle": "",
+  "date": "2026-10-26",
+  "week": "",
+  "time": "20:04",
+  "duration": 53.21,
+  "durFast": 232.58,
+  "subs": "subs/20261026de65648.js",
+  "audio": "media/slow/20261026de65648.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261026de65648.m4a"
+ },
+ {
+  "id": "20261026de65643",
+  "no": 45,
+  "title": "ブラジルの大統領選挙　今の大統領のルーラさんが選ばれた",
+  "easyTitle": "ブラジルで、大統領を選ぶ選挙の2回目の投票が25日にありました",
+  "date": "2026-10-26",
+  "week": "",
+  "time": "20:03",
+  "duration": 70.02,
+  "durFast": 0.0,
+  "subs": "subs/20261026de65643.js",
+  "audio": "media/slow/20261026de65643.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
   "id": "20261023de64170",
   "no": 1,
   "title": "台風30号　沖縄県の近くに来る",
