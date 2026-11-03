@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:,">
+<title>南海僧團 大般若經 誦讀音檔</title>
+<style>
+  html{font-size:100%}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;background:#fff;color:#000;
+    font-family:"Noto Sans CJK TC","PingFang TC","Microsoft JhengHei",
+                "Hiragino Sans","Noto Sans CJK JP",sans-serif;
+    font-size:30px;line-height:1.6;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:12px 14px 48px}
+  h1{font-size:28px;line-height:1.35;margin:4px 0 2px;font-weight:700}
+  .sub{font-size:22px;color:#333;border-bottom:1px solid rgba(0,0,0,.3);padding-bottom:10px;margin-bottom:12px}
+  .now{
+    border:2px solid rgba(0,0,0,.45);padding:14px 16px;margin-bottom:12px;background:#fff
+  }
+  .volfont{font-size:46px;font-weight:700;line-height:1.1}
+  .volfont small{font-size:24px;font-weight:400;color:#444}
+  .vtitle{font-size:26px;margin-top:2px}
+  .status{font-size:22px;color:#222;margin-top:8px;min-height:1.6em;border-top:1px solid rgba(0,0,0,.18);padding-top:8px}
+  .status.err{color:#000;font-weight:700}
+  .bar{height:22px;background:#fff;border:2px solid rgba(0,0,0,.45);margin:12px 0;position:relative}
+  .bar .fill{height:100%;background:#000;width:0}
+  .bar .txt{position:absolute;inset:0;text-align:center;font-size:20px;line-height:18px;color:#000}
+  .ctrls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  button{
+    font:inherit;font-size:26px;background:#fff;color:#000;
+    border:2px solid rgba(0,0,0,.5);padding:10px 14px;min-height:52px;cursor:pointer
+  }
+  button:active{background:#000;color:#fff}
+  button[disabled]{opacity:.4}
+  button.pri{font-weight:700}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .lbl{font-size:22px;color:#333}
+  .list{border-top:2px solid rgba(0,0,0,.45);margin-top:16px}
+  .it{
+    display:flex;align-items:baseline;gap:10px;
+    padding:12px 6px;border-bottom:1px solid rgba(0,0,0,.25);cursor:pointer;font-size:28px
+  }
+  .it:active{background:#000;color:#fff}
+  .it.cur{font-weight:700;border-left:6px solid #000;padding-left:8px}
+  .it .n{min-width:4.2em;font-variant-numeric:tabular-nums}
+  .it .t{flex:1;font-size:26px}
+  .it .d{font-size:20px;color:#444;font-variant-numeric:tabular-nums}
+  .it.done .n::after{content:" ✓";font-weight:700}
+  .it .miss{font-size:20px;color:#444}
+  .note{font-size:20px;color:#333;margin-top:14px;border-top:1px solid rgba(0,0,0,.2);padding-top:10px}
+  .note b{font-weight:700}
+  a{color:#000;text-decoration:underline}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>南海僧團　大般若經　誦讀音檔</h1>
+  <div class="sub" id="sub">第 398–478 卷　共 81 卷　臺灣屏東南海寺僧團（南海觀音佛教基金會）</div>
+
+  <div class="now">
+    <div class="volfont"><span id="curVol">—</span><small id="curTot"></small></div>
+    <div class="vtitle" id="curTitle">選擇一卷開始</div>
+    <div class="status" id="status">就緒。點下面的卷目，或按「播放」。</div>
+  </div>
+
+  <div class="bar"><div class="fill" id="fill"></div><div class="txt" id="barTxt">00:00 / 00:00</div></div>
+
+  <div class="ctrls">
+    <button class="pri" id="btnPlay">播放</button>
+    <button id="btnPrev">上一卷</button>
+    <button id="btnNext">下一卷</button>
+    <button id="btnSpeed">速度 1.0x</button>
+    <button id="btnAuto">連播：開</button>
+  </div>
+  <div class="ctrls">
+    <button id="btnLocal">用手機裡的 mp3</button>
+    <button id="btnRetry">重試</button>
+    <button id="btnStop">停止</button>
+  </div>
+  <input type="file" id="fileInput" accept="audio/*,.mp3,.m4a" class="hide">
+
+  <div class="list" id="list"></div>
+
+  <div class="note">
+    <b>兩種聽法</b><br>
+    ① <b>線上聽</b>（需要網路）：點卷目即從網路播放，支援連續播放、拖動進度、記住上次位置。<br>
+    ② <b>本地聽</b>（不需要網路）：按「用手機裡的 mp3」選一個檔案，會按檔名裡的卷號自動對號。<br>
+    來源：<a href="https://www.nhgy.org/b_02.php?mid=321" target="_blank" rel="noopener">nhgy.org 逐卷索引</a>　·
+    <a href="https://www.youtube.com/c/nhgybf" target="_blank" rel="noopener">官方 YouTube 頻道</a>
+  </div>
+
+</div>
+
+<audio id="au" preload="metadata"></audio>
+
+<script>
+/* ===== 資料（由 build_page.py 注入；無 audio.json 時仍可正常運作） ===== */
+var VOLS = [{"vol":398,"hui":"第一會(上品般若)","page":"https://www.nhgy.org/b_02.php?mid=313&introcont=398","yt":"https://www.youtube.com/watch?v=RwRQOjmyQIE","vid":"RwRQOjmyQIE","file":"398.mp3","dur":0},{"vol":399,"hui":"第一會(上品般若)","page":"https://www.nhgy.org/b_02.php?mid=314&introcont=399","yt":"https://www.youtube.com/watch?v=kE_-zpzHy30","vid":"kE_-zpzHy30","file":"","dur":0},{"vol":400,"hui":"第一會(上品般若)","page":"https://www.nhgy.org/b_02.php?mid=321&introcont=400","yt":"https://www.youtube.com/watch?v=e0o5K_v4aWA","vid":"e0o5K_v4aWA","file":"","dur":0},{"vol":401,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=225&introcont=401","yt":"https://www.youtube.com/watch?v=MeZYGETcxJM","vid":"MeZYGETcxJM","file":"","dur":0},{"vol":402,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=226&introcont=402","yt":"https://www.youtube.com/watch?v=w_zBlGsXnIE","vid":"w_zBlGsXnIE","file":"","dur":0},{"vol":403,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=227&introcont=403","yt":"https://www.youtube.com/watch?v=3xxcSi0uJ8E","vid":"3xxcSi0uJ8E","file":"","dur":0},{"vol":404,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=228&introcont=404","yt":"https://www.youtube.com/watch?v=YAolAO34oBQ","vid":"YAolAO34oBQ","file":"","dur":0},{"vol":405,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=229&introcont=405","yt":"https://www.youtube.com/watch?v=cbHQrTrsh_E","vid":"cbHQrTrsh_E","file":"","dur":0},{"vol":406,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=230&introcont=406","yt":"https://www.youtube.com/watch?v=wHjOhEjydDw","vid":"wHjOhEjydDw","file":"","dur":0},{"vol":407,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=231&introcont=407","yt":"https://www.youtube.com/watch?v=P1kAZaV9iFc","vid":"P1kAZaV9iFc","file":"","dur":0},{"vol":408,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=232&introcont=408","yt":"https://www.youtube.com/watch?v=tzdxzFzSTtc","vid":"tzdxzFzSTtc","file":"","dur":0},{"vol":409,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=233&introcont=409","yt":"https://www.youtube.com/watch?v=TKyu_BtHkUI","vid":"TKyu_BtHkUI","file":"","dur":0},{"vol":410,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=234&introcont=410","yt":"https://www.youtube.com/watch?v=UToyLqpQQVQ","vid":"UToyLqpQQVQ","file":"","dur":0},{"vol":411,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=236&introcont=411","yt":"https://www.youtube.com/watch?v=xpAhxxG7z-I","vid":"xpAhxxG7z-I","file":"","dur":0},{"vol":412,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=244&introcont=412","yt":"https://www.youtube.com/watch?v=IonBxq5fpug","vid":"IonBxq5fpug","file":"","dur":0},{"vol":413,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=245&introcont=413","yt":"https://www.youtube.com/watch?v=JIemAyKDTx8","vid":"JIemAyKDTx8","file":"","dur":0},{"vol":414,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=247&introcont=414","yt":"https://www.youtube.com/watch?v=FNHlYiV10MI","vid":"FNHlYiV10MI","file":"","dur":0},{"vol":415,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=240&introcont=415","yt":"https://www.youtube.com/watch?v=MpvB6QFBYJY","vid":"MpvB6QFBYJY","file":"","dur":0},{"vol":416,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=243&introcont=416","yt":"https://www.youtube.com/watch?v=bLY4yyowPuw","vid":"bLY4yyowPuw","file":"","dur":0},{"vol":417,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=241&introcont=417","yt":"https://www.youtube.com/watch?v=8i9nCkZ5qQY","vid":"8i9nCkZ5qQY","file":"","dur":0},{"vol":418,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=252&introcont=418","yt":"https://www.youtube.com/watch?v=Qlu2ses2QPE","vid":"Qlu2ses2QPE","file":"","dur":0},{"vol":419,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=242&introcont=419","yt":"https://www.youtube.com/watch?v=oZzX_GrNxOU","vid":"oZzX_GrNxOU","file":"","dur":0},{"vol":420,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=248&introcont=420","yt":"https://www.youtube.com/watch?v=F2_zyrh4Qok","vid":"F2_zyrh4Qok","file":"","dur":0},{"vol":421,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=250&introcont=421","yt":"https://www.youtube.com/watch?v=8OkBx-VN6CE","vid":"8OkBx-VN6CE","file":"","dur":0},{"vol":422,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=255&introcont=422","yt":"https://www.youtube.com/watch?v=Nc8buv2YG0c","vid":"Nc8buv2YG0c","file":"","dur":0},{"vol":423,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=246&introcont=423","yt":"https://www.youtube.com/watch?v=xt_6xUR3QtA","vid":"xt_6xUR3QtA","file":"","dur":0},{"vol":424,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=251&introcont=424","yt":"https://www.youtube.com/watch?v=vlKJnXYloMM","vid":"vlKJnXYloMM","file":"","dur":0},{"vol":425,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=253&introcont=425","yt":"https://www.youtube.com/watch?v=lk0YE960VkY","vid":"lk0YE960VkY","file":"","dur":0},{"vol":426,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=258&introcont=426","yt":"https://www.youtube.com/watch?v=xiv7sExMn0c","vid":"xiv7sExMn0c","file":"","dur":0},{"vol":427,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=260&introcont=427","yt":"https://www.youtube.com/watch?v=71jvUg_LK_0","vid":"71jvUg_LK_0","file":"","dur":0},{"vol":428,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=263&introcont=428","yt":"https://www.youtube.com/watch?v=_LBFd6mEaYY","vid":"_LBFd6mEaYY","file":"","dur":0},{"vol":429,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=261&introcont=429","yt":"https://www.youtube.com/watch?v=tbsZ7-t_DVc","vid":"tbsZ7-t_DVc","file":"","dur":0},{"vol":430,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=262&introcont=430","yt":"https://www.youtube.com/watch?v=EJvW6chh_54","vid":"EJvW6chh_54","file":"","dur":0},{"vol":431,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=266&introcont=431","yt":"https://www.youtube.com/watch?v=4NIR1MUCyqg","vid":"4NIR1MUCyqg","file":"","dur":0},{"vol":432,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=267&introcont=432","yt":"https://www.youtube.com/watch?v=NJ6_KayJUnE","vid":"NJ6_KayJUnE","file":"","dur":0},{"vol":433,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=268&introcont=433","yt":"https://www.youtube.com/watch?v=9T6vZfvXojM","vid":"9T6vZfvXojM","file":"","dur":0},{"vol":434,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=270&introcont=434","yt":"https://www.youtube.com/watch?v=xUnInVt5xRA","vid":"xUnInVt5xRA","file":"","dur":0},{"vol":435,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=272&introcont=435","yt":"https://www.youtube.com/watch?v=VJIycrXVdFQ","vid":"VJIycrXVdFQ","file":"","dur":0},{"vol":436,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=275&introcont=436","yt":"https://www.youtube.com/watch?v=MGtCqiIUgIk","vid":"MGtCqiIUgIk","file":"","dur":0},{"vol":437,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=276&introcont=437","yt":"https://www.youtube.com/watch?v=Eu3IKqb3Wgw","vid":"Eu3IKqb3Wgw","file":"","dur":0},{"vol":438,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=277&introcont=438","yt":"https://www.youtube.com/watch?v=bU29v4JCR-E","vid":"bU29v4JCR-E","file":"","dur":0},{"vol":439,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=269&introcont=439","yt":"https://www.youtube.com/watch?v=0DSVhbCMB5k","vid":"0DSVhbCMB5k","file":"","dur":0},{"vol":440,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=278&introcont=440","yt":"https://www.youtube.com/watch?v=XpdYotmsk4U","vid":"XpdYotmsk4U","file":"","dur":0},{"vol":441,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=279&introcont=441","yt":"https://www.youtube.com/watch?v=fBFfMHF9hb0","vid":"fBFfMHF9hb0","file":"","dur":0},{"vol":442,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=282&introcont=442","yt":"https://www.youtube.com/watch?v=wM9LbHk2ioA","vid":"wM9LbHk2ioA","file":"","dur":0},{"vol":443,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=273&introcont=443","yt":"https://www.youtube.com/watch?v=vza7sBRAKA8","vid":"vza7sBRAKA8","file":"","dur":0},{"vol":444,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=283&introcont=444","yt":"https://www.youtube.com/watch?v=N7980x81VkM","vid":"N7980x81VkM","file":"","dur":0},{"vol":445,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=274&introcont=445","yt":"https://www.youtube.com/watch?v=VyEFr5PEwx4","vid":"VyEFr5PEwx4","file":"","dur":0},{"vol":446,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=285&introcont=446","yt":"https://www.youtube.com/watch?v=SRR3-B_qJ5o","vid":"SRR3-B_qJ5o","file":"","dur":0},{"vol":447,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=287&introcont=447","yt":"https://www.youtube.com/watch?v=VqMGlcOZBRw","vid":"VqMGlcOZBRw","file":"","dur":0},{"vol":448,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=288&introcont=448","yt":"https://www.youtube.com/watch?v=ycSUWcF6HPw","vid":"ycSUWcF6HPw","file":"","dur":0},{"vol":449,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=289&introcont=449","yt":"https://www.youtube.com/watch?v=4GFo62bhT8Y","vid":"4GFo62bhT8Y","file":"","dur":0},{"vol":450,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=290&introcont=450","yt":"https://www.youtube.com/watch?v=gHRnmOfIjgo","vid":"gHRnmOfIjgo","file":"","dur":0},{"vol":451,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=291&introcont=451","yt":"https://www.youtube.com/watch?v=gEZeZBp_dHw","vid":"gEZeZBp_dHw","file":"","dur":0},{"vol":452,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=292&introcont=452","yt":"https://www.youtube.com/watch?v=_2WE6PY0J4Y","vid":"_2WE6PY0J4Y","file":"","dur":0},{"vol":453,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=293&introcont=453","yt":"https://www.youtube.com/watch?v=_gctvlAPS8Q","vid":"_gctvlAPS8Q","file":"","dur":0},{"vol":454,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=294&introcont=454","yt":"https://www.youtube.com/watch?v=7WhJ2--GkwM","vid":"7WhJ2--GkwM","file":"","dur":0},{"vol":455,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=295&introcont=455","yt":"https://www.youtube.com/watch?v=DAxGIgMwgSA","vid":"DAxGIgMwgSA","file":"","dur":0},{"vol":456,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=296&introcont=456","yt":"https://www.youtube.com/watch?v=f5uyREXn9uU","vid":"f5uyREXn9uU","file":"","dur":0},{"vol":457,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=297&introcont=457","yt":"https://www.youtube.com/watch?v=nP05NLKda_o","vid":"nP05NLKda_o","file":"","dur":0},{"vol":458,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=298&introcont=458","yt":"https://www.youtube.com/watch?v=-Kux99mG_Ms","vid":"-Kux99mG_Ms","file":"","dur":0},{"vol":459,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=299&introcont=459","yt":"https://www.youtube.com/watch?v=mH-FVjSrT50","vid":"mH-FVjSrT50","file":"","dur":0},{"vol":460,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=300&introcont=460","yt":"https://www.youtube.com/watch?v=myMmgTrK7y4","vid":"myMmgTrK7y4","file":"","dur":0},{"vol":461,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=302&introcont=461","yt":"https://www.youtube.com/watch?v=jiBr9zKUJAE","vid":"jiBr9zKUJAE","file":"","dur":0},{"vol":462,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=303&introcont=462","yt":"https://www.youtube.com/watch?v=7FNchL4Z2QI","vid":"7FNchL4Z2QI","file":"","dur":0},{"vol":463,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=301&introcont=463","yt":"https://www.youtube.com/watch?v=iAGdX0nwt-g","vid":"iAGdX0nwt-g","file":"","dur":0},{"vol":464,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=304&introcont=464","yt":"https://www.youtube.com/watch?v=kl0RTHCqGbo","vid":"kl0RTHCqGbo","file":"","dur":0},{"vol":465,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=305&introcont=465","yt":"https://www.youtube.com/watch?v=eTaDWzurlP0","vid":"eTaDWzurlP0","file":"","dur":0},{"vol":466,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=308&introcont=466","yt":"https://www.youtube.com/watch?v=gs0v2cHY_a0","vid":"gs0v2cHY_a0","file":"","dur":0},{"vol":467,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=315&introcont=467","yt":"https://www.youtube.com/watch?v=2SPNvxHN14I","vid":"2SPNvxHN14I","file":"","dur":0},{"vol":468,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=306&introcont=468","yt":"https://www.youtube.com/watch?v=iRQ8U4DUgiA","vid":"iRQ8U4DUgiA","file":"","dur":0},{"vol":469,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=307&introcont=469","yt":"https://www.youtube.com/watch?v=VUk-yqa2NjU","vid":"VUk-yqa2NjU","file":"","dur":0},{"vol":470,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=316&introcont=470","yt":"https://www.youtube.com/watch?v=x3znz-kp8cw","vid":"x3znz-kp8cw","file":"","dur":0},{"vol":471,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=309&introcont=471","yt":"https://www.youtube.com/watch?v=WBp_WSJQkuU","vid":"WBp_WSJQkuU","file":"","dur":0},{"vol":472,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=317&introcont=472","yt":"https://www.youtube.com/watch?v=0Vr5ZDX_82g","vid":"0Vr5ZDX_82g","file":"","dur":0},{"vol":473,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=310&introcont=473","yt":"https://www.youtube.com/watch?v=AkUYZiugx_Q","vid":"AkUYZiugx_Q","file":"","dur":0},{"vol":474,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=311&introcont=474","yt":"https://www.youtube.com/watch?v=bsU28jJ4GVQ","vid":"bsU28jJ4GVQ","file":"","dur":0},{"vol":475,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=312&introcont=475","yt":"https://www.youtube.com/watch?v=crntZtin3Ig","vid":"crntZtin3Ig","file":"","dur":0},{"vol":476,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=318&introcont=476","yt":"https://www.youtube.com/watch?v=pwdhAxEdX6M","vid":"pwdhAxEdX6M","file":"","dur":0},{"vol":477,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=319&introcont=477","yt":"https://www.youtube.com/watch?v=1fRFNVP38DY","vid":"1fRFNVP38DY","file":"","dur":0},{"vol":478,"hui":"第二會(二萬五千頌般若)","page":"https://www.nhgy.org/b_02.php?mid=320&introcont=478","yt":"https://www.youtube.com/watch?v=UBU7_e0X-aI","vid":"UBU7_e0X-aI","file":"","dur":0}];
+/* 音檔來源（依序嘗試；第一個通的就被使用） */
+var SOURCES = [{"id":"gh","name":"網路","base":"https://github.com/tlv-creator/nhk-easy-news/releases/download/prajna-audio-v1/"}];
+
+var au=document.getElementById('au'), st=document.getElementById('status');
+var curVol=-1, srcIdx=0, speeds=[1,1.25,1.5,0.75], spIdx=0, autoNext=true;
+var done=JSON.parse(localStorage.getItem('prajna_done')||'{}');
+var last=JSON.parse(localStorage.getItem('prajna_last')||'null');
+var localMap=JSON.parse(localStorage.getItem('prajna_local')||'{}'); /* vol -> fileName */
+
+function fmt(s){ if(!isFinite(s)||s<0) s=0; s=Math.floor(s);
+  var h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60;
+  return (h? h+':'+String(m).padStart(2,'0') : String(m).padStart(2,'0'))+':'+String(x).padStart(2,'0'); }
+function say(msg,isErr){ st.textContent=msg; st.className='status'+(isErr?' err':''); }
+
+/* ---------- 卷目 ---------- */
+function buildList(){
+  var el=document.getElementById('list');
+  el.innerHTML='';
+  VOLS.forEach(function(v){
+    var d=document.createElement('div');
+    d.className='it'+(done[v.vol]?' done':'');
+    d.setAttribute('data-vol',v.vol);
+    d.innerHTML='<span class="n">'+v.vol+'</span><span class="t">般若經'+v.vol+'卷</span>'+
+                '<span class="d" data-dur></span>';
+    d.onclick=function(){ pick(v.vol); };
+    el.appendChild(d);
+  });
+  paintDur();
+}
+function paintDur(){
+  document.querySelectorAll('.it').forEach(function(d){
+    var vol=+d.getAttribute('data-vol');
+    var v=VOLS.filter(function(x){return x.vol===vol})[0];
+    var span=d.querySelector('[data-dur]');
+    if(v&&v.dur) span.textContent=fmt(v.dur);
+    else span.textContent=(localMap[vol]?'本地':'');
+  });
+}
+function markCur(){
+  document.querySelectorAll('.it').forEach(function(d){
+    d.classList.toggle('cur', +d.getAttribute('data-vol')===curVol);
+  });
+}
+
+/* ---------- 選卷 ---------- */
+function findVol(vol){
+  for(var i=0;i<VOLS.length;i++) if(VOLS[i].vol===vol) return VOLS[i];
+  return null;
+}
+function pick(vol){
+  var v=findVol(vol);
+  if(!v){ say('清單裡沒有第 '+vol+' 卷。',true); return; }
+  curVol=vol; markCur();
+  document.getElementById('curVol').textContent=vol;
+  document.getElementById('curTitle').textContent='般若經'+vol+'卷';
+  document.getElementById('curTot').textContent=' / '+VOLS.length+' 卷';
+  localStorage.setItem('prajna_last', JSON.stringify({vol:vol,t:0}));
+  if(localMap[vol]){ playLocal(vol); return; }
+  if(!v.file){
+    say('第 '+vol+' 卷還沒上傳。可以先聽已上傳的卷，或按「用手機裡的 mp3」離線聽。',true);
+    au.removeAttribute('src'); au.load(); return;
+  }
+  playOnline(vol);
+}
+
+/* ---------- 線上播放（多來源依序 fallback） ---------- */
+function urlFor(vol,srcIdx){
+  var v=findVol(vol); if(!v) return '';
+  var base=SOURCES[srcIdx].base;
+  return base + encodeURIComponent(v.file);
+}
+function playOnline(vol){
+  if(srcIdx>=SOURCES.length){
+    say('所有來源都連不上。請檢查網路，或按「用手機裡的 mp3」離線聽。',true);
+    au.removeAttribute('src'); au.load(); return;
+  }
+  var u=urlFor(vol,srcIdx);
+  say('載入中（第 '+(srcIdx+1)+'/'+SOURCES.length+' 個來源）…');
+  au.src=u;
+  au.playbackRate=speeds[spIdx];
+  var p=au.play();
+  if(p&&p.catch) p.catch(function(){
+    say('這個來源自動播放被擋了，請按一下「播放」。');
+  });
+}
+au.addEventListener('error',function(){
+  if(!au.src) return;
+  if(srcIdx+1<SOURCES.length){
+    srcIdx++; say('這個來源不行，換下一個…'); playOnline(curVol);
+  }else{
+    say('全部來源都失敗。可以改用「用手機裡的 mp3」離線聽。',true);
+  }
+});
+au.addEventListener('waiting',function(){ say('緩衝中…'); });
+au.addEventListener('playing',function(){
+  say('播放中　'+(SOURCES[srcIdx]?SOURCES[srcIdx].name:''));
+});
+au.addEventListener('pause',function(){
+  if(!au.ended) say('已暫停（記住位置：'+fmt(au.currentTime)+'）');
+});
+au.addEventListener('ended',function(){
+  if(curVol>0) done[curVol]=1;
+  localStorage.setItem('prajna_done',JSON.stringify(done));
+  buildList(); markCur();
+  if(autoNext){
+    var i=VOLS.findIndex(function(x){return x.vol===curVol});
+    if(i>=0&&i+1<VOLS.length){ say('本卷結束，接下一卷…'); pick(VOLS[i+1].vol); }
+    else say('已是最後一卷。');
+  } else say('本卷結束。');
+});
+au.addEventListener('timeupdate',function(){
+  var c=au.currentTime,d=au.duration;
+  document.getElementById('fill').style.width=(d? (c/d*100):0)+'%';
+  document.getElementById('barTxt').textContent=fmt(c)+' / '+fmt(d);
+  if(curVol>0) localStorage.setItem('prajna_last',JSON.stringify({vol:curVol,t:c}));
+});
+au.addEventListener('loadedmetadata',function(){
+  var v=findVol(curVol);
+  if(v&&!v.dur&&au.duration&&isFinite(au.duration)){ v.dur=au.duration; paintDur(); }
+});
+
+/* ---------- 本地 mp3（按檔名卷號對號） ---------- */
+function volFromName(n){
+  var m=n.match(/(?:^|[^0-9])([0-9]{3})(?:[^0-9]|$)/);
+  if(m){ var n2=+m[1]; if(n2>=398&&n2<=478) return n2; }
+  return -1;
+}
+function playLocal(vol){
+  var f=localMap[vol];
+  if(!f){ playOnline(vol); return; }
+  au.src=f; au.playbackRate=speeds[spIdx];
+  say('本地檔案播放中：'+f);
+  var p=au.play(); if(p&&p.catch) p.catch(function(){ say('請按一下「播放」。'); });
+}
+document.getElementById('fileInput').addEventListener('change',function(e){
+  var f=e.target.files&&e.target.files[0]; if(!f) return;
+  var vol=volFromName(f.name);
+  if(vol<0){ say('檔名裡找不到卷號（398–478）。請把檔名改成「般若經398卷.mp3」這樣。',true); return; }
+  localMap[vol]=f.name;
+  localStorage.setItem('prajna_local',JSON.stringify(localMap));
+  srcIdx=SOURCES.length; /* 本地優先，不再走網路 */
+  pick(vol);
+});
+
+/* ---------- 控制 ---------- */
+document.getElementById('btnPlay').onclick=function(){
+  if(curVol<0){ if(VOLS.length) pick(VOLS[0].vol); return; }
+  if(au.paused){ var p=au.play(); if(p&&p.catch) p.catch(function(){ say('請再按一次播放。'); }); }
+  else au.pause();
+};
+document.getElementById('btnStop').onclick=function(){ au.pause(); au.removeAttribute('src'); au.load(); say('已停止。'); };
+document.getElementById('btnPrev').onclick=function(){
+  var i=VOLS.findIndex(function(x){return x.vol===curVol});
+  if(i>0) pick(VOLS[i-1].vol); else say('已是第一卷。');
+};
+document.getElementById('btnNext').onclick=function(){
+  var i=VOLS.findIndex(function(x){return x.vol===curVol});
+  if(i>=0&&i+1<VOLS.length) pick(VOLS[i+1].vol); else say('已是最後一卷。');
+};
+document.getElementById('btnSpeed').onclick=function(){
+  spIdx=(spIdx+1)%speeds.length; au.playbackRate=speeds[spIdx];
+  document.getElementById('btnSpeed').textContent='速度 '+speeds[spIdx].toFixed(2).replace(/0$/,'').replace(/\.$/,'')+'x';
+  say('速度 '+speeds[spIdx]+'x');
+};
+document.getElementById('btnAuto').onclick=function(){
+  autoNext=!autoNext;
+  document.getElementById('btnAuto').textContent='連播：'+(autoNext?'開':'關');
+};
+document.getElementById('btnRetry').onclick=function(){
+  if(curVol>0){ srcIdx=0; playOnline(curVol); }
+};
+document.getElementById('btnLocal').onclick=function(){ document.getElementById('fileInput').click(); };
+
+/* ---------- 啟動 ---------- */
+buildList();
+if(last&&findVol(last.vol)){
+  say('上次聽到第 '+last.vol+' 卷（'+fmt(last.t||0)+'），點「播放」接著聽。');
+  document.getElementById('curVol').textContent=last.vol;
+  document.getElementById('curTitle').textContent='般若經'+last.vol+'卷';
+  document.getElementById('curTot').textContent=' / '+VOLS.length+' 卷';
+  curVol=last.vol; markCur();
+}
+</script>
+</body>
+</html>
