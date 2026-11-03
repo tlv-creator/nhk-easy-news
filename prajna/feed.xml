@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>大般若經誦讀（南海僧團）</title>
+    <link>https://tlv-creator.github.io/nhk-easy-news/prajna/feed.xml</link>
+    <language>zh-Hant</language>
+    <description>台灣屏東南海寺僧團誦讀《大般若波羅蜜多經》，第 398–478 卷，逐卷音檔。來源：南海觀音佛教基金會。經文對照請見 https://www.blisswisdom.org/publications/sutras/a/prajna02/</description>
+    <copyright>誦讀錄音版權歸南海觀音佛教基金會所有</copyright>
+    <lastBuildDate>Mon, 02 Nov 2026 00:00:00 +0000</lastBuildDate>
+    <generator>prajna_site/make_rss.py</generator>
+    <itunes:author>南海觀音佛教基金會（屏東）</itunes:author>
+    <itunes:summary>大般若經誦讀，逐卷音檔。</itunes:summary>
+    <itunes:subtitle>第 398–478 卷</itunes:subtitle>
+    <itunes:type>episodic</itunes:type>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:image href="https://tlv-creator.github.io/nhk-easy-news/prajna/cover.jpg"/>
+    <itunes:category text="Religion &amp; Spirituality"/>
+    <itunes:owner><itunes:name>南海觀音佛教基金會（屏東）</itunes:name></itunes:owner>
+    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://tlv-creator.github.io/nhk-easy-news/prajna/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>般若經第 398 卷</title>
+      <link>https://www.nhgy.org/b_02.php?mid=313&amp;introcont=398</link>
+      <description>《大般若波羅蜜多經》第 398 卷（第一會(上品般若)）誦讀。南海觀音佛教基金會。官方頁面：https://www.nhgy.org/b_02.php?mid=313&amp;introcont=398。</description>
+      <guid isPermaLink="false">nhgy-prajna-vol-398</guid>
+      <pubDate>Mon, 02 Nov 2026 00:00:00 +0000</pubDate>
+      <enclosure url="https://github.com/tlv-creator/nhk-easy-news/releases/download/prajna-audio-v1/398.mp3" length="720369" type="audio/mpeg"/>
+      <itunes:title>般若經第 398 卷</itunes:title>
+      <itunes:duration>0:00</itunes:duration>
+      <itunes:episode>1</itunes:episode>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+    <item>
+      <title>般若經第 399 卷</title>
+      <link>https://www.nhgy.org/b_02.php?mid=314&amp;introcont=399</link>
+      <description>《大般若波羅蜜多經》第 399 卷（第一會(上品般若)）誦讀。南海觀音佛教基金會。官方頁面：https://www.nhgy.org/b_02.php?mid=314&amp;introcont=399。</description>
+      <guid isPermaLink="false">nhgy-prajna-vol-399</guid>
+      <pubDate>Mon, 02 Nov 2026 00:00:00 +0000</pubDate>
+      <enclosure url="https://github.com/tlv-creator/nhk-easy-news/releases/download/prajna-audio-v1/399.mp3" length="480465" type="audio/mpeg"/>
+      <itunes:title>般若經第 399 卷</itunes:title>
+      <itunes:duration>0:00</itunes:duration>
+      <itunes:episode>2</itunes:episode>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+  </channel>
+</rss>
