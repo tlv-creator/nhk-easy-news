@@ -54,7 +54,7 @@ fi
 #    tools/gen_gs.py 也用它做词性校验（独立事实源）。
 #    漏装 ⇒ 周更跑到句型标注那步直接崩。
 "$VENV/bin/pip" install --no-input -q -i https://pypi.tuna.tsinghua.edu.cn/simple \
-  faster-whisper sudachipy sudachidict-core requests 2>&1 | tail -2
+  faster-whisper sudachipy sudachidict-core requests janome 2>&1 | tail -2
 "$VENV/bin/python" - <<'PY' || die "依赖没装上"
 import faster_whisper, sudachipy, requests  # noqa: F401
 from janome.tokenizer import Tokenizer
