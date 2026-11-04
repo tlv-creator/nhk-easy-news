@@ -49,17 +49,26 @@ say "3/5 Python 环境"
 if [ ! -x "$VENV/bin/python" ]; then
   python3 -m venv "$VENV" || die "建 venv 失败"
 fi
+# 🔴🔴 **依赖必须装进「系统 python3」，不只是 venv**（2026-11-04 实测踩到）
+#    手册第 3~6 节的命令全是 `python3 tools/xxx.py` ⇒ 用的是**系统解释器**；
+#    而 venv 里的包**没有任何脚本会用到**（tools/*.py 里没有一处引用 venv）
+#    ⇒ 只装 venv ⇒ asr.py 的 `from faster_whisper import ...` 直接 ImportError。
 # 🔴 janome 是**硬依赖**：tools/token_match.py 用它做句型的 **token 边界匹配**
 #    （子串匹配会把「だけ」误标到「だけど」上 ⇒ 真实事故 ep13:69），
 #    tools/gen_gs.py 也用它做词性校验（独立事实源）。
-#    漏装 ⇒ 周更跑到句型标注那步直接崩。
-"$VENV/bin/pip" install --no-input -q -i https://pypi.tuna.tsinghua.edu.cn/simple \
-  faster-whisper sudachipy sudachidict-core requests janome 2>&1 | tail -2
-"$VENV/bin/python" - <<'PY' || die "依赖没装上"
+#    漏装 ⇒ gen_gs/token_match **静默退化**（按字符切 / 词性集为空，判据不崩但失效）
+#    ⇒ scripts/test_gs_gate.py 的「词性维度」断言会红（实测 48 通过 / 7 失败）。
+DEPS="faster-whisper sudachipy sudachidict-core requests janome"
+PIP_MIRROR="https://pypi.tuna.tsinghua.edu.cn/simple"
+"$VENV/bin/pip" install --no-input -q -i "$PIP_MIRROR" $DEPS 2>&1 | tail -2
+# 系统 python3（手册命令实际用的解释器）⇒ PEP 668 要 --break-system-packages
+python3 -m pip install --no-input -q --break-system-packages -i "$PIP_MIRROR" \
+  $DEPS 2>&1 | tail -2 || warn "系统 python3 装依赖失败 ⇒ 手册命令会 ImportError"
+python3 - <<'PY' || die "依赖没装上（系统 python3）"
 import faster_whisper, sudachipy, requests  # noqa: F401
 from janome.tokenizer import Tokenizer
 Tokenizer()  # 真的能初始化才算装上
-print("  依赖 OK：faster-whisper / sudachipy / requests / janome")
+print("  依赖 OK（系统 python3）：faster-whisper / sudachipy / requests / janome")
 PY
 
 say "4/5 ASR 模型（CTranslate2 版 faster-whisper-base）"
