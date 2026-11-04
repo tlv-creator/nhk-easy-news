@@ -109,6 +109,21 @@ def _ep_set(v):
         return {t}
     raise SystemExit("❌ 清单里 missing_eps 类型不认识：%r" % (v,))
 
+def _host(dom):
+    """清单里的 domain 有两种写法，**两种都认**（跟 _sites_key 一个路子）：
+      · 全域名  qtjgfga76bu4o.space.mcode.cn
+      · 裸主机  qtjgfga76bu4o
+    🔴 不归一化就会拼出 https://x.space.mcode.cn.space.mcode.cn/media/
+       ⇒ 域名双重后缀 ⇒ 13 集全部假红（看起来像「音频全没了」）。
+       ⇒ 清单的权威写法是**全域名**（tools/check_sites_alive.py 也按全域名用）
+       ⇒ 这里只能把**裸主机**补成全域名，不能反过来改清单。"""
+    d = str(dom).strip().lower().rstrip(".")
+    suf = ".space.mcode.cn"
+    if d.endswith(suf):
+        d = d[:-len(suf)]
+    return d
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--site", default="", help="只查这一个 media 目录")
@@ -125,7 +140,7 @@ def main():
             return 2
         for dom, x in prot.items():
             if x.get("role") == "audio-source" and x.get("status") != "DELETED":
-                bases.append("https://%s.space.mcode.cn/media/" % dom)
+                bases.append("https://%s.space.mcode.cn/media/" % _host(dom))
     if not bases:
         print("❌ 清单里没有 audio-source 站点 ⇒ 不放行")
         return 2
@@ -136,7 +151,7 @@ def main():
     if not args.site:
         prot, _ = get_protected()
         for dom, x in (prot or {}).items():
-            known["https://%s.space.mcode.cn/media/" % dom] = _ep_set(x.get("missing_eps"))
+            known["https://%s.space.mcode.cn/media/" % _host(dom)] = _ep_set(x.get("missing_eps"))
     bad = []
     for base in bases:
         print("=== %s" % base)
