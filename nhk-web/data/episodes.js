@@ -1,5 +1,203 @@
 window.__EPISODES__=[
  {
+  "id": "20261106de71493",
+  "no": 76,
+  "title": "「難民のことを知ってほしい」難民がテーマの映画祭が始まった",
+  "easyTitle": "難民がテーマの映画を集めた「難民映画祭」が始まりました。",
+  "date": "2026-11-06",
+  "week": "",
+  "time": "20:15",
+  "duration": 66.56,
+  "durFast": 0.0,
+  "subs": "subs/20261106de71493.js",
+  "audio": "media/slow/20261106de71493.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261106de71496",
+  "no": 77,
+  "title": "株の値段が大きく下がった",
+  "easyTitle": "東京株式市場で、株の値段が6日、大きく下がりました。",
+  "date": "2026-11-06",
+  "week": "",
+  "time": "20:15",
+  "duration": 58.67,
+  "durFast": 0.0,
+  "subs": "subs/20261106de71496.js",
+  "audio": "media/slow/20261106de71496.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261106de71842",
+  "no": 78,
+  "title": "秋から冬　海で釣りをするときは天気に気をつけて",
+  "easyTitle": "秋から冬は、釣りをしている人が海に落ちる事故が多くなります。",
+  "date": "2026-11-06",
+  "week": "",
+  "time": "20:15",
+  "duration": 53.55,
+  "durFast": 0.0,
+  "subs": "subs/20261106de71842.js",
+  "audio": "media/slow/20261106de71842.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261106de71844",
+  "no": 79,
+  "title": "冬のかに「ズワイガニ」をとる漁が始まった",
+  "easyTitle": "日本海で、冬のかに「ズワイガニ」をとる漁が6日から始まりました。",
+  "date": "2026-11-06",
+  "week": "",
+  "time": "20:15",
+  "duration": 47.66,
+  "durFast": 0.0,
+  "subs": "subs/20261106de71844.js",
+  "audio": "media/slow/20261106de71844.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261105de70903",
+  "no": 72,
+  "title": "スペインの列車の事故　2人の日本人が亡くなった",
+  "easyTitle": "スペインで起こった列車の事故で、2人の日本人が亡くなったことがわかりました。",
+  "date": "2026-11-05",
+  "week": "",
+  "time": "20:07",
+  "duration": 63.49,
+  "durFast": 0.0,
+  "subs": "subs/20261105de70903.js",
+  "audio": "media/slow/20261105de70903.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261105de70906",
+  "no": 73,
+  "title": "埼玉県　値段が高くなった抹茶を農家が学校に贈る",
+  "easyTitle": "世界で抹茶の人気があるため、抹茶の値段が高くなっています。",
+  "date": "2026-11-05",
+  "week": "",
+  "time": "20:07",
+  "duration": 55.51,
+  "durFast": 0.0,
+  "subs": "subs/20261105de70906.js",
+  "audio": "media/slow/20261105de70906.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261105de70910",
+  "no": 74,
+  "title": "広島県尾道市　鬼が人をたたいて健康を祈る「ベッチャー祭」",
+  "easyTitle": "広島県尾道市で、鬼が棒で人をたたいて健康を祈る「ベッチャー祭」がありました。",
+  "date": "2026-11-05",
+  "week": "",
+  "time": "20:07",
+  "duration": 60.97,
+  "durFast": 0.0,
+  "subs": "subs/20261105de70910.js",
+  "audio": "media/slow/20261105de70910.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261105de70912",
+  "no": 75,
+  "title": "「書道」がユネスコの無形文化遺産になりそう",
+  "easyTitle": "日本の「書道」が、ユネスコの「無形文化遺産」になりそうです。",
+  "date": "2026-11-05",
+  "week": "",
+  "time": "20:07",
+  "duration": 56.88,
+  "durFast": 0.0,
+  "subs": "subs/20261105de70912.js",
+  "audio": "media/slow/20261105de70912.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261104de70283",
+  "no": 68,
+  "title": "トランプ大統領と同じ党の議員が半分より少なくなりそう",
+  "easyTitle": "アメリカで3日、議会の選挙がありました。",
+  "date": "2026-11-04",
+  "week": "",
+  "time": "20:15",
+  "duration": 58.97,
+  "durFast": 0.0,
+  "subs": "subs/20261104de70283.js",
+  "audio": "media/slow/20261104de70283.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261104de70286",
+  "no": 69,
+  "title": "関東地方や伊豆諸島で雨がたくさん降りそう",
+  "easyTitle": "強い台風31号が日本の南の海にあります。",
+  "date": "2026-11-04",
+  "week": "",
+  "time": "20:15",
+  "duration": 57.56,
+  "durFast": 0.0,
+  "subs": "subs/20261104de70286.js",
+  "audio": "media/slow/20261104de70286.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261104de70290",
+  "no": 70,
+  "title": "高知県黒潮町　いすに座って海を見るイベント",
+  "easyTitle": "高知県黒潮町の海岸で3日、珍しいイベントがありました。",
+  "date": "2026-11-04",
+  "week": "",
+  "time": "20:15",
+  "duration": 66.56,
+  "durFast": 0.0,
+  "subs": "subs/20261104de70290.js",
+  "audio": "media/slow/20261104de70290.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261104de70291",
+  "no": 71,
+  "title": "山形県のダリア園　みんなに花をプレゼント",
+  "easyTitle": "ダリアは、夏から秋まで咲く花です。",
+  "date": "2026-11-04",
+  "week": "",
+  "time": "20:15",
+  "duration": 50.26,
+  "durFast": 0.0,
+  "subs": "subs/20261104de70291.js",
+  "audio": "media/slow/20261104de70291.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
   "id": "20261102de69516",
   "no": 64,
   "title": "「防災庁」が新しくできた",
@@ -28,7 +226,9 @@ window.__EPISODES__=[
   "subs": "subs/20261102de69517.js",
   "audio": "media/slow/20261102de69517.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261102de69517.m4a"
  },
@@ -45,7 +245,9 @@ window.__EPISODES__=[
   "subs": "subs/20261102de69671.js",
   "audio": "media/slow/20261102de69671.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261102de69671.m4a"
  },
@@ -62,7 +264,9 @@ window.__EPISODES__=[
   "subs": "subs/ne2026110212459.js",
   "audio": "media/slow/ne2026110212459.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/ne2026110212459.m4a"
  },
@@ -79,7 +283,9 @@ window.__EPISODES__=[
   "subs": "subs/20261030de68380.js",
   "audio": "media/slow/20261030de68380.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261030de68380.m4a"
  },
@@ -146,7 +352,9 @@ window.__EPISODES__=[
   "subs": "subs/20261029de67652.js",
   "audio": "media/slow/20261029de67652.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261029de67652.m4a"
  },
@@ -163,7 +371,9 @@ window.__EPISODES__=[
   "subs": "subs/20261029de67658.js",
   "audio": "media/slow/20261029de67658.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261029de67658.m4a"
  },
@@ -180,7 +390,9 @@ window.__EPISODES__=[
   "subs": "subs/20261029de67649.js",
   "audio": "media/slow/20261029de67649.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261029de67649.m4a"
  },
@@ -230,7 +442,9 @@ window.__EPISODES__=[
   "subs": "subs/20261028de66912.js",
   "audio": "media/slow/20261028de66912.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261028de66912.m4a"
  },
@@ -247,7 +461,9 @@ window.__EPISODES__=[
   "subs": "subs/20261028de66922.js",
   "audio": "media/slow/20261028de66922.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261028de66922.m4a"
  },
@@ -280,7 +496,9 @@ window.__EPISODES__=[
   "subs": "subs/20261027de66256.js",
   "audio": "media/slow/20261027de66256.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261027de66256.m4a"
  },
@@ -297,7 +515,9 @@ window.__EPISODES__=[
   "subs": "subs/20261027de66253.js",
   "audio": "media/slow/20261027de66253.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261027de66253.m4a"
  },
@@ -314,7 +534,9 @@ window.__EPISODES__=[
   "subs": "subs/20261027de66255.js",
   "audio": "media/slow/20261027de66255.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261027de66255.m4a"
  },
@@ -364,7 +586,9 @@ window.__EPISODES__=[
   "subs": "subs/20261026de65648.js",
   "audio": "media/slow/20261026de65648.m4a",
   "ver": [
-   "easy"
+   "easy",
+   "sp",
+   "web"
   ],
   "audioFast": "media/fast/20261026de65648.m4a"
  },
@@ -399,6 +623,7 @@ window.__EPISODES__=[
   "audio": "media/slow/20261023de64170.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ],
   "audioFast": "media/fast/20261023de64170.m4a"
@@ -434,6 +659,7 @@ window.__EPISODES__=[
   "audio": "media/slow/20261023de64153.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ],
   "audioFast": "media/fast/20261023de64153.m4a"
@@ -452,6 +678,7 @@ window.__EPISODES__=[
   "audio": "media/slow/20261023de64159.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ],
   "audioFast": "media/fast/20261023de64159.m4a"
@@ -535,6 +762,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261021de62763.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -553,6 +781,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261021de62756.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -605,6 +834,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261020de62106.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -623,6 +853,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261020de62108.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -673,6 +904,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261019de61508.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -691,6 +923,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261019de61512.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -743,6 +976,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261016de60485.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -811,6 +1045,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261015de59721.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -829,6 +1064,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261015de59701.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -847,6 +1083,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261015de59709.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -898,6 +1135,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261014de59139.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -999,6 +1237,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261009de57124.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
@@ -1017,6 +1256,7 @@ window.__EPISODES__=[
   "audioFast": "media/fast/20261009de57126.m4a",
   "ver": [
    "easy",
+   "sp",
    "web"
   ]
  },
