@@ -135,8 +135,8 @@ def transcode(src, dst):
         raise SystemExit("❌ 转码失败：%s" % p.stdout.decode()[:300])
 
 
-def health_gate(product, source):
-    """跑共享体检工具 + 时长闸门 + 峰值闸门。返回 (ok, 说明)"""
+def health_gate(product, source, allow_duplicate=False):
+    """跑共享体检工具 + 时长闸门 + 峰值闸门 + 去重闸门。返回 (ok, 说明)"""
     tool = os.path.join(ROOT, "nhk-easy-news", "scripts", "audio_health.py")
     if not os.path.exists(tool):
         return False, "体检工具不存在（%s）—— 拿不到证据 ⇒ 不放行" % tool
@@ -169,7 +169,25 @@ def health_gate(product, source):
         if pk is not None and pk > MAX_PEAK_DB:
             return False, "%s 峰值 %.2f dBFS > +%.0f dBFS（幅度荒谬）" % (
                 r.get("file"), pk, MAX_PEAK_DB)
-    return True, " ｜ ".join(notes)
+    # 🔴🔴 去重闸门（2026-11-06 加）：**「健康」≠「是新的」**
+    #    实测：Ep279 的音频与 Ep278 逐字节相同（md5/ETag/时长/播报内容 四重对上）
+    #    ⇒ 音频健康闸门全绿（它确实是一份健康的音频），但内容是上一期的那份
+    #    ⇒ 只查健康 ⇒ 会把旧音频当新一期发出去（用户看到同内容、不同标题）
+    dedupe = os.path.join(PROJ, "tools", "audio_dedupe.py")
+    if not os.path.exists(dedupe):
+        return False, "去重闸门不存在（%s）—— 拿不到证据 ⇒ 不放行" % dedupe
+    cmd = [sys.executable, dedupe, "--product", product,
+           "--index", os.path.join(PROJ, "web", "data", "eps", "index.json"), "--json"]
+    if allow_duplicate:
+        cmd.append("--allow-duplicate")
+    p2 = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        dres = json.loads(p2.stdout.decode())
+    except Exception:
+        return False, "去重闸门输出读不懂（跑不起来 ⇒ 不放行）"
+    if not dres.get("ok"):
+        return False, "去重闸门没过：%s" % dres.get("reason", "?")
+    return True, " ｜ ".join(notes + [dres.get("reason", "")])
 
 
 def main():
@@ -178,6 +196,8 @@ def main():
     ap.add_argument("--index", default=os.path.join(PROJ, "web", "data", "eps", "index.json"))
     ap.add_argument("--outdir", default=os.path.join(PROJ, "work", "audio"))
     ap.add_argument("--meta", default=os.path.join(PROJ, "work", "epmeta.json"))
+    ap.add_argument("--allow-duplicate", action="store_true",
+                    help="人工确认过「播客确实重发旧集」时，跳过去重闸门")
     args = ap.parse_args()
 
     say("== 查 RSS ==")
@@ -216,7 +236,7 @@ def main():
             raise SystemExit("❌ 下载失败：%s" % x["url"])
         say("  源文件 %.1f MB" % (os.path.getsize(src) / 1048576.0))
         transcode(src, dst)
-        ok, why = health_gate(dst, src)
+        ok, why = health_gate(dst, src, allow_duplicate=args.allow_duplicate)
         say("  体检：%s" % why)
         if not ok:
             os.remove(dst)
