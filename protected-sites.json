@@ -164,8 +164,26 @@
    "reason": "旧内置版 v1.2.4 APK 的音频站：域名写死在 APK assets/app.js 的 AUDIO_BASE_LOCAL 里 ⇒ frozen 永不删、也不可 redeploy（redeploy 会换域名 ⇒ 用户旧 App 直接断声） role=audio-source",
    "frozen": true,
    "role": "audio-source"
+  },
+  {
+   "domain": "wm7b6ntgi3vl6",
+   "project": "nhk",
+   "status": "ACTIVE",
+   "role": "current_site",
+   "reason": "NHK 内容站（引导页当前指向）",
+   "written_in": "引导页 version.json 的 site 字段",
+   "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
+   "frozen": false
+  },
+  {
+   "domain": "204ocuv36su6w",
+   "project": "nhk",
+   "status": "SUPERSEDED",
+   "node_id": "456210239336751",
+   "frozen": false,
+   "note": "2026-10-25 的 v32 老站（44 期）⇒ 已被现役站取代 ⇒ 该删（清配额）"
   }
  ],
  "_meta_note": "2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED",
- "updated": "2026-11-04"
+ "updated": "2026-11-10"
 }
