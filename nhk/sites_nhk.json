@@ -6,7 +6,7 @@
     "node_id = PENDING = 沙箱里没有 drive 工具查不到（删站要用 mcp_invoke 的 drive 工具）",
     "node_id 可以从线上反查：平台注入的统计脚本里带着本节点的 node_id（base64）⇒ scripts/site_quota_guard.py discover"
   ],
-  "updated": "2026-10-25",
+  "updated": "2026-11-16",
   "fallback_domain": "vkwwuh9wgkzo0",
   "sites": [
     {
@@ -14,9 +14,10 @@
       "ver": 32,
       "apk_ver": 20,
       "date": "2026-10-25",
-      "node_id": "PENDING",
+      "node_id": "456210239336751",
       "role": "current_site",
-      "note": "现役内容站（引导页 version.json 的 site 指向它）· 44 期 · ver 32 / apkVer 20"
+      "note": "现役内容站（引导页 version.json 的 site 指向它）· 44 期 · ver 32 / apkVer 20",
+      "status": "SUPERSEDED"
     },
     {
       "domain": "vkwwuh9wgkzo0",
@@ -35,6 +36,25 @@
       "status": "DELETED",
       "role": "content",
       "note": "上一版内容站（v1.31）· 2026-10-25 已删（curl 判 404，当天核过）⇒ 留墓碑，别再当活站"
+    },
+    {
+      "node_id": "464033924727000",
+      "domain": "fj28fgr7ve147",
+      "project": "nhk",
+      "ver": "34",
+      "ts": "2026-11-16",
+      "keep": true,
+      "note": "现役内容站（引导页 version.json 指向它）"
+    },
+    {
+      "domain": "wm7b6ntgi3vl6",
+      "ver": 33,
+      "apk_ver": 20,
+      "date": "2026-11-02",
+      "node_id": "459071909741404",
+      "status": "SUPERSEDED",
+      "role": "content",
+      "note": "上一版内容站（v33 · 67 期）· 2026-11-16 被 fj28fgr7ve147 取代 ⇒ 待删（清配额）"
     }
   ],
   "history": [
