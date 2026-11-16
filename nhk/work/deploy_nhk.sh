@@ -227,10 +227,14 @@ finish)
       --note "$NOTE" --push 2>&1 | tail -5
 
   echo "════ ③b 等 Pages 渲染端追上（源端先到，渲染端慢一拍）════"
+  # 🔴 2026-11-16 修：**网络抽风不许把发版打断**
+  #   原来 `v=$(curl | python3)` 在 `set -e` 下，curl 一抖就**整个脚本静默退出**（exit 1）
+  #   ⇒ 现象：引导页已推成功、线上验收/清理旧站/Pages 同步**全没跑**（等于半发）
+  #   ⇒ 现在：读不到就当「还没追上」，重试到次数上限为止；**不让它决定发版的生死**
   for i in $(seq 1 12); do
-    v=$(curl -s -m 15 https://tlv-creator.github.io/nhk-easy-news/version.json \
-        | python3 -c "import sys,json;print(json.load(sys.stdin).get('ver'))" 2>/dev/null)
-    echo "   渲染端 ver=$v（期望 $VER）"
+    v=$(curl -s -m 15 https://tlv-creator.github.io/nhk-easy-news/version.json 2>/dev/null \
+        | python3 -c "import sys,json;print(json.load(sys.stdin).get('ver'))" 2>/dev/null || true)
+    echo "   渲染端 ver=${v:-?}（期望 $VER）"
     [ "$v" = "$VER" ] && break
     sleep 8
   done
