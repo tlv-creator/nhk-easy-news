@@ -168,12 +168,13 @@
   {
    "domain": "wm7b6ntgi3vl6",
    "project": "nhk",
-   "status": "ACTIVE",
-   "role": "current_site",
-   "reason": "NHK 内容站（引导页当前指向）",
+   "status": "SUPERSEDED",
+   "role": "content",
+   "reason": "被 fj28fgr7ve147 取代（2026-11-16 发布 v34）⇒ 该删（清配额）",
    "written_in": "引导页 version.json 的 site 字段",
-   "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
-   "frozen": false
+   "note": "2026-11-16 的 v33 老站（94 期前的 67 期）⇒ 已被新站取代 ⇒ 待删（node 459071909741404）",
+   "frozen": false,
+   "node_id": "459071909741404"
   },
   {
    "domain": "204ocuv36su6w",
@@ -182,8 +183,18 @@
    "node_id": "456210239336751",
    "frozen": false,
    "note": "2026-10-25 的 v32 老站（44 期）⇒ 已被现役站取代 ⇒ 该删（清配额）"
+  },
+  {
+   "domain": "fj28fgr7ve147",
+   "project": "nhk",
+   "status": "ACTIVE",
+   "role": "current_site",
+   "node_id": "464033924727000",
+   "frozen": false,
+   "reason": "NHK 内容站（引导页当前指向）",
+   "note": "🔴 **现役内容站** —— 2026-11-16 发布 v34（94 期 · 新增 27 期 11-04~11-16）· 引导页 version.json 指向它 ⇒ 永不删"
   }
  ],
  "_meta_note": "2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED",
- "updated": "2026-11-10"
+ "updated": "2026-11-16"
 }
