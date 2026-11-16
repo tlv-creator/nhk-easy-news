@@ -1,5 +1,16 @@
 {
-  "sites": [],
-  "updated": "2026-10-25",
-  "note": "待删站清单（唯一权威）。发版 agent 发完 mcode 站后，把被取代的旧站写进 sites[]；云盘配额清理 cron（20:00，agent=Mavis，mode=new）读这个文件删站，删完把该条从 sites[] 移除并把 protected-sites.json 里对应条目的 status 改成 DELETED。字段：domain（裸域名）/ node_id（云盘节点 id）/ reason（为什么该删）。"
+  "sites": [
+    {
+      "domain": "204ocuv36su6w",
+      "node_id": "456210239336751",
+      "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
+    },
+    {
+      "domain": "wm7b6ntgi3vl6",
+      "node_id": "459071909741404",
+      "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
+    }
+  ],
+  "updated": "2026-11-16 23:46",
+  "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。"
 }
