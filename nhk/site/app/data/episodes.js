@@ -1,5 +1,845 @@
 window.__EPISODES__=[
  {
+  "id": "20261116de76490",
+  "no": 94,
+  "title": "火事で焼けた沖縄の首里城　正殿の工事が終わった",
+  "easyTitle": "沖縄県那覇市の首里城は、7年前の火事で焼けました",
+  "date": "2026-11-16",
+  "week": "",
+  "time": "20:10",
+  "duration": 52.05,
+  "durFast": 0.0,
+  "subs": "subs/20261116de76490.js",
+  "audio": "media/slow/20261116de76490.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261116de76491",
+  "no": 93,
+  "title": "石川県　地震で壊れた学校  使うことができるようになった",
+  "easyTitle": "2024年の能登半島の地震では、学校も壊れました",
+  "date": "2026-11-16",
+  "week": "",
+  "time": "20:09",
+  "duration": 63.0,
+  "durFast": 0.0,
+  "subs": "subs/20261116de76491.js",
+  "audio": "media/slow/20261116de76491.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261116de76493",
+  "no": 92,
+  "title": "アメリカ　戻ってきた宇宙船を打ち上げた場所でキャッチした",
+  "easyTitle": "アメリカのスペースＸという会社は、宇宙船で月や火星に人を運びたいと考えています",
+  "date": "2026-11-16",
+  "week": "",
+  "time": "20:08",
+  "duration": 62.56,
+  "durFast": 0.0,
+  "subs": "subs/20261116de76493.js",
+  "audio": "media/slow/20261116de76493.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261116de76494",
+  "no": 91,
+  "title": "”いつも面白いものがあった”ハンズ渋谷店が閉店した",
+  "easyTitle": "東京・渋谷にあるハンズ渋谷店が15日、店を閉めました",
+  "date": "2026-11-16",
+  "week": "",
+  "time": "20:07",
+  "duration": 51.2,
+  "durFast": 0.0,
+  "subs": "subs/20261116de76494.js",
+  "audio": "media/slow/20261116de76494.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261113de75300",
+  "no": 90,
+  "title": "マイクロソフトでトラブル　世界中でメールなどが使えない",
+  "easyTitle": "アメリカのITの会社「マイクロソフト」で、トラブルが起こっています",
+  "date": "2026-11-13",
+  "week": "",
+  "time": "20:10",
+  "duration": 56.08,
+  "durFast": 0.0,
+  "subs": "subs/20261113de75300.js",
+  "audio": "media/slow/20261113de75300.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261113de75304",
+  "no": 89,
+  "title": "半導体の会社「エヌビディア」CEOがやめた",
+  "easyTitle": "アメリカの半導体の会社「エヌビディア」のジェンスン・フアンCEOがやめました",
+  "date": "2026-11-13",
+  "week": "",
+  "time": "20:09",
+  "duration": 53.74,
+  "durFast": 0.0,
+  "subs": "subs/20261113de75304.js",
+  "audio": "media/slow/20261113de75304.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261113de75309",
+  "no": 88,
+  "title": "石川県　火事で焼けた「朝市通り」に最初の店ができた",
+  "easyTitle": "石川県輪島市は2024年1月の地震で大きな被害を受けました",
+  "date": "2026-11-13",
+  "week": "",
+  "time": "20:08",
+  "duration": 52.31,
+  "durFast": 0.0,
+  "subs": "subs/20261113de75309.js",
+  "audio": "media/slow/20261113de75309.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261113de75306",
+  "no": 87,
+  "title": "アジア大会のコンテナハウス　熊本地震で被害を受けた人が使う",
+  "easyTitle": "アジア大会のコンテナハウスを、熊本地震で被害を受けた人に使ってもらうことになりま",
+  "date": "2026-11-13",
+  "week": "",
+  "time": "20:07",
+  "duration": 56.91,
+  "durFast": 0.0,
+  "subs": "subs/20261113de75306.js",
+  "audio": "media/slow/20261113de75306.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261112de74707",
+  "no": 86,
+  "title": "京都府亀岡市　鶏から鳥インフルエンザが見つかった",
+  "easyTitle": "鳥の病気、鳥インフルエンザのニュースです",
+  "date": "2026-11-12",
+  "week": "",
+  "time": "20:10",
+  "duration": 61.13,
+  "durFast": 0.0,
+  "subs": "subs/20261112de74707.js",
+  "audio": "media/slow/20261112de74707.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261112de74711",
+  "no": 85,
+  "title": "国連の事務総長「地球の気候が悪くなっている　対策が足りない」",
+  "easyTitle": "地球の気候について話し合う国連の会議「COP31」が、トルコで開かれています",
+  "date": "2026-11-12",
+  "week": "",
+  "time": "20:09",
+  "duration": 53.76,
+  "durFast": 0.0,
+  "subs": "subs/20261112de74711.js",
+  "audio": "media/slow/20261112de74711.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261112de74710",
+  "no": 84,
+  "title": "埼玉県深谷市　渋沢栄一が好きだった料理が給食に出た",
+  "easyTitle": "1万円札にデザインされている渋沢栄一が、好きだった料理のニュースです",
+  "date": "2026-11-12",
+  "week": "",
+  "time": "20:08",
+  "duration": 54.99,
+  "durFast": 0.0,
+  "subs": "subs/20261112de74710.js",
+  "audio": "media/slow/20261112de74710.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261112de74708",
+  "no": 83,
+  "title": "岩手県の三陸鉄道　駅のホームに「柿のれん」ができた",
+  "easyTitle": "果物の柿を干して作る「干し柿」の季節になりました",
+  "date": "2026-11-12",
+  "week": "",
+  "time": "20:07",
+  "duration": 57.99,
+  "durFast": 0.0,
+  "subs": "subs/20261112de74708.js",
+  "audio": "media/slow/20261112de74708.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261111de74056",
+  "no": 82,
+  "title": "秋になってからいちばん寒い朝だった",
+  "easyTitle": "11日の朝は、日本のいろいろな所で秋になってからいちばん寒くなりました",
+  "date": "2026-11-11",
+  "week": "",
+  "time": "20:20",
+  "duration": 66.2,
+  "durFast": 0.0,
+  "subs": "subs/20261111de74056.js",
+  "audio": "media/slow/20261111de74056.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261111de74058",
+  "no": 81,
+  "title": "熊本地震で閉めていたスーパーが店を開けた",
+  "easyTitle": "ことし7月の熊本県の地震で閉めていたスーパーが、店を始めました",
+  "date": "2026-11-11",
+  "week": "",
+  "time": "20:19",
+  "duration": 45.39,
+  "durFast": 0.0,
+  "subs": "subs/20261111de74058.js",
+  "audio": "media/slow/20261111de74058.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261111de74366",
+  "no": 80,
+  "title": "イギリスの海でタコがたくさんとれている",
+  "easyTitle": "イギリスの海で今、タコがたくさんとれています",
+  "date": "2026-11-11",
+  "week": "",
+  "time": "20:18",
+  "duration": 50.27,
+  "durFast": 0.0,
+  "subs": "subs/20261111de74366.js",
+  "audio": "media/slow/20261111de74366.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261111de74059",
+  "no": 79,
+  "title": "北海道根室市の港 「サンマがたくさん釣れて驚いた」",
+  "easyTitle": "日本の海では今年、とれるサンマがとても少なくなっています",
+  "date": "2026-11-11",
+  "week": "",
+  "time": "20:17",
+  "duration": 61.67,
+  "durFast": 0.0,
+  "subs": "subs/20261111de74059.js",
+  "audio": "media/slow/20261111de74059.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "ne2026111013510",
+  "no": 78,
+  "title": "気象庁「エルニーニョ現象が今まででいちばん強い」",
+  "easyTitle": "異常な天気の原因になると考えられている「エルニーニョ現象」のニュースです",
+  "date": "2026-11-10",
+  "week": "",
+  "time": "20:10",
+  "duration": 69.84,
+  "durFast": 0.0,
+  "subs": "subs/ne2026111013510.js",
+  "audio": "media/slow/ne2026111013510.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261110de73425",
+  "no": 77,
+  "title": "ネパールの大臣「気候が変わって私たちの将来も変わる」",
+  "easyTitle": "地球の気候について話し合う国連の会議「COP31」が、トルコで始まりました",
+  "date": "2026-11-10",
+  "week": "",
+  "time": "20:09",
+  "duration": 64.56,
+  "durFast": 0.0,
+  "subs": "subs/20261110de73425.js",
+  "audio": "media/slow/20261110de73425.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261110de73426",
+  "no": 76,
+  "title": "パレスチナのガザ地区で大雨　子どもなど6人が亡くなる",
+  "easyTitle": "パレスチナのガザ地区では、たくさんの人たちが戦いで家をなくしてテントで生活してい",
+  "date": "2026-11-10",
+  "week": "",
+  "time": "20:08",
+  "duration": 47.92,
+  "durFast": 0.0,
+  "subs": "subs/20261110de73426.js",
+  "audio": "media/slow/20261110de73426.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261109de72841",
+  "no": 75,
+  "title": "愛知県で震度5強の地震　1週間ぐらい気をつけて",
+  "easyTitle": "8日午前1時ごろ、東海地方で強い地震がありました",
+  "date": "2026-11-09",
+  "week": "",
+  "time": "20:10",
+  "duration": 62.92,
+  "durFast": 0.0,
+  "subs": "subs/20261109de72841.js",
+  "audio": "media/slow/20261109de72841.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261109de72846",
+  "no": 74,
+  "title": "寒いときと暖かいときの気温の差が大きくなりそう",
+  "easyTitle": "9日は、寒くなりました",
+  "date": "2026-11-09",
+  "week": "",
+  "time": "20:09",
+  "duration": 55.86,
+  "durFast": 0.0,
+  "subs": "subs/20261109de72846.js",
+  "audio": "media/slow/20261109de72846.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261109de72843",
+  "no": 73,
+  "title": "京都府八幡市　子どもを産んで休んでいた市長が仕事に戻った",
+  "easyTitle": "京都府八幡市の川田翔子市長は、子どもを産むために7月から仕事を休みました",
+  "date": "2026-11-09",
+  "week": "",
+  "time": "20:08",
+  "duration": 48.14,
+  "durFast": 0.0,
+  "subs": "subs/20261109de72843.js",
+  "audio": "media/slow/20261109de72843.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261106de71496",
+  "no": 72,
+  "title": "株の値段が大きく下がった",
+  "easyTitle": "東京株式市場で、株の値段が6日、大きく下がりました",
+  "date": "2026-11-06",
+  "week": "",
+  "time": "20:10",
+  "duration": 57.88,
+  "durFast": 0.0,
+  "subs": "subs/20261106de71496.js",
+  "audio": "media/slow/20261106de71496.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261106de71493",
+  "no": 71,
+  "title": "「難民のことを知ってほしい」難民がテーマの映画祭が始まった",
+  "easyTitle": "難民がテーマの映画を集めた「難民映画祭」が始まりました",
+  "date": "2026-11-06",
+  "week": "",
+  "time": "20:09",
+  "duration": 71.66,
+  "durFast": 0.0,
+  "subs": "subs/20261106de71493.js",
+  "audio": "media/slow/20261106de71493.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261105de70912",
+  "no": 70,
+  "title": "「書道」がユネスコの無形文化遺産になりそう",
+  "easyTitle": "日本の「書道」が、ユネスコの「無形文化遺産」になりそうです",
+  "date": "2026-11-05",
+  "week": "",
+  "time": "20:04",
+  "duration": 55.08,
+  "durFast": 0.0,
+  "subs": "subs/20261105de70912.js",
+  "audio": "media/slow/20261105de70912.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261104de70283",
+  "no": 69,
+  "title": "トランプ大統領と同じ党の議員が半分より少なくなりそう",
+  "easyTitle": "アメリカで3日、議会の選挙がありました",
+  "date": "2026-11-04",
+  "week": "",
+  "time": "20:10",
+  "duration": 58.1,
+  "durFast": 0.0,
+  "subs": "subs/20261104de70283.js",
+  "audio": "media/slow/20261104de70283.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261104de70286",
+  "no": 68,
+  "title": "関東地方や伊豆諸島で雨がたくさん降りそう",
+  "easyTitle": "強い台風31号が日本の南の海にあります",
+  "date": "2026-11-04",
+  "week": "",
+  "time": "20:09",
+  "duration": 56.5,
+  "durFast": 0.0,
+  "subs": "subs/20261104de70286.js",
+  "audio": "media/slow/20261104de70286.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261102de69516",
+  "no": 64,
+  "title": "「防災庁」が新しくできた",
+  "easyTitle": "大きい災害が起きたときのための「防災庁」が2日、できました",
+  "date": "2026-11-02",
+  "week": "",
+  "time": "20:30",
+  "duration": 63.45,
+  "durFast": 0.0,
+  "subs": "subs/20261102de69516.js",
+  "audio": "media/slow/20261102de69516.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261102de69517",
+  "no": 65,
+  "title": "スペイン政府「高速鉄道の事故で日本人が1人亡くなった」",
+  "easyTitle": "",
+  "date": "2026-11-02",
+  "week": "",
+  "time": "20:29",
+  "duration": 59.09,
+  "durFast": 69.5,
+  "subs": "subs/20261102de69517.js",
+  "audio": "media/slow/20261102de69517.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261102de69517.m4a"
+ },
+ {
+  "id": "20261102de69671",
+  "no": 66,
+  "title": "GMOの不正アクセス　「システムに問題があった」",
+  "easyTitle": "",
+  "date": "2026-11-02",
+  "week": "",
+  "time": "20:28",
+  "duration": 66.52,
+  "durFast": 436.61,
+  "subs": "subs/20261102de69671.js",
+  "audio": "media/slow/20261102de69671.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261102de69671.m4a"
+ },
+ {
+  "id": "ne2026110212459",
+  "no": 67,
+  "title": "外国人の旅行者　1度消費税を払ってから返してもらう",
+  "easyTitle": "",
+  "date": "2026-11-02",
+  "week": "",
+  "time": "20:27",
+  "duration": 47.02,
+  "durFast": 258.84,
+  "subs": "subs/ne2026110212459.js",
+  "audio": "media/slow/ne2026110212459.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/ne2026110212459.m4a"
+ },
+ {
+  "id": "20261030de68380",
+  "no": 60,
+  "title": "富士山が雪で白くなった",
+  "easyTitle": "",
+  "date": "2026-10-30",
+  "week": "",
+  "time": "20:05",
+  "duration": 52.14,
+  "durFast": 69.59,
+  "subs": "subs/20261030de68380.js",
+  "audio": "media/slow/20261030de68380.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261030de68380.m4a"
+ },
+ {
+  "id": "20261030de68382",
+  "no": 61,
+  "title": "電気代とガス代に国がお金を出す",
+  "easyTitle": "寒くなると、電気やガスを使うことが多くなります",
+  "date": "2026-10-30",
+  "week": "",
+  "time": "20:04",
+  "duration": 66.99,
+  "durFast": 0.0,
+  "subs": "subs/20261030de68382.js",
+  "audio": "media/slow/20261030de68382.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261030de68387",
+  "no": 63,
+  "title": "ハロウィーン　渋谷の「ハチ公」をシートで隠す",
+  "easyTitle": "10月31日は、ハロウィーンです",
+  "date": "2026-10-30",
+  "week": "",
+  "time": "20:03",
+  "duration": 59.05,
+  "durFast": 0.0,
+  "subs": "subs/20261030de68387.js",
+  "audio": "media/slow/20261030de68387.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261030de68384",
+  "no": 62,
+  "title": "法隆寺　国の宝になっている仏像を見ることができる",
+  "easyTitle": "奈良県にある法隆寺で、国の宝になっている仏像、「救世観音像」を見ることができます",
+  "date": "2026-10-30",
+  "week": "",
+  "time": "20:02",
+  "duration": 55.42,
+  "durFast": 0.0,
+  "subs": "subs/20261030de68384.js",
+  "audio": "media/slow/20261030de68384.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261029de67652",
+  "no": 57,
+  "title": "スペイン　高速鉄道でまた列車の事故　60人以上が亡くなった",
+  "easyTitle": "",
+  "date": "2026-10-29",
+  "week": "",
+  "time": "20:10",
+  "duration": 29.61,
+  "durFast": 29.74,
+  "subs": "subs/20261029de67652.js",
+  "audio": "media/slow/20261029de67652.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261029de67652.m4a"
+ },
+ {
+  "id": "20261029de67658",
+  "no": 58,
+  "title": "GMO「会社を攻撃しているハッカーについての情報が入った」",
+  "easyTitle": "",
+  "date": "2026-10-29",
+  "week": "",
+  "time": "20:09",
+  "duration": 58.92,
+  "durFast": 213.01,
+  "subs": "subs/20261029de67658.js",
+  "audio": "media/slow/20261029de67658.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261029de67658.m4a"
+ },
+ {
+  "id": "20261029de67649",
+  "no": 56,
+  "title": "韓国のイテウォン　たくさんの人が亡くなった事故から4年",
+  "easyTitle": "",
+  "date": "2026-10-29",
+  "week": "",
+  "time": "20:08",
+  "duration": 67.84,
+  "durFast": 39.38,
+  "subs": "subs/20261029de67649.js",
+  "audio": "media/slow/20261029de67649.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261029de67649.m4a"
+ },
+ {
+  "id": "20261029de67659",
+  "no": 59,
+  "title": "茨城県常陸大宮市　美しい「雲海」が見えた",
+  "easyTitle": "日本に冷たい空気が入って、29日の朝は、この秋いちばん気温が下がりました",
+  "date": "2026-10-29",
+  "week": "",
+  "time": "20:07",
+  "duration": 43.48,
+  "durFast": 0.0,
+  "subs": "subs/20261029de67659.js",
+  "audio": "media/slow/20261029de67659.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261028de66914",
+  "no": 53,
+  "title": "熊本県の地震から3か月　今も1000人以上が避難している",
+  "easyTitle": "今年7月に熊本県で大きい地震がありました",
+  "date": "2026-10-28",
+  "week": "",
+  "time": "20:10",
+  "duration": 63.79,
+  "durFast": 0.0,
+  "subs": "subs/20261028de66914.js",
+  "audio": "media/slow/20261028de66914.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261028de66912",
+  "no": 52,
+  "title": "札幌市などで初めての雪　東京などは「木枯らし」が吹いた",
+  "easyTitle": "",
+  "date": "2026-10-28",
+  "week": "",
+  "time": "20:09",
+  "duration": 52.14,
+  "durFast": 153.56,
+  "subs": "subs/20261028de66912.js",
+  "audio": "media/slow/20261028de66912.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261028de66912.m4a"
+ },
+ {
+  "id": "20261028de66922",
+  "no": 55,
+  "title": "卵の値段が今まででいちばん高くなった",
+  "easyTitle": "",
+  "date": "2026-10-28",
+  "week": "",
+  "time": "20:08",
+  "duration": 60.72,
+  "durFast": 129.11,
+  "subs": "subs/20261028de66922.js",
+  "audio": "media/slow/20261028de66922.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261028de66922.m4a"
+ },
+ {
+  "id": "20261028de66918",
+  "no": 54,
+  "title": "栃木県日光の中禅寺湖　紅葉がきれい",
+  "easyTitle": "紅葉がきれいな季節です",
+  "date": "2026-10-28",
+  "week": "",
+  "time": "20:07",
+  "duration": 54.61,
+  "durFast": 0.0,
+  "subs": "subs/20261028de66918.js",
+  "audio": "media/slow/20261028de66918.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261027de66256",
+  "no": 50,
+  "title": "GMOの不正アクセス問題　ハッカー集団が1人の情報を出した",
+  "easyTitle": "",
+  "date": "2026-10-27",
+  "week": "",
+  "time": "20:10",
+  "duration": 67.11,
+  "durFast": 369.11,
+  "subs": "subs/20261027de66256.js",
+  "audio": "media/slow/20261027de66256.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261027de66256.m4a"
+ },
+ {
+  "id": "20261027de66253",
+  "no": 48,
+  "title": "漫画家のちばてつやさん亡くなる 「あしたのジョー」が有名",
+  "easyTitle": "",
+  "date": "2026-10-27",
+  "week": "",
+  "time": "20:09",
+  "duration": 52.86,
+  "durFast": 103.28,
+  "subs": "subs/20261027de66253.js",
+  "audio": "media/slow/20261027de66253.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261027de66253.m4a"
+ },
+ {
+  "id": "20261027de66255",
+  "no": 49,
+  "title": "日本で去年生まれた外国人の子ども　3年続いていちばん多い",
+  "easyTitle": "",
+  "date": "2026-10-27",
+  "week": "",
+  "time": "20:08",
+  "duration": 64.9,
+  "durFast": 286.19,
+  "subs": "subs/20261027de66255.js",
+  "audio": "media/slow/20261027de66255.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261027de66255.m4a"
+ },
+ {
+  "id": "20261027de66267",
+  "no": 51,
+  "title": "10月26日は「柿の日」 奈良県のＪＡが柿を無料で配った",
+  "easyTitle": "日本でよく食べる秋の果物、柿のニュースです",
+  "date": "2026-10-27",
+  "week": "",
+  "time": "20:07",
+  "duration": 55.13,
+  "durFast": 0.0,
+  "subs": "subs/20261027de66267.js",
+  "audio": "media/slow/20261027de66267.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261026de65650",
+  "no": 47,
+  "title": "いろいろな所で雨が降った　災害に気をつけて",
+  "easyTitle": "台風30号は、低気圧になりました",
+  "date": "2026-10-26",
+  "week": "",
+  "time": "20:05",
+  "duration": 52.14,
+  "durFast": 0.0,
+  "subs": "subs/20261026de65650.js",
+  "audio": "media/slow/20261026de65650.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261026de65648",
+  "no": 46,
+  "title": "将棋のプロ棋士　初めて女性がなる",
+  "easyTitle": "",
+  "date": "2026-10-26",
+  "week": "",
+  "time": "20:04",
+  "duration": 53.21,
+  "durFast": 232.58,
+  "subs": "subs/20261026de65648.js",
+  "audio": "media/slow/20261026de65648.m4a",
+  "ver": [
+   "easy"
+  ],
+  "audioFast": "media/fast/20261026de65648.m4a"
+ },
+ {
+  "id": "20261026de65643",
+  "no": 45,
+  "title": "ブラジルの大統領選挙　今の大統領のルーラさんが選ばれた",
+  "easyTitle": "ブラジルで、大統領を選ぶ選挙の2回目の投票が25日にありました",
+  "date": "2026-10-26",
+  "week": "",
+  "time": "20:03",
+  "duration": 70.02,
+  "durFast": 0.0,
+  "subs": "subs/20261026de65643.js",
+  "audio": "media/slow/20261026de65643.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
   "id": "20261023de64170",
   "no": 1,
   "title": "台風30号　沖縄県の近くに来る",
