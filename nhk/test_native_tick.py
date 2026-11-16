@@ -143,6 +143,44 @@ async def main():
             check("⑩ 暂停调用原生 pauseAudio", (await pg.evaluate("() => window.__paused")) > 0)
 
             # ⑪⑫⑬ 普通版：跟音（sp 轨）与阅读（关掉同步）两种模式
+            # 🔴 2026-11-16 修：**要挑一期「有原速音」的**
+            #   sp 轨（电视播报稿）只存在于**有原速音**的期（手册 §17.2 硬约束：
+            #   没有原速音的期 ⇒ 不做 sp 轨 ⇒ 普通版就是纯阅读）
+            #   ⇒ 新一期常常没有原速音 ⇒ 固定测第 0 期就会假红
+            #   ⇒ 现在：按 episodes.js 的 durFast 找第一期有原速音的，打开它再验跟音
+            # 🔴 要挑「**有原速音**」**且**「**有普通版**」的期
+            #   （只有原速音没普通版的期 ⇒ 普通版按钮是 disabled ⇒ 点不动 ⇒ 测试自己卡住）
+            sp_idx = await pg.evaluate("""() => {
+                const eps = window.__EPISODES__ || [];
+                for (let i = 0; i < eps.length; i++) {
+                    const e = eps[i];
+                    const ver = e.ver || [];
+                    if ((e.durFast || 0) > 1 && ver.indexOf('web') >= 0) return i;
+                }
+                return -1;
+            }""")
+            if sp_idx >= 0 and sp_idx != 0:
+                # 🔴 列表里的 DOM 顺序**不等于** episodes 数组顺序（可能分组/筛选）
+                #   ⇒ 不能用下标点 ⇒ 用**标题**找那一项
+                #   ⇒ 而且**用 JS 直接点**（Playwright 的可点击性检查在墨水屏/窄屏模拟下会超时）
+                hit = await pg.evaluate("""(i) => {
+                    const eps = window.__EPISODES__ || [];
+                    const e = eps[i];
+                    if (!e) return false;
+                    const key = (e.title || '').slice(0, 10);
+                    const items = [...document.querySelectorAll('#epList .ep-item')];
+                    for (const it of items) {
+                        if (key && (it.innerText || '').indexOf(key) >= 0) {
+                            it.click();
+                            return true;
+                        }
+                    }
+                    return false;
+                }""", sp_idx)
+                if hit:
+                    await pg.wait_for_timeout(1800)
+                else:
+                    print("   （找不到有原速音的那一期的列表项 ⇒ ⑫⑬ 用现役期判）")
             await open_episode(pg, 0, "web")
             await pg.wait_for_timeout(1500)
             mode = await pg.evaluate("""() => {
@@ -152,11 +190,25 @@ async def main():
             check("⑪ 普通版有跟音/阅读两种模式", ("跟音" in mode) or ("閱讀" in mode), mode)
 
             spcues = await pg.evaluate("""() => {
-                const id = window.__EPISODES__[0].id;
-                const d = (window.__SUBS__ || {})[id];
-                return d ? (d.sp || []).map(c => ({s: c.s, e: c.e})) : [];
+                // 🔴 2026-11-16 修：**不要固定取第 0 期**
+                //   第 0 期是最新一期，而新一期**不一定有原速音**（没有原速音 ⇒ 不做 sp 轨，
+                //   手册 §17.2 硬约束：没有原速音的期 ⇒ 普通版就是纯阅读）
+                //   ⇒ 原来固定取 [0] ⇒ 测的是「最新一期有没有 sp」⇒ 新期没原速音就假红
+                //   ⇒ 现在：找**第一个有 sp 轨的期**（跟音功能本来就只在有原速音的期上存在）
+                const eps = window.__EPISODES__ || [];
+                for (const ep of eps) {
+                    const d = (window.__SUBS__ || {})[ep.id];
+                    const sp = d ? (d.sp || []) : [];
+                    if (sp.length) {
+                        window.__spEp = ep.id;
+                        return sp.map(c => ({s: c.s, e: c.e}));
+                    }
+                }
+                window.__spEp = null;
+                return [];
             }""")
-            check("⑫ 普通版有 sp 轨（电视播报稿）", len(spcues) > 0, str(len(spcues)))
+            check("⑫ 普通版有 sp 轨（电视播报稿）", len(spcues) > 0,
+                  "没有任何一期有 sp 轨" if not spcues else str(len(spcues)))
             if spcues:
                 k = min(2, len(spcues) - 1)
                 mid = (spcues[k]["s"] + spcues[k]["e"]) / 2.0
