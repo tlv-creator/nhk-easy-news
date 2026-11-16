@@ -36,6 +36,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 import zipfile
@@ -64,23 +65,34 @@ def log(*a):
 
 
 def http_json(url, timeout=20):
-    try:
-        req = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            return json.loads(r.read().decode("utf-8", "replace"))
-    except Exception as e:
-        return None
+    # 🔴 2026-11-16 加**重试**：引导页/GitHub Pages 偶尔抽风（一次就抽 ⇒
+    #    整条发版链在「配额体检」这一步停住，而它其实只是要读一个 version.json）
+    last = None
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return json.loads(r.read().decode("utf-8", "replace"))
+        except Exception as e:
+            last = e
+            time.sleep(1.5 * (attempt + 1))
+    log("   ⚠️ 取不到 %s（%s）" % (url, last))
+    return None
 
 
 def http_code(url, timeout=15):
-    try:
-        req = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            return r.status
-    except urllib.error.HTTPError as e:
-        return e.code
-    except Exception:
-        return 0
+    last = None
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return r.status
+        except urllib.error.HTTPError as e:
+            return e.code
+        except Exception as e:
+            last = e
+            time.sleep(1.0 * (attempt + 1))
+    return 0
 
 
 def site_url(domain):
@@ -112,13 +124,21 @@ def save_reg(j):
 
 
 def protected_map():
-    """保护清单：优先线上（所有 agent 共用），线上读不到就用本地兜底。"""
+    """保护清单：优先线上（所有 agent 共用），线上读不到就用本地兜底。
+
+    🔴🔴 2026-11-16 修：**两种 key 都要认**
+       线上共享仓库那份用的是 `"sites"`，本地兜底那份用的是 `"protected_sites"`
+       ⇒ 原来只认 `"protected_sites"` ⇒ **线上那份被读成空表**
+       ⇒ 后果：① 「现役站不删」这条保护**根本没生效**（旧站会进删除计划）
+                ② 待删站清单漏掉线上登记过的站（配额清不掉）
+    """
     j = http_json(PROTECTED_URL) or load_json(PROTECTED_LOCAL, {}) or {}
     m = {}
-    for s in j.get("protected_sites", []):
-        d = s.get("domain")
-        if d and "." not in d:
-            m[d] = s
+    for key in ("protected_sites", "sites"):
+        for s in (j.get(key) or []):
+            d = s.get("domain")
+            if d and "." not in d:
+                m[d] = s
     return m
 
 
