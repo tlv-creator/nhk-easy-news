@@ -55,15 +55,53 @@ def strip_html(h):
 
 
 def easy_ids():
-    """从 sitemap 抽文章 id（最新在最前）"""
+    """从 sitemap 抽文章 id（最新在最前）
+
+    🔴🔴 2026-11-16 修：**id 有两种格式**，原来只收一种 ⇒ 漏了一大半！
+        · `20261116de76490`  ← 正片（de + 数字）
+        · `ne2026111013510`  ← 另一种（ne + 年月日时分秒）
+      sitemap 里有 181 个 de 格式 + 435 个 ne 格式 ⇒ 只收 de 就等于漏掉一半。
+      ⇒ 现役站里本来就有 4 期是 ne 格式（说明它们也是该收的）。
+    """
     txt = http(EASY_SITEMAP)
-    ids = re.findall(r"/news/easy/(\d{8}de\d+)/", txt)
+    ids = re.findall(r"/news/easy/((?:\d{8}de\d+)|(?:ne\d+))/", txt)
     seen, out = set(), []
     for i in ids:
         if i not in seen:
             seen.add(i)
             out.append(i)
     return out
+
+
+def id_date(eid):
+    """id 里的日期（8 位）
+
+    🔴 两种 id 格式的日期位置不一样：
+        · `20261116de76490` → 前 8 位
+        · `ne2026111013510` → **跳过 ne 前缀**才是日期（否则会取到空串 ⇒ 被当成「很旧」过滤掉）
+    """
+    m = re.match(r"(?:ne)?(\d{8})", eid)
+    return m.group(1) if m else ""
+
+
+def fresh_only(ids, known):
+    """🔴🔴 只保留「比现役站最新一期更新的」—— 历史积压不在这一轮里
+
+    为什么必须有这个（2026-11-16 实测）：
+        sitemap 里 181 条，现役站只收了 67 条 ⇒ 差 114 条是**早期没译完的积压**
+        （现役站是从 2026-10-08 起连续收录的，更早的本来就不在收录范围内）。
+        原来 `new = [i for i in easy_ids() if i not in known]` 会把 114 条历史积压
+        **一起当成"新的一期"** ⇒ 全部要跑 ASR + 派翻译单（一天做不完）。
+
+    🔴 副作用（必须知道）：`build_site.py` 的 `build_episode()` 在
+        「有 episode.json 但没有 ASR cue」时会**返回一个空壳**（不是 None）⇒
+        那期会被写进 episodes.js 变成「有字幕没内容」的哑站。
+        ⇒ 所以 data/episodes/ 里**只允许放真的要建的那几期**。
+    """
+    if not known:
+        return ids
+    cutoff = max(id_date(i) for i in known)
+    return [i for i in ids if id_date(i) >= cutoff]
 
 
 def known_ids():
@@ -159,7 +197,7 @@ def web_text(eid):
 
 def cmd_list(args):
     known = known_ids()
-    new = [i for i in easy_ids() if i not in known]
+    new = fresh_only([i for i in easy_ids() if i not in known], known)
     print("站点已有 %d 期；NHK 清单里最新的新 id：" % len(known))
     for i in new[:20]:
         print("  ", i, i[:8])
@@ -170,7 +208,7 @@ def cmd_list(args):
 
 def cmd_all(args):
     known = known_ids()
-    new = [i for i in easy_ids() if i not in known]
+    new = fresh_only([i for i in easy_ids() if i not in known], known)
     if args.limit:
         new = new[:args.limit]
     if not new:
@@ -184,8 +222,31 @@ def cmd_all(args):
         ep["web_url"] = w["url"] if w else ""
         d = os.path.join(DATA, "episodes", eid)
         os.makedirs(d, exist_ok=True)
-        with open(os.path.join(d, "episode.json"), "w", encoding="utf-8") as f:
-            json.dump(ep, f, ensure_ascii=False, indent=1)
+        # 🔴🔴 2026-11-16 修：**合并**而不是覆盖！
+        #    `fetch_batch.py` 写的 episode.json 里有 **time / title_with_ruby / movie_uri** 等字段
+        #    （播出时间就靠它 —— 少了它，列表排序和显示的钟点都会错）
+        #    ⇒ 原来这里直接覆盖 ⇒ **10 期的时间字段被抹成 None**（静默，不报错）
+        #    ⇒ 现在：保留原有字段，只补/覆盖正文相关字段
+        ep_path = os.path.join(d, "episode.json")
+        old = {}
+        if os.path.exists(ep_path):
+            try:
+                old = json.load(open(ep_path, encoding="utf-8"))
+            except Exception:
+                old = {}
+        old.update({
+            "id": eid,
+            "news_id": eid,
+            "title": ep["title"],
+            "easy_text": ep["easy_text"],
+            "voice_uri": ep["voice_uri"],
+            "web_text": ep["web_text"],
+            "web_url": ep["web_url"],
+        })
+        if not old.get("time"):
+            old["time"] = ""      # 留空 ⇒ 后面从 news-list.json 回填（别编）
+        with open(ep_path, "w", encoding="utf-8") as f:
+            json.dump(old, f, ensure_ascii=False, indent=1)
         print("   标题：%s" % ep["title"])
         print("   易懂版 %d 句 / 普通版 %d 句 / voice_uri=%s"
               % (len(ep["easy_text"]), len(ep["web_text"]), ep["voice_uri"] or "（未找到）"))
