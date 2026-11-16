@@ -83,7 +83,14 @@ def main():
     eps = json.loads(m.group(1)) if m else []
     check("⑤ 期数表可解析", len(eps) > 0, "期数 %d" % len(eps))
     # ⑥ 期号连续
-    check("⑥ 期号连续", [e.get("no") for e in eps] == list(range(1, len(eps) + 1)))
+    # 🔴 2026-11-16 修：原来查「**数组顺序**里的 no == 1..N」
+    #    ⇒ 但数组是**日期倒序**、no 是**日期正序**编号（手册 §32.3：只排数组、不动 no，
+    #      因为 no 是生词本关联用的编号，重编会让用户存的生词指错期）
+    #    ⇒ 线上已发布数据本来就不满足那个判据（⇒ 闸门长期假红）
+    #    ⇒ 正确的判据：**no 的集合** == 1..N（不重复、不缺号）
+    _nos = [e.get("no") for e in eps]
+    check("⑥ 期号连续", sorted(_nos) == list(range(1, len(eps) + 1)),
+          "no 集合不是 1..%d" % len(eps))
     # ⑦ 日期分组连续（同一日期不能散在列表两处）+ 最新期在不在最上面
     ds = [e.get("date", "") for e in eps]
     groups, seen = [], set()
