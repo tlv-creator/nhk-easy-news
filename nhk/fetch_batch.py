@@ -103,7 +103,20 @@ def fetch_web_article(web_url, z_at, cookies):
     return json.loads(b)
 
 
-def download_audio(m3u8_with_token, out_path):
+def media_ok(path, min_seconds=3.0):
+    """验一下抓回来的音：能不能解、时长够不够（44 字节的空壳 = 抓废了）"""
+    if not os.path.exists(path) or os.path.getsize(path) < 20000:
+        return False
+    try:
+        p = subprocess.run(["ffprobe", "-v", "quiet", "-show_entries", "format=duration",
+                            "-of", "csv=p=0", path], capture_output=True, text=True, timeout=60)
+        dur = float((p.stdout or "0").strip() or 0)
+    except Exception:
+        return False
+    return dur >= min_seconds
+
+
+def download_audio(m3u8_with_token, out_path, timeout=90):
     if os.path.exists(out_path) and os.path.getsize(out_path) > 30000:
         return "skip"
     cmd = ["ffmpeg", "-y", "-loglevel", "error",
@@ -111,14 +124,17 @@ def download_audio(m3u8_with_token, out_path):
            "-i", m3u8_with_token, "-c", "copy", "-bsf:a", "aac_adtstoasc",
            "-f", "mp4", out_path]
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+        p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
     except subprocess.TimeoutExpired:
-        return "timeout"
-    if p.returncode == 0 and os.path.exists(out_path) and os.path.getsize(out_path) > 20000:
+        p = None
+    ok = (p is not None and p.returncode == 0
+          and os.path.exists(out_path) and os.path.getsize(out_path) > 20000)
+    if ok and media_ok(out_path):
         return "ok"
     if os.path.exists(out_path):
         os.remove(out_path)
-    return "fail:" + (p.stderr or "")[:80]
+    err = ("timeout" if p is None else "fail:" + (p.stderr or "")[:80])
+    return err
 
 
 def main():
@@ -153,21 +169,54 @@ def main():
             json.dump(ep, f, ensure_ascii=False, indent=1)
 
         # 1) 音声
+        # 🔴🔴 2026-11-21 修：**每一期都重新取 media token**，失败重试 3 次
+        #    症状：同一个 token 连续下 5 期正常，第 6 期起 ffmpeg **挂死**
+        #         （输出停在 44 字节的 ftyp 壳，300s timeout 才被杀）
+        #    真因：media token 用久了就失效 ⇒ 但 **master.m3u8 仍然 200**
+        #         （真正被拒的是里面的 variant/分片）⇒ 表现是「卡住」不是「报错」
+        #    ⇒ 修法：每期取新 token + 90s 超时 + ffprobe 验时长 + 重试
         base = it["news_easy_voice_uri"][:-4]
-        m3u8 = ("https://media.vd.st.nhk/news/easy_audio/%s/index.m3u8?hdnts=%s"
-                % (base, urllib.request.quote(mtok, safe="")))
         audio = os.path.join(OUT, "audio", nid + ".m4a")
-        if os.path.exists(audio) and os.path.getsize(audio) > 30000:
+        if os.path.exists(audio) and media_ok(audio):
             r = "skip"
         else:
-            r = download_audio(m3u8, audio)
+            r = "fail"
+            for attempt in range(3):
+                try:
+                    mtok = media_token(t["token"])
+                except Exception as ex:
+                    r = "token-fail:%s" % ex
+                    time.sleep(2)
+                    continue
+                m3u8 = ("https://media.vd.st.nhk/news/easy_audio/%s/index.m3u8?hdnts=%s"
+                        % (base, urllib.request.quote(mtok, safe="")))
+                r = download_audio(m3u8, audio)
+                if r == "ok" or r == "skip":
+                    break
+                print("     (音频重试 %d/3：%s)" % (attempt + 1, r), flush=True)
+                time.sleep(3)
         # 2) 易懂版 HTML
-        h = fetch_easy_html(nid, t["cookies"])
+        # 🔴 2026-11-21 修：**单期失败不许整批崩**（沙箱 DNS 偶发 gaierror）
+        h = None
+        for _ in range(3):
+            try:
+                h = fetch_easy_html(nid, t["cookies"])
+                break
+            except Exception as ex:
+                print("     (easy.html 重试：%s)" % ex, flush=True)
+                time.sleep(4)
         if h:
             with open(os.path.join(d, "easy.html"), "w", encoding="utf-8") as f:
                 f.write(h)
         # 3) 普通版書き起こし
-        w = fetch_web_article(it.get("news_web_url"), t["token"], t["cookies"])
+        w = None
+        for _ in range(3):
+            try:
+                w = fetch_web_article(it.get("news_web_url"), t["token"], t["cookies"])
+                break
+            except Exception as ex:
+                print("     (web.json 重试：%s)" % ex, flush=True)
+                time.sleep(4)
         if w:
             with open(os.path.join(d, "web.json"), "w", encoding="utf-8") as f:
                 json.dump(w, f, ensure_ascii=False, indent=1)
