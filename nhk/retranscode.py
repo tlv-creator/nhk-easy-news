@@ -128,7 +128,18 @@ def main():
                      .split("=", 1)[1].rstrip().rstrip(";"))
     n = 0
     bad = []
+    # 🔴 2026-11-21 加 --ids：**只重编指定的期**
+    #    为什么：data/audio 里可能混着「已发布期」的源文件（重抓的）
+    #    ⇒ 全量重编会把**线上已发布期**的音频也换掉（字节变了 ⇒ 无谓的改动面）
+    #    ⇒ 日常只该编**本轮新增**的期
+    only = set()
+    if "--ids" in sys.argv:
+        i = sys.argv.index("--ids")
+        if i + 1 < len(sys.argv):
+            only = set(x.strip() for x in sys.argv[i + 1].split(",") if x.strip())
     for e in eps:
+        if only and e["id"] not in only:
+            continue
         for src_dir, dst_dir in (("audio", "media/slow"), ("audio_fast", "media/fast")):
             src = os.path.join(DATA, src_dir, e["id"] + ".m4a")
             if not os.path.exists(src):
