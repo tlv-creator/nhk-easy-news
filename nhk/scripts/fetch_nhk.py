@@ -234,15 +234,41 @@ def cmd_all(args):
                 old = json.load(open(ep_path, encoding="utf-8"))
             except Exception:
                 old = {}
+        # 🔴🔴 2026-11-21 修：**空结果不许覆盖已有正文**
+        #    症状：沙箱 DNS 偶发 gaierror ⇒ http() 返回空 ⇒ easy_text=[] / web_text=[]
+        #          ⇒ old.update() 把**已经抓好的正文抹成空** ⇒ ASR 对齐不出来 ⇒ 那期悄悄没了
+        #    ⇒ 现在：抓到的为空 ⇒ 保留旧值（并在日志里说明）
         old.update({
             "id": eid,
             "news_id": eid,
-            "title": ep["title"],
-            "easy_text": ep["easy_text"],
-            "voice_uri": ep["voice_uri"],
-            "web_text": ep["web_text"],
-            "web_url": ep["web_url"],
+            "voice_uri": ep["voice_uri"] or old.get("voice_uri") or "",
+            "web_url": (w or {}).get("url") or old.get("web_url") or "",
         })
+        if ep.get("title"):
+            old["title"] = ep["title"]
+        if ep.get("easy_text"):
+            old["easy_text"] = ep["easy_text"]
+        else:
+            print("     ⚠️ %s 易懂版正文抓空 ⇒ 保留旧值" % eid)
+        if w and w.get("lines"):
+            old["web_text"] = w["lines"]
+        elif not old.get("web_text"):
+            old["web_text"] = []
+        # 🔴 权威口径：**普通版正文以 web.json（NHK 書き起こし API）为准**
+        #    （fetch_nhk.py 这里是 HTML 抓取版 ⇒ 句子切法可能不同）
+        #    ⇒ 有 web.json 就用它的 lines ⇒ 两处口径一致（build 读的就是 web.json）
+        wj = os.path.join(d, "web.json")
+        if os.path.exists(wj):
+            try:
+                _w = json.load(open(wj, encoding="utf-8"))
+                if _w.get("lines"):
+                    old["web_text"] = _w["lines"]
+                elif _w.get("articleBody"):
+                    # 🔴 API 返回的是 articleBody（整段）⇒ 按 build 的口径切句
+                    import parse_text as _PT
+                    old["web_text"] = [s["plain"] for s in _PT.parse_web(wj)]
+            except Exception:
+                pass
         if not old.get("time"):
             old["time"] = ""      # 留空 ⇒ 后面从 news-list.json 回填（别编）
         with open(ep_path, "w", encoding="utf-8") as f:
