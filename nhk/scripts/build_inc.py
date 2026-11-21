@@ -197,48 +197,54 @@ def merge_episodes(built):
     m = re.search(r"window\.__EPISODES__\s*=\s*(\[.*\])", s, re.S)
     eps = json.loads(m.group(1)) if m else []
     by_id = {e["id"]: e for e in eps}
-        max_no = max([int(e.get("no") or 0) for e in eps] or [0])
-        # 新期按**播出时间**升序接号（旧的 no 一个都不动）
-        # 🔴 用 ep_sort.raw_key（**唯一权威**）：NHK 的 time 格式不统一
-        #    （"2026-11-12 20:08:00" / "20261112T200800+0900"）
-        #    ⇒ 直接按字符串排序会错（新期被甩到旧期前面 ⇒ no 与日期倒挂）
-        news = sorted(built.values(), key=lambda b: (EP_SORT.raw_key(b["ep"].get("time")), b["id"]))
-        for b in news:
-            eid = b["id"]
-            ep = b["ep"]
-            easy = b["subs"].get("easy") or []
-            dur = round((easy[-1]["e"] / 1000.0) if easy else 0, 2)
-            easy_sents = P.parse_easy(os.path.join(DATA, "episodes", eid, "easy.html"))
-            easy_t = ""
-            if easy_sents:
-                easy_t = re.sub(r"[（(][ぁ-んァ-ヶ一-鿿]+[）)]", "", easy_sents[0]["plain"])
-                easy_t = easy_t.split("。")[0][:40]
-            tm = str(ep.get("time") or "")
-            date, clock = "", ""
-            m = re.search(r"(\d{4})[-/年.]?(\d{2})[-/月.]?(\d{2})", tm)
-            if m:
-                date = "%s-%s-%s" % (m.group(1), m.group(2), m.group(3))
-            m2 = re.search(r"(\d{2})[:時.]?(\d{2})", tm[m.end():] if m else "")
-            if m2:
-                clock = "%s:%s" % (m2.group(1), m2.group(2))
-            if not date:
-                date = "%s-%s-%s" % (eid[0:4], eid[4:6], eid[6:8])
-            # 🔴 重跑 build 时**不要重新发号**（否则同一批期会一路涨号，no 与日期倒挂）
-            #    ⇒ 已经在这张表里的期：**沿用它原来的 no**
-            if eid in by_id:
-                no = int(by_id[eid].get("no") or 0)
-            else:
-                max_no += 1
-                no = max_no
+    max_no = max([int(e.get("no") or 0) for e in eps] or [0])
+    # 新期按**播出时间**升序接号（旧的 no 一个都不动）
+    # 🔴 用 ep_sort.raw_key（**唯一权威**）：NHK 的 time 格式不统一
+    #    （"2026-11-12 20:08:00" / "20261112T200800+0900"）
+    #    ⇒ 直接按字符串排序会错（新期被甩到旧期前面 ⇒ no 与日期倒挂）
+    news = sorted(built.values(), key=lambda b: (EP_SORT.raw_key(b["ep"].get("time")), b["id"]))
+    for b in news:
+        eid = b["id"]
+        ep = b["ep"]
+        easy = b["subs"].get("easy") or []
+        dur = round((easy[-1]["e"] / 1000.0) if easy else 0, 2)
+        # 🔴🔴 原速音（普通版「跟音」模式）：**有原速音才写 audioFast**
+        #    （跟 build_data.py 同一口径：durFast>1 与 audioFast 的存在严格一致）
+        #    ⇒ 不写 audioFast ⇒ 前端没有原速音按钮 ⇒ 普通版只能纯阅读
+        df = dur_of(os.path.join(DATA, "audio_fast", eid + ".m4a"))
+        easy_sents = P.parse_easy(os.path.join(DATA, "episodes", eid, "easy.html"))
+        easy_t = ""
+        if easy_sents:
+            easy_t = re.sub(r"[（(][ぁ-んァ-ヶ一-鿿]+[）)]", "", easy_sents[0]["plain"])
+            easy_t = easy_t.split("。")[0][:40]
+        tm = str(ep.get("time") or "")
+        date, clock = "", ""
+        m = re.search(r"(\d{4})[-/年.]?(\d{2})[-/月.]?(\d{2})", tm)
+        if m:
+            date = "%s-%s-%s" % (m.group(1), m.group(2), m.group(3))
+        m2 = re.search(r"(\d{2})[:時.]?(\d{2})", tm[m.end():] if m else "")
+        if m2:
+            clock = "%s:%s" % (m2.group(1), m2.group(2))
+        if not date:
+            date = "%s-%s-%s" % (eid[0:4], eid[4:6], eid[6:8])
+        # 🔴 重跑 build 时**不要重新发号**（否则同一批期会一路涨号，no 与日期倒挂）
+        #    ⇒ 已经在这张表里的期：**沿用它原来的 no**
+        if eid in by_id:
+            no = int(by_id[eid].get("no") or 0)
+        else:
+            max_no += 1
+            no = max_no
         row = {
             "id": eid, "no": no,
             "title": (ep.get("title") or "")[:70], "easyTitle": easy_t,
             "date": date, "week": ep.get("week") or "", "time": clock,
-            "duration": dur, "durFast": 0.0,
+            "duration": dur, "durFast": df,
             "subs": "subs/%s.js" % eid,
             "audio": "media/slow/%s.m4a" % eid,
             "ver": sorted(k for k, v in b["subs"].items() if v),
         }
+        if df > 1:
+            row["audioFast"] = "media/fast/%s.m4a" % eid
         by_id[eid] = row
     eps = list(by_id.values())
     # 🔴 只排数组，不动 no（手册 §32.3）
@@ -298,13 +304,17 @@ def merge_cdn(built):
 
 
 def copy_media(eid):
-    src = os.path.join(DATA, "audio", "%s.m4a" % eid)
-    if not os.path.exists(src):
-        return False
-    dst_dir = os.path.join(SITE, "media", "slow")
-    os.makedirs(dst_dir, exist_ok=True)
-    shutil.copyfile(src, os.path.join(dst_dir, "%s.m4a" % eid))
-    return True
+    """慢速音 + 原速音都拷进 site/app（retranscode.py 随后会重编成 96k）"""
+    ok = False
+    for src_dir, dst_dir in (("audio", "slow"), ("audio_fast", "fast")):
+        src = os.path.join(DATA, src_dir, "%s.m4a" % eid)
+        if not os.path.exists(src):
+            continue
+        dst_dir_abs = os.path.join(SITE, "media", dst_dir)
+        os.makedirs(dst_dir_abs, exist_ok=True)
+        shutil.copyfile(src, os.path.join(dst_dir_abs, "%s.m4a" % eid))
+        ok = True
+    return ok
 
 
 def main():
