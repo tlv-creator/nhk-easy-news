@@ -110,9 +110,22 @@ class GH:
         return _b.b64decode(j['content'])
 
     def put_blob(self, raw):
-        b = self.call('POST', '/git/blobs',
-                      {'content': base64.b64encode(raw).decode(), 'encoding': 'base64'})
-        return b['sha']
+        """🔴 2026-11-21 加**重试**：
+        GitHub 的 Git-Data API 偶尔回 "We received a malformed request from your client"
+        （边缘节点抖动 ⇒ **同一个 payload 重发就好** ⇒ 不是内容问题）
+        ⇒ 没有重试 ⇒ 一次抖动就让整次同步失败 ⇒ 128 个文件白推
+        """
+        body = {'content': base64.b64encode(raw).decode(), 'encoding': 'base64'}
+        last = ""
+        for a in range(4):
+            try:
+                b = self.call('POST', '/git/blobs', body)
+                return b['sha']
+            except SystemExit as ex:
+                last = str(ex)
+                print("      (blob 重试 %d/4：%s)" % (a + 1, last[:80]), flush=True)
+                time.sleep(3 + a * 3)
+        die("GitHub POST /git/blobs 连续 4 次失败：" + last)
 
     def push(self, entries, message):
         """entries: [{path, sha}]；基于当前 HEAD 建 tree → commit → 更新 ref"""
