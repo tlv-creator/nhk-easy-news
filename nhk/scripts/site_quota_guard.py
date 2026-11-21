@@ -447,6 +447,19 @@ def verify():
     return 0 if ok else 1
 
 
+
+def pending_domains():
+    """共享仓库的 pending-deletes.json 里已登记待删的域名集合（取不到就当空）"""
+    try:
+        import urllib.request
+        req = urllib.request.Request(PENDING_URL, headers={"Cache-Control": "no-cache"})
+        with urllib.request.urlopen(req, timeout=25) as r:
+            d = json.loads(r.read().decode())
+        return set(s.get("domain") for s in (d.get("sites") or []) if s.get("domain"))
+    except Exception:
+        return set()
+
+
 def check():
     """部署前体检：配额 + 「只留现役 + 兜底」不变量。"""
     reg = load_reg()
@@ -475,12 +488,8 @@ def check():
             log("   ⚠️ %s 探不到（网络？）⇒ 按「活着」处理" % d)
             live.append(d)
     log("   NHK 活站 %d 个：%s" % (len(live), live))
-    if len(live) > KEEP_NHK:
-        log("   ❌ 超过「只留 %d 个（现役 + 兜底）」⇒ 配额在白占" % KEEP_NHK)
-        plan(verbose=True)
-        return 1
 
-    # ② 全账号活站数（配额是**账号级**的，别的项目也占）
+    # ①b 🔴🔴 **账号级配额**（真正的硬上限）——**先判它**，别被下面的不变量挡住
     all_doms = set(prot.keys())
     for s in reg.get("sites", []):
         d = s.get("domain")
@@ -496,6 +505,30 @@ def check():
         return 1
     if all_live >= QUOTA - 5:
         log("   ⚠️ 离配额只剩 %d 个 ⇒ 先清理再部署" % (QUOTA - all_live))
+        return 1
+
+    # ①c 「只留现役 + 兜底」不变量
+    keep_set = set(x for x in (cur_dom, fb_dom) if x)
+    # 🔴🔴 2026-11-21 改：**已经进「待删清单」的站不算阻塞**
+    #    背景：删站是**权限活**（`drive files delete`）⇒ 常常由**另一个会话**执行
+    #          （清理 cron 读共享仓库的 pending-deletes.json）
+    #    ⇒ **没有 drive 权限的发版会话 ⇒ 这条永远红 ⇒ 当天根本发不了版**
+    #      （2026-11-21 实测：4 个活站里 2 个早就进了待删清单 ⇒ 卡住发版）
+    #    ⇒ 现在：**只有「待删清单之外的站超编」才判失败**
+    #       （账号级配额那条仍然是硬闸门，上面刚判过）
+    queued = pending_domains()
+    blocking = [d for d in live if d not in keep_set and d not in queued]
+    if blocking:
+        log("   ❌ 超过「只留 %d 个（现役 + 兜底）」⇒ 配额在白占" % KEEP_NHK)
+        log("      待删清单之外的活站：%s" % blocking)
+        plan(verbose=True)
+        return 1
+    if len(live) > KEEP_NHK:
+        log("   ⚠️ 多出的 %d 个站**都在待删清单里**（由清理 cron 删）⇒ 本次放行"
+            % (len(live) - KEEP_NHK))
+        for d in live:
+            if d not in keep_set:
+                log("       · %s（待删）" % d)
 
     # ③ 有没有待删的
     todo, _reg, _boot, _cur, _fb = plan(verbose=False)
