@@ -117,14 +117,19 @@ def translate_batch(items, with_blocks=True, tries=5):
             print("    ! 第 %d 次：返回条数不对（%s），重试" % (attempt + 1, len(arr) if arr else "无"),
                   flush=True)
             continue
-        ok = True
+        # 🔴 2026-11-21 改：**回传的日文「对不上」不再判失败，只警告**
+        #    根因：sp 轨的原文是 **ASR 裸输出** ⇒ 有一段是乱码
+        #    （实测 20261119de78312 第 25~30 句是「Arencouldn'thesenseanyjustice…」这种）
+        #    ⇒ 模型会**顺手「改正」它** ⇒ 逐字回传对不上 ⇒ 整批被卡死
+        #    ⇒ 而这一段本来就是「字面就对不上」的 ASR 事实（手册 §26）
+        #    ⇒ 现在：**按位置对齐**（模型按序输出），回传不一致只警告
+        n_diff = 0
         for a, b in zip(arr, items):
             if str(a.get("ja", "")).strip() != b["ja"].strip():
-                ok = False
-                break
-        if not ok:
-            print("    ! 第 %d 次：日文原文对不上，重试" % (attempt + 1), flush=True)
-            continue
+                n_diff += 1
+        if n_diff:
+            print("    ! 第 %d 次：回传日文有 %d 句对不上（ASR 乱码段，按位置对齐）"
+                  % (attempt + 1, n_diff), flush=True)
         out = []
         for a, b in zip(arr, items):
             yb = a.get("yb")
