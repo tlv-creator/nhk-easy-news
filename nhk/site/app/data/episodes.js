@@ -1,5 +1,283 @@
 window.__EPISODES__=[
  {
+  "id": "20261120de78952",
+  "no": 110,
+  "title": "アメリカと中国とロシアのトップが「平和宣言」を出した",
+  "easyTitle": "中国で、19日、アメリカ、中国、ロシアのトップが話し合いました",
+  "date": "2026-11-20",
+  "week": "",
+  "time": "20:10",
+  "duration": 62.54,
+  "durFast": 382.34,
+  "subs": "subs/20261120de78952.js",
+  "audio": "media/slow/20261120de78952.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261120de78952.m4a"
+ },
+ {
+  "id": "20261120de78960",
+  "no": 109,
+  "title": "強い風や雪　21日まで続きそう",
+  "easyTitle": "冬のように冷たい空気が日本に来ています",
+  "date": "2026-11-20",
+  "week": "",
+  "time": "20:09",
+  "duration": 74.14,
+  "durFast": 179.16,
+  "subs": "subs/20261120de78960.js",
+  "audio": "media/slow/20261120de78960.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261120de78960.m4a"
+ },
+ {
+  "id": "20261120de78956",
+  "no": 108,
+  "title": "NASAの「ボイジャー1号」光の速さで1日かかる所まで行った",
+  "easyTitle": "宇宙についてのニュースです",
+  "date": "2026-11-20",
+  "week": "",
+  "time": "20:08",
+  "duration": 45.22,
+  "durFast": 0.0,
+  "subs": "subs/20261120de78956.js",
+  "audio": "media/slow/20261120de78956.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261120de78958",
+  "no": 107,
+  "title": "車いすテニスの国枝慎吾さんが「国際テニス殿堂」に入る",
+  "easyTitle": "車いすテニスの国枝慎吾さんが、世界の「国際テニス殿堂」に、来年入ることが決まりま",
+  "date": "2026-11-20",
+  "week": "",
+  "time": "20:07",
+  "duration": 48.82,
+  "durFast": 0.0,
+  "subs": "subs/20261120de78958.js",
+  "audio": "media/slow/20261120de78958.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261119de78312",
+  "no": 106,
+  "title": "アメリカと中国とロシアの3つの国のトップが会って話をした",
+  "easyTitle": "アメリカと中国とロシアのトップが、19日、会って話をしました",
+  "date": "2026-11-19",
+  "week": "",
+  "time": "20:00",
+  "duration": 50.88,
+  "durFast": 382.34,
+  "subs": "subs/20261119de78312.js",
+  "audio": "media/slow/20261119de78312.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261119de78312.m4a"
+ },
+ {
+  "id": "20261119de78323",
+  "no": 105,
+  "title": "とても強い風が吹いて山では雪が積もる所も　気をつけて",
+  "easyTitle": "日本に、冷たい空気が入ってきています",
+  "date": "2026-11-19",
+  "week": "",
+  "time": "19:59",
+  "duration": 49.24,
+  "durFast": 133.38,
+  "subs": "subs/20261119de78323.js",
+  "audio": "media/slow/20261119de78323.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261119de78323.m4a"
+ },
+ {
+  "id": "20261119de78329",
+  "no": 104,
+  "title": "熊本県で震度5弱の地震　1週間ぐらいは気をつけて",
+  "easyTitle": "19日午前2時22分ごろ、熊本県で大きい地震がありました",
+  "date": "2026-11-19",
+  "week": "",
+  "time": "19:58",
+  "duration": 71.06,
+  "durFast": 129.75,
+  "subs": "subs/20261119de78329.js",
+  "audio": "media/slow/20261119de78329.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261119de78329.m4a"
+ },
+ {
+  "id": "20261119de78325",
+  "no": 103,
+  "title": "北海道函館市　線路の雪を外に出す「ササラ電車」の準備",
+  "easyTitle": "北海道函館市では、冬になると走る「ササラ電車」の準備が始まりました",
+  "date": "2026-11-19",
+  "week": "",
+  "time": "19:57",
+  "duration": 55.48,
+  "durFast": 0.0,
+  "subs": "subs/20261119de78325.js",
+  "audio": "media/slow/20261119de78325.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261118de77670",
+  "no": 102,
+  "title": "風が強くなって波も高くなりそう　雪にも気をつけて",
+  "easyTitle": "これから風が強くなって、雪が降るところもありそうです",
+  "date": "2026-11-18",
+  "week": "",
+  "time": "20:10",
+  "duration": 57.56,
+  "durFast": 91.8,
+  "subs": "subs/20261118de77670.js",
+  "audio": "media/slow/20261118de77670.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261118de77670.m4a"
+ },
+ {
+  "id": "20261118de77667",
+  "no": 101,
+  "title": "日本　ミャンマーの避難民がタイで仕事ができるように手伝う",
+  "easyTitle": "タイには、隣のミャンマーから避難した人たちが、8万人ぐらい生活しています",
+  "date": "2026-11-18",
+  "week": "",
+  "time": "20:09",
+  "duration": 62.86,
+  "durFast": 0.0,
+  "subs": "subs/20261118de77667.js",
+  "audio": "media/slow/20261118de77667.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261118de77665",
+  "no": 100,
+  "title": "インターネットを使うことができない携帯電話ができた",
+  "easyTitle": "携帯電話の会社のKDDIは、来月から新しい携帯電話を売ります",
+  "date": "2026-11-18",
+  "week": "",
+  "time": "20:08",
+  "duration": 53.72,
+  "durFast": 214.25,
+  "subs": "subs/20261118de77665.js",
+  "audio": "media/slow/20261118de77665.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261118de77665.m4a"
+ },
+ {
+  "id": "20261118de77669",
+  "no": 99,
+  "title": "山口県宇部市の小学校　6年生が湖でカヌーに乗った",
+  "easyTitle": "山口県宇部市の小学校で、6年生が授業でカヌーに乗りました",
+  "date": "2026-11-18",
+  "week": "",
+  "time": "20:07",
+  "duration": 57.36,
+  "durFast": 0.0,
+  "subs": "subs/20261118de77669.js",
+  "audio": "media/slow/20261118de77669.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
+  "id": "20261117de77054",
+  "no": 98,
+  "title": "群馬県前橋市　熊に襲われて1人がけがをした",
+  "easyTitle": "群馬県前橋市の家の近くに、17日の朝、2頭の熊が出ました",
+  "date": "2026-11-17",
+  "week": "",
+  "time": "20:10",
+  "duration": 58.22,
+  "durFast": 90.77,
+  "subs": "subs/20261117de77054.js",
+  "audio": "media/slow/20261117de77054.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261117de77054.m4a"
+ },
+ {
+  "id": "20261117de77057",
+  "no": 97,
+  "title": "コンピューターの「富岳」から情報が盗まれたかもしれない",
+  "easyTitle": "兵庫県神戸市の理化学研究所に、「富岳」という名前のスーパーコンピューターがありま",
+  "date": "2026-11-17",
+  "week": "",
+  "time": "20:09",
+  "duration": 62.62,
+  "durFast": 162.73,
+  "subs": "subs/20261117de77057.js",
+  "audio": "media/slow/20261117de77057.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261117de77057.m4a"
+ },
+ {
+  "id": "20261117de77185",
+  "no": 96,
+  "title": "レッサーパンダの「風太」　長く生きてギネス世界記録",
+  "easyTitle": "千葉市動物公園にいるレッサーパンダの「風太」は、後ろの足で立つ姿で人気がありまし",
+  "date": "2026-11-17",
+  "week": "",
+  "time": "20:08",
+  "duration": 59.72,
+  "durFast": 0.0,
+  "subs": "subs/20261117de77185.js",
+  "audio": "media/slow/20261117de77185.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261117de77056",
+  "no": 95,
+  "title": "新しい年の準備　「ひつじ」の絵のろうそくをつくる",
+  "easyTitle": "新しい年の準備が始まっています日本では、毎年その年に動物の名前をつけて呼んでいま",
+  "date": "2026-11-17",
+  "week": "",
+  "time": "20:07",
+  "duration": 55.72,
+  "durFast": 0.0,
+  "subs": "subs/20261117de77056.js",
+  "audio": "media/slow/20261117de77056.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
   "id": "20261116de76490",
   "no": 94,
   "title": "火事で焼けた沖縄の首里城　正殿の工事が終わった",
