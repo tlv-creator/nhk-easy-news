@@ -74,15 +74,28 @@ def align_text_to_asr(sentences, segs):
          把「已知句子的归一化字符」映射回 ASR 的字符位置。
     """
     # 1) ASR 侧：字符 → 时间
+    # 🔴🔴 2026-11-21 修：**段内按字符位置插值**（不是整段共用同一个时间）
+    #    坑：faster-whisper 经常把**好几句并成一个段**（实测一句 28 秒的段里塞了 3 句）
+    #    ⇒ 原来每个字符都记「整段的 start/end」⇒ 那 3 句拿到**完全相同**的时间区间
+    #    ⇒ 高亮时同一时刻命中多句 ⇒ 前端只会命中第一句 ⇒ **后面几句永远高亮不到**
+    #    （实测 test_native_tick「逐句高亮命中」6/7 ⇒ 就是这么来的）
+    #    ⇒ 现在：段内按字符下标线性插值 ⇒ 每句拿到**互不重叠**的子区间
     chars, ctime = [], []
     for seg in segs:
         t = seg["text"]
+        kept = [ch for ch in t if norm(ch)]
+        n = len(kept)
+        if n == 0:
+            continue
+        s0, s1 = seg["start"], seg["end"]
+        k = 0
         for ch in t:
-            n = norm(ch)
-            if not n:
+            c = norm(ch)
+            if not c:
                 continue
-            chars.append(n)
-            ctime.append((seg["start"], seg["end"]))
+            chars.append(c)
+            ctime.append((s0 + (s1 - s0) * k / n, s0 + (s1 - s0) * (k + 1) / n))
+            k += 1
     asr_txt = "".join(chars)
     # 2) 已知侧：句子 → 归一化字符区间
     known, spans = "", []
