@@ -20,6 +20,12 @@
 骨架（細節/參數/門檻全在手冊）：
 
 1. 自愈 `bash setup_env.sh` → 2. `python3 update.py --all` → 3. 翻譯**必須派 subagent**（手冊 §4）→ 4. `python3 update.py --build`
+   🔴🔴 **沒有 subagent 工具時的等價退路**（2026-11-21 實測：該輪 tool_search 是空的）：
+      ⇒ 用**同一個模型**（MiniMax-M3）走 API 批量做 = 等價委派，**不佔 agent 上下文**
+      ⇒ `python3 scripts/translate_wo.py --all-new --only-missing`（easy+web 整句中文 + 成分塊中文）
+      ⇒ `python3 scripts/translate_sp.py --ids <ids>`（sp 軌）
+      ⇒ `python3 scripts/gen_blk.py --ep <ids> --track easy`（語法講解新格式）
+      ⇒ 譯完必跑 `python3 scripts/verify_wo_out.py`（鍵集合 / 非空 / 塊數三道閘門）⇒ 全綠才算完
 5. 🔴 **打包+stage（只有原生層代碼改了才打包）**：`cd apk && bash build.sh` ⇒ `bash apk/stage_apk.sh`
    🔴 **SITE_URL 必須留空**（取凍結兜底站）；**絕對不傳 PLACEHOLDER 或當前內容站**（閘門會 exit 1）
    🔴 **stage 必須在部署之前**（否則新 APK 沒進這次部署）
