@@ -90,12 +90,13 @@ PY
 echo "  （给系统 python3 也装一份：cron prompt 里的「python3 xxx.py」才跑得起来）"
 python3 -m pip install --break-system-packages --no-input -q \
   -i https://pypi.tuna.tsinghua.edu.cn/simple \
-  sudachipy sudachidict-core requests janome 2>&1 | tail -2
+  sudachipy sudachidict-core requests janome pyaxmlparser 2>&1 | tail -2
 python3 - <<'PY' || warn "系统 python3 的依赖没装上（venv 那份仍然可用）"
 from janome.tokenizer import Tokenizer
 Tokenizer()
 import sudachipy, requests  # noqa: F401
-print("  依赖 OK（系统 python3）：sudachipy / requests / janome")
+import pyaxmlparser  # noqa: F401   # 🔴 读 APK versionCode（引导页 apkVer 要用它核对）
+print("  依赖 OK（系统 python3）：sudachipy / requests / janome / pyaxmlparser")
 PY
 
 say "4/6 ASR 模型（CTranslate2 版 faster-whisper-base）"

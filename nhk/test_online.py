@@ -26,19 +26,47 @@ def check(name, ok, detail=""):
 
 def get(url, timeout=45, tries=3):
     # 🔴 沙箱里 TLS 偶发被断（EOF）⇒ 重试，别把网络抖动判成站点坏了
+    # 🔴🔴 2026-11-22 加：**curl 优先**（urllib 打 github.io 会 SSL 握手超时 / EOF）
+    #   今天实测：测 mcode 站全绿，测 **Pages 永久站**时 urllib 直接
+    #   `URLError: TLS/SSL connection has been closed (EOF)` ⇒ **验收脚本自己先崩**
+    #   ⇒ 闸门跑不起来 = 没有闸门（同 site_quota_guard 那条）
     last = None
     for i in range(tries):
+        try:
+            p = subprocess.run(
+                ["curl", "-s", "-L", "-m", str(timeout), "-A", UA["User-Agent"],
+                 "-w", "\n__HTTP__%{http_code}", url],
+                capture_output=True, timeout=timeout + 15)
+            raw = p.stdout
+            m = re.search(rb"__HTTP__(\d+)\s*$", raw)
+            code = int(m.group(1)) if m else 0
+            body = raw[:m.start()] if m else raw
+            if code:
+                return code, body, {}
+        except Exception as e:
+            last = e
         try:
             req = urllib.request.Request(url, headers=UA)
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 return r.status, r.read(), r.headers
         except Exception as e:
             last = e
-            time.sleep(1.2 * (i + 1))
+        time.sleep(1.2 * (i + 1))
     raise last
 
 
 def head(url, timeout=45):
+    # 🔴 同样 curl 优先（见上面 get() 的注释）
+    try:
+        p = subprocess.run(
+            ["curl", "-s", "-L", "-o", "/dev/null", "-m", str(timeout), "-I",
+             "-w", "%{http_code} %{size_download}", url],
+            capture_output=True, text=True, timeout=timeout + 15)
+        parts = (p.stdout or "").split()
+        if parts and parts[0].isdigit():
+            return int(parts[0]), 0
+    except Exception:
+        pass
     req = urllib.request.Request(url, headers=UA, method="HEAD")
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return r.status, int(r.headers.get("Content-Length") or 0)
