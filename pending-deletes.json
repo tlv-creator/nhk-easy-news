@@ -16,6 +16,6 @@
       "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
     }
   ],
-  "updated": "2026-11-21 23:18",
+  "updated": "2026-11-22 21:15",
   "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。"
 }
