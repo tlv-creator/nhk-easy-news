@@ -35,14 +35,16 @@ def get(url, timeout=45, tries=3):
         try:
             p = subprocess.run(
                 ["curl", "-s", "-L", "-m", str(timeout), "-A", UA["User-Agent"],
-                 "-w", "\n__HTTP__%{http_code}", url],
+                 "-w", "\n__HTTP__%{http_code} %{size_download}", url],
                 capture_output=True, timeout=timeout + 15)
             raw = p.stdout
-            m = re.search(rb"__HTTP__(\d+)\s*$", raw)
+            m = re.search(rb"__HTTP__(\d+)\s+(\d+)\s*$", raw)
             code = int(m.group(1)) if m else 0
+            size = int(m.group(2)) if m else 0
             body = raw[:m.start()] if m else raw
             if code:
-                return code, body, {}
+                # 🔴 第三个返回值 = headers ⇒ ⑭ 判 APK 大小靠它（少了就是假红）
+                return code, body, {"Content-Length": str(size)}
         except Exception as e:
             last = e
         try:
@@ -57,14 +59,28 @@ def get(url, timeout=45, tries=3):
 
 def head(url, timeout=45):
     # 🔴 同样 curl 优先（见上面 get() 的注释）
+    # 🔴 **必须拿到真实的 Content-Length**（⑩⑪⑭ 判「文件真下载到了」靠它）
+    #   ⇒ 只回状态码、长度回 0 ⇒ 判据恒红（今天踩过：改成 curl 后忘了长度）
     try:
         p = subprocess.run(
-            ["curl", "-s", "-L", "-o", "/dev/null", "-m", str(timeout), "-I",
-             "-w", "%{http_code} %{size_download}", url],
+            ["curl", "-s", "-I", "-L", "-m", str(timeout), url],
             capture_output=True, text=True, timeout=timeout + 15)
-        parts = (p.stdout or "").split()
-        if parts and parts[0].isdigit():
-            return int(parts[0]), 0
+        out = p.stdout or ""
+        code = 0
+        ln = 0
+        for line in out.splitlines():
+            s = line.strip()
+            if s.upper().startswith("HTTP/"):
+                parts = s.split()
+                if len(parts) >= 2 and parts[1].isdigit():
+                    code = int(parts[1])
+            elif s.lower().startswith("content-length:"):
+                try:
+                    ln = int(s.split(":", 1)[1].strip())
+                except Exception:
+                    pass
+        if code:
+            return code, ln
     except Exception:
         pass
     req = urllib.request.Request(url, headers=UA, method="HEAD")
