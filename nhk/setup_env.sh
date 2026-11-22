@@ -84,7 +84,10 @@ PY
 #    ⇒ 依赖只在 /workspace/venv 里 ⇒ `import parse_text` 直接 ModuleNotFoundError
 #    ⇒ 每日自动更新在第一步就崩（而且报错信息指向 janome，很难联想到是「venv 没进 PATH」）
 #    ⇒ 现在：venv 装一份（跑 ASR 用），系统 python3 也装一份（脚本默认用 python3）
-echo "  （给系统 python3 也装一份：cron prompt 里的 `python3 xxx.py` 才跑得起来）"
+# 🔴 2026-11-22 修：原来这里用**反引号**包着 `python3 xxx.py`
+#    ⇒ bash 把它当**命令替换** ⇒ 真的去跑 `python3 xxx.py`
+#    ⇒ 日志里多一行「python3: can't open file '…/nhk/xxx.py'」（看着像脚本路径写错了，其实是假报错）
+echo "  （给系统 python3 也装一份：cron prompt 里的「python3 xxx.py」才跑得起来）"
 python3 -m pip install --break-system-packages --no-input -q \
   -i https://pypi.tuna.tsinghua.edu.cn/simple \
   sudachipy sudachidict-core requests janome 2>&1 | tail -2

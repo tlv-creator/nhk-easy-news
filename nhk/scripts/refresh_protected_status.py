@@ -37,14 +37,45 @@ PATH = "/repos/tlv-creator/nhk-easy-news/contents/protected-sites.json"
 PROJ = "nhk"
 
 
-def code(domain):
+def _curl(url, timeout=25):
+    """🔴🔴 2026-11-22 加：**curl 优先**（沙箱里 urllib 打 github.io 会 SSL 握手超时）
+
+    今天实测：同一个脚本连着两次跑，第一次成功、第二次 `current_site()` 取不到引导页
+    ⇒ 脚本在「网络抽风」时**拒绝写入**（这是对的：不猜）⇒ 但每次抽风就白跑一遍
+    ⇒ 现在：curl 优先 + urllib 后备（与 site_quota_guard.py 同一套处理）
+    """
     try:
-        req = urllib.request.Request("https://%s.space.mcode.cn/" % domain,
-                                     headers={"Cache-Control": "no-cache"})
-        with urllib.request.urlopen(req, timeout=12) as r:
-            return r.status
-    except urllib.error.HTTPError as e:
-        return e.code
+        import subprocess
+        p = subprocess.run(["curl", "-s", "-m", str(int(timeout)),
+                            "-H", "Cache-Control: no-cache", url],
+                           capture_output=True, timeout=int(timeout) + 15)
+        if p.returncode == 0 and p.stdout.strip():
+            return p.stdout.decode("utf-8", "replace")
+    except Exception:
+        pass
+    try:
+        req = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return r.read().decode("utf-8", "replace")
+    except Exception:
+        return None
+
+
+def code(domain):
+    txt = _curl("https://%s.space.mcode.cn/" % domain, timeout=12)
+    if txt is None:
+        return 0
+    # curl 成功但页面为空（404 页也是空的）⇒ 用状态码更准，交给 _curl_head
+    return _curl_head("https://%s.space.mcode.cn/" % domain)
+
+
+def _curl_head(url):
+    import subprocess
+    try:
+        p = subprocess.run(["curl", "-s", "-o", "/dev/null", "-m", "15", "-w", "%{http_code}", url],
+                           capture_output=True, text=True, timeout=30)
+        s = (p.stdout or "").strip()
+        return int(s) if s.isdigit() else 0
     except Exception:
         return 0
 
@@ -61,17 +92,25 @@ def token():
 
 
 def api(method, body=None, tok=None):
-    req = urllib.request.Request("https://api.github.com" + PATH,
-                                 data=json.dumps(body).encode() if body is not None else None,
-                                 method=method)
-    req.add_header("Authorization", "Bearer " + tok)
-    req.add_header("Accept", "application/vnd.github+json")
-    req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    # 🔴 2026-11-22：curl 优先（urllib 打 api.github.com 也会 SSL 握手超时 ⇒ 推不上去）
+    import subprocess
+    url = "https://api.github.com" + PATH
+    cmd = ["curl", "-s", "-X", method, "-m", "40",
+           "-H", "Authorization: Bearer %s" % tok,
+           "-H", "Accept: application/vnd.github+json",
+           "-H", "X-GitHub-Api-Version: 2022-11-28"]
+    payload = None
     if body is not None:
-        req.add_header("Content-Type", "application/json")
-    with urllib.request.urlopen(req, timeout=30) as r:
-        b = r.read().decode()
+        payload = json.dumps(body).encode()
+        cmd += ["-H", "Content-Type: application/json", "--data-binary", "@-"]
+    cmd.append(url)
+    try:
+        p = subprocess.run(cmd, input=payload, capture_output=True, timeout=90)
+        b = p.stdout.decode()
         return json.loads(b) if b.strip() else {}
+    except Exception as e:
+        print("   ⚠️ api(%s) 失败：%s" % (method, e))
+        return {}
 
 
 def current_site():
@@ -80,16 +119,15 @@ def current_site():
     取不到 ⇒ **不许猜**：不知道现役站是谁，就没法保护它 ⇒ 宁可失败。
     """
     for _ in range(2):
-        try:
-            url = "https://tlv-creator.github.io/nhk-easy-news/version.json"
-            req = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
-            with urllib.request.urlopen(req, timeout=20) as r:
-                j = json.loads(r.read().decode())
-            m = re.search(r"([0-9a-z]+)\.space\.mcode\.cn", j.get("site", ""))
-            if m:
-                return m.group(1)
-        except Exception:
-            pass
+        txt = _curl("https://tlv-creator.github.io/nhk-easy-news/version.json", timeout=20)
+        if txt:
+            try:
+                j = json.loads(txt)
+                m = re.search(r"([0-9a-z]+)\.space\.mcode\.cn", j.get("site", ""))
+                if m:
+                    return m.group(1)
+            except Exception:
+                pass
     # 线上取不到 ⇒ 用本地底稿（push_boot.py 会同步写）
     try:
         j = json.load(open(os.path.join(ROOT, "boot", "version.json"), encoding="utf-8"))
@@ -107,13 +145,15 @@ def main():
     a = ap.parse_args()
 
     data = None
-    try:
-        req = urllib.request.Request(LIVE, headers={"Cache-Control": "no-cache"})
-        with urllib.request.urlopen(req, timeout=30) as r:
-            data = json.loads(r.read().decode())
-        print("✅ 取到线上清单（%d 条）" % len(data.get("sites") or data.get("protected_sites") or []))
-    except Exception as e:
-        print("⚠️ 线上取不到（%s）⇒ 用本地副本" % e)
+    txt = _curl(LIVE, timeout=30)
+    if txt:
+        try:
+            data = json.loads(txt)
+            print("✅ 取到线上清单（%d 条）" % len(data.get("sites") or data.get("protected_sites") or []))
+        except Exception as e:
+            print("⚠️ 线上清单解析失败（%s）⇒ 用本地副本" % e)
+    if data is None:
+        print("⚠️ 线上取不到 ⇒ 用本地副本")
         data = json.load(open(LOCAL, encoding="utf-8"))
     if not isinstance(data, dict) or not (isinstance(data.get("sites"), list)
                                     or isinstance(data.get("protected_sites"), list)):
@@ -160,6 +200,21 @@ def main():
             s["note"] = ("🔴 **现役内容站** —— 域名每次发版都换 ⇒ "
                          "以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的")
             s["frozen"] = False
+            # 🔴🔴 2026-11-22 加：**现役站也要记 node_id**
+            #   为什么：清理 cron 删站要的是 node_id（域名→node 只能从平台注入里反查）
+            #   ⇒ 以前现役站条目没有 node_id ⇒ 等它被取代时，清理 cron **删不掉它**（漏删 ⇒ 配额白占）
+            if not s.get("node_id"):
+                try:
+                    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+                    from site_quota_guard import node_id_from_site
+                    nid = node_id_from_site(d)
+                except Exception:
+                    nid = None
+                if nid:
+                    s["node_id"] = nid
+                    print("   ✅ %s 记下 node_id = %s（将来被取代时删得掉）" % (d, nid))
+                else:
+                    print("   ⚠️ %s 反查不到 node_id（不写 ⇒ 将来可能删不掉）" % d)
             print("   ✅ %s → ACTIVE / current_site" % d)
             changed += 1
             continue

@@ -55,6 +55,15 @@
       "status": "SUPERSEDED",
       "role": "content",
       "note": "上一版内容站（v33 · 67 期）· 2026-11-16 被 fj28fgr7ve147 取代 ⇒ 待删（清配额）"
+    },
+    {
+      "node_id": "465800236970342",
+      "domain": "sko9cgl435tzf",
+      "project": "nhk",
+      "ver": "35",
+      "ts": "2026-11-22",
+      "keep": true,
+      "note": "现役内容站（引导页 version.json 指向它）"
     }
   ],
   "history": [

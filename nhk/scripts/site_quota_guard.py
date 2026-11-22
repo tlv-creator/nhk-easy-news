@@ -64,18 +64,45 @@ def log(*a):
     print(*a, flush=True)
 
 
+def _curl_bytes(url, timeout=20):
+    """🔴🔴 2026-11-22 加：**curl 后备**（沙箱里 urllib 打 github.io 会 SSL 握手超时）
+
+    坑（今天实测）：引导页在 github.io ⇒ urllib 的 TLS 握手在沙箱里超时
+      ⇒ http_json 返回 None ⇒ boot_info() 连**本地兜底**都读不到（boot/version.json 不在）
+      ⇒ 配额闸门直接 `sys.exit("读不到引导页")` ⇒ **闸门自己跑不起来 = 没有闸门**
+    ⇒ 现在：**先 curl 后 urllib**（curl 在沙箱里一直稳定，见 auth.py 的同款处理）
+    """
+    try:
+        p = subprocess.run(
+            ["curl", "-s", "-m", str(int(timeout)), "-H", "Cache-Control: no-cache", url],
+            capture_output=True, timeout=int(timeout) + 15)
+        if p.returncode == 0 and p.stdout.strip():
+            return p.stdout
+    except Exception:
+        pass
+    return None
+
+
 def http_json(url, timeout=20):
     # 🔴 2026-11-16 加**重试**：引导页/GitHub Pages 偶尔抽风（一次就抽 ⇒
     #    整条发版链在「配额体检」这一步停住，而它其实只是要读一个 version.json）
     last = None
     for attempt in range(3):
+        # ① curl（沙箱里最稳）
+        raw = _curl_bytes(url, timeout)
+        if raw:
+            try:
+                return json.loads(raw.decode("utf-8", "replace"))
+            except Exception as e:
+                last = e
+        # ② urllib 后备
         try:
             req = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 return json.loads(r.read().decode("utf-8", "replace"))
         except Exception as e:
             last = e
-            time.sleep(1.5 * (attempt + 1))
+        time.sleep(1.5 * (attempt + 1))
     log("   ⚠️ 取不到 %s（%s）" % (url, last))
     return None
 
@@ -83,6 +110,16 @@ def http_json(url, timeout=20):
 def http_code(url, timeout=15):
     last = None
     for attempt in range(3):
+        # ① curl（沙箱里最稳）
+        try:
+            p = subprocess.run(
+                ["curl", "-s", "-o", "/dev/null", "-m", str(int(timeout)), "-w", "%{http_code}", url],
+                capture_output=True, text=True, timeout=int(timeout) + 15)
+            if p.returncode == 0 and p.stdout.strip().isdigit():
+                return int(p.stdout.strip())
+        except Exception:
+            pass
+        # ② urllib 后备
         try:
             req = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
             with urllib.request.urlopen(req, timeout=timeout) as r:
@@ -91,7 +128,7 @@ def http_code(url, timeout=15):
             return e.code
         except Exception as e:
             last = e
-            time.sleep(1.0 * (attempt + 1))
+        time.sleep(1.0 * (attempt + 1))
     return 0
 
 
@@ -167,11 +204,18 @@ def fallback_domain(reg):
 # ----------------------------------------------------------------- node_id 反查
 def node_id_from_site(domain):
     """线上 index.html 里平台注入的统计脚本里带着本节点的 node_id（base64）⇒ 反查。"""
-    try:
-        req = urllib.request.Request(site_url(domain), headers={"Cache-Control": "no-cache"})
-        with urllib.request.urlopen(req, timeout=20) as r:
-            html = r.read().decode("utf-8", "replace")
-    except Exception:
+    html = None
+    raw = _curl_bytes(site_url(domain), timeout=20)
+    if raw:
+        html = raw.decode("utf-8", "replace")
+    else:
+        try:
+            req = urllib.request.Request(site_url(domain), headers={"Cache-Control": "no-cache"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                html = r.read().decode("utf-8", "replace")
+        except Exception:
+            return None
+    if not html:
         return None
     m = re.search(r'var t="([A-Za-z0-9_\-\.]{20,})"', html)
     if not m:
