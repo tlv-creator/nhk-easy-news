@@ -1,21 +1,5 @@
 {
-  "sites": [
-    {
-      "domain": "204ocuv36su6w",
-      "node_id": "456210239336751",
-      "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
-    },
-    {
-      "domain": "fj28fgr7ve147",
-      "node_id": "464033924727000",
-      "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
-    },
-    {
-      "domain": "wm7b6ntgi3vl6",
-      "node_id": "459071909741404",
-      "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
-    }
-  ],
-  "updated": "2026-11-22 21:15",
-  "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。"
+  "sites": [],
+  "updated": "2026-11-23 20:20",
+  "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。2026-11-23：3 条（wm7b6ntgi3vl6 / 204ocuv36su6w / fj28fgr7ve147）已删站并复验 404 ⇒ 从本文件移除。"
 }

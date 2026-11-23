@@ -1,5 +1,5 @@
 {
-  "_readme": "站点保护清单：清理 cron 每天扫本文件，只删 status ∈ {SUPERSEDED, DELETED} 的站；frozen=true 永不删、也不可 redeploy（域名会换＝链接当场死）。",
+  "_readme": "站点保护清单：清理 cron 每天扫本文件，只删 status ∈ {SUPERSEDED, DELETED} 的站；frozen=true 是**提醒**不是豁免 —— 命中 frozen 必须把 APK dex/assets 引用扫描 + 引导页/站内引用扫描做全，引用命中 ⇒ 不删；扫不到且探活 404 ⇒ 可删。frozen 站仍不可 redeploy（域名一换＝用户手里的链接当场死）。🔴 顶层数组在 \"sites\" 键下（旧键 protected_sites 已废弃）。",
   "sites": [
     {
       "domain": "rkw1x077uih9s.space.mcode.cn",
@@ -88,14 +88,15 @@
     {
       "domain": "030ktppkqjm6g.space.mcode.cn",
       "name": "日语泛读精读 · 正式交付站（75 本 · 官方朗読 20 本 + 对轴注音修正）",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "frozen": false,
       "reason": "已被 4a5zb27ejec6k 取代（v1.2.0）；待清理 cron 回收",
       "referenced_by": [
         "/workspace/output/tadoku-apk.zip（站上那份）",
         "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
       ],
-      "superseded_by": "4a5zb27ejec6k.space.mcode.cn"
+      "superseded_by": "4a5zb27ejec6k.space.mcode.cn",
+      "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
     },
     {
       "domain": "ddiwijcogorrr.space.mcode.cn",
@@ -120,29 +121,32 @@
     {
       "domain": "k5ibj8z3fwew9.space.mcode.cn",
       "name": "日语泛读精读 · 上一版交付站 v1.2.0（75 本 / 11036 句）",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "frozen": false,
       "reason": "已被 v1.3.0（ygqm1hz5djz1n）取代；旧 APK 自带数据不依赖它 ⇒ 可删",
       "referenced_by": [
         "/workspace/output/tadoku-apk.zip",
         "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
-      ]
+      ],
+      "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
     },
     {
       "domain": "4a5zb27ejec6k.space.mcode.cn",
       "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "frozen": false,
       "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
-      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn"
+      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn",
+      "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
     },
     {
       "domain": "ns507ds9uold3.space.mcode.cn",
       "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "frozen": false,
       "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
-      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn"
+      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn",
+      "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
     },
     {
       "domain": "ygqm1hz5djz1n.space.mcode.cn",
@@ -168,30 +172,30 @@
     {
       "domain": "wm7b6ntgi3vl6",
       "project": "nhk",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "role": "content",
       "reason": "被 fj28fgr7ve147 取代（2026-11-16 发布 v34）⇒ 该删（清配额）",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "2026-11-16 的 v33 老站（94 期前的 67 期）⇒ 已被新站取代 ⇒ 待删（node 459071909741404）",
+      "note": "2026-11-23 清理 cron 删站：node 459071909741404 已从云盘删除，复验 HTTP 404（清配额 1 位）。本条现为 v33 老站，已被 fj28fgr7ve147(v34) → sko9cgl435tzf(v35) 连续取代",
       "frozen": false,
       "node_id": "459071909741404"
     },
     {
       "domain": "204ocuv36su6w",
       "project": "nhk",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "node_id": "456210239336751",
       "frozen": false,
-      "note": "2026-10-25 的 v32 老站（44 期）⇒ 已被现役站取代 ⇒ 该删（清配额）"
+      "note": "2026-11-23 清理 cron 删站：node 456210239336751 已从云盘删除，复验 HTTP 404（清配额 1 位）。本条现为 v32 老站，已被连续取代"
     },
     {
       "domain": "fj28fgr7ve147",
       "project": "nhk",
-      "status": "SUPERSEDED",
+      "status": "DELETED",
       "node_id": "464033924727000",
       "frozen": false,
       "reason": "NHK 内容站（引导页当前指向）",
-      "note": "🔴 **现役内容站** —— 2026-11-16 发布 v34（94 期 · 新增 27 期 11-04~11-16）· 引导页 version.json 指向它 ⇒ 永不删"
+      "note": "2026-11-23 清理 cron 删站：node 464033924727000 已从云盘删除，复验 HTTP 404（清配额 1 位）。⚠️ 本条旧 note 写的「现役内容站…永不删」是 2026-11-16 v34 时期的说法、已过期 —— 引导页 version.json 自 2026-11-21（v35）起指向 sko9cgl435tzf"
     },
     {
       "domain": "sko9cgl435tzf",
@@ -203,8 +207,18 @@
       "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
       "frozen": false,
       "node_id": "465800236970342"
+    },
+    {
+      "domain": "vkwwuh9wgkzo0.space.mcode.cn",
+      "project": "nhk",
+      "status": "ALIVE",
+      "role": "fallback",
+      "frozen": true,
+      "node_id": "455239419052366",
+      "reason": "现役 APK classes.dex 里写死的永久兜底站（= nhk/data/sites.json 的 fallback_domain）⇒ 永不删、也不可 redeploy（换域名 = APK 兜底当场失效）",
+      "note": "2026-11-23 巡检发现：它活着、且被现役 APK 依赖，但此前不在本清单里 ⇒ 补登记进保护集，防止以后被当成“清单外的孤儿站”处置"
     }
   ],
-  "_meta_note": "2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED",
-  "updated": "2026-11-22"
+  "_meta_note": "2026-11-23 清理 cron：删掉 3 个 NHK 老站（wm7b6ntgi3vl6 / 204ocuv36su6w / fj28fgr7ve147，node 459071909741404 / 456210239336751 / 464033924727000，均复验 404）⇒ 站点配额 45→42；另把 4 个「云盘已无节点 + 探活 404」的老站补记为 DELETED（不再每天重试）；补登记 APK 兜底站 vkwwuh9wgkzo0（ALIVE+frozen）。| 2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED",
+  "updated": "2026-11-23"
 }
