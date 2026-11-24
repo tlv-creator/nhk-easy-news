@@ -1,5 +1,76 @@
 window.__EPISODES__=[
  {
+  "id": "20261124de80505",
+  "no": 114,
+  "title": "強い風や急な強い雨に気をつけて　25日は寒くなりそう",
+  "easyTitle": "北海道から東海地方や北陸地方まで、雨が降りやすくなっています",
+  "date": "2026-11-24",
+  "week": "",
+  "time": "20:15",
+  "duration": 51.24,
+  "durFast": 0.0,
+  "subs": "subs/20261124de80505.js",
+  "audio": "media/slow/20261124de80505.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ]
+ },
+ {
+  "id": "20261124de80504",
+  "no": 113,
+  "title": "ジェンスン・フアンさん　エヌビディアのCEOに戻る",
+  "easyTitle": "アメリカの半導体の会社「エヌビディア」のトップについてのニュースです",
+  "date": "2026-11-24",
+  "week": "",
+  "time": "20:14",
+  "duration": 65.43,
+  "durFast": 113.92,
+  "subs": "subs/20261124de80504.js",
+  "audio": "media/slow/20261124de80504.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261124de80504.m4a"
+ },
+ {
+  "id": "20261124de80501",
+  "no": 112,
+  "title": "沖縄の首里城正殿　多くの人が見に来ている",
+  "easyTitle": "7年前の火事で沖縄県の首里城が焼けました",
+  "date": "2026-11-24",
+  "week": "",
+  "time": "20:13",
+  "duration": 60.42,
+  "durFast": 232.21,
+  "subs": "subs/20261124de80501.js",
+  "audio": "media/slow/20261124de80501.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261124de80501.m4a"
+ },
+ {
+  "id": "20261124de80506",
+  "no": 111,
+  "title": "COP31が終わった　意見はまとまらなかった",
+  "easyTitle": "地球の気候について話し合う国連の会議「COP31」が、22日までトルコで開かれま",
+  "date": "2026-11-24",
+  "week": "",
+  "time": "20:12",
+  "duration": 55.98,
+  "durFast": 158.59,
+  "subs": "subs/20261124de80506.js",
+  "audio": "media/slow/20261124de80506.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261124de80506.m4a"
+ },
+ {
   "id": "20261120de78952",
   "no": 110,
   "title": "アメリカと中国とロシアのトップが「平和宣言」を出した",
