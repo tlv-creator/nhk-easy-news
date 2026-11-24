@@ -9,7 +9,33 @@ import socketserver
 import threading
 
 SITE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "site", "app")
-CHROME = "/root/.cache/ms-playwright/chromium-1243/chrome-linux/chrome"
+
+
+def _find_chrome():
+    """🔴🔴 2026-11-24 修：**别把浏览器版本号写死**
+
+    坑：原来写死 `/root/.cache/ms-playwright/chromium-1243/chrome-linux/chrome`
+      ⇒ 沙箱一重置，playwright 缓存里的版本就变了（今天是 1255）
+      ⇒ 报 `executable doesn't exist` ⇒ **验收脚本自己跑不起来 = 没有验收**
+      （和「闸门自己跑不起来 = 没有闸门」同一族）
+    ✅ 现在按顺序找：写死的旧路径 → ms-playwright 缓存里任意版本 → 系统 chromium
+    """
+    import glob
+    fixed = "/root/.cache/ms-playwright/chromium-1243/chrome-linux/chrome"
+    if os.path.exists(fixed):
+        return fixed
+    cands = sorted(glob.glob("/root/.cache/ms-playwright/chromium-*/chrome-linux/chrome"))
+    cands += sorted(glob.glob("/root/.cache/ms-playwright/chromium_headless_shell-*/chrome-linux/headless_shell"))
+    for c in cands:
+        if os.path.exists(c):
+            return c
+    for c in ("/usr/local/bin/chromium", "/usr/bin/chromium", "/usr/bin/chromium-browser"):
+        if os.path.exists(c):
+            return c
+    return fixed
+
+
+CHROME = _find_chrome()
 
 
 class Quiet(http.server.SimpleHTTPRequestHandler):
