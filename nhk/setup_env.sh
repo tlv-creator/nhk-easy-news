@@ -123,20 +123,21 @@ for t in update.py scripts/fetch_nhk.py scripts/asr_align.py scripts/translate.p
   [ -f "$PROJ/$t" ] || warn "缺 $t"
 done
 
-# 🔴🔴 2026-10-25 改（今天实测）：**站点文件每次都从线上站对齐一次**（--skip-existing ⇒ 只补缺的）
-#    为什么：共享仓库里的 nhk/site/app 只是一份**旧快照**（今天是 APP_VER v30，线上是 v32）
-#    ⇒ 沙箱重置后本地目录是旧的 ⇒ 明天 build 会拿旧数据当底 ⇒ 静默出错
-#    ⇒ 现在：每次 setup 都跟线上站对齐（只补缺的 ⇒ 便宜）⇒ 本地目录永远是"线上那一版"
+# 🔴🔴 2026-11-24 修（手册 §35.1 ③）：**恢复站点文件不许带 --skip-existing**
+#    为什么：共享仓库里的 nhk/site/app 只是一份**快照**（可能停在几期前）
+#       ⇒ --skip-existing 会让**旧文件留在本地**（线上那一版被跳过）
+#       ⇒ 沙箱重置后本地目录是旧的 ⇒ 明天 build 会拿旧数据当底 ⇒ **静默出错**
+#    ⇒ 现在：**整份从线上现役站取回**（本地目录永远是"线上那一版"）
+#       （代价：多下 ~10MB；换来的是「本地 == 线上」这个不变量）
 CUR=$(curl -s -m 20 -H 'Cache-Control: no-cache' \
       https://tlv-creator.github.io/nhk-easy-news/version.json \
       | python3 -c "import json,sys; print((json.load(sys.stdin).get('site') or '').rstrip('/'))" 2>/dev/null)
 if [ -n "$CUR" ]; then
-  echo "  当前站：$CUR ⇒ 对齐站点文件（只补缺的）…"
-  python3 "$PROJ/scripts/fetch_nhk.py" --restore-site --site "$CUR" --skip-existing \
+  echo "  当前站：$CUR ⇒ 整份对齐站点文件（**不带 --skip-existing** ⇒ 本地 == 线上）…"
+  python3 "$PROJ/scripts/fetch_nhk.py" --restore-site --site "$CUR" \
     || warn "站点文件对齐失败（继续，但本地可能是旧快照）"
   # 🔴 index.html 特判：**每次都取回 + 重新剥平台注入**
-  #    （线上那份 index.html **带着平台注入的统计脚本** ⇒ 不能直接当本地源码；
-  #      而 --skip-existing 会跳过它 ⇒ 本地就会留着旧快照里那份）
+  #    （线上那份 index.html **带着平台注入的统计脚本** ⇒ 不能直接当本地源码）
   if curl -s -m 30 -o "$PROJ/site/app/index.html" "$CUR/index.html"; then
     python3 "$PROJ/scripts/strip_inject.py" "$PROJ/site/app/index.html" >/dev/null 2>&1 \
       && echo "  index.html：已取回 + 平台注入已剥" \
