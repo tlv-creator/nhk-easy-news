@@ -1,6 +1,6 @@
 {
-  "content_sha": "feab555e9ad88b54179785a64b7976b3",
-  "pages_synced_sha": "feab555e9ad88b54179785a64b7976b3",
+  "content_sha": "a779d1fb9be9cd4a493ab047c9f8247c",
+  "pages_synced_sha": null,
   "audio_sha": {
     "slow/20261008de56477.m4a": "89c5402d38113f11f669092b9d187208",
     "slow/20261008de56483.m4a": "760fb50169cdd3fc73613af6b2d49376",
@@ -107,6 +107,10 @@
     "slow/20261120de78956.m4a": "2973ea9d0326ae1bee18742c9b845a40",
     "slow/20261120de78958.m4a": "5abaf4c37ec6f8d0873653cd39d0343d",
     "slow/20261120de78960.m4a": "cc9398676f9643b8a126a005fd62ac02",
+    "slow/20261124de80501.m4a": "72158cf70e807d3c75e2d1d4c539b13d",
+    "slow/20261124de80504.m4a": "c394f8340e88b411462c3cd3f3581fa7",
+    "slow/20261124de80505.m4a": "38101ad9e0f5331cb9554499faefec6d",
+    "slow/20261124de80506.m4a": "56afdd814a4a484c6fb9300c1a29509e",
     "slow/ne2026090819503.m4a": "a898f816b2d719c3b329673ac108724d",
     "slow/ne2026091512392.m4a": "46bc8b54fd64d134cf287c2abc77eefa",
     "slow/ne2026100914195.m4a": "1d3bede19f019ab9b816d36a399c248a",
@@ -157,11 +161,14 @@
     "fast/20261119de78329.m4a": "03c4cef2973bc642ef7283d6ef9a832b",
     "fast/20261120de78952.m4a": "2533ac680c989c210e7a75adcc50b8b4",
     "fast/20261120de78960.m4a": "943cdf6ded6f3fdd000106a47bd4621b",
+    "fast/20261124de80501.m4a": "027106ae7fd9d5d3d9a3ae5bf0e86930",
+    "fast/20261124de80504.m4a": "b4b122deff35567243a81a1283119e3e",
+    "fast/20261124de80506.m4a": "2d32900772ee9db3c504eefb512a5df8",
     "fast/ne2026110212459.m4a": "da6313c27d7a04cf2fbada4a4f158287",
     "fast/ne2026111013510.m4a": "75cf3e3cdbe879a733678dba862458b5"
   },
-  "last_audio_deploy_at": 1795274839,
-  "last_audio_domain": "sko9cgl435tzf",
+  "last_audio_deploy_at": 1795528118.2495837,
+  "last_audio_domain": "d68g6hi5pch7y",
   "_seeded_at": "2026-11-23T13:11:47Z",
   "_seed_note": "沙箱重置后从现役站重建基线（scripts/seed_daily_state.py）"
 }
