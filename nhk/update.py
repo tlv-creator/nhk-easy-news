@@ -22,7 +22,12 @@ PY = sys.executable
 
 def sh(*args, **kw):
     print("  $ %s" % " ".join(str(a) for a in args))
-    return subprocess.run([str(a) for a in args], cwd=ROOT, **kw).returncode
+    rc = subprocess.run([str(a) for a in args], cwd=ROOT, **kw).returncode
+    # 🔴 2026-11-24：子命令失败**必须打印出来**
+    #    （原来只返回 rc、调用方常常不查 ⇒ ASR 挂了整轮照样「成功」⇒ 静默无更新）
+    if rc:
+        print("  ❌ 子命令失败（rc=%s）：%s" % (rc, " ".join(str(a) for a in args)))
+    return rc
 
 
 def known_ids():
@@ -53,43 +58,33 @@ def cmd_all(args):
     #    ⇒ 解码出超满刻度垃圾样本 ⇒ ASR 直接报错/截断（实测音频只认出前 6 秒）
     sh(PY, os.path.join(ROOT, "scripts", "repair_all_audio.py"))
     print("== ② 音频 + ASR 对齐 ==")
-    for eid in new:
-        audio = os.path.join(DATA, "audio", "%s.m4a" % eid)
-        if not os.path.exists(audio):
-            print("  ⚠️ %s 没有慢速音（%s）" % (eid, "授权链未通/未抓" if not args.force else "强制"))
-            if not args.force:
-                continue
-        ep = json.load(open(os.path.join(DATA, "episodes", eid, "episode.json"), encoding="utf-8"))
-        easy_txt = os.path.join(WORK, "raw", "%s_easy.txt" % eid)
-        os.makedirs(os.path.dirname(easy_txt), exist_ok=True)
-        # 🔴🔴 2026-11-21 修：**ASR 要对齐的句，必须和 build 时切出来的句完全一致**
-        #    坑：`episode.json` 的 easy_text 是 fetch_nhk.py 抓 HTML 时**截断**的
-        #    （实测 8 句只剩 2~3 句，末尾还带 "…"）
-        #    ⇒ build_inc 用 `parse_easy(easy.html)` 切出 8 句，ASR 却只有 2 句
-        #    ⇒ `len(asr_cues) != len(easy_sents)` ⇒ **整期被静默跳过**（不上线）
-        #    ⇒ 唯一权威 = parse_text.parse_easy(easy.html)（build 就是用它切的）
-        lines = []
-        try:
-            import parse_text as _PT
-            _ep = os.path.join(DATA, "episodes", eid, "easy.html")
-            if os.path.exists(_ep):
-                lines = [s["plain"] for s in _PT.parse_easy(_ep)]
-        except Exception as ex:
-            print("  ⚠️ %s parse_easy 失败（%s）⇒ 退回 episode.json 的 easy_text" % (eid, ex))
-        if not lines:
-            lines = list(ep.get("easy_text") or [])
-        with open(easy_txt, "w", encoding="utf-8") as f:
-            f.write("\n".join(lines))
-        print("  %s：easy 原文 %d 句" % (eid, len(lines)))
-        sh(PY, os.path.join(ROOT, "scripts", "asr_align.py"),
-           "--audio", audio, "--text", easy_txt,
-           "--out", os.path.join(WORK, "asr", "%s_easy.json" % eid), "--track", "easy")
-        fast = os.path.join(DATA, "audio", "%s.fast.m4a" % eid)
-        if os.path.exists(fast):
-            sh(PY, os.path.join(ROOT, "scripts", "asr_align.py"),
-               "--audio", fast, "--text", "",
-               "--out", os.path.join(WORK, "asr", "%s_sp.json" % eid),
-               "--track", "sp", "--asr-only")
+    # 🔴🔴🔴 2026-11-24 修（今天实测踩到）：**ASR 必须用 venv 的 python + scripts/asr_run.py**
+    #    坑 ①（今天真踩）：faster-whisper **只装在 /workspace/venv 里**（系统 python3 没有）
+    #       ⇒ 原来用 sys.executable 跑 ASR ⇒ ModuleNotFoundError
+    #       ⇒ 而 sh() 不看返回码 ⇒ **整轮静默跳过 ASR** ⇒ 后面 build 时该期「没有时间轴 ⇒ 跳过」
+    #       ⇒ 用户看到的是「今天没更新」，**全程不报错**（静默失败族）
+    #    坑 ②：scripts/asr_align.py 是**段级、不插值** ⇒ 识别不出的句子拿 (0,0)
+    #       ⇒ 字幕永远高亮不到 ⇒ 正解 = scripts/asr_run.py
+    #       （**先转 16k WAV** + align.py 的**词级对齐 + 缺口插值 + 单调性保证**；手册 §35.2：
+    #        PyAV 遇到 NHK 那条坏 AAC 流会只解出前 6 秒 ⇒ 必须先转 WAV）
+    #    🔴 ASR 失败必须**大声失败**（不能静默继续）⇒ 下面直接 return rc
+    ASR_PY = "/workspace/venv/bin/python"
+    if not os.path.exists(ASR_PY):
+        ASR_PY = PY
+        print("  ⚠️ 没有 /workspace/venv ⇒ 用当前 python 跑 ASR（可能缺 faster_whisper）")
+    rc = sh(ASR_PY, os.path.join(ROOT, "scripts", "asr_run.py"),
+            "--ids", ",".join(new), "--track", "easy")
+    if rc:
+        print("  ❌ ASR(easy) 失败（rc=%s）⇒ 今天的期会没有时间轴 ⇒ 停" % rc)
+        return rc
+    spids = [e for e in new
+             if os.path.exists(os.path.join(DATA, "audio_fast", e + ".m4a"))]
+    if spids:
+        rc = sh(ASR_PY, os.path.join(ROOT, "scripts", "asr_run.py"),
+                "--ids", ",".join(spids), "--track", "sp")
+        if rc:
+            print("  ❌ ASR(sp) 失败（rc=%s）⇒ 停" % rc)
+            return rc
     print("== ③ 待翻译工作单 ==")
     todo = []
     for eid in new:
@@ -139,9 +134,15 @@ def cmd_build(args):
     # ③ sp 轨（电视播报稿，普通版「跟音」模式用）
     # 🔴 顺序：asr_sp.py 必须读**交付出去的那份** site/app/media/fast/<id>.m4a
     #    （用户听到的就是它 ⇒ 时间轴才对得上）⇒ 所以它在「重编之后」才跑
+    # 🔴🔴 2026-11-24 修：asr_sp.py 也要 **venv 的 python**（它 import faster_whisper）
+    #    ⇒ 否则 ModuleNotFoundError ⇒ sp 轨**静默缺失**（普通版就退化成纯阅读，用户看不出来）
+    ASR_PY = "/workspace/venv/bin/python"
+    if not os.path.exists(ASR_PY):
+        ASR_PY = PY
+        print("  ⚠️ 没有 /workspace/venv ⇒ 用当前 python 跑 ASR（可能缺 faster_whisper）")
     spids = [i for i in ids if os.path.exists(os.path.join(DATA, "audio_fast", i + ".m4a"))]
     if spids:
-        sh(PY, os.path.join(ROOT, "scripts", "asr_sp.py"), "--ids", ",".join(spids),
+        sh(ASR_PY, os.path.join(ROOT, "scripts", "asr_sp.py"), "--ids", ",".join(spids),
            "--model", os.environ.get("ASR_MODEL_PATH", "/workspace/models/fw-base"))
         # 没有译文的期 ⇒ build_sp 会跳过（不发布半成品）⇒ 这里明确提示
         todo = [i for i in spids
