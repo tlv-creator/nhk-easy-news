@@ -6,7 +6,7 @@
   "node_id = PENDING = 沙箱里没有 drive 工具查不到（删站要用 mcp_invoke 的 drive 工具）",
   "node_id 可以从线上反查：平台注入的统计脚本里带着本节点的 node_id（base64）⇒ scripts/site_quota_guard.py discover"
  ],
- "updated": "2026-11-23",
+ "updated": "2026-11-24",
  "fallback_domain": "vkwwuh9wgkzo0",
  "sites": [
   {
@@ -65,11 +65,22 @@
    "ver": "35",
    "ts": "2026-11-22",
    "keep": true,
-   "note": "现役内容站（引导页 version.json 指向它）· 110 期 · ver 35 / apkVer 20",
-   "role": "current_site",
+   "note": "现役内容站（引导页 version.json 指向它）· 110 期 · ver 35 / apkVer 20 · 2026-11-24 被新站取代 ⇒ 待删（配额净增 0）",
+   "role": "superseded",
    "status": "ACTIVE",
    "date": "2026-11-21",
    "apk_ver": 20
+  },
+  {
+   "node_id": "466840087143412",
+   "domain": "d68g6hi5pch7y",
+   "project": "nhk",
+   "ver": 36,
+   "ts": "2026-11-24",
+   "keep": true,
+   "note": "现役内容站（引导页 version.json 的 site 指向它）· 114 期 · v36",
+   "role": "current_site",
+   "date": "2026-11-24"
   }
  ],
  "history": [
