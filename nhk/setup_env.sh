@@ -149,17 +149,19 @@ else
   warn "读不到引导页当前站 ⇒ 站点文件没法自动对齐"
 fi
 [ -f "$PROJ/site/app/app.js" ] || warn "site/app 不在（从线上站取回：python3 scripts/fetch_nhk.py --restore-site --site <线上站> --with-media）"
-# 音频不进仓库 ⇒ 缺了就从线上站拉（引导页的 site = 当前站）
-if [ ! -d "$PROJ/site/app/media/slow" ] || [ -z "$(ls -A "$PROJ/site/app/media/slow" 2>/dev/null)" ]; then
-  if [ -n "$CUR" ]; then
-    warn "音频不在（沙箱重置会丢）⇒ 从 $CUR 取回"
-    python3 "$PROJ/scripts/fetch_nhk.py" --restore-site --site "$CUR" --with-media \
-      || warn "取回失败（没有音频就不能 build）"
-  else
-    warn "读不到引导页当前站 ⇒ 音频没法自动取回"
-  fi
+# 🔴🔴 2026-11-24 修：音频**每次都补齐**（不是「目录空着才拉」）
+#    坑：原来只在 media/slow **目录为空**时才拉音频
+#       ⇒ 仓库里若存着 110 期的旧音频（媒体在仓库里是有先例的）⇒ **目录不为空** ⇒ 不拉
+#       ⇒ 新发的 4 期音频**永远补不上** ⇒ 那几期「有字幕没声音」（**静默**！用户以为功能坏了）
+#    ✅ 修：**每次都跑一次 --with-media --skip-existing**（幂等 ⇒ 只下载缺的那些）
+#       ⇒ 本地音频永远 == 线上站声明的音频集合
+if [ -n "$CUR" ]; then
+  echo "  音频：对齐线上站（只补缺的 ⇒ 幂等）…"
+  python3 "$PROJ/scripts/fetch_nhk.py" --restore-site --site "$CUR" --with-media --skip-existing \
+    >/dev/null 2>&1 && echo "  音频：$(ls "$PROJ/site/app/media/slow" 2>/dev/null | wc -l) 个慢速 / $(ls "$PROJ/site/app/media/fast" 2>/dev/null | wc -l) 个原速" \
+    || warn "音频补齐失败（没有音频就不能 build）"
 else
-  echo "  音频：$(ls "$PROJ/site/app/media/slow" 2>/dev/null | wc -l) 个慢速 / $(ls "$PROJ/site/app/media/fast" 2>/dev/null | wc -l) 个原速"
+  warn "读不到引导页当前站 ⇒ 音频没法自动取回"
 fi
 [ -n "$TOKEN" ] || warn "没有 GH_TOKEN（推引导页要用）"
 
