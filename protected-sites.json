@@ -200,8 +200,7 @@
     {
       "domain": "sko9cgl435tzf",
       "project": "nhk",
-      "status": "ACTIVE",
-      "role": "current_site",
+      "status": "SUPERSEDED",
       "reason": "NHK 内容站（引导页当前指向）",
       "written_in": "引导页 version.json 的 site 字段",
       "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
@@ -217,6 +216,16 @@
       "node_id": "455239419052366",
       "reason": "现役 APK classes.dex 里写死的永久兜底站（= nhk/data/sites.json 的 fallback_domain）⇒ 永不删、也不可 redeploy（换域名 = APK 兜底当场失效）",
       "note": "2026-11-23 巡检发现：它活着、且被现役 APK 依赖，但此前不在本清单里 ⇒ 补登记进保护集，防止以后被当成“清单外的孤儿站”处置"
+    },
+    {
+      "domain": "d68g6hi5pch7y",
+      "project": "nhk",
+      "status": "ACTIVE",
+      "role": "current_site",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
+      "frozen": false
     }
   ],
   "_meta_note": "2026-11-23 清理 cron：删掉 3 个 NHK 老站（wm7b6ntgi3vl6 / 204ocuv36su6w / fj28fgr7ve147，node 459071909741404 / 456210239336751 / 464033924727000，均复验 404）⇒ 站点配额 45→42；另把 4 个「云盘已无节点 + 探活 404」的老站补记为 DELETED（不再每天重试）；补登记 APK 兜底站 vkwwuh9wgkzo0（ALIVE+frozen）。| 2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED | 2026-11-24 清理 cron：全量探活 23 条 —— 8 条 DELETED 条目全部 404（3 条 11-23 已删；5 条老多読站节点早已不在云盘）⇒ **今日 0 删除**：无新墓碑、pending-deletes.json 为空、无可删节点（不是闸门拦的，是真没有墓碑可删）。引导页 18 个入口页 + 现役 NHK.apk(dex+assets) + 现役站配置**零引用**任何候选域。🔴 事实与清单不符（连续第 2 天）：rkw1x077uih9s / vt15310hxrx4e 清单 ALIVE+frozen 但全路径 404 ⇒ 待站的主人（多読项目 session 455841072984388）决定改状态还是重新部署。🔴 平台侧变化：mavis 调度器已下线 drive 组（只暴露 agent/session）⇒ 清理 cron 今日无删站执行通道（另开子会话复验同样不可用）⇒ 后续若出现新墓碑，需先恢复该工具。",
