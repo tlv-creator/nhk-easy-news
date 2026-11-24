@@ -283,7 +283,7 @@ finish)
     || echo "   ⚠️ 待删清单没交出去（清理 cron 看不到 ⇒ 站会积压 ⇒ 配额保险会兜住）"
   if [ -n "$OLD" ]; then
     echo "════ 旧站（$OLD）删除前：四层扫引用 ════"
-    python3 work/repo_scripts/check_dead_refs.py --dead "$OLD" --apk site/app/NHK.apk --protected 2>&1 | tail -8
+    python3 scripts/check_dead_refs.py --dead "$OLD" --apk site/app/NHK.apk --protected 2>&1 | tail -8
     echo "   （上面 exit=0 ⇒ 零活引用 ⇒ 才允许删）"
   fi
   python3 scripts/site_quota_guard.py verify || exit 1
