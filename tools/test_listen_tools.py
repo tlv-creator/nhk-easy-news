@@ -381,7 +381,13 @@ def t8_清单_优先读源端():
         REPO.rendered["protected-sites.json"] = json.dumps(old_list, ensure_ascii=False)
         code, out = run(ALIVE, [], port)
         check("源端" in out, "输出说明了清单来源是源端")
-        check("已标记 DELETED" in out, "源端那版里的 DELETED 条目被识别了（渲染端那版没有）")
+        # 🔴 2026-11-25：断言跟着 2026-10-24 那次「DELETED 真去查」的补丁改了措辞 ——
+        #    老实现对 DELETED 走 skip 分支（打印「已标记 DELETED」），新实现走 check_dead 分支
+        #    （打印「🔴 清单标 DELETED 但站还活着」）⇒ 两种措辞都认，但**必须挂在同一条目上**
+        #    （渲染端那版没标 DELETED ⇒ 只会打印「✅ 200」⇒ 断言仍能区分源端/渲染端）
+        _seg = out.split("bbbbbbbbbbbb")[1].split(chr(10))[0] if "bbbbbbbbbbbb" in out else ""
+        check("清单标 DELETED" in _seg or "已标记 DELETED" in _seg,
+              "源端那版里的 DELETED 条目被识别了（渲染端那版没有）")
         check("渲染端" not in out.split("清单来源")[1].split("\n")[0], "没有退到渲染端")
     finally:
         srv.shutdown()
@@ -436,6 +442,30 @@ def t11_HEAD被挡_必须GET复验():
         check("nosuchheadaaa" in out and "🔴" in out.split("nosuchheadaaa")[1].split(chr(10))[0],
               "GET 也 404 的域 → 报死（判据没被放宽）")
         check(code == 1, "有死域时退出码 = 1（实际 %d）" % code)
+    finally:
+        srv.shutdown()
+
+
+@test
+def t12_STATUS_ACTIVE_必须等同ALIVE():
+    """status=ACTIVE（nhk/scripts/refresh_protected_status.py 的写法）必须**等同 ALIVE**：
+       活的 ⇒ 报活；死了 ⇒ 报死；**绝不能 exit 2 不放行**。
+       🔴 2026-11-25：线上清单的现役站 d68g6hi5pch7y 就是 ACTIVE，而闸门只认 ALIVE
+          ⇒ 闸门 exit 2 ⇒ Shun 周更手册 §8.1「发版前必跑」直接撞墙"""
+    srv, port = start_server()
+    try:
+        REPO.files.clear(); REPO.rendered.clear(); REPO.hooks.clear()
+        REPO.set("protected-sites.json", json.dumps({"sites": [
+            {"domain": "activealiveaaa", "status": "ACTIVE"},
+            {"domain": "nosuchheadactive", "status": "ACTIVE"},
+        ]}, ensure_ascii=False))
+        code, out = run(ALIVE, [], port)
+        check("不认识" not in out, "ACTIVE 不再被当成未知取值（不再 exit 2 不放行）")
+        check(code == 1, "退出码 = 1（有一个死域）（实际 %d）" % code)
+        check("activealiveaaa" in out and "🔴" not in out.split("activealiveaaa")[1].split(chr(10))[0],
+              "ACTIVE 且活着 ⇒ 报活（不能报死）")
+        check("nosuchheadactive" in out and "🔴" in out.split("nosuchheadactive")[1].split(chr(10))[0],
+              "ACTIVE 且死了 ⇒ 报死（不能默默放过）")
     finally:
         srv.shutdown()
 

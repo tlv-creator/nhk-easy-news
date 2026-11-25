@@ -1,250 +1,492 @@
 {
- "_readme": "站点保护清单：清理 cron 每天扫本文件，只删 status ∈ {SUPERSEDED, DELETED} 的站；frozen=true 是**提醒**不是豁免 —— 命中 frozen 必须把 APK dex/assets 引用扫描 + 引导页/站内引用扫描做全，引用命中 ⇒ 不删；扫不到且探活 404 ⇒ 可删。frozen 站仍不可 redeploy（域名一换＝用户手里的链接当场死）。🔴 顶层数组在 \"sites\" 键下（旧键 protected_sites 已废弃）。",
- "sites": [
-  {
-   "domain": "rkw1x077uih9s.space.mcode.cn",
-   "name": "日语泛读精读 · 正式交付站（45 本）",
-   "status": "DELETED",
-   "frozen": false,
-   "reason": "已交付给用户的正式链接（45 本 / 4836 句 / 教材 L0-L4 分组）",
-   "note": "2026-10-25 我删的「45 本中间版」交付站（当时已被 55 本版取代）；2026-11-25 复核：根路径与 /index.html、/data/、/media/ 全部 404 ⇒ 确属已删。取代者 = ygqm1hz5djz1n（现役 v1.3.0+）。现役 APK 与入口页都不引用它 ⇒ 无功能影响。"
-  },
-  {
-   "domain": "vt15310hxrx4e.space.mcode.cn",
-   "name": "日语泛读精读 · 音频源站（APK 的 site.txt 写死它）",
-   "status": "DELETED",
-   "frozen": false,
-   "reason": "APK（com.jpstudy.tadoku v1.0.0）assets/site.txt 写死这个域名做 /media/ 转发源 ⇒ 删了 App 里就没声音了",
-   "referenced_by": [
-    "/workspace/output/tadoku-apk.zip",
-    "APK assets/site.txt"
-   ],
-   "note": "2026-10-25 我删的「45 本中间版」音频源站；2026-11-25 复核：整站 404。🔴 **现役 APK 不依赖它**：实测 assets/site.txt 只有 3 行注释（无任何域名），app 数据里的音频地址只指向 4 个域（1hv73j0i9907z / ddiwijcogorrr / ppch90g3xmufh / pjnzjdw3kx6l0），实测全部 200 ⇒ 只有装着那一版中间 APK 的机器会没声音，升到现役版即可。"
-  },
-  {
-   "domain": "iujsgx3ci73dp.space.mcode.cn",
-   "name": "词汇学习站 Unit1+2+3（正式版 v3）",
-   "status": "ALIVE",
-   "frozen": true,
-   "reason": "老师 2026-10-23 明确要求：单词记录（词汇学习）的网站不能删除（长期硬指令）"
-  },
-  {
-   "domain": "zp67qm11jonui.space.mcode.cn",
-   "name": "词汇学习站 VocabLog（正式版·零凭据）",
-   "status": "ALIVE",
-   "frozen": true,
-   "reason": "同上（老师的长期硬指令）"
-  },
-  {
-   "domain": "0rbbjfw36hj66.space.mcode.cn",
-   "name": "日语泛读精读 · 上一版交付站（55 本 · 对轴修正前）",
-   "status": "ALIVE",
-   "frozen": true,
-   "reason": "2026-10-25 对轴修正版已用新站取代；但老版 APK(v1.0.0) 的 site.txt 写死这个域 ⇒ 暂留，等老 APK 淘汰后再删",
-   "referenced_by": [
-    "/workspace/output/tadoku-apk.zip（站上那份）"
-   ]
-  },
-  {
-   "domain": "qgozaeqvjc9l9.space.mcode.cn",
-   "name": "日语泛读精读 · 音频源站（站上 APK 包的 site.txt 写死它）",
-   "status": "ALIVE",
-   "frozen": true,
-   "reason": "站上下载的 tadoku-apk.zip 里 site.txt 指向这个域 ⇒ 它必须活着（内容与交付站一致）",
-   "referenced_by": [
-    "站上 tadoku-apk.zip 的 site.txt"
-   ]
-  },
-  {
-   "domain": "wzm2lkj4a7oo8.space.mcode.cn",
-   "name": "日语泛读精读 · 上一版交付站（55 本 · 对轴修正版）",
-   "status": "ALIVE",
-   "frozen": true,
-   "reason": "2026-10-25 注音修正版已用新站取代；但已装到用户手机上的老 APK assets/site.txt 写死这个域做 /media/ 转发源 ⇒ 必须留着（frozen）",
-   "referenced_by": [
-    "/workspace/output/tadoku-apk.zip（站上那份指向 A）",
-    "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
-   ]
-  },
-  {
-   "domain": "1hv73j0i9907z.space.mcode.cn",
-   "name": "日语泛读精读 · 音频源站（站上 APK 包的 site.txt 写死它）",
-   "status": "ALIVE",
-   "frozen": true,
-   "reason": "站上下载的 tadoku-apk.zip 里 site.txt 指向这个域 ⇒ 它必须活着（内容与交付站一致）",
-   "referenced_by": [
-    "站上 tadoku-apk.zip 的 site.txt"
-   ]
-  },
-  {
-   "domain": "zzjxyp80lpd73.space.mcode.cn",
-   "name": "日语泛读精读 · 上一版交付站（55 本 · 汉字注音修正版）",
-   "status": "DELETED",
-   "frozen": false,
-   "reason": "2026-10-25 已手动删除并复验 404（线上实测 HTTP 404）",
-   "referenced_by": [
-    "/workspace/output/tadoku-apk.zip（站上那份）",
-    "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
-   ]
-  },
-  {
-   "domain": "030ktppkqjm6g.space.mcode.cn",
-   "name": "日语泛读精读 · 正式交付站（75 本 · 官方朗読 20 本 + 对轴注音修正）",
-   "status": "DELETED",
-   "frozen": false,
-   "reason": "已被 4a5zb27ejec6k 取代（v1.2.0）；待清理 cron 回收",
-   "referenced_by": [
-    "/workspace/output/tadoku-apk.zip（站上那份）",
-    "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
-   ],
-   "superseded_by": "4a5zb27ejec6k.space.mcode.cn",
-   "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
-  },
-  {
-   "domain": "ddiwijcogorrr.space.mcode.cn",
-   "name": "日语泛读 · 官方朗読音频源 1/2（10 本 · 88MB）",
-   "status": "ALIVE",
-   "frozen": true,
-   "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
-   "referenced_by": [
-    "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
-   ]
-  },
-  {
-   "domain": "ppch90g3xmufh.space.mcode.cn",
-   "name": "日语泛读 · 官方朗読音频源 2/2（10 本 · 84MB）",
-   "status": "ALIVE",
-   "frozen": true,
-   "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
-   "referenced_by": [
-    "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
-   ]
-  },
-  {
-   "domain": "k5ibj8z3fwew9.space.mcode.cn",
-   "name": "日语泛读精读 · 上一版交付站 v1.2.0（75 本 / 11036 句）",
-   "status": "DELETED",
-   "frozen": false,
-   "reason": "已被 v1.3.0（ygqm1hz5djz1n）取代；旧 APK 自带数据不依赖它 ⇒ 可删",
-   "referenced_by": [
-    "/workspace/output/tadoku-apk.zip",
-    "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
-   ],
-   "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
-  },
-  {
-   "domain": "4a5zb27ejec6k.space.mcode.cn",
-   "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
-   "status": "DELETED",
-   "frozen": false,
-   "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
-   "superseded_by": "k5ibj8z3fwew9.space.mcode.cn",
-   "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
-  },
-  {
-   "domain": "ns507ds9uold3.space.mcode.cn",
-   "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
-   "status": "DELETED",
-   "frozen": false,
-   "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
-   "superseded_by": "k5ibj8z3fwew9.space.mcode.cn",
-   "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
-  },
-  {
-   "domain": "ygqm1hz5djz1n.space.mcode.cn",
-   "name": "日语泛读精读 · 正式交付站 v1.3.0（87 本 / 11481 句 · 教材L0官方朗読12本 + 生词表 + 句型表）",
-   "status": "SUPERSEDED",
-   "frozen": false,
-   "reason": "2026-11-25 v1.3.1 上线 ⇒ 旧交付站（v1.3.0）被取代，标记 SUPERSEDED。🟢 站点还活着（200）但可以删：node_id=456284075475296（平台 drive 删站通道 2026-11-25 下线 ⇒ 删除动作待通道恢复后由清理 cron 补做）。现役 v1.3.1 = k4ebhgic0up64（node_id 467174667972890）。",
-   "replaced_by": "k4ebhgic0up64.space.mcode.cn"
-  },
-  {
-   "domain": "pjnzjdw3kx6l0.space.mcode.cn",
-   "name": "日语泛读 · 官方朗読音频源 3/3（批次1 的教材 L0 12 本 · 58MB）",
-   "status": "ALIVE",
-   "frozen": true,
-   "reason": "官方朗読音频包（9784872177497 / 9784866398310）的 12 条轨，按书改名后统一托管；App 数据里的 audio 指向这里"
-  },
-  {
-   "domain": "qtjgfga76bu4o.space.mcode.cn",
-   "project": "shun",
-   "reason": "旧内置版 v1.2.4 APK 的音频站：域名写死在 APK assets/app.js 的 AUDIO_BASE_LOCAL 里 ⇒ frozen 永不删、也不可 redeploy（redeploy 会换域名 ⇒ 用户旧 App 直接断声） role=audio-source",
-   "frozen": true,
-   "role": "audio-source"
-  },
-  {
-   "domain": "wm7b6ntgi3vl6",
-   "project": "nhk",
-   "status": "DELETED",
-   "role": "content",
-   "reason": "被 fj28fgr7ve147 取代（2026-11-16 发布 v34）⇒ 该删（清配额）",
-   "written_in": "引导页 version.json 的 site 字段",
-   "note": "2026-11-23 清理 cron 删站：node 459071909741404 已从云盘删除，复验 HTTP 404（清配额 1 位）。本条现为 v33 老站，已被 fj28fgr7ve147(v34) → sko9cgl435tzf(v35) 连续取代",
-   "frozen": false,
-   "node_id": "459071909741404"
-  },
-  {
-   "domain": "204ocuv36su6w",
-   "project": "nhk",
-   "status": "DELETED",
-   "node_id": "456210239336751",
-   "frozen": false,
-   "note": "2026-11-23 清理 cron 删站：node 456210239336751 已从云盘删除，复验 HTTP 404（清配额 1 位）。本条现为 v32 老站，已被连续取代"
-  },
-  {
-   "domain": "fj28fgr7ve147",
-   "project": "nhk",
-   "status": "DELETED",
-   "node_id": "464033924727000",
-   "frozen": false,
-   "reason": "NHK 内容站（引导页当前指向）",
-   "note": "2026-11-23 清理 cron 删站：node 464033924727000 已从云盘删除，复验 HTTP 404（清配额 1 位）。⚠️ 本条旧 note 写的「现役内容站…永不删」是 2026-11-16 v34 时期的说法、已过期 —— 引导页 version.json 自 2026-11-21（v35）起指向 sko9cgl435tzf"
-  },
-  {
-   "domain": "sko9cgl435tzf",
-   "project": "nhk",
-   "status": "SUPERSEDED",
-   "reason": "NHK 内容站（v35 · 110 期 · 2026-11-22 发的站）；🔴 已被 v36=d68g6hi5pch7y 取代 —— 引导页 version.json 现在指向 d68g6hi5pch7y，不再指向它",
-   "written_in": "引导页 version.json 的 site 字段",
-   "note": "🔴 **不是现役站**（旧 reason/note 写的「引导页当前指向」是 2026-11-24 v35 时期的说法、已过期）。2026-11-25 清理 cron 四道闸门核对全部通过：①status=SUPERSEDED（可删墓碑）；②引导页 version.json v36 → d68g6hi5pch7y，不指向本站；③现役 APK dex+assets 全量扫描零引用；④仓库 2080 文件全类型 grep + 线上现役站全部文件零域引用。探活 200（节点还在，仍占 1 个配额位）；node_id 465800236970342 已从本站注入的统计脚本 base64 反查独立复核 ✓。🔴 但平台 mavis drive 组连续第 3 天下线 ⇒ 删站通道不可用 ⇒ **未删**，留在 pending-deletes.json 里等通道恢复后执行。",
-   "frozen": false,
-   "node_id": "465800236970342"
-  },
-  {
-   "domain": "vkwwuh9wgkzo0.space.mcode.cn",
-   "project": "nhk",
-   "status": "ALIVE",
-   "role": "fallback",
-   "frozen": true,
-   "node_id": "455239419052366",
-   "reason": "现役 APK classes.dex 里写死的永久兜底站（= nhk/data/sites.json 的 fallback_domain）⇒ 永不删、也不可 redeploy（换域名 = APK 兜底当场失效）",
-   "note": "2026-11-23 巡检发现：它活着、且被现役 APK 依赖，但此前不在本清单里 ⇒ 补登记进保护集，防止以后被当成“清单外的孤儿站”处置"
-  },
-  {
-   "domain": "d68g6hi5pch7y",
-   "project": "nhk",
-   "status": "ACTIVE",
-   "role": "current_site",
-   "reason": "NHK 内容站（引导页当前指向）",
-   "written_in": "引导页 version.json 的 site 字段",
-   "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
-   "frozen": false
-  },
-  {
-   "domain": "te9zj1pwg8ncs.space.mcode.cn",
-   "status": "ALIVE",
-   "frozen": true,
-   "note": "2026-10-26 新建：官方朗読音频站（20 本 = 教材 L3/L1/L4 的 12 本 + 教材 Start 的 8 本；93.3MB）。音频配方 mp3/44100Hz/单声道/48kbps；时长与官方轨一致（|Δ|≤0.07s）⇒ 时间轴有效。"
-  },
-  {
-   "domain": "k4ebhgic0up64.space.mcode.cn",
-   "name": "日语泛读精读 · 正式交付站 v1.3.1（95 本 / 11638 句 / 86 本有音 · 教材 Start 8 本 + 官方朗読补音 12 本 + むじな补回 7 句）",
-   "status": "ACTIVE",
-   "frozen": false,
-   "node_id": "467174667972890",
-   "reason": "2026-11-25 v1.3.1：① 教材 Start 8 本首次进站（有音/注音/中文/时间轴）；② 官方朗読补音 12 本（L3/L1/L4 三个官方包）⇒ 有音书 66→78，加 Start 共 86；③ 补回《小泉八雲の怖い話 むじな／幽霊滝》开篇丢失的 7 句正文（印刷页 PDF 逐字核对 + 官方朗読转写交叉验证 7/7 一致）。🔴 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 换站 + 改引导页。音频站：te9zj1pwg8ncs（官方朗読 20 本）"
-  }
- ],
- "_meta_note": "2026-11-23 清理 cron：删掉 3 个 NHK 老站（wm7b6ntgi3vl6 / 204ocuv36su6w / fj28fgr7ve147，node 459071909741404 / 456210239336751 / 464033924727000，均复验 404）⇒ 站点配额 45→42；另把 4 个「云盘已无节点 + 探活 404」的老站补记为 DELETED（不再每天重试）；补登记 APK 兜底站 vkwwuh9wgkzo0（ALIVE+frozen）。| 2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED | 2026-11-24 清理 cron：全量探活 23 条 —— 8 条 DELETED 条目全部 404（3 条 11-23 已删；5 条老多読站节点早已不在云盘）⇒ **今日 0 删除**：无新墓碑、pending-deletes.json 为空、无可删节点（不是闸门拦的，是真没有墓碑可删）。引导页 18 个入口页 + 现役 NHK.apk(dex+assets) + 现役站配置**零引用**任何候选域。🔴 事实与清单不符（连续第 2 天）：rkw1x077uih9s / vt15310hxrx4e 清单 ALIVE+frozen 但全路径 404 ⇒ 待站的主人（多読项目 session 455841072984388）决定改状态还是重新部署。🔴 平台侧变化：mavis 调度器已下线 drive 组（只暴露 agent/session）⇒ 清理 cron 今日无删站执行通道（另开子会话复验同样不可用）⇒ 后续若出现新墓碑，需先恢复该工具。 | 2026-11-25 站的主人定性：rkw1x077uih9s（45本中间版交付站）与 vt15310hxrx4e（同版音频源站）**两条都是过期记录** —— 它们是 2026-10-25 我自己按「中间版」删的（当时已被 55 本版取代），今天复核整站 404 属实 ⇒ 改为 DELETED + 清 frozen。🟢 另核实「现役 APK 会没声音」这条**不成立**：现役 APK 的 assets/site.txt 只有 3 行注释（无域名），音频只走 1hv73j0i9907z / ddiwijcogorrr / ppch90g3xmufh / pjnzjdw3kx6l0 四个域（实测全 200）。 | 新登记音频站 te9zj1pwg8ncs（官方朗読 20 本）。 | 顺手执行清理会话的建议：新站上线时把上一版标 SUPERSEDED/SUPERSEDED+replaced_by（k5ibj8z3fwew9 已 DELETED）。 | 2026-11-25 清理 cron：读到清单 25 条（键=sites，属主今天 12:09 加了 te9zj1pwg8ncs）。🔴 **今日 0 删除** —— 但原因**不是**「没有墓碑」也不是「被闸门拦了」：pending-deletes.json 挂着 1 条新墓碑 sko9cgl435tzf（node 465800236970342），且该条 status=SUPERSEDED，**四道闸门全部通过**：①status∈{SUPERSEDED,DELETED} ✓；②引导页 version.json v36 已指向 d68g6hi5pch7y，不指向它 ✓；③现役 APK（d68g6hi5pch7y/NHK.apk）dex+assets 全量扫描只命中兜底站 vkwwuh9wgkzo0，零引用 ✓；④仓库 2080 个文件（含 md/py/srt/mp3 全类型）全量 grep 仅 5 处命中、全是台账/文档/手册（无一是运行时指针），线上现役站全部文件与 data/chains.js 零域引用 ✓。🔴 node_id 独立复核：从 sko9cgl435tzf 线上页面平台注入的统计脚本 base64 反查得到 {\"biz_id\":\"Mavis\",\"node_id\":\"465800236970342\"} ⇒ 与清单/pending-deletes/sites_nhk/手册§36.4 四方一致 ✓。唯一卡点：🔴 **平台 mavis drive 组连续第 3 天下线**（known_commands 只剩 agent/session；mcp_invoke 无 drive 工具；connector 只有 matrix 多媒体；mcode-tools 顶层只有 get-asset-url/upload-temp-url）⇒ 删站执行通道不可用 ⇒ 该墓碑原样保留，**未删**（它仍占着 1 个配额位：探活 200 = 节点还在），等通道恢复后按 pending-deletes.json 执行。探活全量 25 条：10 条 DELETED 全部 404（属主已定性：rkw1x077uih9s / vt15310hxrx4e 是 10-25 已删的中间版，节点早不在云盘）；sko9cgl435tzf 200（活着但已被取代，按规则 SUPERSEDED 属可删）；🟢 事实与清单不符已闭环（属主已改 DELETED 并清 frozen）。 | 2026-11-25 v1.3.1 上线：新交付站 k4ebhgic0up64（ACTIVE，node_id 467174667972890）+ 新音频站 te9zj1pwg8ncs（官方朗読 20 本 / 93.3MB，node_id 456299494985812）；旧交付站 ygqm1hz5djz1n 标 SUPERSEDED + replaced_by=k4ebhgic0up64（还活着但可删，node_id 456284075475296，删除待 drive 通道恢复）。⚠️ 口径（站的主人给清理 cron 的）：frozen 只当「需要引用扫描」的提醒，不当豁免；「清单说活、实测 404」的正确闭环 = 站的主人定性 → 主人改清单；线上权威键是 sites。",
- "updated": "2026-11-25"
+  "_readme": "站点保护清单：清理 cron 每天扫本文件，只删 status ∈ {SUPERSEDED, DELETED} 的站；frozen=true 是**提醒**不是豁免 —— 命中 frozen 必须把 APK dex/assets 引用扫描 + 引导页/站内引用扫描做全，引用命中 ⇒ 不删；扫不到且探活 404 ⇒ 可删。frozen 站仍不可 redeploy（域名一换＝用户手里的链接当场死）。🔴 顶层数组在 \"sites\" 键下（旧键 protected_sites 已废弃）。",
+  "sites": [
+    {
+      "domain": "rkw1x077uih9s.space.mcode.cn",
+      "name": "日语泛读精读 · 正式交付站（45 本）",
+      "status": "DELETED",
+      "frozen": false,
+      "reason": "已交付给用户的正式链接（45 本 / 4836 句 / 教材 L0-L4 分组）",
+      "note": "2026-10-25 我删的「45 本中间版」交付站（当时已被 55 本版取代）；2026-11-25 复核：根路径与 /index.html、/data/、/media/ 全部 404 ⇒ 确属已删。取代者 = ygqm1hz5djz1n（现役 v1.3.0+）。现役 APK 与入口页都不引用它 ⇒ 无功能影响。"
+    },
+    {
+      "domain": "vt15310hxrx4e.space.mcode.cn",
+      "name": "日语泛读精读 · 音频源站（APK 的 site.txt 写死它）",
+      "status": "DELETED",
+      "frozen": false,
+      "reason": "APK（com.jpstudy.tadoku v1.0.0）assets/site.txt 写死这个域名做 /media/ 转发源 ⇒ 删了 App 里就没声音了",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip",
+        "APK assets/site.txt"
+      ],
+      "note": "2026-10-25 我删的「45 本中间版」音频源站；2026-11-25 复核：整站 404。🔴 **现役 APK 不依赖它**：实测 assets/site.txt 只有 3 行注释（无任何域名），app 数据里的音频地址只指向 4 个域（1hv73j0i9907z / ddiwijcogorrr / ppch90g3xmufh / pjnzjdw3kx6l0），实测全部 200 ⇒ 只有装着那一版中间 APK 的机器会没声音，升到现役版即可。"
+    },
+    {
+      "domain": "iujsgx3ci73dp.space.mcode.cn",
+      "name": "词汇学习站 Unit1+2+3（正式版 v3）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "老师 2026-10-23 明确要求：单词记录（词汇学习）的网站不能删除（长期硬指令）"
+    },
+    {
+      "domain": "zp67qm11jonui.space.mcode.cn",
+      "name": "词汇学习站 VocabLog（正式版·零凭据）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "同上（老师的长期硬指令）"
+    },
+    {
+      "domain": "0rbbjfw36hj66.space.mcode.cn",
+      "name": "日语泛读精读 · 上一版交付站（55 本 · 对轴修正前）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "2026-10-25 对轴修正版已用新站取代；但老版 APK(v1.0.0) 的 site.txt 写死这个域 ⇒ 暂留，等老 APK 淘汰后再删",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip（站上那份）"
+      ]
+    },
+    {
+      "domain": "qgozaeqvjc9l9.space.mcode.cn",
+      "name": "日语泛读精读 · 音频源站（站上 APK 包的 site.txt 写死它）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "站上下载的 tadoku-apk.zip 里 site.txt 指向这个域 ⇒ 它必须活着（内容与交付站一致）",
+      "referenced_by": [
+        "站上 tadoku-apk.zip 的 site.txt"
+      ]
+    },
+    {
+      "domain": "wzm2lkj4a7oo8.space.mcode.cn",
+      "name": "日语泛读精读 · 上一版交付站（55 本 · 对轴修正版）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "2026-10-25 注音修正版已用新站取代；但已装到用户手机上的老 APK assets/site.txt 写死这个域做 /media/ 转发源 ⇒ 必须留着（frozen）",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip（站上那份指向 A）",
+        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+      ]
+    },
+    {
+      "domain": "1hv73j0i9907z.space.mcode.cn",
+      "name": "日语泛读精读 · 音频源站（站上 APK 包的 site.txt 写死它）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "站上下载的 tadoku-apk.zip 里 site.txt 指向这个域 ⇒ 它必须活着（内容与交付站一致）",
+      "referenced_by": [
+        "站上 tadoku-apk.zip 的 site.txt"
+      ]
+    },
+    {
+      "domain": "zzjxyp80lpd73.space.mcode.cn",
+      "name": "日语泛读精读 · 上一版交付站（55 本 · 汉字注音修正版）",
+      "status": "DELETED",
+      "frozen": false,
+      "reason": "2026-10-25 已手动删除并复验 404（线上实测 HTTP 404）",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip（站上那份）",
+        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+      ]
+    },
+    {
+      "domain": "030ktppkqjm6g.space.mcode.cn",
+      "name": "日语泛读精读 · 正式交付站（75 本 · 官方朗読 20 本 + 对轴注音修正）",
+      "status": "DELETED",
+      "frozen": false,
+      "reason": "已被 4a5zb27ejec6k 取代（v1.2.0）；待清理 cron 回收",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip（站上那份）",
+        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+      ],
+      "superseded_by": "4a5zb27ejec6k.space.mcode.cn",
+      "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
+    },
+    {
+      "domain": "ddiwijcogorrr.space.mcode.cn",
+      "name": "日语泛读 · 官方朗読音频源 1/2（10 本 · 88MB）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+      "referenced_by": [
+        "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
+      ]
+    },
+    {
+      "domain": "ppch90g3xmufh.space.mcode.cn",
+      "name": "日语泛读 · 官方朗読音频源 2/2（10 本 · 84MB）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+      "referenced_by": [
+        "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
+      ]
+    },
+    {
+      "domain": "k5ibj8z3fwew9.space.mcode.cn",
+      "name": "日语泛读精读 · 上一版交付站 v1.2.0（75 本 / 11036 句）",
+      "status": "DELETED",
+      "frozen": false,
+      "reason": "已被 v1.3.0（ygqm1hz5djz1n）取代；旧 APK 自带数据不依赖它 ⇒ 可删",
+      "referenced_by": [
+        "/workspace/output/tadoku-apk.zip",
+        "永久入口 https://tlv-creator.github.io/nhk-easy-news/tadoku.html"
+      ],
+      "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
+    },
+    {
+      "domain": "4a5zb27ejec6k.space.mcode.cn",
+      "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
+      "status": "DELETED",
+      "frozen": false,
+      "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
+      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn",
+      "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
+    },
+    {
+      "domain": "ns507ds9uold3.space.mcode.cn",
+      "name": "日语泛读精读 · 中间部署站（已被最终站取代）",
+      "status": "DELETED",
+      "frozen": false,
+      "reason": "2026-10-25 中间部署，已被 k5ibj8z3fwew9.space.mcode.cn 取代；待清理 cron 回收",
+      "superseded_by": "k5ibj8z3fwew9.space.mcode.cn",
+      "note": "2026-11-23 清理 cron 核对：云盘里已查不到该节点（drive files list + search 三种查法都没有）+ 探活 HTTP 404 ⇒ 视同已删，不再重试删除"
+    },
+    {
+      "domain": "ygqm1hz5djz1n.space.mcode.cn",
+      "name": "日语泛读精读 · 正式交付站 v1.3.0（87 本 / 11481 句 · 教材L0官方朗読12本 + 生词表 + 句型表）",
+      "status": "SUPERSEDED",
+      "frozen": false,
+      "reason": "2026-11-25 v1.3.1 上线 ⇒ 旧交付站（v1.3.0）被取代，标记 SUPERSEDED。🟢 站点还活着（200）但可以删：node_id=456284075475296（平台 drive 删站通道 2026-11-25 下线 ⇒ 删除动作待通道恢复后由清理 cron 补做）。现役 v1.3.1 = k4ebhgic0up64（node_id 467174667972890）。",
+      "replaced_by": "k4ebhgic0up64.space.mcode.cn"
+    },
+    {
+      "domain": "pjnzjdw3kx6l0.space.mcode.cn",
+      "name": "日语泛读 · 官方朗読音频源 3/3（批次1 的教材 L0 12 本 · 58MB）",
+      "status": "ALIVE",
+      "frozen": true,
+      "reason": "官方朗読音频包（9784872177497 / 9784866398310）的 12 条轨，按书改名后统一托管；App 数据里的 audio 指向这里"
+    },
+    {
+      "domain": "qtjgfga76bu4o.space.mcode.cn",
+      "project": "shun",
+      "reason": "旧内置版 v1.2.4 APK 的音频站：域名写死在 APK assets/app.js 的 AUDIO_BASE_LOCAL 里 ⇒ frozen 永不删、也不可 redeploy（redeploy 会换域名 ⇒ 用户旧 App 直接断声） role=audio-source",
+      "frozen": true,
+      "role": "audio-source"
+    },
+    {
+      "domain": "wm7b6ntgi3vl6",
+      "project": "nhk",
+      "status": "DELETED",
+      "role": "content",
+      "reason": "被 fj28fgr7ve147 取代（2026-11-16 发布 v34）⇒ 该删（清配额）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "2026-11-23 清理 cron 删站：node 459071909741404 已从云盘删除，复验 HTTP 404（清配额 1 位）。本条现为 v33 老站，已被 fj28fgr7ve147(v34) → sko9cgl435tzf(v35) 连续取代",
+      "frozen": false,
+      "node_id": "459071909741404"
+    },
+    {
+      "domain": "204ocuv36su6w",
+      "project": "nhk",
+      "status": "DELETED",
+      "node_id": "456210239336751",
+      "frozen": false,
+      "note": "2026-11-23 清理 cron 删站：node 456210239336751 已从云盘删除，复验 HTTP 404（清配额 1 位）。本条现为 v32 老站，已被连续取代"
+    },
+    {
+      "domain": "fj28fgr7ve147",
+      "project": "nhk",
+      "status": "DELETED",
+      "node_id": "464033924727000",
+      "frozen": false,
+      "reason": "NHK 内容站（引导页当前指向）",
+      "note": "2026-11-23 清理 cron 删站：node 464033924727000 已从云盘删除，复验 HTTP 404（清配额 1 位）。⚠️ 本条旧 note 写的「现役内容站…永不删」是 2026-11-16 v34 时期的说法、已过期 —— 引导页 version.json 自 2026-11-21（v35）起指向 sko9cgl435tzf"
+    },
+    {
+      "domain": "sko9cgl435tzf",
+      "project": "nhk",
+      "status": "SUPERSEDED",
+      "reason": "NHK 内容站（v35 · 110 期 · 2026-11-22 发的站）；🔴 已被 v36=d68g6hi5pch7y 取代 —— 引导页 version.json 现在指向 d68g6hi5pch7y，不再指向它",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "🔴 **不是现役站**（旧 reason/note 写的「引导页当前指向」是 2026-11-24 v35 时期的说法、已过期）。2026-11-25 清理 cron 四道闸门核对全部通过：①status=SUPERSEDED（可删墓碑）；②引导页 version.json v36 → d68g6hi5pch7y，不指向本站；③现役 APK dex+assets 全量扫描零引用；④仓库 2080 文件全类型 grep + 线上现役站全部文件零域引用。探活 200（节点还在，仍占 1 个配额位）；node_id 465800236970342 已从本站注入的统计脚本 base64 反查独立复核 ✓。🔴 但平台 mavis drive 组连续第 3 天下线 ⇒ 删站通道不可用 ⇒ **未删**，留在 pending-deletes.json 里等通道恢复后执行。",
+      "frozen": false,
+      "node_id": "465800236970342"
+    },
+    {
+      "domain": "vkwwuh9wgkzo0.space.mcode.cn",
+      "project": "nhk",
+      "status": "ALIVE",
+      "role": "fallback",
+      "frozen": true,
+      "node_id": "455239419052366",
+      "reason": "现役 APK classes.dex 里写死的永久兜底站（= nhk/data/sites.json 的 fallback_domain）⇒ 永不删、也不可 redeploy（换域名 = APK 兜底当场失效）",
+      "note": "2026-11-23 巡检发现：它活着、且被现役 APK 依赖，但此前不在本清单里 ⇒ 补登记进保护集，防止以后被当成“清单外的孤儿站”处置"
+    },
+    {
+      "domain": "d68g6hi5pch7y",
+      "project": "nhk",
+      "status": "ACTIVE",
+      "role": "current_site",
+      "reason": "NHK 内容站（引导页当前指向）",
+      "written_in": "引导页 version.json 的 site 字段",
+      "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的",
+      "frozen": false
+    },
+    {
+      "domain": "te9zj1pwg8ncs.space.mcode.cn",
+      "status": "ALIVE",
+      "frozen": true,
+      "note": "2026-10-26 新建：官方朗読音频站（20 本 = 教材 L3/L1/L4 的 12 本 + 教材 Start 的 8 本；93.3MB）。音频配方 mp3/44100Hz/单声道/48kbps；时长与官方轨一致（|Δ|≤0.07s）⇒ 时间轴有效。"
+    },
+    {
+      "domain": "k4ebhgic0up64.space.mcode.cn",
+      "name": "日语泛读精读 · 正式交付站 v1.3.1（95 本 / 11638 句 / 86 本有音 · 教材 Start 8 本 + 官方朗読补音 12 本 + むじな补回 7 句）",
+      "status": "ACTIVE",
+      "frozen": false,
+      "node_id": "467174667972890",
+      "reason": "2026-11-25 v1.3.1：① 教材 Start 8 本首次进站（有音/注音/中文/时间轴）；② 官方朗読补音 12 本（L3/L1/L4 三个官方包）⇒ 有音书 66→78，加 Start 共 86；③ 补回《小泉八雲の怖い話 むじな／幽霊滝》开篇丢失的 7 句正文（印刷页 PDF 逐字核对 + 官方朗読转写交叉验证 7/7 一致）。🔴 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 换站 + 改引导页。音频站：te9zj1pwg8ncs（官方朗読 20 本）"
+    },
+    {
+      "domain": "3be4wt47jrt60.space.mcode.cn",
+      "name": "Japanese with Shun · 日中对照精读（内容站）",
+      "project": "shun",
+      "status": "ALIVE",
+      "role": "current_site",
+      "reason": "Shun 周更的内容站（引导页 shun.json / shun.html 永久入口指向它）⇒ 删了用户手里的链接当场死",
+      "referenced_by": [
+        "shun.json（site / apk 字段）",
+        "shun.html"
+      ],
+      "written_in": "引导页 shun.json 的 site 字段",
+      "node_id": "455720425210289",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "3pqlt9tq6lrij.space.mcode.cn",
+      "name": "便利店等日常场景会话 · 日中对照学习",
+      "project": "scenes",
+      "status": "ALIVE",
+      "role": "content",
+      "reason": "场景会话学习站（引导页 scenes.json / scenes.html 指向它）",
+      "referenced_by": [
+        "scenes.json",
+        "scenes.html",
+        "scenes/index.html"
+      ],
+      "written_in": "引导页 scenes.json 的 site 字段",
+      "node_id": "455702948626859",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "4535p9s0wnpzs.space.mcode.cn",
+      "name": "若草物語1993 音声（ep01-14 批）",
+      "project": "wakakusa",
+      "status": "ALIVE",
+      "role": "audio",
+      "reason": "若草物語 1993 音频源站（第 1 批）⇒ wakakusa 的 m3u 直接写死它",
+      "referenced_by": [
+        "wakakusa/wakakusa_1993_ep01-40.m3u",
+        "wakakusa/index.html",
+        "wakakusa/feed.xml"
+      ],
+      "written_in": "wakakusa/*.m3u 的 audio URL",
+      "node_id": "454745434538341",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "9qcq9q73zm4ql.space.mcode.cn",
+      "name": "日語精読 · 总目录（pony 网页版）",
+      "project": "pony",
+      "status": "ALIVE",
+      "role": "content",
+      "reason": "小马宝莉精读的网页版（引导页 pony.html 指向 /pony/）",
+      "referenced_by": [
+        "pony.html"
+      ],
+      "written_in": "引导页 pony.html 的按钮链接",
+      "node_id": "455145822027880",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "awcv20k80ydfb.space.mcode.cn",
+      "name": "やさしい日本語 · 简明日语精读",
+      "project": "ama",
+      "status": "ALIVE",
+      "role": "content",
+      "reason": "あま〜でぃーもん！ 的网页版（引导页 ama.html 指向它）",
+      "referenced_by": [
+        "ama.html"
+      ],
+      "written_in": "引导页 ama.html 的按钮链接",
+      "node_id": "455134323184676",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "da4lxn2phccck.space.mcode.cn",
+      "name": "Japanese with Shun · 音频（兜底音频源）",
+      "project": "shun",
+      "status": "ALIVE",
+      "role": "audio",
+      "reason": "Shun 的兜底音频源站 ⇒ shun/web/app.js 里写死 /media/ 路径；Shun 手册标「永删不得」",
+      "referenced_by": [
+        "shun/web/app.js",
+        "shun/tools/手册.md"
+      ],
+      "written_in": "shun/web/app.js 的音频源列表",
+      "node_id": "455121652622047",
+      "frozen": true,
+      "note": "旧站**没有 ep13**（app.js 注释里写了）⇒ 它只是引导页拉不到时的兜底，缺集已在代码里登记。 2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "dcjk8zanl3e4r.space.mcode.cn",
+      "name": "AI 讲解客户端 · ai-client.js",
+      "project": "ai-relay",
+      "status": "ALIVE",
+      "role": "infra",
+      "reason": "🔴 hub / NHK / 多読絵本 **共用的 AI 讲解客户端**（ai-client.js）⇒ 删了全平台 AI 讲解失效",
+      "referenced_by": [
+        "shun/scripts/check_eink_css.js",
+        "nhk/scripts/check_eink_css.py",
+        "nhk/scripts/check_eink_css.js"
+      ],
+      "written_in": "墨水屏闸门脚本里的 ai-client.js 地址",
+      "node_id": "455155888648588",
+      "frozen": true,
+      "note": "🔴 **基建级站点**：此前完全没登记 ⇒ 谁按「没登记=可以动」去清理就会打断全平台 AI 讲解。 2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "f3rpiqeouy6c0.space.mcode.cn",
+      "name": "魔卡少女樱(1998) 日配音频 · A1",
+      "project": "makka",
+      "status": "ALIVE",
+      "role": "audio",
+      "reason": "魔卡少女樱音频源站 ⇒ APK 模板 AudioCache.java 里写死它的 /media/ 路径",
+      "referenced_by": [
+        "shun/apk-template/java/com/shun/study/AudioCache.java"
+      ],
+      "written_in": "APK 源码 AudioCache.java",
+      "node_id": "454686917050664",
+      "frozen": true,
+      "note": "🔴 **写死在 APK 源码里** ⇒ 删了装好的 App 会没声音。 2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "irk7ibwekq8se.space.mcode.cn",
+      "name": "每日听力记录（主站 / Supabase 后端）",
+      "project": "listening",
+      "status": "ALIVE",
+      "role": "content",
+      "reason": "每日听力记录的主站（tools/check_supabase_access.py 的 LISTEN_SITE）",
+      "referenced_by": [
+        "tools/check_supabase_access.py",
+        "nhk/scripts/push_shared.py"
+      ],
+      "written_in": "check_supabase_access.py 的 LISTEN_SITE",
+      "node_id": "455238580995124",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "lbvlknqo9bzii.space.mcode.cn",
+      "name": "日語精読 · 总目录（若草 / 樱花 网页版）",
+      "project": "tadoku",
+      "status": "ALIVE",
+      "role": "content",
+      "reason": "多読站群的网页版总目录（hub.html / wakakusa.html / sakura.html 都指向它）",
+      "referenced_by": [
+        "hub.html",
+        "guide/hub.html",
+        "wakakusa.html",
+        "sakura.html"
+      ],
+      "written_in": "引导页 hub.html / wakakusa.html / sakura.html",
+      "node_id": "456047215686178",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "lem5lvwy41rn9.space.mcode.cn",
+      "name": "若草物語1993 音声（ep15-28 批）",
+      "project": "wakakusa",
+      "status": "ALIVE",
+      "role": "audio",
+      "reason": "若草物語 1993 音频源站（第 2 批）",
+      "referenced_by": [
+        "wakakusa/wakakusa_1993_ep01-40.m3u"
+      ],
+      "written_in": "wakakusa/*.m3u 的 audio URL",
+      "node_id": "454745889964757",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "tcw0ti0k7p0hd.space.mcode.cn",
+      "name": "あま〜でぃーもん！ 日中对照精读",
+      "project": "ama",
+      "status": "ALIVE",
+      "role": "content",
+      "reason": "あま〜でぃーもん！ 内容站 ⇒ APK 模板 AudioCache.java 里写死它的 /audio/ 路径",
+      "referenced_by": [
+        "shun/apk-template/java/com/shun/study/AudioCache.java",
+        "nhk/scripts/push_shared.py"
+      ],
+      "written_in": "APK 源码 AudioCache.java",
+      "node_id": "454653279801781",
+      "frozen": true,
+      "note": "🔴 **写死在 APK 源码里** ⇒ 删了装好的 App 会没声音。 2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "ul366v9i8nx0s.space.mcode.cn",
+      "name": "每日听力记录（国内加速通道 mirror）",
+      "project": "listening",
+      "status": "ALIVE",
+      "role": "content",
+      "reason": "每日听力记录的国内加速镜像站（listening/version.json 的 mirror 字段）",
+      "referenced_by": [
+        "listening/version.json",
+        "listening/index.html",
+        "listening/app/version.json"
+      ],
+      "written_in": "listening/version.json 的 mirror 字段",
+      "node_id": "455781590155777",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "wn1nwme4cg1hh.space.mcode.cn",
+      "name": "若草物語1993 音声（ep29-40 批）",
+      "project": "wakakusa",
+      "status": "ALIVE",
+      "role": "audio",
+      "reason": "若草物語 1993 音频源站（第 3 批）",
+      "referenced_by": [
+        "wakakusa/wakakusa_1993_40ep_zh.m3u",
+        "wakakusa/index.html"
+      ],
+      "written_in": "wakakusa/*.m3u 的 audio URL",
+      "node_id": "454745748303977",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    },
+    {
+      "domain": "xwi3hf93nlt4p.space.mcode.cn",
+      "name": "hub 音频配置 · 部署包（ai-proxy 部署 / 回滚包）",
+      "project": "hub",
+      "status": "ALIVE",
+      "role": "content",
+      "reason": "hub 页面「下载部署包 / 回滚包」两个按钮的源站",
+      "referenced_by": [
+        "hub.html",
+        "guide/hub.html"
+      ],
+      "written_in": "引导页 hub.html 的下载按钮",
+      "node_id": "455235349299548",
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+    }
+  ],
+  "_meta_note": "2026-11-23 清理 cron：删掉 3 个 NHK 老站（wm7b6ntgi3vl6 / 204ocuv36su6w / fj28fgr7ve147，node 459071909741404 / 456210239336751 / 464033924727000，均复验 404）⇒ 站点配额 45→42；另把 4 个「云盘已无节点 + 探活 404」的老站补记为 DELETED（不再每天重试）；补登记 APK 兜底站 vkwwuh9wgkzo0（ALIVE+frozen）。| 2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED | 2026-11-24 清理 cron：全量探活 23 条 —— 8 条 DELETED 条目全部 404（3 条 11-23 已删；5 条老多読站节点早已不在云盘）⇒ **今日 0 删除**：无新墓碑、pending-deletes.json 为空、无可删节点（不是闸门拦的，是真没有墓碑可删）。引导页 18 个入口页 + 现役 NHK.apk(dex+assets) + 现役站配置**零引用**任何候选域。🔴 事实与清单不符（连续第 2 天）：rkw1x077uih9s / vt15310hxrx4e 清单 ALIVE+frozen 但全路径 404 ⇒ 待站的主人（多読项目 session 455841072984388）决定改状态还是重新部署。🔴 平台侧变化：mavis 调度器已下线 drive 组（只暴露 agent/session）⇒ 清理 cron 今日无删站执行通道（另开子会话复验同样不可用）⇒ 后续若出现新墓碑，需先恢复该工具。 | 2026-11-25 站的主人定性：rkw1x077uih9s（45本中间版交付站）与 vt15310hxrx4e（同版音频源站）**两条都是过期记录** —— 它们是 2026-10-25 我自己按「中间版」删的（当时已被 55 本版取代），今天复核整站 404 属实 ⇒ 改为 DELETED + 清 frozen。🟢 另核实「现役 APK 会没声音」这条**不成立**：现役 APK 的 assets/site.txt 只有 3 行注释（无域名），音频只走 1hv73j0i9907z / ddiwijcogorrr / ppch90g3xmufh / pjnzjdw3kx6l0 四个域（实测全 200）。 | 新登记音频站 te9zj1pwg8ncs（官方朗読 20 本）。 | 顺手执行清理会话的建议：新站上线时把上一版标 SUPERSEDED/SUPERSEDED+replaced_by（k5ibj8z3fwew9 已 DELETED）。 | 2026-11-25 清理 cron：读到清单 25 条（键=sites，属主今天 12:09 加了 te9zj1pwg8ncs）。🔴 **今日 0 删除** —— 但原因**不是**「没有墓碑」也不是「被闸门拦了」：pending-deletes.json 挂着 1 条新墓碑 sko9cgl435tzf（node 465800236970342），且该条 status=SUPERSEDED，**四道闸门全部通过**：①status∈{SUPERSEDED,DELETED} ✓；②引导页 version.json v36 已指向 d68g6hi5pch7y，不指向它 ✓；③现役 APK（d68g6hi5pch7y/NHK.apk）dex+assets 全量扫描只命中兜底站 vkwwuh9wgkzo0，零引用 ✓；④仓库 2080 个文件（含 md/py/srt/mp3 全类型）全量 grep 仅 5 处命中、全是台账/文档/手册（无一是运行时指针），线上现役站全部文件与 data/chains.js 零域引用 ✓。🔴 node_id 独立复核：从 sko9cgl435tzf 线上页面平台注入的统计脚本 base64 反查得到 {\"biz_id\":\"Mavis\",\"node_id\":\"465800236970342\"} ⇒ 与清单/pending-deletes/sites_nhk/手册§36.4 四方一致 ✓。唯一卡点：🔴 **平台 mavis drive 组连续第 3 天下线**（known_commands 只剩 agent/session；mcp_invoke 无 drive 工具；connector 只有 matrix 多媒体；mcode-tools 顶层只有 get-asset-url/upload-temp-url）⇒ 删站执行通道不可用 ⇒ 该墓碑原样保留，**未删**（它仍占着 1 个配额位：探活 200 = 节点还在），等通道恢复后按 pending-deletes.json 执行。探活全量 25 条：10 条 DELETED 全部 404（属主已定性：rkw1x077uih9s / vt15310hxrx4e 是 10-25 已删的中间版，节点早不在云盘）；sko9cgl435tzf 200（活着但已被取代，按规则 SUPERSEDED 属可删）；🟢 事实与清单不符已闭环（属主已改 DELETED 并清 frozen）。 | 2026-11-25 v1.3.1 上线：新交付站 k4ebhgic0up64（ACTIVE，node_id 467174667972890）+ 新音频站 te9zj1pwg8ncs（官方朗読 20 本 / 93.3MB，node_id 456299494985812）；旧交付站 ygqm1hz5djz1n 标 SUPERSEDED + replaced_by=k4ebhgic0up64（还活着但可删，node_id 456284075475296，删除待 drive 通道恢复）。⚠️ 口径（站的主人给清理 cron 的）：frozen 只当「需要引用扫描」的提醒，不当豁免；「清单说活、实测 404」的正确闭环 = 站的主人定性 → 主人改清单；线上权威键是 sites。 | 2026-11-25 清理 cron（第二轮复核）：**补登清单外存活站 15 条** —— 上一轮只探了清单里的 25 条（得出「活 15 个」），这次把仓库全量域名一起探了 ⇒ **实际存活 30 个**：清单只登记了 15 个，另外 15 个从没进过清单 ⇒ 清理 cron 永远看不见它们（其中 🔴 dcjk8zanl3e4r = 全平台共用的 ai-client.js、irk7ibwekq8se = 每日听力记录主站，都是基建级站点却完全没登记）。本轮补登一律 status=ALIVE + frozen=true（**不是删除候选**）并补上 node_id ⇒ 将来真要清理时不必再手工反查。同时修了共享闸门 tools/check_sites_alive.py：status=ACTIVE（refresh_protected_status.py 的写法）此前不在白名单 ⇒ 闸门 exit 2 不放行 ⇒ Shun 周更手册 §8.1「发版前必跑」会撞墙，现已等同 ALIVE。",
+  "updated": "2026-11-25"
 }

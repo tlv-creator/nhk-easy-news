@@ -189,12 +189,18 @@ def main():
     #   **假红的根源就是「默认分支」**：老实现只认 DELETED，其余（含 SUPERSEDED）一律当「现役」
     #   ⇒ 新增一个取值时它会被**默默当成现役** ⇒ 判错 ⇒ 假红/假绿，而且**没人会发现**
     #   ⇒ 现在：**不认识的取值直接报错不放行**（宁可停下来问人，别默默按默认走）
-    #   已知取值只有四个：
+    #   已知取值只有五个：
     #     DELETED    = 我们说它已经删了   ⇒ 期望它死   ⇒ 还活着 ⇒ 🔴 清单该更新
     #     SUPERSEDED = 旧站被取代、可删   ⇒ **不判死活** ⇒ 墓碑（实测 7 条里 3 活 4 死）
     #     ALIVE      = 显式写出来的「现役」⇒ 期望它活着（语义 ≡ 没有 status）
+    #     ACTIVE     = ALIVE 的**同义写法**（nhk/scripts/refresh_protected_status.py 写的是它）
+    #                  ⇒ 语义与 ALIVE 完全相同 ⇒ 必须同等对待
+    #                  🔴 2026-11-25：线上清单的现役站 d68g6hi5pch7y 就是 ACTIVE
+    #                     而本闸门只认 ALIVE ⇒ 整个闸门 exit 2 不放行 ⇒ Shun 周更手册 §8.1
+    #                     「发版前必跑」这一步会直接撞墙 ⇒ 同义写法必须同等放行
     #     （没有 status）= 现役          ⇒ 期望它活着
-    KNOWN = {"": "check", "ALIVE": "check", "DELETED": "check_dead", "SUPERSEDED": "skip"}
+    KNOWN = {"": "check", "ALIVE": "check", "ACTIVE": "check",
+             "DELETED": "check_dead", "SUPERSEDED": "skip"}
     todo = []
     superseded = []
     for i, e in enumerate(entries):
@@ -209,14 +215,14 @@ def main():
         else:
             print("❌ 清单第 %d 条（%s）的 status **类型不对**：%s"
                   % (i, dom, type(raw).__name__))
-            print("   status 要么不写，要么写字符串（DELETED / SUPERSEDED / ALIVE）")
+            print("   status 要么不写，要么写字符串（DELETED / SUPERSEDED / ALIVE / ACTIVE）")
             print("   ⇒ **不放行**（类型不对的字段不能被默默当成现役）")
             return 2
         if st not in KNOWN:
             print("❌ 清单第 %d 条（%s）的 status=%r 不认识"
                   % (i, dom, raw))
-            print("   只认这四个：DELETED（期望它死）/ SUPERSEDED（墓碑，不判死活）"
-                  "/ ALIVE（现役）/ 没有 status（现役）")
+            print("   只认这五个：DELETED（期望它死）/ SUPERSEDED（墓碑，不判死活）"
+                  "/ ALIVE（现役）/ ACTIVE（现役，等同 ALIVE）/ 没有 status（现役）")
             print("   ⇒ **不放行**（新状态不能被默默当成现役 ⇒ 那样只会出假红）")
             return 2
         mode = KNOWN[st]
