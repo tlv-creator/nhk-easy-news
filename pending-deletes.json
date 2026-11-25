@@ -4,8 +4,13 @@
       "domain": "sko9cgl435tzf",
       "node_id": "465800236970342",
       "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
+    },
+    {
+      "domain": "ygqm1hz5djz1n",
+      "node_id": "456284075475296",
+      "reason": "多読 v1.3.0 交付站，2026-11-25 v1.3.1（k4ebhgic0up64）上线后被取代 ⇒ 该删（清配额）。2026-11-25 清理 cron 第二轮复核：四道闸门全过 —— ①status=SUPERSEDED；②引导页 tadoku.html（源文件 + Pages 渲染版均已核对）现指向 k4ebhgic0up64，不指向本站；③现役 APK（NHK.apk / shun-309ep-net-v1.4.0.apk）dex+assets 零引用；④仓库全类型引用扫描仅命中清单/台账本体，无运行时指针。node_id 已从站内注入统计脚本 base64 反查独立复核，与清单登记一致。⚠️ 通道恢复后由清理 cron 执行删除，并把它从本文件移除 + protected-sites.json 改 DELETED。"
     }
   ],
-  "updated": "2026-11-24 21:47",
-  "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。"
+  "updated": "2026-11-25 12:35",
+  "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。🔴 2026-11-25：通道（drive 组）连续多日下线 ⇒ 本文件只进不出，删站动作待通道恢复后补做；清单里的两条都已通过四道闸门且 node_id 已反查复核 ⇒ 通道一恢复即可直接执行。"
 }
