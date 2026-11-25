@@ -17,7 +17,8 @@ from functools import lru_cache
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 WORD_READING_FILE = os.path.join(HERE, "word_reading.json")
-KANJI_FILE = os.environ.get("KANJIDIC2", "/tmp/kanjidic2.xml.gz")
+KANJI_FILE = (os.environ.get("KANJIDIC2")
+              or os.path.join(HERE, "ruby", "kanjidic2.xml.gz"))
 
 
 def kata_to_hira(s):
@@ -41,6 +42,20 @@ DAKU = {"が": "か", "ざ": "さ", "だ": "た", "ば": "は", "ぱ": "は",
 def get_tokenizer():
     from janome.tokenizer import Tokenizer
     return Tokenizer()
+
+
+def tok_surface(tok):
+    """janome 的 Token.surface 在不同版本里是**属性**还是**方法** ⇒ 两种都兼容。
+
+    🔴 janome 0.5.x 把 `Token.surface` 改成了**属性**（0.4.x 是方法）
+       ⇒ 写死 `tok.surface()` 会在新版本上抛「'str' object is not callable」
+       ⇒ 而调用方普遍用 `except Exception` 兜底 ⇒ **不报错、静默退化**
+          （build_cues.py 退化成「按字符切词」⇒ 切行边界错位；
+            build_lexicon.py 退化成「每个字都当新词」⇒ 词库被垃圾词淹没）
+       ⇒ 与 token_match.py 的 _surf 同源，这里放一份给 ruby 的调用方用。
+    """
+    s = getattr(tok, "surface", "")
+    return s() if callable(s) else s
 
 
 @lru_cache(maxsize=1)
@@ -125,8 +140,10 @@ def load_kanjidic():
         for mm in re.finditer(r"<misc>(.*?)</misc>", blk, re.S):
             for r in re.finditer(r"<reading>(.*?)</reading>", mm.group(1), re.S):
                 add(r.group(1))
+                # 🔴 cands 是 **set** ⇒ 不能用下标取（cands[-1] 会 TypeError）
+                #    ⇒ 取「本字已有的最后一个读音」当熟字訓兜底
                 if cands:
-                    fb.setdefault(ch, []).append(cands[-1])
+                    fb.setdefault(ch, []).append(sorted(cands)[-1])
         if cands:
             out.setdefault(ch, []).extend(sorted(cands))
     return out, fb
@@ -292,7 +309,18 @@ def annotate_token(surface, reading):
 
 
 def fix_okurigana(tokens):
-    """若某段读音末假名 == 下一段表层首假名且下一段读音为空 → 去掉该末假名。"""
+    """若某段读音末假名 == 下一段表层首假名且下一段读音为空 → 去掉该末假名。
+
+    🔴🔴 v2（2026-10-25 交接包 §8.2 实测出来的真 bug，2026-11-25 落地）：
+       旧规则**不看本段表层是否含汉字** ⇒ 把「汉字自己的读音恰好以同音假名结尾」
+       也当成「送り假名重复计入」削掉 ⇒ **汉字直接丢读音**：
+           人(ひと)→ひ ×16 ｜ 国(くに)→く ×7 ｜ 母(はは)→は ×6
+           言う(い・う)→言(い) 欠字 ｜ 聴く(き・く)→聴(き) 欠字
+       ⇒ **只有纯假名段**的读音末尾才允许被削；含汉字的段，它的读音是
+         **汉字自己的读音**，不许因为末尾碰巧同音就削掉。
+       ⇒ 依据：线上已发布数据是对的（人=ひと ×61 / 国=くに / 母=はは）
+         ⇒ 已发布数据**不是**用旧版生成的 ⇒ 风险是「新 ruby.py 重跑会改坏线上」。
+    """
     for i in range(len(tokens) - 1):
         r = tokens[i]["r"]
         nxt = tokens[i + 1]
@@ -300,8 +328,12 @@ def fix_okurigana(tokens):
             continue
         if not re.search(r"[ぁ-ゖ]$", r):
             continue
-        if nxt["t"][0] == r[-1]:
-            tokens[i]["r"] = r[:-1]
+        if nxt["t"][0] != r[-1]:
+            continue
+        # 🔴 本段表层含汉字 ⇒ 读音是汉字自己的读音 ⇒ 不许削
+        if any(is_kanji(c) for c in tokens[i]["t"]):
+            continue
+        tokens[i]["r"] = r[:-1]
     return tokens
 
 
@@ -323,6 +355,22 @@ def coverage(tokens):
                 if x["r"]:
                     k += 1
     return (k, h)
+
+
+def build_ru(text, tok=None, ktable=None):
+    """逐字注音 → [[表层, 读音], ...]（**与已发布数据同构**）
+
+    🔴 2026-11-25：build_ep_data.py 要 `from ruby import build_ru, covers`，
+       但本文件只有 annotate() ⇒ 导入直接 ImportError ⇒ 管线跑不起来。
+       ⇒ 按 tools/ruby/cmp_published.py 的口径补上这两个适配函数
+         （那份脚本就是对拍线上数据用的：new = [(x['t'], x.get('r') or '') for x in toks]）。
+    """
+    return [[x["t"], x.get("r") or ""] for x in annotate(text)]
+
+
+def covers(ru, t):
+    """ru 拼回去是否**逐字**等于原文（verify.py 的判据：少一个字都不行）"""
+    return "".join(x[0] for x in ru) == t
 
 
 if __name__ == "__main__":

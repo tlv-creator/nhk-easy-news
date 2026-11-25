@@ -35,7 +35,8 @@ import urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
 WS = os.path.dirname(HERE)
 API = "https://api.minimaxi.com/v1/text/chatcompletion_v2"
-MODEL = "MiniMax-Text-01"
+# 🔴 2026-11-25：上游下线了 MiniMax-Text-01（2069）⇒ 换同族后继（同 gen_gs.py）
+MODEL = "MiniMax-M2.5-highspeed"
 
 SYSTEM = "你是日语精读校对员。只输出 JSON，不要解释文字。"
 

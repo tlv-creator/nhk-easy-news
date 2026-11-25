@@ -170,6 +170,19 @@ def main():
         if args.apply:
             with open(p, "w", encoding="utf-8") as f:
                 json.dump(d, f, ensure_ascii=False, separators=(",", ":"))
+            # 🔴🔴 **旁挂的 .blk.json 也按行号索引** ⇒ 合并后行号变了 ⇒ 它整份错位
+            #    （App 的弹窗用 `epNN:<行号>` 去 sidecar 里取整句结构块）
+            #    ⇒ 合并后必须**按新行号重建**（块内容用每行自己的 blk，合并时已拼好）
+            side = os.path.join(WS, "web", "data", "eps", ep + ".blk.json")
+            if os.path.exists(side):
+                blk_side = {}
+                for i, c in enumerate(cues):
+                    rows = c.get("rows") or [{}]
+                    blk_side["%s:%d" % (ep, i)] = rows[0].get("blk") or []
+                with open(side, "w", encoding="utf-8") as f:
+                    json.dump(blk_side, f, ensure_ascii=False, separators=(",", ":"))
+                print("   ↻ 重建 %s（%d 条，按新行号）"
+                      % (os.path.basename(side), len(blk_side)))
 
 
 if __name__ == "__main__":

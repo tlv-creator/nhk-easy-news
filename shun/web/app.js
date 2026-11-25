@@ -21,7 +21,7 @@
 
   /* 音频站域名（部署后由 scripts/set_audio_base.sh 写死）
    * 调试时可以用 ?audio=<绝对地址前缀> 临时换源（测试脚本用） */
-  var AUDIO_BASE_LOCAL = 'https://qtjgfga76bu4o.space.mcode.cn/media/';
+  var AUDIO_BASE_LOCAL = 'https://uz5u2rrf5izj1.space.mcode.cn/media/';
   /* 🔴🔴 **备用音频地址链**（2026-10-24 采纳 hub 课程站线的建议）
    *   起因：**地址写死 = 站点一挂/被删 ⇒ App 永久哑**，而且用户不知道原因
    *   ⇒ 同一集**换源重试**（不是只加 ?r= 破缓存 —— 那是重试同一个死地址）

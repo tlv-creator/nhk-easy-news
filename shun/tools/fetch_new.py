@@ -217,18 +217,23 @@ def main():
         return
 
     os.makedirs(args.outdir, exist_ok=True)
-    metas = []
-    for x in new:
-        tag = "ep%02d" % (len([i for i in range(1, 999)]) and 0)  # 占位，下面算
-        # 新集的 tag = 现有最大 tag + 1
-        metas.append(x)
+    metas = list(new)
+
+    # 🔴🔴 tag 必须**每集递增**（2026-11-25 修的真 bug）
+    #    原来每轮都从 index 重算「最大 tag + 1」⇒ 而 index 在循环里**不变**
+    #    ⇒ 一周来两期时，两期拿到**同一个 tag** ⇒ 同一个文件名
+    #    ⇒ 后一期覆盖前一期的成品 ⇒ 后一期闸门失败时 `os.remove(dst)`
+    #       删掉的是**被覆盖后**的文件 ⇒ 好的一期也一起没了。
+    #    ⇒ 现在：基数只算一次，循环里每集 +1（闸门逻辑一个字没动）。
+    idx = json.load(open(args.index))
+    nums = [int(re.sub(r"\D", "", e.get("tag") or "") or 0)
+            for e in idx.get("episodes", [])]
+    next_tag = (max(nums) if nums else 0) + 1
 
     # 一次只处理一期（周更场景），多期时按 ep 从大到小依次处理
     for x in metas:
-        idx = json.load(open(args.index))
-        tags = [e.get("tag") for e in idx.get("episodes", [])]
-        nums = [int(re.sub(r"\D", "", t) or 0) for t in tags]
-        tag = "ep%02d" % (max(nums) + 1)
+        tag = "ep%02d" % next_tag
+        next_tag += 1
         src = os.path.join(args.outdir, tag + "_src.mp3")
         dst = os.path.join(args.outdir, tag + ".m4a")
         say("== 下载 Ep%d → %s ==" % (x["ep"], tag))

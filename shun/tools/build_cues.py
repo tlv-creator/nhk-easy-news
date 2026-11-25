@@ -163,13 +163,13 @@ def main():
                 owner[i] = gi
                 break
     try:
-        from ruby import get_tokenizer
+        from ruby import get_tokenizer, tok_surface as _surf
         _tok = get_tokenizer()
         _full = "".join(mm_text)
         wspan, _pos = [], 0
         for t in _tok.tokenize(_full):
-            wspan.append((_pos, _pos + len(t.surface())))
-            _pos += len(t.surface())
+            wspan.append((_pos, _pos + len(_surf(t))))
+            _pos += len(_surf(t))
     except Exception as e:  # noqa: BLE001
         print("⚠️ 分词跳过: %s" % e, file=sys.stderr)
         wspan = [(i, i + 1) for i in range(n)]

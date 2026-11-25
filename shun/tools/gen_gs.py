@@ -35,7 +35,12 @@ WS = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
 API = "https://api.minimaxi.com/v1/text/chatcompletion_v2"
-MODEL = "MiniMax-Text-01"
+# 🔴 2026-11-25：上游下线了 MiniMax-Text-01（2069）⇒ 换同族后继。
+#    型号选择：**M2.5-highspeed**，不是 M2.5 —— 实测同一批 4 句：
+#      M2.5（推理型）⇒ 4 句要 12 分钟（88 句 ≈ 4.4 小时，发版等不起）
+#      M2.5-highspeed ⇒ 4 句 44 秒（88 句 ≈ 16 分钟）
+#    输出结构一致（都是 chatcompletion_v2 的 JSON 数组）⇒ 不影响既有闸门。
+MODEL = "MiniMax-M2.5-highspeed"
 
 BRACKETS = {"[]", "［］", "〈〉", "（）"}
 

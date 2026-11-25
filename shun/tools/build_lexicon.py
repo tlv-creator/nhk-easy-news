@@ -23,10 +23,11 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ruby import get_tokenizer  # noqa: E402
+from ruby import get_tokenizer, tok_surface as _surf  # noqa: E402
 
 API = "https://api.minimax.chat/v1/text/chatcompletion_v2"
-MODEL = "MiniMax-Text-01"
+# 🔴 2026-11-25：上游下线了 MiniMax-Text-01（2069）⇒ 换同族后继 M2.5（同 translate_zh.py）
+MODEL = "MiniMax-M2.5"
 
 DEF_PROMPT = """你是日语词典编纂。下面给你一批日语单词，请给每个词写一条词典条目。
 
@@ -142,7 +143,7 @@ def main():
     for i, c in enumerate(cues):
         segs = []
         for t in tok.tokenize(c["t"]):
-            segs.append(t.surface())
+            segs.append(_surf(t))
         # 用词库做最长匹配合并（与前端一致）
         arr = list(segs)
         merged = []

@@ -10855,5 +10855,1029 @@
   "ex": "元気ですか？えー、今日はいー、人間関係の作り方について話したいと思います。",
   "exzh": "你好吗？嗯，今天我想聊一聊如何建立良好的人际关系。",
   "reading": ""
+ },
+ "1960": {
+  "pos": "数词",
+  "def": "一千九百六十",
+  "usage": "表示年份或数量。",
+  "ex": "1960年頃からタクシーのドアは自動で開くんですよ。",
+  "exzh": "从 1960 年左右开始，出租车的车门就会自动打开了。",
+  "reading": ""
+ },
+ "280": {
+  "pos": "数词",
+  "def": "二百八十",
+  "usage": "表示数量或编号。",
+  "ex": "しゅんと日本語ポッドキャスト280タクシーTaxi",
+  "exzh": "Shun 的日语播客 280 出租车 Taxi",
+  "reading": ""
+ },
+ "4": {
+  "pos": "数词",
+  "def": "四",
+  "usage": "表示数量或序号。",
+  "ex": "3つか4つの他のタクシーに値段を聞いて、比べて、交渉して乗っていました。",
+  "exzh": "先问另外 3 家或 4 家出租车的价格，比较一下、谈一下，再上车。",
+  "reading": ""
+ },
+ "65": {
+  "pos": "数词",
+  "def": "六十五",
+  "usage": "表示年龄或数量。",
+  "ex": "65年前、65年以上前からずっと同じですね。んー、",
+  "exzh": "65 年前，65 年多以前就是这样了，一直都没变。嗯——",
+  "reading": ""
+ },
+ "GO": {
+  "pos": "动词",
+  "def": "前进；出发",
+  "usage": "表示出发或开始。",
+  "ex": "まあ、今では日本でもGOかUberといったアプリを使ってタクシーを呼べるようべるようになったのではい、その問題がなくなりました。",
+  "exzh": "现在在日本也能用 GO 或 Uber 之类的 app 叫出租车了，所以这个问题已经不存在了。",
+  "reading": "ゴー"
+ },
+ "Google": {
+  "pos": "名词",
+  "def": "谷歌搜索",
+  "usage": "用谷歌查找信息。",
+  "ex": "彼らは時々Googleマップを使いません。",
+  "exzh": "他们有时甚至不用 Google Maps。",
+  "reading": "ゴーグル"
+ },
+ "Taxi": {
+  "pos": "名词",
+  "def": "出租车",
+  "usage": "乘出租车去车站。",
+  "ex": "しゅんと日本語ポッドキャスト280タクシーTaxi",
+  "exzh": "Shun 的日语播客 280 出租车 Taxi",
+  "reading": "タクシー"
+ },
+ "Uber": {
+  "pos": "名词",
+  "def": "网约车服务",
+  "usage": "用优步预约车辆。",
+  "ex": "まあ、今では日本でもGOかUberといったアプリを使ってタクシーを呼べるようべるようになったのではい、その問題がなくなりました。",
+  "exzh": "现在在日本也能用 GO 或 Uber 之类的 app 叫出租车了，所以这个问题已经不存在了。",
+  "reading": "ウーバー"
+ },
+ "address": {
+  "pos": "名词",
+  "def": "地址",
+  "usage": "请填写收货地址。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "アドレス"
+ },
+ "automatic": {
+  "pos": "形容词",
+  "def": "自动的",
+  "usage": "这台相机是全自动的。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "オートマティック"
+ },
+ "detour": {
+  "pos": "名词",
+  "def": "绕行路线",
+  "usage": "前方施工，请绕行。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "ディーター"
+ },
+ "drivers": {
+  "pos": "名词",
+  "def": "司机们",
+  "usage": "司机们正在等候。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "ドライバーズ"
+ },
+ "meansoftransportation": {
+  "pos": "名词",
+  "def": "交通手段",
+  "usage": "选择适当的交通手段。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "こうつうしゅだん"
+ },
+ "memory": {
+  "pos": "名词",
+  "def": "记忆；存储器",
+  "usage": "记忆力不太好。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "メモリー"
+ },
+ "morethan": {
+  "pos": "副词",
+  "def": "比……多",
+  "usage": "人数比去年多。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "もあざん"
+ },
+ "overseas": {
+  "pos": "形容词",
+  "def": "海外的",
+  "usage": "他在海外工作。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "オーバーシーズ"
+ },
+ "price": {
+  "pos": "名词",
+  "def": "价格",
+  "usage": "商品价格已经下降。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "プライス"
+ },
+ "publictransportation": {
+  "pos": "名词",
+  "def": "公共交通",
+  "usage": "我通常乘坐公共交通。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "こうつうこうきょう"
+ },
+ "theelderly": {
+  "pos": "名词",
+  "def": "老年人群",
+  "usage": "应关心老年人的生活。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "こうれいしゃたち"
+ },
+ "tocompare": {
+  "pos": "动词",
+  "def": "比较",
+  "usage": "请比较两件商品。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "ひかくする"
+ },
+ "todecrease": {
+  "pos": "动词",
+  "def": "使减少",
+  "usage": "政策旨在减少浪费。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "げんしょうさせる"
+ },
+ "tomoveortotravel": {
+  "pos": "动词",
+  "def": "移动或旅行",
+  "usage": "他喜欢移动或旅行。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "いどうまたはりょこうする"
+ },
+ "tonegotiateortohaggle": {
+  "pos": "动词",
+  "def": "谈判或砍价",
+  "usage": "买贵商品时可砍价。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "こうしょうまたはねびきる"
+ },
+ "toriponeoff": {
+  "pos": "动词",
+  "def": "诈骗；强取",
+  "usage": "商家绝不能强取顾客的钱。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "とりっぷわんおふ"
+ },
+ "trafficjam": {
+  "pos": "名词",
+  "def": "交通堵塞",
+  "usage": "上班时遇到交通堵塞。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "トラフィックジャム"
+ },
+ "troublesome": {
+  "pos": "形容词",
+  "def": "麻烦的",
+  "usage": "这个问题相当麻烦。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "トラブルサム"
+ },
+ "「": {
+  "pos": "标点",
+  "def": "左引号",
+  "usage": "用于标记引文开头。",
+  "ex": "時々私は自分のスマホのGoogleマップに行きたい場所の住所を入れて見せて「ここに行ってください」と言います。",
+  "exzh": "我偶尔会在自己手机的 Google 地图里输入想去的地址，然后给它看，说：“请带我去这里。”",
+  "reading": ""
+ },
+ "」": {
+  "pos": "标点",
+  "def": "右引号",
+  "usage": "用于标记引文结尾。",
+  "ex": "時々私は自分のスマホのGoogleマップに行きたい場所の住所を入れて見せて「ここに行ってください」と言います。",
+  "exzh": "我偶尔会在自己手机的 Google 地图里输入想去的地址，然后给它看，说：“请带我去这里。”",
+  "reading": ""
+ },
+ "うべ": {
+  "pos": "叹词",
+  "def": "方言语气词",
+  "usage": "うべな表示“也对吧”。",
+  "ex": "まあ、今では日本でもGOかUberといったアプリを使ってタクシーを呼べるようべるようになったのではい、その問題がなくなりました。",
+  "exzh": "现在在日本也能用 GO 或 Uber 之类的 app 叫出租车了，所以这个问题已经不存在了。",
+  "reading": "うべ"
+ },
+ "うーん": {
+  "pos": "叹词",
+  "def": "嗯——",
+  "usage": "表示思索或迟疑。",
+  "ex": "本当にありますか？うーん、私はまだ自動運転のタクシーに乗ったことがないので",
+  "exzh": "真的有了吗？嗯——我还没坐过自动驾驶出租车，所以……",
+  "reading": "うーん"
+ },
+ "くら": {
+  "pos": "名词",
+  "def": "昏暗",
+  "usage": "房间陷入一片昏暗。",
+  "ex": "特に、外国でタクシーに乗る時はいつもぼったくられます。",
+  "exzh": "尤其是在国外坐出租车，总是被宰。",
+  "reading": "くら"
+ },
+ "ここ": {
+  "pos": "代词",
+  "def": "这里",
+  "usage": "请坐在这里。",
+  "ex": "時々私は自分のスマホのGoogleマップに行きたい場所の住所を入れて見せて「ここに行ってください」と言います。",
+  "exzh": "我偶尔会在自己手机的 Google 地图里输入想去的地址，然后给它看，说：“请带我去这里。”",
+  "reading": "ここ"
+ },
+ "たくる": {
+  "pos": "结尾词",
+  "def": "想做",
+  "usage": "接在动词后表示想做。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "たくる"
+ },
+ "つか": {
+  "pos": "动词",
+  "def": "疲惫",
+  "usage": "连续工作后感到疲惫。",
+  "ex": "3つか4つの他のタクシーに値段を聞いて、比べて、交渉して乗っていました。",
+  "exzh": "先问另外 3 家或 4 家出租车的价格，比较一下、谈一下，再上车。",
+  "reading": "つか"
+ },
+ "といった": {
+  "pos": "连接词",
+  "def": "像……这样的",
+  "usage": "东京这样的城市很方便。",
+  "ex": "まあ、今では日本でもGOかUberといったアプリを使ってタクシーを呼べるようべるようになったのではい、その問題がなくなりました。",
+  "exzh": "现在在日本也能用 GO 或 Uber 之类的 app 叫出租车了，所以这个问题已经不存在了。",
+  "reading": "といった"
+ },
+ "どうか": {
+  "pos": "副词",
+  "def": "请",
+  "usage": "どうか请多多关照。",
+  "ex": "本当かどうか分かりません。",
+  "exzh": "不知道是真是假。",
+  "reading": "どうか"
+ },
+ "なくなっ": {
+  "pos": "动词",
+  "def": "变得没有",
+  "usage": "那家店已经变得不存在。",
+  "ex": "じゃあ、将来はタクシーの運転手の仕事はなくなってしまいますね。",
+  "exzh": "那么，以后出租车司机这个工作是不是要消失了呀？",
+  "reading": "なくなっ"
+ },
+ "びっくり": {
+  "pos": "动词",
+  "def": "吃惊",
+  "usage": "这个消息让我大吃一惊。",
+  "ex": "私の外国の友達は日本のタクシーに乗ってびっくりしたと言っていました。",
+  "exzh": "我的外国朋友说，他们坐日本的出租车时吓了一跳。",
+  "reading": "びっくり"
+ },
+ "ぼっ": {
+  "pos": "动词",
+  "def": "欺骗（词干）",
+  "usage": "多用于ぼったくる一词。",
+  "ex": "特に、外国でタクシーに乗る時はいつもぼったくられます。",
+  "exzh": "尤其是在国外坐出租车，总是被宰。",
+  "reading": "ぼっ"
+ },
+ "アドベンチャー": {
+  "pos": "名词",
+  "def": "冒险经历",
+  "usage": "这次旅行充满冒险。",
+  "ex": "特に旅行をしている時は公共交通機関を使うのはアドベンチャーの1つですよね。",
+  "exzh": "尤其旅行的时候，乘坐公共交通工具本身就是冒险的 1 种方式嘛。",
+  "reading": "アドベンチャー"
+ },
+ "タイ": {
+  "pos": "名词",
+  "def": "领带",
+  "usage": "开会前别忘了系好领带。",
+  "ex": "例えばタイでは本当にタクシーは安くて便利ですよね。",
+  "exzh": "比如说在泰国，出租车真的很便宜、很方便，对吧？",
+  "reading": "たい"
+ },
+ "タクシー": {
+  "pos": "名词",
+  "def": "出租车",
+  "usage": "深夜可乘出租车回家。",
+  "ex": "しゅんと日本語ポッドキャスト280タクシーTaxi",
+  "exzh": "Shun 的日语播客 280 出租车 Taxi",
+  "reading": "タクシー"
+ },
+ "チップ": {
+  "pos": "名词",
+  "def": "小费",
+  "usage": "服务良好时可给一些小费。",
+  "ex": "あと皆さん、日本にはチップの文化がないので",
+  "exzh": "另外，大家知道日本没有付小费的文化，所以",
+  "reading": "ちっぷ"
+ },
+ "バイク": {
+  "pos": "名词",
+  "def": "摩托车",
+  "usage": "他骑摩托车上班。",
+  "ex": "あと、東南アジアにはバイクタクシーもあります。",
+  "exzh": "对了，东南亚还有摩的。",
+  "reading": "バイク"
+ },
+ "マップ": {
+  "pos": "名词",
+  "def": "地图",
+  "usage": "用地图查看道路。",
+  "ex": "彼らは時々Googleマップを使いません。",
+  "exzh": "他们有时甚至不用 Google Maps。",
+  "reading": "マップ"
+ },
+ "ー": {
+  "pos": "符号",
+  "def": "长音符号",
+  "usage": "片假名后的长音用此符号。",
+  "ex": "元気ですか？えー、今日はタクシーについて話したいと思いまーす。",
+  "exzh": "大家还好吗？嗯，今天我想聊聊出租车。",
+  "reading": ""
+ },
+ "中国": {
+  "pos": "名词",
+  "def": "中国",
+  "usage": "地址可写作“中国北京市”。",
+  "ex": "中国やアメリカでは、自動運転のタクシーがあると聞きました。",
+  "exzh": "我听说中国和美国已经有了自动驾驶出租车。",
+  "reading": "ちゅうごく"
+ },
+ "乗っ": {
+  "pos": "动词",
+  "def": "“乗る”的连用形",
+  "usage": "接续后构成“乘坐”等形式。",
+  "ex": "3つか4つの他のタクシーに値段を聞いて、比べて、交渉して乗っていました。",
+  "exzh": "先问另外 3 家或 4 家出租车的价格，比较一下、谈一下，再上车。",
+  "reading": "のっ"
+ },
+ "乗り": {
+  "pos": "名词",
+  "def": "乘坐；乘车",
+  "usage": "这次乘车很顺利。",
+  "ex": "皆さんはどんな時にタクシーに乗りますか？",
+  "exzh": "大家一般在什么时候坐出租车呢？",
+  "reading": "のり"
+ },
+ "交渉": {
+  "pos": "名词",
+  "def": "交涉；谈判",
+  "usage": "双方通过谈判达成协议。",
+  "ex": "3つか4つの他のタクシーに値段を聞いて、比べて、交渉して乗っていました。",
+  "exzh": "先问另外 3 家或 4 家出租车的价格，比较一下、谈一下，再上车。",
+  "reading": "こうしょう"
+ },
+ "交通": {
+  "pos": "名词",
+  "def": "交通运输",
+  "usage": "上班时交通很拥挤。",
+  "ex": "公共交通機関を使いますね。",
+  "exzh": "都会选择坐公共交通工具。",
+  "reading": "こうつう"
+ },
+ "以上": {
+  "pos": "副词",
+  "def": "不少于；达到",
+  "usage": "人数达到十人以上即可。",
+  "ex": "65年前、65年以上前からずっと同じですね。んー、",
+  "exzh": "65 年前，65 年多以前就是这样了，一直都没变。嗯——",
+  "reading": "いじょう"
+ },
+ "住所": {
+  "pos": "名词",
+  "def": "住址；地址",
+  "usage": "请在栏内填写住所。",
+  "ex": "時々私は自分のスマホのGoogleマップに行きたい場所の住所を入れて見せて「ここに行ってください」と言います。",
+  "exzh": "我偶尔会在自己手机的 Google 地图里输入想去的地址，然后给它看，说：“请带我去这里。”",
+  "reading": "じゅうしょ"
+ },
+ "使っ": {
+  "pos": "动词",
+  "def": "“使う”的连用形",
+  "usage": "接续后构成“使って”等形式。",
+  "ex": "タイでタクシーは本当に安いので毎日タクシーを使っていました。",
+  "exzh": "泰国的出租车真的很便宜，所以我每天都坐出租车。",
+  "reading": "つかっ"
+ },
+ "値段": {
+  "pos": "名词",
+  "def": "价格",
+  "usage": "这家店的价钱很公道。",
+  "ex": "3つか4つの他のタクシーに値段を聞いて、比べて、交渉して乗っていました。",
+  "exzh": "先问另外 3 家或 4 家出租车的价格，比较一下、谈一下，再上车。",
+  "reading": "ねだん"
+ },
+ "入れ": {
+  "pos": "动词",
+  "def": "“入れる”的活用形",
+  "usage": "表示放入的动作。",
+  "ex": "時々私は自分のスマホのGoogleマップに行きたい場所の住所を入れて見せて「ここに行ってください」と言います。",
+  "exzh": "我偶尔会在自己手机的 Google 地图里输入想去的地址，然后给它看，说：“请带我去这里。”",
+  "reading": "いれ"
+ },
+ "呼べ": {
+  "pos": "动词",
+  "def": "能叫；可称呼",
+  "usage": "接在动词后表示“能叫”。",
+  "ex": "アプリを使ってタクシーを簡単に呼べたら、それは一番便利だと思います。",
+  "exzh": "如果能用 app 轻松叫出租车，我觉得那才是最方便的。",
+  "reading": "よべ"
+ },
+ "呼べる": {
+  "pos": "动词",
+  "def": "能叫；可以称呼",
+  "usage": "你可随时打电话给我。",
+  "ex": "実は、日本では最近少しずつアプリを使ってタクシーを呼べるようになりました。",
+  "exzh": "其实，最近在日本已经慢慢可以用 app 叫出租车了。",
+  "reading": "よべる"
+ },
+ "大体": {
+  "pos": "副词",
+  "def": "大致；大体上",
+  "usage": "大体上已经准备完成了。",
+  "ex": "私は日本であまりタクシーを使いません。大体",
+  "exzh": "我在日本不太常坐出租车，基本",
+  "reading": "だいたい"
+ },
+ "安く": {
+  "pos": "副词",
+  "def": "便宜地；价格低",
+  "usage": "这里的东西卖得便宜。",
+  "ex": "例えばタイでは本当にタクシーは安くて便利ですよね。",
+  "exzh": "比如说在泰国，出租车真的很便宜、很方便，对吧？",
+  "reading": "やすく"
+ },
+ "年寄り": {
+  "pos": "名词",
+  "def": "老人",
+  "usage": "公园里坐着许多老人。",
+  "ex": "日本のタクシーの運転手は大抵年寄りの人が多いです。",
+  "exzh": "日本的出租车司机大多数都是年纪比较大的人。",
+  "reading": "としより"
+ },
+ "思い出": {
+  "pos": "名词",
+  "def": "回忆",
+  "usage": "这张照片勾起我的回忆。",
+  "ex": "なんか時々旅行をしていてタクシーの運転手との会話が旅行のいい思い出になりますからね。うーん。",
+  "exzh": "有时候旅行途中和出租车司机聊聊天，会成为旅途中很美好的回忆。嗯。",
+  "reading": "おもいで"
+ },
+ "手段": {
+  "pos": "名词",
+  "def": "方法；手段",
+  "usage": "这是解决问题的有效手段。",
+  "ex": "まあタクシーはほとんどの国で一番高い交通手段だと思います。",
+  "exzh": "我觉得在大多数国家，出租车都是最贵的交通方式。",
+  "reading": "しゅMeans"
+ },
+ "払わ": {
+  "pos": "动词",
+  "def": "“払う”的连用形",
+  "usage": "接续后构成“払って”等形式。",
+  "ex": "タクシーの運転手にチップを払わなくてもいいですからね。",
+  "exzh": "坐出租车时，不用给司机小费哦。",
+  "reading": "はらわ"
+ },
+ "東南アジア": {
+  "pos": "名词",
+  "def": "东南亚",
+  "usage": "该商品销往东南亚各国。",
+  "ex": "あと、東南アジアにはバイクタクシーもあります。",
+  "exzh": "对了，东南亚还有摩的。",
+  "reading": "とうなんアジア"
+ },
+ "機関": {
+  "pos": "名词",
+  "def": "机关；机构",
+  "usage": "该机构负责交通管理。",
+  "ex": "公共交通機関を使いますね。",
+  "exzh": "都会选择坐公共交通工具。",
+  "reading": "きかん"
+ },
+ "比べ": {
+  "pos": "动词",
+  "def": "“比”的连用形",
+  "usage": "接续后构成“比べて”等形式。",
+  "ex": "3つか4つの他のタクシーに値段を聞いて、比べて、交渉して乗っていました。",
+  "exzh": "先问另外 3 家或 4 家出租车的价格，比较一下、谈一下，再上车。",
+  "reading": "くらべ"
+ },
+ "海外": {
+  "pos": "名词",
+  "def": "国外；海外",
+  "usage": "这款产品已出口海外。",
+  "ex": "あと海外に旅行に行く時も時々タクシーを使います。",
+  "exzh": "另外，去国外旅行的时候，我也会偶尔坐出租车。",
+  "reading": "かいがい"
+ },
+ "渋滞": {
+  "pos": "名词",
+  "def": "交通堵塞",
+  "usage": "上班高峰经常堵车。",
+  "ex": "バイクなので、少し危ないですが、渋滞がすごい時は、本当に便利です。",
+  "exzh": "因为是摩托车，所以有点危险，不过堵车特别严重的时候真的很方便。",
+  "reading": "じゅうたい"
+ },
+ "減る": {
+  "pos": "动词",
+  "def": "减少",
+  "usage": "路上的车辆逐渐减少。",
+  "ex": "人とのコミュニケーションが減るのは少し悲しい気持ちがありますが、すごく便利になりますね。",
+  "exzh": "人和人之间的交流会变少，感觉有点可惜，不过这样也会方便很多呢。",
+  "reading": "へる"
+ },
+ "聞き": {
+  "pos": "动词",
+  "def": "“聞く”的连用形",
+  "usage": "接续后构成“聞いて”等形式。",
+  "ex": "中国やアメリカでは、自動運転のタクシーがあると聞きました。",
+  "exzh": "我听说中国和美国已经有了自动驾驶出租车。",
+  "reading": "きき"
+ },
+ "自動": {
+  "pos": "名词",
+  "def": "自动；自动装置",
+  "usage": "这台机器可以自动运行。",
+  "ex": "日本のタクシーはドアが自動で開くんですよ。",
+  "exzh": "日本的出租车车门会自动打开哦。",
+  "reading": "じどう"
+ },
+ "行ける": {
+  "pos": "动词",
+  "def": "能去；可以前往",
+  "usage": "这条路能通到车站。",
+  "ex": "ホテルから好きな場所に行けるので、んー、",
+  "exzh": "因为可以从酒店去任何自己喜欢的地方，呃——",
+  "reading": "いける"
+ },
+ "言い": {
+  "pos": "动词",
+  "def": "“言う”的连用形",
+  "usage": "接续后构成“言って”等形式。",
+  "ex": "時々私は自分のスマホのGoogleマップに行きたい場所の住所を入れて見せて「ここに行ってください」と言います。",
+  "exzh": "我偶尔会在自己手机的 Google 地图里输入想去的地址，然后给它看，说：“请带我去这里。”",
+  "reading": "い"
+ },
+ "言っ": {
+  "pos": "动词",
+  "def": "“言う”的连用形",
+  "usage": "接续后构成“言って”等形式。",
+  "ex": "私の外国の友達は日本のタクシーに乗ってびっくりしたと言っていました。",
+  "exzh": "我的外国朋友说，他们坐日本的出租车时吓了一跳。",
+  "reading": "い"
+ },
+ "言わ": {
+  "pos": "动词",
+  "def": "“言う”的未然形",
+  "usage": "接续后构成“言わない”等形式。",
+  "ex": "まあ、外国ではアプリを使いますから、住所を言わなくてもいいですよね。うん。",
+  "exzh": "也是，在外国大家都会用 app，不用说地址也可以嘛。嗯。",
+  "reading": "いわ"
+ },
+ "遅く": {
+  "pos": "副词",
+  "def": "晚；迟",
+  "usage": "请晚一点到这里。",
+  "ex": "でも夜遅くまで友達と居酒屋でお酒を飲んで電車がない時や本当に疲れている時は時々タクシーを使います。",
+  "exzh": "不过，和朋友在居酒屋喝酒到很晚、没有电车，或者真的累坏了的时候，我偶尔会坐出租车。",
+  "reading": "おそく"
+ },
+ "運転": {
+  "pos": "名词",
+  "def": "驾驶；开车",
+  "usage": "父亲每天开车上班。",
+  "ex": "タクシーの運転手にチップを払わなくてもいいですからね。",
+  "exzh": "坐出租车时，不用给司机小费哦。",
+  "reading": "うんてん"
+ },
+ "遠回り": {
+  "pos": "名词",
+  "def": "绕远；绕道",
+  "usage": "堵车时只能绕道行驶。",
+  "ex": "だから少し遠回りをしたりしています。",
+  "exzh": "所以我会稍微绕一点路。",
+  "reading": "とおまわり"
+ },
+ "面倒くさい": {
+  "pos": "形容词",
+  "def": "麻烦；繁琐",
+  "usage": "手续太多，显得很麻烦。",
+  "ex": "タクシーは私たちの生活の一部にあるので、タクシーについて考えてみるのも、面白いですよね。Wordsandphrasesusedinthisepisode公共交通機関publictransportation海外overseas渋滞trafficjamぼったくるtoriponeoff値段price比べるtocompare交渉するtonegotiateortohaggle自動automatic以上morethan運転手driversお年寄りtheelderly遠回りdetour住所address呼ぶtocall面倒くさいtroublesome発展するtodevelop想像するtoimagine思い出memory減るtodecrease交通手段meansoftransportation移動するtomoveortotravel一部apart",
+  "exzh": "本集使用的单词和短语：公共交通（public transportation）、海外（overseas）、堵车（traffic jam）、敲竹杠（to rip one off）、价格（price）、比较（to compare）、讨价还价（to negotiate or to haggle）、自动的（automatic）、以上（more than）、司机（drivers）、老人（the elderly）、绕路（detour）、地址（address）、叫（to call）、麻烦（troublesome）、发展（to develop）、想象（to imagine）、回忆（memory）、减少（to decrease）、交通方式（means of transportation）、移动（to move or to travel）、一部分（apart）",
+  "reading": "めんどうくさい"
+ },
+ "面倒くさかっ": {
+  "pos": "形容词",
+  "def": "嫌麻烦（过去）",
+  "usage": "用于否定过去状态，末尾补“た”。",
+  "ex": "でも前まではそれが本当に面倒くさかったですね。はい。",
+  "exzh": "不过，在这之前真的是很麻烦呢。是的。",
+  "reading": "めんどうくさかっ"
+ },
+ "面白く": {
+  "pos": "副词",
+  "def": "有趣地",
+  "usage": "作“有趣的”的副词形，接动词。",
+  "ex": "ちょっと面白くないと思います。",
+  "exzh": "我觉得会有点没意思。",
+  "reading": "おもたく"
+ },
+ "279": {
+  "pos": "数词",
+  "def": "二百七十九",
+  "usage": "房间号为279。",
+  "ex": "しゅんと日本語ポッドキャスト279",
+  "exzh": "Shun 的日语播客第 279 期",
+  "reading": ""
+ },
+ "Genkilevel": {
+  "pos": "名词",
+  "def": "活力等级",
+  "usage": "可表示当前的活力水平。",
+  "ex": "初心者ビギナーズGenkilevelお土産souvenir",
+  "exzh": "初学者 beginner 的 Genki level 伴手礼 souvenir",
+  "reading": "げんきれべる"
+ },
+ "domestic": {
+  "pos": "形容词",
+  "def": "国内的；家庭的",
+  "usage": "该产品面向国内市场。",
+  "ex": "国内domesticお菓子snack同僚coworkersある日oneday義務mandatory我慢",
+  "exzh": "国内 domestic 点心 snack 同事 coworkers 某天 one day 义务 mandatory 忍耐",
+  "reading": "どめすてっく"
+ },
+ "full": {
+  "pos": "形容词",
+  "def": "满的；充满的",
+  "usage": "杯子装满后不要再倒了。",
+  "ex": "するtoholdbackortobepatient近所neighborhoodいっぱいfull",
+  "exzh": "做 to hold back or to be patient 邻居 neighborhood 满满的 full",
+  "reading": "ふる"
+ },
+ "mandatory": {
+  "pos": "形容词",
+  "def": "强制的；必修的",
+  "usage": "这门课是必修课。",
+  "ex": "国内domesticお菓子snack同僚coworkersある日oneday義務mandatory我慢",
+  "exzh": "国内 domestic 点心 snack 同事 coworkers 某天 one day 义务 mandatory 忍耐",
+  "reading": "まんだとり"
+ },
+ "oneday": {
+  "pos": "形容词",
+  "def": "一天的；一日的",
+  "usage": "这是一场一天的培训。",
+  "ex": "国内domesticお菓子snack同僚coworkersある日oneday義務mandatory我慢",
+  "exzh": "国内 domestic 点心 snack 同事 coworkers 某天 one day 义务 mandatory 忍耐",
+  "reading": "わんでい"
+ },
+ "snack": {
+  "pos": "名词",
+  "def": "小吃；点心",
+  "usage": "下午吃些小点心吧。",
+  "ex": "国内domesticお菓子snack同僚coworkersある日oneday義務mandatory我慢",
+  "exzh": "国内 domestic 点心 snack 同事 coworkers 某天 one day 义务 mandatory 忍耐",
+  "reading": "すなっく"
+ },
+ "souvenir": {
+  "pos": "名词",
+  "def": "纪念品",
+  "usage": "旅行归来买了件纪念品。",
+  "ex": "初心者ビギナーズGenkilevelお土産souvenir",
+  "exzh": "初学者 beginner 的 Genki level 伴手礼 souvenir",
+  "reading": "すえびあ"
+ },
+ "toholdbackortobepatient": {
+  "pos": "动词",
+  "def": "克制冲动或耐心等待",
+  "usage": "遇到诱惑时要忍住或耐心等待。",
+  "ex": "するtoholdbackortobepatient近所neighborhoodいっぱいfull",
+  "exzh": "做 to hold back or to be patient 邻居 neighborhood 满满的 full",
+  "reading": "とぅほおるどばっくおおとぅびいぺいしゃんと"
+ },
+ "いっぱい": {
+  "pos": "副词",
+  "def": "很多；充分",
+  "usage": "今天吃了很多点心。",
+  "ex": "いつも帰る時の荷物は本当にいっぱいです。",
+  "exzh": "所以每次回家时，行李都装得满满的。",
+  "reading": "いっぱい"
+ },
+ "おもい": {
+  "pos": "形容词",
+  "def": "重的",
+  "usage": "这个箱子很重。",
+  "ex": "今日はお土産について話したいとおもいます。",
+  "exzh": "今天我想聊聊伴手礼。",
+  "reading": "おもい"
+ },
+ "お守り": {
+  "pos": "名词",
+  "def": "护身符",
+  "usage": "妈妈为我买了护身符。",
+  "ex": "で買うことができるお守りもすごく人気なお土産になりましたね。",
+  "exzh": "在那里可以买到的御守，也成了很受欢迎的伴手礼呢。",
+  "reading": "おもり"
+ },
+ "お菓子": {
+  "pos": "名词",
+  "def": "点心；糖果",
+  "usage": "茶会准备了各种糖果。",
+  "ex": "日本では国内旅行に行くときは、よくお菓子を買っていました。色々",
+  "exzh": "在日本国内旅行时，我经常会买各种各样的点心。",
+  "reading": "おかし"
+ },
+ "ごめんなさい": {
+  "pos": "叹词",
+  "def": "对不起",
+  "usage": "迟到时请说“对不起”。",
+  "ex": "ごめんなさい。",
+  "exzh": "不好意思。",
+  "reading": "ごめんなさい"
+ },
+ "それに": {
+  "pos": "连词",
+  "def": "而且；此外",
+  "usage": "此外，我还买了杂志。",
+  "ex": "それにいっぱいになるまでお土産を買いました。",
+  "exzh": "然后一直买土特产，直到快把行李箱装满。",
+  "reading": "それに"
+ },
+ "そんなに": {
+  "pos": "副词",
+  "def": "那么；那样",
+  "usage": "价格没有那么高。",
+  "ex": "私はそんなにたくさんお土産を買って帰るのはできませんね。",
+  "exzh": "我可没办法买那么多土特产带回来呢。",
+  "reading": "そんなに"
+ },
+ "たいてい": {
+  "pos": "副词",
+  "def": "通常；一般",
+  "usage": "我通常坐八点去上班。",
+  "ex": "日本ではたいていお土産はお菓子を買いますね。",
+  "exzh": "在日本，大家一般都会买点心当伴手礼呢。",
+  "reading": "たいてい"
+ },
+ "など": {
+  "pos": "助词",
+  "def": "等等；之类",
+  "usage": "茶叶、糖果等等都有。",
+  "ex": "例えば、着物や日本の包丁、アニメのグッズや服、日本のお菓子など、",
+  "exzh": "比如和服、日本菜刀、动漫周边还有衣服、日本的点心等等，",
+  "reading": "など"
+ },
+ "みや": {
+  "pos": "名词",
+  "def": "神社",
+  "usage": "我们去神社参拜。",
+  "ex": "10年前はあまりおみや、お、お守り？",
+  "exzh": "10 年前几乎没、没、没御守，对吧？",
+  "reading": "みや"
+ },
+ "クロ": {
+  "pos": "形容词",
+  "def": "黑色的",
+  "usage": "他穿着黑色的衣服。",
+  "ex": "最近ではユニクロは世界中で有名なブランドになりました。",
+  "exzh": "最近，Uniqlo 成了全世界都很有名气的品牌。",
+  "reading": "くろ"
+ },
+ "グッズ": {
+  "pos": "名词",
+  "def": "商品；周边",
+  "usage": "这些商品是官方周边。",
+  "ex": "例えば、着物や日本の包丁、アニメのグッズや服、日本のお菓子など、",
+  "exzh": "比如和服、日本菜刀、动漫周边还有衣服、日本的点心等等，",
+  "reading": "ぐっず"
+ },
+ "サプライズ": {
+  "pos": "名词",
+  "def": "惊喜",
+  "usage": "派对上准备了一个惊喜。",
+  "ex": "だから、時々サプライズでして、友達にお土産を買っていくのもいいかもしれませんね。",
+  "exzh": "所以，偶尔作为惊喜，给朋友带些土特产也不错呢。",
+  "reading": "さぷらいず"
+ },
+ "スーツケース": {
+  "pos": "名词",
+  "def": "行李箱",
+  "usage": "旅行前请收拾好行李箱。",
+  "ex": "日本で欲しいものがたくさんあるから、1つ半分いっぱいのスーツケースを日本に持ってきて、残りの半分にたくさんお土産を買いました。",
+  "exzh": "因为在日本想要的东西很多，所以只把装到一半的行李箱带来日本，剩下的那一半空间都用来买土特产了。",
+  "reading": "すうつかあす"
+ },
+ "デザイン": {
+  "pos": "名词",
+  "def": "设计；图案",
+  "usage": "这张海报的设计很新颖。",
+  "ex": "まあ、お守りのデザインは本当に綺麗ですからね。うん、",
+  "exzh": "毕竟，御守的设计真的很漂亮，对吧。嗯，",
+  "reading": "でざいん"
+ },
+ "ビギナーズ": {
+  "pos": "名词",
+  "def": "新手；初学者",
+  "usage": "这套教程适合新手使用。",
+  "ex": "初心者ビギナーズGenkilevelお土産souvenir",
+  "exzh": "初学者 beginner 的 Genki level 伴手礼 souvenir",
+  "reading": "びぎなあず"
+ },
+ "フィギュア": {
+  "pos": "名词",
+  "def": "模型；手办",
+  "usage": "我买了一个动漫手办。",
+  "ex": "友達は着物と包丁とたくさんアニメのフィギュアを買っていました。",
+  "exzh": "朋友买了和服、菜刀，还有好多动漫手办。",
+  "reading": "ふぃぎゅあ"
+ },
+ "ユニ": {
+  "pos": "名词",
+  "def": "制服",
+  "usage": "学生穿校服上学。",
+  "ex": "最近ではユニクロは世界中で有名なブランドになりました。",
+  "exzh": "最近，Uniqlo 成了全世界都很有名气的品牌。",
+  "reading": "ゆに"
+ },
+ "使": {
+  "pos": "动词",
+  "def": "使用；使役",
+  "usage": "老师让学生打扫教室。",
+  "ex": "お土産を買う時間に使すぎてしまいました。",
+  "exzh": "把太多时间花在买伴手礼上。",
+  "reading": "つか"
+ },
+ "侍": {
+  "pos": "名词",
+  "def": "武士；侍者",
+  "usage": "他扮成武士模样。",
+  "ex": "ま、でも日本には侍がいましたからね。",
+  "exzh": "不过嘛，因为日本以前确实有武士啊。",
+  "reading": "さむらい"
+ },
+ "包丁": {
+  "pos": "名词",
+  "def": "菜刀；厨刀",
+  "usage": "用这把菜刀切菜。",
+  "ex": "例えば、着物や日本の包丁、アニメのグッズや服、日本のお菓子など、",
+  "exzh": "比如和服、日本菜刀、动漫周边还有衣服、日本的点心等等，",
+  "reading": "ほうちょう"
+ },
+ "去年": {
+  "pos": "名词",
+  "def": "去年",
+  "usage": "去年去了京都。",
+  "ex": "私の外国人の友達は去年、日本に来ました。",
+  "exzh": "我有一位外国朋友，去年来了日本。",
+  "reading": "きょねん"
+ },
+ "国内": {
+  "pos": "名词",
+  "def": "国内",
+  "usage": "目前只面向国内市场。",
+  "ex": "国内旅行に行く時も海外旅行に行く時もお土産を買っていましたね。",
+  "exzh": "不管是在国内旅行，还是去国外旅行，我都会买伴手礼呢。",
+  "reading": "こくない"
+ },
+ "土産": {
+  "pos": "名词",
+  "def": "土产；纪念品",
+  "usage": "旅行带回了当地土产。",
+  "ex": "初心者ビギナーズGenkilevelお土産souvenir",
+  "exzh": "初学者 beginner 的 Genki level 伴手礼 souvenir",
+  "reading": "みやげ"
+ },
+ "帰り": {
+  "pos": "名词",
+  "def": "回家；归途",
+  "usage": "放学后直接回家。",
+  "ex": "初めて海外旅行に行った時もたくさんお土産を買って家に帰りました。",
+  "exzh": "第一次去国外旅行的时候，我买了很多伴手礼才回家。",
+  "reading": "かえり"
+ },
+ "残り": {
+  "pos": "名词",
+  "def": "剩余物",
+  "usage": "盘子里还剩下一些。",
+  "ex": "日本で欲しいものがたくさんあるから、1つ半分いっぱいのスーツケースを日本に持ってきて、残りの半分にたくさんお土産を買いました。",
+  "exzh": "因为在日本想要的东西很多，所以只把装到一半的行李箱带来日本，剩下的那一半空间都用来买土特产了。",
+  "reading": "のこり"
+ },
+ "着物": {
+  "pos": "名词",
+  "def": "和服",
+  "usage": "新年穿了和服。",
+  "ex": "例えば、着物や日本の包丁、アニメのグッズや服、日本のお菓子など、",
+  "exzh": "比如和服、日本菜刀、动漫周边还有衣服、日本的点心等等，",
+  "reading": "きもの"
+ },
+ "知り": {
+  "pos": "名词",
+  "def": "知道；知悉",
+  "usage": "获知消息后我很高兴。",
+  "ex": "私は日本の包丁が有名なのを知りませんでした。",
+  "exzh": "我以前都不知道日本的菜刀这么有名。",
+  "reading": "しり"
+ },
+ "短い": {
+  "pos": "形容词",
+  "def": "短的",
+  "usage": "这条绳子很短。",
+  "ex": "まあ、短い旅行だったら大きいものを買ってもいいかもしれませんね。",
+  "exzh": "不过，如果是短途旅行，买个大件商品也说不定可以哦。",
+  "reading": "みじかい"
+ },
+ "神社": {
+  "pos": "名词",
+  "def": "神社",
+  "usage": "在神社许下愿望。",
+  "ex": "あとは、あ、神社神社",
+  "exzh": "还有，啊，神社的神社……",
+  "reading": "じんじゃ"
+ },
+ "綺麗": {
+  "pos": "形容词",
+  "def": "漂亮；美丽",
+  "usage": "今天的天气很美。",
+  "ex": "まあ、お守りのデザインは本当に綺麗ですからね。うん、",
+  "exzh": "毕竟，御守的设计真的很漂亮，对吧。嗯，",
+  "reading": "きれい"
+ },
+ "義務": {
+  "pos": "名词",
+  "def": "应尽的义务",
+  "usage": "指必须履行的责任或义务。",
+  "ex": "でも、お土産が義務に感じるのは好きじゃないので、お土産を買うのをやめました。",
+  "exzh": "但是，我不喜欢买伴手礼变成一种义务，所以就不买了。",
+  "reading": "ぎむ"
+ },
+ "荷物": {
+  "pos": "名词",
+  "def": "携带的行李",
+  "usage": "指出门时携带的物品。",
+  "ex": "でも、たくさん荷物を持って旅行をするのは本当に好きじゃないです。",
+  "exzh": "但是，我真的很不喜欢带着很多行李去旅行。",
+  "reading": "にもつ"
+ },
+ "買い": {
+  "pos": "名词",
+  "def": "购买行为",
+  "usage": "表示买下东西这一行为。",
+  "ex": "皆さんは旅行に行った時お土産を買いますか？",
+  "exzh": "大家去旅行时会买伴手礼吗？",
+  "reading": "かい"
+ },
+ "買え": {
+  "pos": "动词（命令形）",
+  "def": "买吧",
+  "usage": "用于命令对方购买物品。",
+  "ex": "本当に色々なものが買えますね。",
+  "exzh": "真的可以买到各种各样的东西呢。",
+  "reading": "かえ"
+ },
+ "買っ": {
+  "pos": "动词（连用形）",
+  "def": "买（后续形）",
+  "usage": "用于组成「買って」等后续形式。",
+  "ex": "私は前はよくお土産を買っていました。",
+  "exzh": "我以前经常会买伴手礼。",
+  "reading": "かっ"
+ },
+ "送り": {
+  "pos": "名词",
+  "def": "发送或寄送",
+  "usage": "表示寄送包裹或物品的行为。",
+  "ex": "日本にそのお土産を送りました。私はそれを聞いてびっくりしましたね。",
+  "exzh": "然后把那些土特产寄到了日本。我听说这件事后，确实吓了一跳呢。",
+  "reading": "おくり"
  }
 }

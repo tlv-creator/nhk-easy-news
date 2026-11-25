@@ -23,7 +23,10 @@ import sys
 import time
 
 API = "https://api.minimax.chat/v1/text/chatcompletion_v2"
-MODEL = "MiniMax-Text-01"
+# 🔴 2026-11-25：上游把 "MiniMax-Text-01" 下线了（status_code 2069
+#    "The model MiniMax-Text-01 is no longer available"）⇒ 换同族后继 MiniMax-M2.5
+#    （/v1/models 实测在售：M3.1-Flash / M3 / M2.7 / M2.5；M2.1 与 M2 已下线）
+MODEL = "MiniMax-M2.5"
 
 PROMPT = """你是日语精读 App 的译者。下面给你若干句日文台词，请逐句翻译成中文。
 
@@ -70,20 +73,33 @@ def call_minimax(prompt, retries=3):
 
 
 def parse_items(text):
-    """从模型输出里抠出 JSON 数组"""
+    """从模型输出里抠出 JSON 数组
+
+    🔴 2026-11-25：模型**有时不套数组**（直接吐 `{"i":60,"zh":"…"},{"i":61,…}`）
+       ⇒ 老解析器只认 `[...]` ⇒ 整片 15 句**全丢**（且只打一行警告 ⇒ 很容易漏看）
+       ⇒ 现在：数组优先；不是数组就**逐个抠对象**。
+    """
     m = re.search(r"\[.*\]", text, re.S)
-    if not m:
-        return None
-    try:
-        return json.loads(m.group(0))
-    except Exception:
+    if m:
+        raw = m.group(0)
         # 常见坏法：尾逗号 / 单引号
-        s = m.group(0)
-        s = re.sub(r",\s*([\]}])", r"\1", s)
+        for cand in (raw, re.sub(r",\s*([\]}])", r"\1", raw)):
+            try:
+                arr = json.loads(cand)
+                if isinstance(arr, list):
+                    return arr
+            except Exception:
+                continue
+    # 🔴 没有数组 ⇒ 逐个抠 {"i":…, "zh":…}
+    objs = []
+    for mm in re.finditer(r"\{[^{}]*\}", text or ""):
         try:
-            return json.loads(s)
+            o = json.loads(mm.group(0))
         except Exception:
-            return None
+            continue
+        if isinstance(o, dict) and "i" in o:
+            objs.append(o)
+    return objs or None
 
 
 def main():

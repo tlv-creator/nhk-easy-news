@@ -125,12 +125,35 @@ def main():
     def build_html(old):
         s = old
         # 换所有旧域名（精确 token 替换，不碰别的域）
+        # 🔴🔴 2026-11-25 修的真 bug：原来的三元判断**写反了**
+        #      旧代码：`pref 带协议 ⇒ 换成不带协议的新地址` / `pref 不带协议 ⇒ 换成带协议的`
+        #      ⇒ 结果：href="https://旧站" 被换成 href="新站"（**丢了 https://** ⇒ 变成相对链接 ⇒ 点不开）
+        #      且 args.site 末尾的 "/" 和原文的 "/shun.apk" 叠成 "//shun.apk"。
+        #    ⇒ 现在：带协议↔带协议、裸域名↔裸域名；新地址统一去掉末尾 "/" 再拼。
+        new_full = args.site.rstrip("/")
         if args.old_site:
-            for pref in (args.old_site, args.old_site.replace("https://", "")):
-                s = s.replace(pref, args.site.replace("https://", "")
-                              if pref.startswith("http") else args.site)
+            old_full = args.old_site.rstrip("/")
+            old_bare = old_full.replace("https://", "").replace("http://", "")
+            new_bare = new_full.replace("https://", "").replace("http://", "")
+            # ① 带协议的完整地址（先换，避免裸域名那步把它再动一次）
+            s = s.replace(old_full, new_full)
+            # ② 裸域名（展示文本用）
+            s = s.replace(old_bare, new_bare)
         s = re.sub(r'href="https://[^"/]+\.space\.mcode\.cn"',
-                   'href="%s"' % args.site, s)
+                   'href="%s"' % new_full, s)
+        # 🔴 规范化所有指向 mcode 站的 href：**必须带 https://**、**不能有双斜杠**
+        #    （shun.html 是用户的永久入口 ⇒ 链接坏掉就是发版事故）
+        def _fix_href(m):
+            u = m.group(1)
+            if "space.mcode.cn" not in u:
+                return m.group(0)
+            if u.startswith("//"):
+                u = "https:" + u
+            elif not u.startswith("http"):
+                u = "https://" + u
+            u = re.sub(r"(space\.mcode\.cn)/+", r"\1/", u)
+            return 'href="%s"' % u
+        s = re.sub(r'href="([^"]*)"', _fix_href, s)
         s = re.sub(r'(版本\s*<code>)\s*\d+\s*/\s*[\d.]+(\s*</code>)',
                    r'\g<1>%d / %s\g<2>' % (args.ver, args.vername), s)
         s = re.sub(r'(更新于\s*<code>)[^<]*(</code>)',
@@ -155,13 +178,41 @@ def main():
     jd = json.loads(j)
     for k in ("ver", "site", "audio", "apk"):
         print("  %-6s %s" % (k, jd.get(k)))
-    bad = [k for k in ("site", "audio", "apk") if args.site not in str(jd.get(k, ""))]
+    bad = []
+    # 🔴 2026-11-25：原来判据是「site 域名必须出现在 site/audio/apk 三个字段里」
+    #    ⇒ **只适配「内容站和音频站同一个域名」的布局**
+    #    ⇒ 而手册第 7 节明写「先部署音频站 → 再部署内容站」⇒ 两个域名不同
+    #    ⇒ 老判据对**正确的两站布局**必然报「引导页里没换成新站」（假红）。
+    #    ⇒ 改成：每个字段各自比对自己的期望值。
+    for k, want in (("site", args.site), ("audio", args.audio), ("apk", args.apk)):
+        got = str(jd.get(k, "")).rstrip("/")
+        if got != want.rstrip("/"):
+            bad.append("%s=%s（期望 %s）" % (k, got, want))
     if bad:
         raise SystemExit("❌ 引导页里没换成新站：%s" % bad)
     h, _ = get_file("shun.html", token)
     hs = h
     if args.old_site and args.old_site in hs:
         raise SystemExit("❌ shun.html 里还残留旧站 %s" % args.old_site)
+    # 🔴🔴 链接完整性闸门（2026-11-25 加）：shun.html 是**用户的永久入口**
+    #    ⇒ 链接坏掉 = 用户点不开 = 发版事故
+    #    ⇒ 判据（事实量）：href 里的 mcode 域名必须**带 https://**；域名后不能有 "//"；不能有旧域名残留。
+    hrefs = re.findall(r'href="([^"]*)"', hs)
+    link_bad = []
+    for u in hrefs:
+        if "space.mcode.cn" not in u:
+            continue
+        if not u.startswith("https://"):
+            link_bad.append("缺协议：%s" % u)
+        if re.search(r"\.space\.mcode\.cn//", u):
+            link_bad.append("双斜杠：%s" % u)
+    for u in hrefs:
+        if args.old_site and args.old_site.replace("https://", "") in u:
+            link_bad.append("旧站残留：%s" % u)
+    if link_bad:
+        raise SystemExit("❌ shun.html 链接有问题：%s" % link_bad)
+    print("  链接闸门：%d 个 mcode 链接全部合规 ✅" %
+          len([u for u in hrefs if "space.mcode.cn" in u]))
     print("🟢 引导页已更新并复核通过")
 
 
