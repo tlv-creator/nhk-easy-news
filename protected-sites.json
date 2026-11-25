@@ -250,9 +250,9 @@
    "domain": "3be4wt47jrt60.space.mcode.cn",
    "name": "Japanese with Shun · 日中对照精读（内容站）",
    "project": "shun",
-   "status": "ALIVE",
+   "status": "SUPERSEDED",
    "role": "current_site",
-   "reason": "Shun 周更的内容站（引导页 shun.json / shun.html 永久入口指向它）⇒ 删了用户手里的链接当场死",
+   "reason": "Shun 周更的**上一版**内容站（v1.2.4）⇒ 2026-11-25 已被新内容站 sx8o1qb48f3l2 取代",
    "referenced_by": [
     "shun.json（site / apk 字段）",
     "shun.html"
@@ -260,7 +260,8 @@
    "written_in": "引导页 shun.json 的 site 字段",
    "node_id": "455720425210289",
    "frozen": true,
-   "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+   "note": "2026-11-25：引导页 shun.json / shun.html 已切到 sx8o1qb48f3l2；现役 APK 的 dex 与 assets 都**不含**本域（只含 frozen 音频兜底 qtjgfga76bu4o、永删不得的 da4lxn2phccck、shell.css 里已 404 的 u8tpuxfku1xoi）⇒ 删它不影响在用链路。标 SUPERSEDED（墓碑）⇒ 等清理 cron 删；**不是** DELETED（它现在还活着）。",
+   "superseded_by": "sx8o1qb48f3l2.space.mcode.cn"
   },
   {
    "domain": "3pqlt9tq6lrij.space.mcode.cn",
