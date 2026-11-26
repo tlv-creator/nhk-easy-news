@@ -6,6 +6,11 @@
       "reason": "Shun 周更的上一版内容站（v1.2.4）⇒ 2026-11-25 被新内容站 sx8o1qb48f3l2 取代 ⇒ 该删（清配额）。2026-11-26 清理 cron 复核：四道闸门全过 —— ①status=SUPERSEDED（superseded_by=sx8o1qb48f3l2）；②引导页线上实读 shun.json site → sx8o1qb48f3l2（不指向本站）、version.json → d68g6hi5pch7y；③现役 APK（线上实取 shun.apk @sx8o1qb48f3l2）dex+assets 全量扫描 ⇒ 零引用本站域名；④仓库 314MB 全量 grep + 34 个存活站首页 HTML ⇒ 零运行时指针（命中仅清单/台账/手册本体）。node_id 已从本站注入统计脚本 base64 反查独立复核 = 455720425210289，与清单登记逐字一致。🔴 2026-11-26 平台 mavis drive 组仍下线 ⇒ 删站通道不可用 ⇒ 本条原样留在队列，等通道恢复后执行。"
     },
     {
+      "domain": "d68g6hi5pch7y",
+      "node_id": "466840087143412",
+      "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
+    },
+    {
       "domain": "k4ebhgic0up64",
       "node_id": "467174667972890",
       "reason": "多読 v1.3.1 第一版交付站（95 本 / 11638 句 / 86 本有音），2026-11-25 被 v1.3.1 重发版 q05319l7gi458 取代（该站上的 tadoku-apk.zip 里 README 仍是 v1.2.0 旧文案）⇒ 该删（清配额）。2026-11-25 清理 cron 第三轮复核：四道闸门全过 —— ①status=SUPERSEDED（replaced_by=q05319l7gi458）；②引导页 tadoku.html（源端 Contents API + 渲染端 Pages 双读）已指向 q05319l7gi458，不指向本站；③现役多読 APK（tadoku.apk，md5 df13416f31e355882229b1e1cb8b487d）dex+assets 全量扫描：**零引用本站域名**（assets/site.txt 只有 3 行注释无域名；音频走书数据绝对 URL）；④线上新站全部前端文件 + /data/eps/index.json 零引用；仓库改动文件仅清单/台账本身提及。node_id 已从站内注入统计脚本 base64 反查独立复核，与清单登记一致。"
@@ -21,6 +26,6 @@
       "reason": "多読 v1.3.0 交付站，2026-11-25 v1.3.1（k4ebhgic0up64）上线后被取代 ⇒ 该删（清配额）。2026-11-25 清理 cron 第二轮复核：四道闸门全过 —— ①status=SUPERSEDED；②引导页 tadoku.html（源文件 + Pages 渲染版均已核对）现指向 k4ebhgic0up64，不指向本站；③现役 APK（NHK.apk / shun-309ep-net-v1.4.0.apk）dex+assets 零引用；④仓库全类型引用扫描仅命中清单/台账本体，无运行时指针。node_id 已从站内注入统计脚本 base64 反查独立复核，与清单登记一致。⚠️ 通道恢复后由清理 cron 执行删除，并把它从本文件移除 + protected-sites.json 改 DELETED。"
     }
   ],
-  "updated": "2026-11-26 22:14",
+  "updated": "2026-11-26 22:24",
   "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。"
 }
