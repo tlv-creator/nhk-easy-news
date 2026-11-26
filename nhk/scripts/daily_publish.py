@@ -73,6 +73,16 @@ AUDIO_BATCH_MAX_DAYS = 1
 #   ⇒ 停发只是「这一版先不占位」，Pages 照常同步（零配额）⇒ 用户第二天就能看到新文字
 MAX_PENDING_DELETES = 3
 
+# 🔴🔴 2026-11-26 修：**积压闸门必须同时看「真实余量」**
+#   坑（今天真踩到）：平台删站通道（drive 组）连续第 4 日下线 ⇒ 待删清单只进不出
+#       ⇒ 积压数从 1 涨到 4 ⇒ 老规则「积压 ≥3 就停发」⇒ **NHK 日更被永久卡死**
+#       （而账号真实用量才 6/50，离硬上限还差 44 个 ⇒ 根本撞不上）
+#   ⇒ 现在：**积压 ≥ MAX_PENDING_DELETES 且账号活站数已经逼近上限**（≥ QUOTA-5）才停发
+#       ⇒ 保险的**本意**（别撞 50）保住了；积压数只当「清理 cron 没跟上」的信号
+#   ⇒ 事实量来源 = scripts/site_quota_guard.py（配方不许写两遍）
+QUOTA_LIMIT = 50
+QUOTA_WARN_MARGIN = 5
+
 # 共享仓库里的待删清单（**唯一权威**）—— 清理 cron 的 prompt 本来就会读它
 PENDING_URL = "https://tlv-creator.github.io/nhk-easy-news/pending-deletes.json"
 
@@ -195,6 +205,23 @@ def pending_backlog():
     return len(alive)
 
 
+def quota_headroom():
+    """账号级活站数 + 离 50 上限还剩几个（事实量，来源 = site_quota_guard）
+
+    🔴 2026-11-26：配额保险必须看**真实余量**，不能只看「待删清单积压几个」
+       （删站通道下线时积压数会一路涨 ⇒ 老规则会把日更永久卡死）
+    """
+    try:
+        if os.path.join(ROOT, "scripts") not in sys.path:
+            sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        import site_quota_guard as SQ
+        live = SQ.account_live_domains()
+        return len(live), SQ.QUOTA
+    except Exception as e:
+        log("   ⚠️ 读不到账号配额占用（%s）⇒ 按「够用」处理" % e)
+        return 0, QUOTA_LIMIT
+
+
 def plan():
     st = load_state()
     fp, items = content_fingerprint()
@@ -220,9 +247,17 @@ def plan():
     #   （清理 cron 万一连着几天没跑，站会一天天堆 ⇒ 撞 50 上限 ⇒ 部署直接被拒）
     #   ⇒ 停发只影响 mcode 站；**Pages 照常同步**（零配额）⇒ 用户第二天就能看到新文字
     backlog = pending_backlog()
-    if need_audio_deploy and backlog >= MAX_PENDING_DELETES:
-        log("   ⛔ 配额保险：待删站积压 %d 个（≥ %d）⇒ **停发 mcode 站**" % (backlog, MAX_PENDING_DELETES))
+    live, quota = quota_headroom()
+    near_cap = live >= (quota - QUOTA_WARN_MARGIN)
+    log("   账号活站 %d / 上限 %d（离上限还有 %d 个位）" % (live, quota, max(0, quota - live)))
+    if need_audio_deploy and backlog >= MAX_PENDING_DELETES and near_cap:
+        log("   ⛔ 配额保险：待删站积压 %d 个（≥ %d）**且**账号活站已逼近上限（%d/%d）"
+            " ⇒ **停发 mcode 站**" % (backlog, MAX_PENDING_DELETES, live, quota))
         need_audio_deploy = False
+    elif need_audio_deploy and backlog >= MAX_PENDING_DELETES:
+        log("   ⚠️ 待删站积压 %d 个（≥ %d），但账号真实用量才 %d/%d ⇒ 够用 ⇒ 照发"
+            "（积压 = 清理 cron 没跟上 ⇒ 通道恢复后清掉即可）"
+            % (backlog, MAX_PENDING_DELETES, live, quota))
 
     log("════ NHK 日更发版决策 ════")
     log("   内容指纹 %s（%d 个文件）" % (fp[:12], len(items)))

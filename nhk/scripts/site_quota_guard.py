@@ -493,15 +493,45 @@ def verify():
 
 
 def pending_domains():
-    """共享仓库的 pending-deletes.json 里已登记待删的域名集合（取不到就当空）"""
+    """共享仓库的 pending-deletes.json 里已登记待删的域名集合
+
+    🔴🔴 2026-11-26 修：**必须走 http_json（curl 优先 + 3 次重试）**
+       坑（今天真踩到）：这里原来直接用 urllib 打 github.io ⇒ 沙箱里 TLS EOF 很常见
+          ⇒ 取不到清单 ⇒ 被当成「没有待删站」⇒ 「只留现役+兜底」那条不变量**误判成红**
+          ⇒ prepare 直接 exit 1 ⇒ 当天根本发不了版（而清单里明明有那个站）
+          ⇒ 通则：**闸门读外部状态时，读不到 ≠ 不存在** ⇒ 读不到就别据此判红
+       返回：set（读到了）／**None**（读不到 ⇒ 调用方不许据此判红）
+    """
     try:
-        import urllib.request
-        req = urllib.request.Request(PENDING_URL, headers={"Cache-Control": "no-cache"})
-        with urllib.request.urlopen(req, timeout=25) as r:
-            d = json.loads(r.read().decode())
+        d = http_json(PENDING_URL, timeout=25)
+        if not d:
+            log("   ⚠️ 读不到待删清单（%s）⇒ 本轮**不据此判红**（账号级配额已单独判过）"
+                % PENDING_URL)
+            return None
         return set(s.get("domain") for s in (d.get("sites") or []) if s.get("domain"))
     except Exception:
-        return set()
+        return None
+
+
+def account_live_domains():
+    """🔴 账号级**活站域名集合**（登记表 + 保护清单口径）
+
+    为什么单独抽出来（2026-11-26 修）：
+        · 「离配额还有多远」是**唯一**的真实约束（QUOTA = 50）
+        · daily_publish.py 的「配额保险」要用它 ⇒ 配方不许写两遍 ⇒ 放这里
+    """
+    reg = load_reg()
+    prot = protected_map()
+    doms = set(prot.keys())
+    for s in reg.get("sites", []):
+        d = s.get("domain")
+        if d and "." not in d:
+            doms.add(d)
+    out = []
+    for d in sorted(doms):
+        if http_code(site_url(d)) == 200:
+            out.append(d)
+    return out
 
 
 def check():
@@ -534,15 +564,7 @@ def check():
     log("   NHK 活站 %d 个：%s" % (len(live), live))
 
     # ①b 🔴🔴 **账号级配额**（真正的硬上限）——**先判它**，别被下面的不变量挡住
-    all_doms = set(prot.keys())
-    for s in reg.get("sites", []):
-        d = s.get("domain")
-        if d and "." not in d:
-            all_doms.add(d)
-    all_live = 0
-    for d in all_doms:
-        if http_code(site_url(d)) == 200:
-            all_live += 1
+    all_live = len(account_live_domains())
     log("   全账号活站（登记表+保护清单口径）%d / 上限 %d" % (all_live, QUOTA))
     if all_live >= QUOTA:
         log("   ❌ 已到配额上限 ⇒ 下一次部署会被 ENTITLEMENT_LIMIT_EXCEEDED 拒")
@@ -561,7 +583,13 @@ def check():
     #    ⇒ 现在：**只有「待删清单之外的站超编」才判失败**
     #       （账号级配额那条仍然是硬闸门，上面刚判过）
     queued = pending_domains()
-    blocking = [d for d in live if d not in keep_set and d not in queued]
+    if queued is None:
+        # 🔴 读不到清单 ⇒ **不许据此判红**（读不到 ≠ 不存在；账号级配额那条已单独判过）
+        log("   ⚠️ 待删清单读不到 ⇒ 「只留现役+兜底」这条**本轮不判**（账号级配额已判过）")
+        queued = set()
+        blocking = []
+    else:
+        blocking = [d for d in live if d not in keep_set and d not in queued]
     if blocking:
         log("   ❌ 超过「只留 %d 个（现役 + 兜底）」⇒ 配额在白占" % KEEP_NHK)
         log("      待删清单之外的活站：%s" % blocking)

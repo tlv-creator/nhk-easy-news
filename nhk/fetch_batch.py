@@ -57,11 +57,23 @@ def media_token(z_at):
     return json.loads(b)["token"]
 
 
-def fetch_index(cookies=None):
+def fetch_index(cookies=None, z_at=None):
     h = {"Referer": "https://news.web.nhk/news/easy/", "Accept": "application/json"}
-    if cookies:
-        h["Cookie"] = auth.cookie_header(cookies)
+    # 🔴🔴 2026-11-26 修：**z_at 必须显式带上**（不能只靠 cookies 字典）
+    #   坑：授权链的 urllib 那条路在沙箱里常 TLS EOF ⇒ 落 curl 兜底 ⇒ cookies 可能是空的
+    #      ⇒ `Cookie: ""` ⇒ news-list 401 ⇒ **没有索引 ⇒ 没有音频、没有 easy.html**
+    #      ⇒ 而 update.py 的 sh() 不中断 ⇒ 整轮「静默无更新」（今天真踩到）
+    ck = dict(cookies or {})
+    if z_at and not ck.get("z_at"):
+        ck["z_at"] = z_at
+    if ck:
+        h["Cookie"] = auth.cookie_header(ck)
     st, b = get(LIST_URL, h)
+    if st != 200:
+        # 再试一次：**只带 z_at**（nhk_auth.news_list 就是这么干的，验证过）
+        if z_at:
+            h["Cookie"] = "z_at=%s" % z_at
+            st, b = get(LIST_URL, h)
     if st != 200:
         raise RuntimeError("news-list.json %s" % st)
     return json.loads(b)
@@ -148,7 +160,7 @@ def main():
     mtok = media_token(t["token"])
     print("   media token ok", flush=True)
 
-    idx = fetch_index(t["cookies"])
+    idx = fetch_index(t["cookies"], t["token"])
     items = flatten(idx)
     items = [it for it in items if it.get("news_easy_voice_uri")]
     print("== 索引 %d 期，取最近 %d 期 ==" % (len(items), LIMIT), flush=True)

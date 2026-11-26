@@ -73,25 +73,72 @@ def _curl(url, headers=None, cookie=None, out=None, timeout=40, follow=True):
     return code, body
 
 
+def _curl_hop(url, jar, extra=None, timeout=40):
+    """走一跳（不自动跳转），返回 (status, location, headers_text)"""
+    cmd = ["curl", "-sS", "-m", str(timeout), "--retry", "2", "--retry-delay", "2",
+           "-o", os.devnull, "-D", "-", "-c", jar, "-b", jar, "-A", UA]
+    for k, v in (extra or {}).items():
+        cmd += ["-H", f"{k}: {v}"]
+    cmd.append(url)
+    try:
+        r = _sp.run(cmd, capture_output=True, text=True, timeout=timeout + 20)
+    except Exception:
+        return 0, "", ""
+    out = r.stdout or ""
+    m = re.search(r"HTTP/\S+\s+(\d+)", out)
+    code = int(m.group(1)) if m else 0
+    lm = re.search(r"(?im)^location:\s*(.+?)\r?$", out)
+    loc = lm.group(1).strip() if lm else ""
+    return code, loc, out
+
+
 def _curl_authorize(origin, redirect, q):
-    """curl 版授权：-L 跟随重定向，-c/-b 存 cookie"""
+    """curl 版授权：**逐跳手动走**（2026-11-26 实测：`-L` 一把梭会 403 / 0，逐跳才稳）
+
+    🔴 为什么改成逐跳（今天真踩到）：
+        · 原来用 `curl -L` 自动跟完所有跳转 ⇒ IdP 那跳偶发 403 ⇒ 拿不到 z_at
+        · 手动逐跳（并带上 cookie jar）⇒ 2026-11-26 实测一次就通
+        · 每一跳都重试 2 次 ⇒ 抗瞬时抖动
+    """
+    import re as _re
     jar = _tf.NamedTemporaryFile(delete=False, suffix=".cookie").name
     url = f"{origin}/tix/build_authorize?{q}"
-    cmd = ["curl", "-s", "-L", "--max-time", "90", "--retry", "2", "--retry-delay", "2",
-           "-c", jar, "-b", jar,
-           "-A", UA,
-           "-H", "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-           "-H", "Accept-Language: ja,en;q=0.8",
-           "-H", f"Referer: {origin}/news/easy/",
-           "-o", os.devnull, "-w", "%{http_code}", url]
-    r = _sp.run(cmd, capture_output=True, text=True, timeout=120)
-    token = expires = None
+    hdr = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+           "Accept-Language": "ja,en;q=0.8",
+           "Referer": f"{origin}/news/easy/"}
+    token = None
+    for _attempt in range(3):
+        c1, l1, h1 = _curl_hop(url, jar, hdr)
+        if not l1:
+            time.sleep(2)
+            continue
+        c2, l2, h2 = _curl_hop(l1, jar, hdr)
+        for m in _re.finditer(r"(?im)^set-cookie:\s*z_at=([^;]+)", h2 or ""):
+            token = m.group(1)
+        if token:
+            break
+        if l2:
+            c3, l3, h3 = _curl_hop(l2, jar, {"Referer": f"{origin}/"})
+            for m in _re.finditer(r"(?im)^set-cookie:\s*z_at=([^;]+)", h3 or ""):
+                token = m.group(1)
+            if token:
+                break
+            if 300 <= c3 < 400 and l3:
+                c4, l4, h4 = _curl_hop(l3, jar, {"Referer": f"{origin}/"})
+                for m in _re.finditer(r"(?im)^set-cookie:\s*z_at=([^;]+)", h4 or ""):
+                    token = m.group(1)
+                if token:
+                    break
+        time.sleep(3)
+    expires = None
+    cookies = {}
     try:
         for line in open(jar, encoding="utf-8", errors="replace"):
             if line.startswith("#") or not line.strip():
                 continue
             f = line.rstrip("\n").split("\t")
             if len(f) >= 7:
+                cookies[f[5]] = f[6]
                 if f[5] == "z_at":
                     token = f[6]
                 elif f[5] == "exp_z_at":
@@ -99,12 +146,36 @@ def _curl_authorize(origin, redirect, q):
                     except Exception: pass
     except Exception:
         pass
-    return token, expires
+    # 🔴🔴 2026-11-26 修：**curl 兜底这条路必须把 cookie 一起带出来**
+    #   坑：urllib 那条路在沙箱里常 TLS EOF ⇒ 落到 curl 兜底 ⇒ 但 cookie jar 在**临时文件**里
+    #      ⇒ get_token() 返回的 cookies 还是空 ⇒ 下游 `cookie_header({})` = ""
+    #      ⇒ news-list.json **不带 z_at** ⇒ 401 ⇒ 抓不到索引 ⇒ 没有音频/没有 easy.html
+    #      ⇒ 而 update.py 的 sh() 只打印失败不中断 ⇒ **整轮静默跳过**（今天真踩到）
+    #   ⇒ 修：curl 兜底时把 jar 里的 cookie 全部带出来
+    if token:
+        cookies["z_at"] = token
+    return token, expires, cookies
 
 
 def get_token(origin: str = ORIGIN, redirect: str = REDIRECT, verbose: bool = False) -> dict:
-    """走一遍 accountless abroad 授权，返回 {token, expires, profile_id, scope, cookies}"""
+    """走一遍 accountless abroad 授权，返回 {token, expires, profile_id, scope, cookies}
+
+    🔴🔴 2026-11-26 加**令牌缓存**（work/z_at.json）：
+        · 授权链每跑一次都要打 3 跳（news.web.nhk → a.authz.ac1.nhk → idpresponse）
+        · 连着跑几次 ⇒ IdP 那跳开始 403 ⇒ 整轮抓不到索引 ⇒ **静默无更新**
+        · z_at 有效期 ~12h ⇒ 缓存起来，够用就别再授权
+    """
     jar = http.cookiejar.CookieJar()
+    # ① 先看缓存
+    ctok, cexp, ccookies = _cache_load()
+    if ctok:
+        if verbose:
+            print("  用缓存的 z_at（还剩 %.1f 小时）" % ((cexp - time.time()) / 3600))
+        claims = token_claims(ctok)
+        ccookies = dict(ccookies or {})
+        ccookies["z_at"] = ctok
+        return {"token": ctok, "expires": cexp, "profile_id": claims.get("profileId"),
+                "scope": claims.get("scope"), "claims": claims, "cookies": ccookies, "jar": jar}
     op = _opener(jar)
     q = urllib.parse.urlencode({
         "idp": "a-alaz",
@@ -123,12 +194,14 @@ def get_token(origin: str = ORIGIN, redirect: str = REDIRECT, verbose: bool = Fa
         "Referer": f"{origin}/news/easy/",
     })
     token = expires = None
+    cookies = {}
     try:
         with op.open(req, timeout=40) as r:
             r.read()
             if verbose:
                 print("  final:", r.status, r.url)
         for c in jar:
+            cookies[c.name] = c.value
             if c.name == "z_at":
                 token = c.value
             elif c.name == "exp_z_at":
@@ -137,7 +210,7 @@ def get_token(origin: str = ORIGIN, redirect: str = REDIRECT, verbose: bool = Fa
         # urllib 在沙箱里常 TLS EOF → 换 curl
         if verbose:
             print("  urllib 失败(%s)，改用 curl" % str(e)[:60])
-        token, expires = _curl_authorize(origin, redirect, q)
+        token, expires, cookies = _curl_authorize(origin, redirect, q)
 
     if not token:
         # 🔴🔴 2026-10-25 加**第二套实现**兜底：nhk_auth.py（共享仓库版）
@@ -152,9 +225,7 @@ def get_token(origin: str = ORIGIN, redirect: str = REDIRECT, verbose: bool = Fa
             token = nhk_auth.get_zat()
             if token:
                 expires = None
-                for k, v in (jar or {}).items():
-                    if k == "z_at":
-                        token = v
+                cookies["z_at"] = token
         except Exception as e:
             if verbose:
                 print("  nhk_auth.py 兜底也失败：%s" % str(e)[:80])
@@ -162,14 +233,22 @@ def get_token(origin: str = ORIGIN, redirect: str = REDIRECT, verbose: bool = Fa
     if not token:
         raise RuntimeError("未取得 z_at（origin=%s）" % origin)
 
+    # 🔴🔴 2026-11-26 修：**cookies 里必须一定有 z_at**
+    #   少了它 ⇒ 下游任何带鉴权的请求都变成「匿名」⇒ news-list 401 ⇒ 整轮静默无更新
+    if token and not cookies.get("z_at"):
+        cookies["z_at"] = token
+
     claims = token_claims(token)
+    # 🔴 缓存（下次直接用，别再打授权链）
+    _cache_save(token, claims.get("exp", 0), cookies)
+
     return {
         "token": token,
         "expires": expires,
         "profile_id": claims.get("profileId"),
         "scope": claims.get("scope"),
         "claims": claims,
-        "cookies": {c.name: c.value for c in jar},
+        "cookies": cookies,
         "jar": jar,
     }
 
@@ -179,6 +258,33 @@ def token_claims(token: str) -> dict:
         return _b64url_decode(token.split(".")[1])
     except Exception:
         return {}
+
+
+# ── z_at 缓存（2026-11-26）：授权链连打几次会被 IdP 403 ⇒ 缓存起来复用 ──
+TOKEN_CACHE = os.environ.get("NHK_ZAT_CACHE", "/workspace/nhk/work/z_at.json")
+
+
+def _cache_load():
+    """返回 (token, exp, cookies)；没有/过期 ⇒ (None, None, {})"""
+    try:
+        d = json.load(open(TOKEN_CACHE, encoding="utf-8"))
+        tok = d.get("token")
+        exp = int(d.get("exp") or 0)
+        if tok and exp - 300 > time.time():
+            return tok, exp, dict(d.get("cookies") or {})
+    except Exception:
+        pass
+    return None, None, {}
+
+
+def _cache_save(tok, exp, cookies):
+    try:
+        os.makedirs(os.path.dirname(TOKEN_CACHE), exist_ok=True)
+        with open(TOKEN_CACHE, "w", encoding="utf-8") as f:
+            json.dump({"token": tok, "exp": exp, "cookies": cookies}, f,
+                      ensure_ascii=False)
+    except Exception:
+        pass
 
 
 def cookie_header(cookies: dict) -> str:
