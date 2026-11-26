@@ -9,7 +9,7 @@
     ⇒ 所以每次发版都要**滚动**更新它。
 
 🔴 纪律（别把别的项目的条目弄坏）：
-    · 顶层是 **dict**，条目在 **protected_sites 数组**里
+    · 顶层是 **dict**，条目在 **sites 数组**里（老键 protected_sites 已废弃）
     · **只动本项目（project=nhk）的条目**，别的项目的一个字节都不改
     · 数量对不上 ⇒ 拒绝写入（防止把别人的 48 条覆盖成 3 条）
 
@@ -77,10 +77,20 @@ def main():
         print("⚠️ 线上取不到（%s）⇒ 用本地副本" % e)
         data = json.load(open(LOCAL, encoding="utf-8"))
 
-    if not isinstance(data, dict) or "protected_sites" not in data:
-        sys.exit("❌ 清单结构不对（顶层必须是 dict，条目在 protected_sites 数组）⇒ 拒绝写入")
-    before = len(data["protected_sites"])
-    ps = data["protected_sites"]
+    # 🔴🔴 2026-11-26 修：线上权威键是 **"sites"**（老键 "protected_sites" 线上从来不存在）
+    #    ⇒ 老代码在这里直接 sys.exit ⇒ **清单滚动更新一直是哑的**（发版脚本跑完就报错退出）。
+    #    读：两个键都认；写：**写回原线上那个键**（绝不新建另一个数组 ⇒ 否则写进没人读的数组）。
+    if not isinstance(data, dict):
+        sys.exit("❌ 清单结构不对（顶层必须是 dict）⇒ 拒绝写入")
+    _key = None
+    for _k in ("sites", "protected_sites"):
+        if isinstance(data.get(_k), list):
+            _key = _k
+            break
+    if _key is None:
+        sys.exit("❌ 清单结构不对（顶层 dict 里既没有 sites 也没有 protected_sites 数组）⇒ 拒绝写入")
+    before = len(data[_key])
+    ps = data[_key]
 
     # 2) 旧现役站 → SUPERSEDED（不再是现役 ⇒ 不再占着「保护」名额）
     #    ⚠️ 旧站**可能压根没在清单里**（清单是滚动维护的，不是每次都记全）

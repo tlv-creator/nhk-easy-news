@@ -136,12 +136,46 @@ def apk_fallback_domain():
 HARD_KEEP = {"9chr6us9mlatt"}
 
 
+def norm_domain(d):
+    """🔴 清单里的 domain 有**全写**（xxx.space.mcode.cn）和**短写**（xxx）两种
+       ⇒ 比对前必须归一（去后缀 + strip + lower），否则全写条目永远匹配不上短写域名。
+    """
+    d = (d or "").strip().lower()
+    if d.endswith(".space.mcode.cn"):
+        d = d[: -len(".space.mcode.cn")]
+    return d
+
+
+def protected_entries(j):
+    """🔴🔴 清单顶层数组的键：**线上权威键 = "sites"**，老键 "protected_sites" 线上从来不存在
+       ⇒ 只认老键的实现一律读到**空列表** ⇒ 保护集为空 ⇒ 闸门变成「校验对象是空的」⇒ 恒绿。
+       两个键都认 ⇒ 兼容老副本；线上只有 "sites" 时也能读到。
+       写法对齐同仓库 nhk/scripts/site_quota_guard.py 的 protected_map()。
+    """
+    if not isinstance(j, dict):
+        return []
+    for k in ("sites", "protected_sites"):
+        v = j.get(k)
+        if isinstance(v, list):
+            return v
+    return []
+
+
 def protected_domains():
     """拉线上「不可删除的站」清单 → 返回受保护域名集合（拉不到就用本地副本）。
 
     🔴 为什么必须有：跨项目共享云盘 → 我清自己的旧站时可能删掉别的项目的兜底站
        （2026-10-23 真的踩了：NHK 的兜底站被别的 agent 当成「测试里的假域名」删掉
         → NHK App 引导页读不到就白屏）。
+
+    🔴🔴 2026-11-26 清理 cron 修（**保护集读成空集 = 闸门恒绿**）：
+       ① 键名 —— 只认老键 "protected_sites" ⇒ 线上那份（键是 "sites"）读成空列表
+          ⇒ 保护集 = 空 ⇒ 现役站/兜底站会被当普通站删掉。
+       ② 域名写法 —— 全写/短写混用 ⇒ 归一后才比得上。
+       ③ 状态语义 —— 受保护 =「**不是墓碑**」：
+          ALIVE / ACTIVE / 没标状态 ⇒ 现役 ⇒ 保护；
+          SUPERSEDED / DELETED ⇒ 墓碑/已删 ⇒ **不保护**（正是要腾配额的对象）；
+          其它未知值 ⇒ 保守当保护（宁可少删，不要删错）。
     """
     doms = set()
     raw = None
@@ -158,14 +192,10 @@ def protected_domains():
             raw = "{}"
     try:
         j = json.loads(raw)
-        for s in j.get("protected_sites", []):
-            d = (s.get("domain") or "").strip()
-            # 🔴 只有「**没标状态**」的条目才是真正受保护的。
-            #    DELETED   = 已经删了（留记录是为了别再被当成活引用）
-            #    SUPERSEDED = 已被新站取代（**不再保护** ⇒ 正是要腾配额的对象）
-            #    ⇒ 以前只排除 DELETED ⇒ SUPERSEDED 的旧站被清单永久保护着
-            #      ⇒ 白占配额 ⇒ 50 个配额几天就满 ⇒ 部署失败。
-            if d and not s.get("status"):
+        for s in protected_entries(j):
+            d = norm_domain(s.get("domain"))
+            st = str(s.get("status") or "").strip().upper()
+            if d and st not in ("SUPERSEDED", "DELETED"):
                 doms.add(d)
     except Exception:
         pass

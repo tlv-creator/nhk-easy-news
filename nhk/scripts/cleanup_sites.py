@@ -69,6 +69,44 @@ def code(domain):
         return 0
 
 
+def norm_domain(d):
+    """🔴 清单里的 domain 有**全写**（xxx.space.mcode.cn）和**短写**（xxx）两种
+       ⇒ 比对前必须归一（去后缀 + strip + lower），否则全写条目永远匹配不上。
+    """
+    d = (d or "").strip().lower()
+    if d.endswith(".space.mcode.cn"):
+        d = d[: -len(".space.mcode.cn")]
+    return d
+
+
+def protected_entries(j):
+    """🔴🔴 清单顶层数组的键：**线上权威键 = "sites"**，老键 "protected_sites" 线上从来不存在
+       ⇒ 只认老键 ⇒ 保护集读成**空集** ⇒ 闸门恒绿 ⇒ 可能误删现役站。
+       写法对齐同仓库 nhk/scripts/site_quota_guard.py 的 protected_map()。
+    """
+    if not isinstance(j, dict):
+        return []
+    for k in ("sites", "protected_sites"):
+        v = j.get(k)
+        if isinstance(v, list):
+            return v
+    return []
+
+
+def protected_domains(j):
+    """🔴 受保护 = 「**不是墓碑**」：ALIVE / ACTIVE / 没标状态 ⇒ 保护；
+       SUPERSEDED / DELETED ⇒ 墓碑/已删 ⇒ 不保护（正是要腾配额的对象）；
+       其它未知值 ⇒ 保守当保护（宁可少删，不要删错）。
+    """
+    out = set()
+    for s in protected_entries(j):
+        d = norm_domain(s.get("domain"))
+        st = str(s.get("status") or "").strip().upper()
+        if d and st not in ("SUPERSEDED", "DELETED"):
+            out.add(d)
+    return out
+
+
 def apk_domains(apk_path):
     """扫 APK 的 dex 里写死的 mcode 域名（不依赖 dexdump）"""
     out = set()
@@ -92,7 +130,8 @@ def cmd_plan(a):
     prot = fetch_json(PROTECTED_URL)
     guide = fetch_json(GUIDE_URL)
     cur = (guide.get("site") or "").replace("https://", "").split(".")[0]
-    frozen = {s["domain"] for s in prot.get("protected_sites", []) if s.get("frozen")}
+    frozen = {norm_domain(s.get("domain")) for s in protected_entries(prot) if s.get("frozen")}
+    prot_doms = protected_domains(prot)   # 🔴 非墓碑条目全部保护（跨项目兜底站在这里）
     apk = apk_domains(a.apk)
     print("引导页当前站：%s" % cur)
     print("冻结站（永不删）：%s" % (", ".join(sorted(frozen)) or "-"))
@@ -106,8 +145,8 @@ def cmd_plan(a):
         if d == cur:
             print("  保留  %-18s （引导页当前站）" % d)
             continue
-        if d in frozen or any(d in x for x in apk):
-            print("  保留  %-18s （冻结/现役 APK 依赖）" % d)
+        if d in frozen or d in prot_doms or any(d in x for x in apk):
+            print("  保留  %-18s （冻结/清单受保护/现役 APK 依赖）" % d)
             continue
         st = code(d)
         if st == 404:
@@ -156,12 +195,13 @@ def cmd_verify(a):
             good = (st == 404)
             print("  %-18s 旧站   HTTP=%s %s" % (d, st, "✅ 已删" if good else "（还活着）"))
         ok = ok and good
-    frozen = [s["domain"] for s in prot.get("protected_sites", []) if s.get("frozen")]
+    frozen = [norm_domain(s.get("domain")) for s in protected_entries(prot) if s.get("frozen")]
     for d in frozen:
         # 🔴 2026-10-25 修（**假红**）：有些保护项**根本不是 mcode 站**
         #    （例：每日听力记录站 = GitHub Pages 子目录 listening/ ⇒ https://listening.space.mcode.cn 必然 404）
         #    ⇒ 拿 mcode 域名去探活 ⇒ 永远判红「冻结站不该没」⇒ 假红。
-        ent = next((s for s in prot.get("protected_sites", []) if s.get("domain") == d), {})
+        ent = next((s for s in protected_entries(prot)
+                    if norm_domain(s.get("domain")) == d), {})
         # 🔴 判据要准：**location** 才是「托管在哪」；
         #    **canonical** 是「入口页在哪」（很多 mcode 站的入口页也在 Pages 上）⇒ 不能拿它判
         loc = ent.get("location", "") or ""
