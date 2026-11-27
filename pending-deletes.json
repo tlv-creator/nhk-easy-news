@@ -24,8 +24,13 @@
       "domain": "ygqm1hz5djz1n",
       "node_id": "456284075475296",
       "reason": "多読 v1.3.0 交付站，2026-11-25 v1.3.1（k4ebhgic0up64）上线后被取代 ⇒ 该删（清配额）。2026-11-25 清理 cron 第二轮复核：四道闸门全过 —— ①status=SUPERSEDED；②引导页 tadoku.html（源文件 + Pages 渲染版均已核对）现指向 k4ebhgic0up64，不指向本站；③现役 APK（NHK.apk / shun-309ep-net-v1.4.0.apk）dex+assets 零引用；④仓库全类型引用扫描仅命中清单/台账本体，无运行时指针。node_id 已从站内注入统计脚本 base64 反查独立复核，与清单登记一致。⚠️ 通道恢复后由清理 cron 执行删除，并把它从本文件移除 + protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "q05319l7gi458",
+      "node_id": "467179159363868",
+      "reason": "多読 v1.3.1 交付站（95本 / 11638句 / 86本有音），2026-11-27 v1.4.0（zv03ebxy0ezq3，131本 / 15679句 / 86本有音）上线后被取代 ⇒ 该删（清配额）。取代链：ygqm1hz5djz1n → k4ebhgic0up64 → q05319l7gi458 → zv03ebxy0ezq3（现役）。2026-11-27 清理 cron 复核：四道闸门全过 —— ①status=SUPERSEDED（replaced_by=zv03ebxy0ezq3）；②引导页 tadoku.html（源端 Contents API + 渲染端 Pages 双读）已指向 zv03ebxy0ezq3，零指向本站；③现役多読 APK v1.4.0（tadoku-apk.zip → tadoku.apk，**解两层**后扫 dex+assets）零引用本站域名（assets/site.txt 仅 3 行注释无域名；音频走书数据绝对 URL 5 个域）；④新站自身 /data/eps/index.json、app.js、config.js 零引用。node_id 已从站内注入统计脚本 base64 反查独立复核，与清单登记一致。"
     }
   ],
-  "updated": "2026-11-27 20:07",
-  "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。 | 2026-11-27 清理 cron 复核：5 条全部仍为 SUPERSEDED、探活仍 200、四道闸门（引导页 / 现役 APK dex+assets / 35 个存活站前端文件 / 仓库全量）今日重跑**全过**、node_id 全部经 space_stat 独立复核（站点名后缀逐字对上域名）⇒ 候选本身没问题，**唯一阻塞是删站执行通道连续第 5 天下线**（mavis drive 组下线 + Space 对已发布网站 NOT_ALLOWED）⇒ 本文件**原样保留，不删不改**；通道恢复当天请**优先清完这 5 条**，并把 protected-sites.json 里对应条目的 status 改成 DELETED。"
+  "updated": "2026-11-27 20:45",
+  "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。🔴 2026-11-27：通道（drive 组）连续第 5 天下线 ⇒ 本文件只进不出。🔴 **占用实测 49/50（资料空间里 49 个活着的网站节点），不是 35/50** ⇒ 只剩 1 个空位 ⇒ 通道不通期间每发一版就逼近上限；用户在资料空间页面手动删除是唯一合法腾位路径。"
 }
