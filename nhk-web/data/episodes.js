@@ -1,5 +1,75 @@
 window.__EPISODES__=[
  {
+  "id": "20261127de82358",
+  "no": 126,
+  "title": "東京の物の値段　去年より2.9%上がった",
+  "easyTitle": "11月もいろいろな物の値段が上がりました",
+  "date": "2026-11-27",
+  "week": "",
+  "time": "20:10",
+  "duration": 55.6,
+  "durFast": 241.41,
+  "subs": "subs/20261127de82358.js",
+  "audio": "media/slow/20261127de82358.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261127de82358.m4a"
+ },
+ {
+  "id": "20261127de82368",
+  "no": 125,
+  "title": "ロシアで捕まった新聞記者の妻　「大切なパパを返して」",
+  "easyTitle": "ロシアの政府は先月、北海道新聞の記者の今井裕紀さんを捕まえました",
+  "date": "2026-11-27",
+  "week": "",
+  "time": "20:09",
+  "duration": 55.87,
+  "durFast": 124.16,
+  "subs": "subs/20261127de82368.js",
+  "audio": "media/slow/20261127de82368.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261127de82368.m4a"
+ },
+ {
+  "id": "20261127de82363",
+  "no": 124,
+  "title": "来年4月ごろ 新しい宇宙飛行士を募集",
+  "easyTitle": "来年、新しい宇宙飛行士を選ぶ試験を行います",
+  "date": "2026-11-27",
+  "week": "",
+  "time": "20:08",
+  "duration": 63.22,
+  "durFast": 105.09,
+  "subs": "subs/20261127de82363.js",
+  "audio": "media/slow/20261127de82363.m4a",
+  "ver": [
+   "easy",
+   "web"
+  ],
+  "audioFast": "media/fast/20261127de82363.m4a"
+ },
+ {
+  "id": "20261127de82366",
+  "no": 123,
+  "title": "山梨県のろう学校 　子どもたちがサンタクロースの人形を作る",
+  "easyTitle": "山梨県のろう学校で、子どもたちがサンタクロースの人形を作りました",
+  "date": "2026-11-27",
+  "week": "",
+  "time": "20:07",
+  "duration": 53.74,
+  "durFast": 0.0,
+  "subs": "subs/20261127de82366.js",
+  "audio": "media/slow/20261127de82366.m4a",
+  "ver": [
+   "easy"
+  ]
+ },
+ {
   "id": "20261126de81733",
   "no": 122,
   "title": "熊の被害を止めるためドローンやロボットを使った技術の実験",
