@@ -494,8 +494,8 @@
       "frozen": false,
       "node_id": "467179159363868",
       "reason": "2026-11-27 v1.4.0 ⇒ 被 zv03ebxy0ezq3.space.mcode.cn 取代。🟢 还活着（200）但可删：node_id=467179159363868（平台 drive 删站通道 2026-11-24 起持续下线 ⇒ 删除待通道恢复后由清理 cron 补做）。现役 = zv03ebxy0ezq3.space.mcode.cn（node_id=467884757180516）。",
-      "role": "current_site",
-      "replaced_by": "zv03ebxy0ezq3.space.mcode.cn"
+      "replaced_by": "zv03ebxy0ezq3.space.mcode.cn",
+      "note": " | 2026-11-27：v1.4.0（zv03ebxy0ezq3）上线后本站已 SUPERSEDED ⇒ 清掉过期的 role=current_site（留着会让后续工具误判它仍是现役站）。"
     },
     {
       "domain": "uz5u2rrf5izj1",
@@ -530,9 +530,11 @@
       "domain": "zv03ebxy0ezq3.space.mcode.cn",
       "name": "日语泛读精读 · 正式交付站 v1.4.0（131 本 / 15679 句 / 86 本有音）",
       "status": "ACTIVE",
-      "frozen": false,
+      "frozen": true,
       "node_id": "467884757180516",
-      "reason": "2026-11-27 v1.4.0：新增别册 36 本（4041 句译文）+ 词库 4390 + 句型表 744。"
+      "reason": "2026-11-27 v1.4.0：新增别册 36 本（4041 句译文）+ 词库 4390 + 句型表 744。",
+      "role": "current_site",
+      "note": " | 2026-11-27 补登记：role=current_site + frozen=true（写死在 tadoku.html 入口页）；node_id 已用「站内注入统计脚本 base64 反查」独立复核。"
     },
     {
       "domain": "ftu81k0abzbpn.space.mcode.cn",
