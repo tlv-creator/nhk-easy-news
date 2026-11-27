@@ -160,6 +160,27 @@ def save_reg(j):
     os.replace(tmp, REG)
 
 
+def _short_domain(d):
+    """🔴 2026-11-27 修：把清单里的 domain **归一成短名**（去 https:// / 去 .space.mcode.cn 后缀）。
+
+       背景：清单里 domain 有**全写**（`xxx.space.mcode.cn`）与**短写**（`xxx`）两种形态。
+       旧代码用 `if d and "." not in d` 来"过滤"全写形态 ⇒ 那不是归一，是**静默丢弃**：
+         · 线上清单 59 条里 **51 条是全写** ⇒ 保护清单只剩 8 条
+         · ⇒ ① `gates()` 对全写条目拿到 status=「未登记」⇒ **「现役站不删」这条保护失效**
+         · ⇒ ② `account_live_domains()` 数到 6 个活站，**实际 49** ⇒ 配额余量被严重高估
+                ⇒ 发版保险（near_cap）永远不触发 ⇒ 一路发到平台拒为止
+       修法同 `tools/check_sites_alive.py` 的 `_site_url`：**按形态归一，不丢条目**。
+       （`site_url()` 只吃短名 ⇒ 归一后拼 URL 才正确。）
+    """
+    s = str(d or "").strip().lower()
+    if s.startswith("http://") or s.startswith("https://"):
+        s = s.split("://", 1)[1]
+    s = s.split("/", 1)[0]
+    if s.endswith(".space.mcode.cn"):
+        s = s[: -len(".space.mcode.cn")]
+    return s
+
+
 def protected_map():
     """保护清单：优先线上（所有 agent 共用），线上读不到就用本地兜底。
 
@@ -173,8 +194,8 @@ def protected_map():
     m = {}
     for key in ("protected_sites", "sites"):
         for s in (j.get(key) or []):
-            d = s.get("domain")
-            if d and "." not in d:
+            d = _short_domain(s.get("domain"))
+            if d:
                 m[d] = s
     return m
 
@@ -340,8 +361,8 @@ def plan(verbose=True):
     # 候选 = 登记表里的 NHK 站 ∪ 保护清单里的 NHK 站
     cands = {}
     for s in reg.get("sites", []):
-        d = s.get("domain")
-        if d and "." not in d:
+        d = _short_domain(s.get("domain"))
+        if d:
             cands[d] = dict(s)
     for d, p in prot.items():
         if p.get("project") == PROJ and d not in cands:
@@ -524,8 +545,8 @@ def account_live_domains():
     prot = protected_map()
     doms = set(prot.keys())
     for s in reg.get("sites", []):
-        d = s.get("domain")
-        if d and "." not in d:
+        d = _short_domain(s.get("domain"))
+        if d:
             doms.add(d)
     out = []
     for d in sorted(doms):
@@ -547,8 +568,8 @@ def check():
     # ① NHK 自己的活站数（登记表 + 保护清单）
     doms = set()
     for s in reg.get("sites", []):
-        d = s.get("domain")
-        if d and "." not in d:
+        d = _short_domain(s.get("domain"))
+        if d:
             doms.add(d)
     for d, p in prot.items():
         if p.get("project") == PROJ:
@@ -702,7 +723,7 @@ def export_pending(args):
     boot = boot_info()
     cur = current_domain(boot)
     fb = fallback_domain(reg)
-    regmap = {s.get("domain"): s for s in reg.get("sites", []) if s.get("domain")}
+    regmap = {_short_domain(s.get("domain")): s for s in reg.get("sites", []) if s.get("domain")}
 
     cands = {}
     # ① 本地登记表里标了 SUPERSEDED 的
@@ -717,7 +738,8 @@ def export_pending(args):
             continue
         if d == cur or d == fb:
             continue
-        cands.setdefault(d, {"node_id": "PENDING", "reason": "保护清单标 SUPERSEDED"})
+        cands.setdefault(d, {"node_id": s.get("node_id") or "PENDING",
+                              "reason": "保护清单标 SUPERSEDED"})
 
     # 🔴 排除现役 / 兜底 / 已死的
     alive = []
