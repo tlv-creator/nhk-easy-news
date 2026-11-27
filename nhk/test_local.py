@@ -153,8 +153,13 @@ def main():
             arr = d.get(track) or []
             if not arr:
                 continue
+            # 🔴 2026-11-27 修：**只报「有块结构但没有块中文」的句子**
+            #   坑：web 轨（报纸原文）**按设计就没有成分块**（build_inc 把 y/yb 置空）
+            #     ⇒ 旧判据 `not yb` 把 web 整轨误报成缺口（今天 126 期里报出 40+ 条假缺口）
+            #   ⇒ 现在：y 为空（没有块结构）⇒ 不需要块中文 ⇒ 不算缺口
             bad = sum(1 for c in arr
-                      if len(c.get("y") or []) != len(c.get("yb") or []) or not c.get("yb"))
+                      if (c.get("y") or []) and
+                      (len(c.get("y") or []) != len(c.get("yb") or []) or not c.get("yb")))
             if bad:
                 gap.append("%s/%s(%d/%d)" % (e["id"], track, bad, len(arr)))
     if gap:
