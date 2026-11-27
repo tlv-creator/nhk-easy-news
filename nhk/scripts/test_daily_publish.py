@@ -58,7 +58,7 @@ def add_new_audio(app, name="ep2.m4a"):
 
 
 def scenario(m, tmp, name, *, audio_state, last_deploy, backlog, expect, mutate=None,
-             extra_audio=False):
+             extra_audio=False, live=6, quota=50):
     """跑一个场景 ⇒ 返回 (是否通过, 说明)"""
     root = os.path.join(tmp, name)
     shutil.rmtree(root, ignore_errors=True)
@@ -78,8 +78,12 @@ def scenario(m, tmp, name, *, audio_state, last_deploy, backlog, expect, mutate=
     st["content_sha"] = "whatever"
     os.makedirs(os.path.dirname(m.STATE), exist_ok=True)
     json.dump(st, open(m.STATE, "w", encoding="utf-8"))
+    json.dump(st, open(m.STATE, "w", encoding="utf-8"))
 
     m.pending_backlog = lambda: backlog   # 离线：不联网
+    # 🔴 2026-11-27 加：**账号活站数也要离线**（真实账号已经 50/50 ⇒ 不 mock 的话
+    #    每个场景都会被「硬上限」拦掉 ⇒ 场景全成空语句 ⇒ 自测失去意义）
+    m.quota_headroom = lambda: (live, quota)
 
     # 备份常量，反向验证时改
     save = (m.AUDIO_BATCH_EPISODES, m.AUDIO_BATCH_MAX_DAYS, m.MAX_PENDING_DELETES)
@@ -127,9 +131,16 @@ def main():
     # 5 距上次发站 1.2 天 ⇒ 要发
     results.append(scenario(m, tmp, "S5 距上次1.2天", audio_state=base_audio,
                             last_deploy=now - 1.2 * day, backlog=0, extra_audio=True, expect=True))
-    # 6 ★配额保险：积压 3 个（= MAX）⇒ 停发（哪怕有新媒体）
-    results.append(scenario(m, tmp, "S6 积压3个_停发", audio_state=base_audio,
-                            last_deploy=now, backlog=3, extra_audio=True, expect=False))
+    # 6 ★配额保险：积压 3 个（= MAX）**且**账号活站逼近上限 ⇒ 停发（哪怕有新媒体）
+    #   🔴 2026-11-27：这条的判据是**合取**（手册 §38.2：积压只是「清理没跟上」的信号，
+    #      真正的硬约束是 50 个站）⇒ 必须显式给 live=46（≥ 50-5）才算触发
+    results.append(scenario(m, tmp, "S6 积压3个_逼近上限_停发", audio_state=base_audio,
+                            last_deploy=now, backlog=3, extra_audio=True, expect=False,
+                            live=46, quota=50))
+    # 6b 积压 3 个但账号还很空（6/50）⇒ **照发**（积压 ≠ 配额风险，§38.2）
+    results.append(scenario(m, tmp, "S6b 积压3个_账号还空_照发", audio_state=base_audio,
+                            last_deploy=now, backlog=3, extra_audio=True, expect=True,
+                            live=6, quota=50))
     # 7 积压 2 个（< MAX）⇒ 照发
     results.append(scenario(m, tmp, "S7 积压2个_照发", audio_state=base_audio,
                             last_deploy=now, backlog=2, extra_audio=True, expect=True))
@@ -138,6 +149,15 @@ def main():
     results.append(scenario(m, tmp, "S8 音频内容变_1.2天前发过",
                             audio_state={"slow/ep1.m4a": "DIFFERENT-md5"},
                             last_deploy=now - 1.2 * day, backlog=0, expect=True))
+
+    # 9 ★2026-11-27 新增：**账号活站满额（50/50）⇒ 一律不发 mcode 站**
+    #    （今天实测：满额时部署必被 ENTITLEMENT_LIMIT_EXCEEDED 硬拒 ⇒ 零产出）
+    results.append(scenario(m, tmp, "S9 账号活站满额50_停发", audio_state=base_audio,
+                            last_deploy=now, backlog=0, extra_audio=True, expect=False,
+                            live=50, quota=50))
+    # 10 积压清单**读不到（未知）**⇒ 不据此判停（但硬上限那条照判）
+    results.append(scenario(m, tmp, "S10 积压未知_不据此停发", audio_state=base_audio,
+                            last_deploy=now, backlog=None, extra_audio=True, expect=True))
 
     # ── 反向验证（每条必须让**指定的那条**场景翻红）────────────
     # R1：把配额闸门放宽到 99 ⇒ S6 必须从「不发」变成「发」（= 红）
@@ -156,6 +176,11 @@ def main():
                        last_deploy=now - 1.2 * day, backlog=0, expect=True,
                        mutate=lambda mm: setattr(mm, "AUDIO_BATCH_MAX_DAYS", 365))
     results.append((not ok, msg + "   ← 反向验证：期望本条**翻红**（MAX_DAYS=365 ⇒ 不再按天发）"))
+    # R4：把配额上限放宽到 60（活站 50 不再是满额）⇒ S9 必须翻红（= 可以发了）
+    ok, msg = scenario(m, tmp, "R4 上限放宽到60", audio_state=base_audio,
+                       last_deploy=now, backlog=0, extra_audio=True, expect=False,
+                       live=50, quota=60)
+    results.append((not ok, msg + "   ← 反向验证：期望本条**翻红**（上限放宽 ⇒ 满额不再拦）"))
 
     # ── 汇总 ───────────────────────────────────────────────────
     print("=" * 78)

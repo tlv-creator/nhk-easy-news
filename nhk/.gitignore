@@ -18,3 +18,11 @@ __pycache__/
 
 # 音频不进仓库（59MB）⇒ setup_env.sh 从线上站取回
 site/app/media/
+
+# 2026-11-27 加：运行日志 / 临时 wav 不进仓库（噪声）
+work/*.log
+setup_env.log
+work/wav/
+
+# 2026-11-27 加：NHK 授权 cookie 缓存（含 z_at）**绝不能进仓库**
+work/z_at.json

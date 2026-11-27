@@ -1,0 +1,3 @@
+# 2026-11-28T02:24:02 生成：待删站点（node_id 域名）
+drive files delete 466840087143412   # d68g6hi5pch7y
+drive files delete 465800236970342   # sko9cgl435tzf

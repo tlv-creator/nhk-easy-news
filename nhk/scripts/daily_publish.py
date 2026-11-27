@@ -176,15 +176,25 @@ def pending_backlog():
       ① 待删清单 = 共享仓库 pending-deletes.json（发版 agent 写、清理 cron 删）
       ② 只数**还活着**的（curl 200）⇒ 清单里已经死掉的（404）不算积压
     ⇒ 「没登记 = 没积压」是安全的默认（登记了才可能积压）
+
+    🔴🔴 2026-11-27 修（**今天实测踩到**）：清单读取**必须走 curl**
+       坑：原来用 urllib ⇒ 沙箱里打 github.io **SSL 握手超时** ⇒ 读不到清单
+          ⇒ 旧代码「按无积压处理」⇒ 配额保险**整个失效**
+          ⇒ 今天账号已经 50/50（活站满额）⇒ 决策仍说「要发 mcode 站」
+          ⇒ 部署必被 ENTITLEMENT_LIMIT_EXCEEDED **硬拒**（零产出）
+       ⇒ 现在：走 site_quota_guard.http_json（curl 优先 + 3 次重试，**唯一口径**）
+       ⇒ 并且**读不到时返回 None（未知）**，不许当成 0（「读不到」≠「没有」，手册 §38.3）
     """
-    import urllib.request
     try:
-        req = urllib.request.Request(PENDING_URL, headers={"Cache-Control": "no-cache"})
-        raw = urllib.request.urlopen(req, timeout=20).read().decode("utf-8")
-        d = json.loads(raw)
+        sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        import site_quota_guard as SQ
+        d = SQ.http_json(PENDING_URL)
     except Exception as e:
-        log("   ⚠️ 读不到待删清单（%s）⇒ 按「无积压」处理" % e)
-        return 0
+        log("   ⚠️ 读不到待删清单（%s）⇒ **未知**（不是「无积压」）" % e)
+        return None
+    if not d:
+        log("   ⚠️ 读不到待删清单 ⇒ **未知**（不是「无积压」）")
+        return None
     sites = d.get("sites") or []
     alive = []
     for s in sites:
@@ -193,9 +203,7 @@ def pending_backlog():
             continue
         url = dom if dom.startswith("http") else "https://%s.space.mcode.cn/" % dom
         try:
-            r = urllib.request.urlopen(url, timeout=10)
-            code = r.getcode()
-            r.close()
+            code = SQ.http_code(url)
         except Exception:
             code = 0
         if code == 200:
@@ -249,15 +257,26 @@ def plan():
     backlog = pending_backlog()
     live, quota = quota_headroom()
     near_cap = live >= (quota - QUOTA_WARN_MARGIN)
+    at_cap = live >= quota
     log("   账号活站 %d / 上限 %d（离上限还有 %d 个位）" % (live, quota, max(0, quota - live)))
-    if need_audio_deploy and backlog >= MAX_PENDING_DELETES and near_cap:
+    # 🔴🔴🔴 2026-11-27 修（今天实测）：**硬上限优先于一切**
+    #   活站数 ≥ 50 ⇒ 下一次 website_deploy **必被 ENTITLEMENT_LIMIT_EXCEEDED 拒**
+    #   ⇒ 而且「被拒时是零产出」：连站都没建出来 ⇒ 白跑一趟，还以为「发布失败」
+    #   ⇒ 所以：**活站满额 ⇒ 一律不发 mcode 站**（Pages 照常同步，零配额）
+    if need_audio_deploy and at_cap:
+        log("   ⛔ 硬上限：账号活站 %d/%d ⇒ 部署必被 ENTITLEMENT_LIMIT_EXCEEDED **硬拒**"
+            " ⇒ **不发 mcode 站**（Pages 照常同步）" % (live, quota))
+        need_audio_deploy = False
+    elif need_audio_deploy and backlog is not None and backlog >= MAX_PENDING_DELETES and near_cap:
         log("   ⛔ 配额保险：待删站积压 %d 个（≥ %d）**且**账号活站已逼近上限（%d/%d）"
             " ⇒ **停发 mcode 站**" % (backlog, MAX_PENDING_DELETES, live, quota))
         need_audio_deploy = False
-    elif need_audio_deploy and backlog >= MAX_PENDING_DELETES:
+    elif need_audio_deploy and backlog is not None and backlog >= MAX_PENDING_DELETES:
         log("   ⚠️ 待删站积压 %d 个（≥ %d），但账号真实用量才 %d/%d ⇒ 够用 ⇒ 照发"
             "（积压 = 清理 cron 没跟上 ⇒ 通道恢复后清掉即可）"
             % (backlog, MAX_PENDING_DELETES, live, quota))
+    elif need_audio_deploy and backlog is None:
+        log("   ⚠️ 待删清单读不到（未知）⇒ 不据此判停（但**硬上限那条照判**）")
 
     log("════ NHK 日更发版决策 ════")
     log("   内容指纹 %s（%d 个文件）" % (fp[:12], len(items)))
@@ -283,7 +302,10 @@ def plan():
     if need_audio_deploy:
         log("   ✅ 决策：**要发 mcode 站**（音频有新东西 ⇒ App 也能当天拿到新一期）")
     else:
-        if backlog >= MAX_PENDING_DELETES:
+        if at_cap:
+            log("   ⏸️ 决策：**不发 mcode 站**（账号活站已满额 %d/%d ⇒ 等清理 cron 腾位）"
+                % (live, quota))
+        elif backlog is not None and backlog >= MAX_PENDING_DELETES:
             log("   ⏸️ 决策：**不发 mcode 站**（待删站积压 %d 个 ⇒ 等清理 cron 腾位）" % backlog)
         elif new_audio or changed_audio:
             log("   ⏸️ 决策：**先不发 mcode 站**（还没到发布节奏）⇒ **今天 0 配额占用**")

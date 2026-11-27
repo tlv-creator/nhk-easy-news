@@ -1,0 +1,20 @@
+{
+  "release": 38,
+  "data": 61,
+  "app": 49,
+  "style": 43,
+  "sw": 38,
+  "sha": {
+    "app": "4ba89c8d7afe7d9db4ada0e9f128c6e6",
+    "style": "c446daa523563d0eb4675e3c6de19373"
+  },
+  "data_sha": {
+    "episodes.js": "9ed0e39ae457c46b6b90d7969e53d553",
+    "patterns.js": "41f98e58282af80018577e3b859dd5c8",
+    "syntax.js": "beac45e9fb07813c918b0582f21478d4",
+    "reading.js": "ccc15a3aba4d546eb64ced37c8842097",
+    "chains.js": "ce3bb140154973ed4e9b67cc16d1e675",
+    "cdn.js": "153bec375366f90044136a047be02db3"
+  },
+  "content_sha": "e6c300829104e573773806f05275648b"
+}

@@ -8,7 +8,7 @@
 /* 🔴 缓存名带内容版本：改了 sw.js 本身 ⇒ 浏览器会重装 SW ⇒ 预缓存里的
    data/episodes.js 等才会刷新。否则 stale-while-revalidate 会把**旧期数**
    先发给用户（第一次打开看不到新一期，得开第二次）—— 2026-10-24 修 */
-const CACHE = 'nhk-easynews-v37';
+const CACHE = 'nhk-easynews-v38';
 /* 🔴🔴 2026-10-25：音频缓存**单独一个桶**，不跟着 CACHE 换名。
    为什么：CACHE 每次发版都要升号（否则用户拿旧字幕 ⇒ 手册 §发布闸门）
    ⇒ 而 activate 会删掉「除当前桶以外的所有桶」⇒ 音频会被连坐清掉

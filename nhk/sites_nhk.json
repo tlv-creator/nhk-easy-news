@@ -1,166 +1,175 @@
 {
- "_readme": "NHK 内容站登记表（唯一权威 · 手册 §「站点 URL 记录」）",
- "_rules": [
-  "fallback_domain = 编译进 APK classes.dex 的**冻结兜底站** ⇒ 永不 redeploy、永不删",
-  "sites = 本项目部署过的站；引导页 version.json 的 site 指向的那个**永远不删**",
-  "node_id = PENDING = 沙箱里没有 drive 工具查不到（删站要用 mcp_invoke 的 drive 工具）",
-  "node_id 可以从线上反查：平台注入的统计脚本里带着本节点的 node_id（base64）⇒ scripts/site_quota_guard.py discover"
- ],
- "updated": "2026-11-24",
- "fallback_domain": "vkwwuh9wgkzo0",
- "sites": [
-  {
-   "domain": "204ocuv36su6w",
-   "ver": 32,
-   "apk_ver": 20,
-   "date": "2026-10-25",
-   "node_id": "456210239336751",
-   "role": "superseded",
-   "note": "现役内容站（引导页 version.json 的 site 指向它）· 44 期 · ver 32 / apkVer 20",
-   "status": "SUPERSEDED"
-  },
-  {
-   "domain": "vkwwuh9wgkzo0",
-   "ver": 0,
-   "date": "2026-10-21",
-   "node_id": "455239419052366",
-   "frozen": true,
-   "role": "fallback",
-   "note": "永久兜底站（APK classes.dex 写死）⇒ 永不 redeploy、永不删（域名一换 App 就白屏）"
-  },
-  {
-   "domain": "em8hjp6jskxyb",
-   "ver": 31,
-   "date": "2026-10-25",
-   "node_id": "PENDING",
-   "status": "DELETED",
-   "role": "superseded",
-   "note": "上一版内容站（v1.31）· 2026-10-25 已删（curl 判 404，当天核过）⇒ 留墓碑，别再当活站"
-  },
-  {
-   "node_id": "464033924727000",
-   "domain": "fj28fgr7ve147",
-   "project": "nhk",
-   "ver": "34",
-   "ts": "2026-11-16",
-   "keep": true,
-   "note": "现役内容站（引导页 version.json 指向它）",
-   "role": "superseded",
-   "status": "DELETED"
-  },
-  {
-   "domain": "wm7b6ntgi3vl6",
-   "ver": 33,
-   "apk_ver": 20,
-   "date": "2026-11-02",
-   "node_id": "459071909741404",
-   "status": "DELETED",
-   "role": "superseded",
-   "note": "上一版内容站（v33 · 67 期）· 2026-11-16 被 fj28fgr7ve147 取代 ⇒ 待删（清配额）"
-  },
-  {
-   "node_id": "465800236970342",
-   "domain": "sko9cgl435tzf",
-   "project": "nhk",
-   "ver": "35",
-   "ts": "2026-11-22",
-   "keep": true,
-   "note": "现役内容站（引导页 version.json 指向它）· 110 期 · ver 35 / apkVer 20 · 2026-11-24 被新站取代 ⇒ 待删（配额净增 0）",
-   "role": "superseded",
-   "status": "ACTIVE",
-   "date": "2026-11-21",
-   "apk_ver": 20
-  },
-  {
-   "node_id": "466840087143412",
-   "domain": "d68g6hi5pch7y",
-   "project": "nhk",
-   "ver": 36,
-   "ts": "2026-11-24",
-   "keep": true,
-   "note": "现役内容站（引导页 version.json 的 site 指向它）· 114 期 · v36",
-   "role": "current_site",
-   "date": "2026-11-24"
-  }
- ],
- "history": [
-  {
-   "domain": "hoibadfkj8ena",
-   "ver": 24,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "w2jcdkvrprc4d",
-   "ver": 23,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "aaxnw4wets0kt",
-   "ver": 23,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "blb9mns852mft",
-   "ver": 22,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "2pybu8mvjo0iu",
-   "ver": 21,
-   "status": "DELETED",
-   "deleted_at": "2026-10-24"
-  },
-  {
-   "domain": "0een4722dqi6v",
-   "ver": 21,
-   "status": "DELETED",
-   "deleted_at": "2026-10-24"
-  },
-  {
-   "domain": "sn61770y6nxvr",
-   "ver": 27,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "fsgzjdb65tse5",
-   "ver": 24,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "vdc02cjwfuibi",
-   "ver": 25,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "u5kzfuj1hiiht",
-   "ver": 26,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "jhtywvkn1vzil",
-   "ver": 27,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "hpufjp83f9cqp",
-   "ver": 28,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  },
-  {
-   "domain": "ac8e29hqy5sv5",
-   "ver": 29,
-   "status": "DELETED",
-   "deleted_at": "2026-10-25"
-  }
- ]
+  "_readme": "NHK 内容站登记表（唯一权威 · 手册 §「站点 URL 记录」）",
+  "_rules": [
+    "fallback_domain = 编译进 APK classes.dex 的**冻结兜底站** ⇒ 永不 redeploy、永不删",
+    "sites = 本项目部署过的站；引导页 version.json 的 site 指向的那个**永远不删**",
+    "node_id = PENDING = 沙箱里没有 drive 工具查不到（删站要用 mcp_invoke 的 drive 工具）",
+    "node_id 可以从线上反查：平台注入的统计脚本里带着本节点的 node_id（base64）⇒ scripts/site_quota_guard.py discover"
+  ],
+  "updated": "2026-11-24",
+  "fallback_domain": "vkwwuh9wgkzo0",
+  "sites": [
+    {
+      "domain": "204ocuv36su6w",
+      "ver": 32,
+      "apk_ver": 20,
+      "date": "2026-10-25",
+      "node_id": "456210239336751",
+      "role": "superseded",
+      "note": "现役内容站（引导页 version.json 的 site 指向它）· 44 期 · ver 32 / apkVer 20",
+      "status": "SUPERSEDED"
+    },
+    {
+      "domain": "vkwwuh9wgkzo0",
+      "ver": 0,
+      "date": "2026-10-21",
+      "node_id": "455239419052366",
+      "frozen": true,
+      "role": "fallback",
+      "note": "永久兜底站（APK classes.dex 写死）⇒ 永不 redeploy、永不删（域名一换 App 就白屏）"
+    },
+    {
+      "domain": "em8hjp6jskxyb",
+      "ver": 31,
+      "date": "2026-10-25",
+      "node_id": "PENDING",
+      "status": "DELETED",
+      "role": "superseded",
+      "note": "上一版内容站（v1.31）· 2026-10-25 已删（curl 判 404，当天核过）⇒ 留墓碑，别再当活站"
+    },
+    {
+      "node_id": "464033924727000",
+      "domain": "fj28fgr7ve147",
+      "project": "nhk",
+      "ver": "34",
+      "ts": "2026-11-16",
+      "keep": true,
+      "note": "现役内容站（引导页 version.json 指向它）",
+      "role": "superseded",
+      "status": "DELETED"
+    },
+    {
+      "domain": "wm7b6ntgi3vl6",
+      "ver": 33,
+      "apk_ver": 20,
+      "date": "2026-11-02",
+      "node_id": "459071909741404",
+      "status": "DELETED",
+      "role": "superseded",
+      "note": "上一版内容站（v33 · 67 期）· 2026-11-16 被 fj28fgr7ve147 取代 ⇒ 待删（清配额）"
+    },
+    {
+      "node_id": "465800236970342",
+      "domain": "sko9cgl435tzf",
+      "project": "nhk",
+      "ver": "35",
+      "ts": "2026-11-22",
+      "keep": true,
+      "note": "现役内容站（引导页 version.json 指向它）· 110 期 · ver 35 / apkVer 20 · 2026-11-24 被新站取代 ⇒ 待删（配额净增 0）",
+      "role": "superseded",
+      "status": "ACTIVE",
+      "date": "2026-11-21",
+      "apk_ver": 20
+    },
+    {
+      "node_id": "466840087143412",
+      "domain": "d68g6hi5pch7y",
+      "project": "nhk",
+      "ver": 36,
+      "ts": "2026-11-24",
+      "keep": true,
+      "note": "现役内容站（引导页 version.json 的 site 指向它）· 114 期 · v36",
+      "role": "current_site",
+      "date": "2026-11-24"
+    },
+    {
+      "node_id": "467555800559819",
+      "domain": "nf9dolmlsdjr4",
+      "project": "nhk",
+      "ver": "38",
+      "ts": "2026-11-28",
+      "keep": true,
+      "note": "现役内容站（引导页 version.json 指向它）"
+    }
+  ],
+  "history": [
+    {
+      "domain": "hoibadfkj8ena",
+      "ver": 24,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "w2jcdkvrprc4d",
+      "ver": 23,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "aaxnw4wets0kt",
+      "ver": 23,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "blb9mns852mft",
+      "ver": 22,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "2pybu8mvjo0iu",
+      "ver": 21,
+      "status": "DELETED",
+      "deleted_at": "2026-10-24"
+    },
+    {
+      "domain": "0een4722dqi6v",
+      "ver": 21,
+      "status": "DELETED",
+      "deleted_at": "2026-10-24"
+    },
+    {
+      "domain": "sn61770y6nxvr",
+      "ver": 27,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "fsgzjdb65tse5",
+      "ver": 24,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "vdc02cjwfuibi",
+      "ver": 25,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "u5kzfuj1hiiht",
+      "ver": 26,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "jhtywvkn1vzil",
+      "ver": 27,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "hpufjp83f9cqp",
+      "ver": 28,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    },
+    {
+      "domain": "ac8e29hqy5sv5",
+      "ver": 29,
+      "status": "DELETED",
+      "deleted_at": "2026-10-25"
+    }
+  ]
 }

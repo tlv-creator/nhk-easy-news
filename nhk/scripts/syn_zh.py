@@ -25,8 +25,13 @@ import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(ROOT, "site", "app")
-API = "https://api.minimax.chat/v1/text/chatcompletion_v2"
-MODEL = "MiniMax-Text-01"
+API = "https://api.minimaxi.com/v1/chat/completions"
+# 🔴🔴 2026-11-27 修（今天实测）：原来打 **api.minimax.chat + MiniMax-Text-01**
+#    ⇒ 该模型 2026-11 已下线（实测返回 status_code=2069 "no longer available"）
+#    ⇒ call_minimax 连续 3 次拿不到 choices ⇒ 抛「MiniMax 调用失败」
+#    ⇒ 外层 try/except 把它吞成一行 ⇒ **成分块中文一直补不上**（没人发现）
+# ✅ 换成 scripts/translate_wo.py 用的同一套（api.minimaxi.com + MiniMax-M3）
+MODEL = "MiniMax-M3"
 
 PROMPT = """下面给你一个日语句子的**结构块**列表（每块是原句里的一段，带字符区间）。
 请为每一块写一个**简短中文**（8~18 字），说明这一块在句子里是什么。
@@ -43,7 +48,7 @@ PROMPT = """下面给你一个日语句子的**结构块**列表（每块是原�
 
 def call_minimax(prompt, retries=3):
     body = {"model": MODEL, "messages": [{"role": "user", "content": prompt}],
-            "max_tokens": 8000, "temperature": 0.1}
+            "max_tokens": 16000, "temperature": 0.1}   # 🔴 2026-11-27：8000 会被思考过程吃光 ⇒ JSON 被截断
     key = os.environ.get("MINIMAX_SUB_KEY", "")
     if not key:
         raise RuntimeError("没有 MINIMAX_SUB_KEY")
@@ -66,7 +71,24 @@ def call_minimax(prompt, retries=3):
 
 
 def parse_items(text):
-    m = re.search(r"\[.*\]", text or "", re.S)
+    # 🔴 2026-11-27：模型（MiniMax-M3）会带 <think>…</think> 和 ```json 围栏
+    #    ⇒ 先剥掉再抽数组（与 scripts/translate_wo.py 的 parse_json 同一口径）
+    # 🔴 2026-11-27 又补一条：**思考过程被截断**（<think> 没闭合）⇒ 常规正则剥不掉
+    #    ⇒ 实测有的响应整体是一段 think ⇒ 抽不到数组 ⇒ 「❌ 解析失败」
+    #    ⇒ 兜底：think 之后仍有数组就取；没有就把 think 整段砍掉再抽
+    t = text or ""
+    # ① 闭合的 think 段：全部去掉（贪婪，避免嵌套漏删）
+    t = re.sub(r"<think>.*?</think>", "", t, flags=re.S)
+    # ② 没闭合的 think 段：从 <think> 之后如果还有像数组的内容，就切到它前面
+    if "<think>" in t:
+        head, _, tail = t.partition("<think>")
+        if re.search(r"\[.*\]", tail, re.S):
+            t = head + tail
+        else:
+            t = head
+    t = re.sub(r"^```(?:json)?\s*", "", t.strip())
+    t = re.sub(r"\s*```$", "", t)
+    m = re.search(r"\[.*\]", t, re.S)
     if not m:
         return None
     try:
@@ -123,7 +145,12 @@ def fix_ep(eid, track, check_only=False):
     for i, blocks, ja in todo:
         items = "\n".join('{"i": %d, "ja": %s}' % (b["i"], json.dumps(b["text"], ensure_ascii=False))
                           for b in blocks)
-        resp = call_minimax(PROMPT.format(items=items))
+        # 🔴🔴 2026-11-27 修（今天实测踩到）：原来用 **PROMPT.format(items=items)**
+        #   ⇒ 而 PROMPT 里**有字面量花括号**（`{"i": 块序号, "zh": "中文"}`）
+        #   ⇒ str.format 把它当占位符 ⇒ KeyError('"i"') ⇒ **每个句子都补不上**
+        #   ⇒ 外层 try/except 把异常吞成一行「❌ …：'"i"'」⇒ 看不出是脚本坏了
+        # ✅ 改用 replace（只替换 {items}，不动其它花括号）
+        resp = call_minimax(PROMPT.replace("{items}", items))
         arr = parse_items(resp)
         if not arr:
             print("  ❌ 解析失败：%r" % (resp or "")[:120])
