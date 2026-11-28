@@ -212,8 +212,15 @@ rg -ao --no-ignore --hidden --binary '[a-z0-9A-Z]{4,}\.space\.mcode\.cn' repo | 
    - 回写用「**拉线上版当基底 + 只改这一条 + 推回**」，别整份覆盖（别人也在改这个文件）
    - 🔴 **推之前必须重新拉一次线上最新版**（属主常在你动手前几分钟改过同一文件）
    - 🔴 **推多文件用 Git Data API**（一次提交 = 一次 Pages build）；只改一个文件就一次提交，别拆多次
+   - 🔴 **回读一律用「源端 Contents API」（`GET /repos/<repo>/contents/<file>`），不要用 Pages URL** ——
+     Pages CDN 缓存约 **10 分钟** ⇒ 用 `https://tlv-creator.github.io/.../protected-sites.json` 读会拿到**旧数据**
+     （2026-11-28 实测：读到的还是 DELETED=10 / occupancy=50 的旧版，而源端已是 DELETED=42 / occupancy=18）
+     ⇒ **源端才是真值**；Pages 只用来验证「页面确实渲染出来了」。
    - 🔴 **GitHub token 用环境变量 `GH_TOKEN`**（secret 管理，已注入）⇒ 旧配方里的 `/workspace/.secrets/gh_token` 路径**已不存在**
    - 🔴 **回写后立刻回读会命中旧缓存** ⇒ 回读要加 cache-buster（`?cb=$(date +%s%N)`）或延迟/轮询
+   - 🛠 **推前 + 推后白名单断言**（`pushutil.py`）：推之前断言待推文件 ⊆ 白名单（外文件直接中止），
+     **推之后从 API 回读该 commit 的 `changed files`** 并断言 ⊆ 白名单 ⇒ **每次提交实际改了哪些文件机器可查、人可核**
+     （共享仓库多人推时，归属不靠 commit message 猜）
 5) 🔴 **顺手补登「清单外存活站」**：探活时发现「活着但从没进过清单」的站 ⇒ 补进 protected-sites.json
    - 一律写成 **`status:"ALIVE"` + `frozen:true` + `node_id`** ⇒ **不是删除候选**（ALIVE 永不被清理 cron 选中）
    - 🔴 **绝对不要写成 SUPERSEDED**（那等于把它变成删除候选 ⇒ 音频源/写死在 APK 里的站会被删 ⇒ 用户 App 没声音）
