@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NHK やさしいことばニュース · 更新引导</title>
+<title>NHK やさしいことばニュース · 已停止维护</title>
 <style>
 body{font-family:system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;max-width:560px;margin:0 auto;padding:28px 18px;line-height:1.75;color:#222;background:#fff}
 h1{font-size:19px;margin-bottom:4px}
@@ -15,29 +15,15 @@ a.dl{display:inline-block;margin-top:10px;padding:11px 18px;background:#fff;colo
 .note{font-size:13px;color:#666;margin-top:24px;padding-top:14px;border-top:1px solid #eee}
 </style></head><body>
 <h1>📺 NHK やさしいことばニュース · 日中对照精读</h1>
-<div class="sub">每日自动更新 · 引导页（App 启动时读这里的 version.json）</div>
+<div class="sub">该 App 已停止维护（2026-11-28）</div>
 <div class="box">
-  <div class="row"><span>当前版本</span><b id="v">-</b></div>
-  <div class="row"><span>内容站</span><b id="site" style="font-size:13px"></b></div>
-  <div class="row"><span>更新日期</span><b id="up">-</b></div>
-  <div class="row"><span>说明</span><b id="note" style="font-size:13px"></b></div>
-  <a class="btn" id="go" href="#">打开学习站</a>
-  <a class="dl" id="apk" href="#">下载新版 APK</a>
+  <div class="row"><span>状态</span><b>已停止维护，不再更新</b></div>
+  <div class="row"><span>说明</span><b style="font-size:13px">内容站与相关服务已下线；旧版本 App 无法继续获取新内容。</b></div>
 </div>
 <div class="note">
-  你的 App 每次打开会来这个页面读一下「内容站在哪」，所以域名换了也不用你操心 ——
-  收藏、生词本、观看进度都会自动搬过去。<br>
-  如果 App 提示「發現新版本」，点一下就能下载安装（覆盖安装，不丢数据）。
+  本项目已停止维护。英语教学线仍在运行：<br>
+  <a class="dl" href="https://tlv-creator.github.io/nhk-easy-news/cet4.html">四级精读</a>
+  <a class="dl" href="https://tlv-creator.github.io/nhk-easy-news/listening/">每日听力记录</a>
+  <a class="dl" href="https://tlv-creator.github.io/nhk-easy-news/vocab/">词汇学习站</a>
 </div>
-<script>
-fetch('version.json',{cache:'no-store'}).then(r=>r.json()).then(j=>{
-  document.getElementById('v').textContent='v'+j.ver+'（'+j.verName+'）';
-  document.getElementById('site').textContent=j.site;
-  document.getElementById('up').textContent=j.updated||'-';
-  document.getElementById('note').textContent=j.note||'';
-  document.getElementById('go').href=j.site;
-  var a=document.getElementById('apk');
-  if(j.apk){a.href=j.apk;}else{a.style.display='none';}
-}).catch(()=>{document.getElementById('v').textContent='配置读取中…';});
-</script>
 </body></html>
