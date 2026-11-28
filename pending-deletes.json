@@ -173,7 +173,7 @@
     {
       "domain": "vkwwuh9wgkzo0",
       "node_id": "455239419052366",
-      "reason": "NHK 永久兜底站（写死在 NHK.apk 的 classes.dex） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=fallback。闸门：无公开引导页引用。后果：写死在 NHK.apk 里 ⇒ 该 App 彻底无法启动（App 已弃用 ⇒ 随之作废）。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
+      "reason": "NHK 永久兜底站（写死在 NHK.apk 的 classes.dex） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=fallback。闸门：无公开引导页引用。后果：写死在 NHK.apk 里 ⇒ 该 App 彻底无法启动（App 已弃用 ⇒ 随之作废）。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。 🔴 **主人 2026-11-28 16:14 明确选择「一并删掉，日语线彻底清空」** ⇒ 删后已装 NHK APK 会白屏（兜底站没了），此为**已知并授权的后果**，不是误删。⇒ 留痕于此，免得以后有人看到这条又犹豫。"
     },
     {
       "domain": "1hv73j0i9907z",
@@ -226,6 +226,6 @@
       "reason": "AI 讲解客户端 ai-client.js（hub / NHK / 多読絵本 共用） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=infra。闸门：无公开引导页引用；被墨水屏闸门脚本引用（nhk/scripts/check_eink_css.*、shun/scripts/check_eink_css.js）。后果：🔴 **删完 = 全平台 AI 讲解失效**（hub / NHK / 多読絵本 的点句讲解全部失效）。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
     }
   ],
-  "updated": "2026-11-28 16:14",
+  "updated": "2026-11-28 16:21",
   "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。🔴 2026-11-28：用户决定弃用 24 个站（不再使用的 App 全组 + 旧版本 + 一次性工具站）+ 补录 1 条漏网（zv03ebxy0ezq3）⇒ 本队列现有 31 条。🔴 **每日听力记录三个镜像（irk7ibwekq8se / xqrp2rqkvxqwf / ul366v9i8nx0s）与词汇站（iujsgx3ci73dp / zp67qm11jonui）明确不删**，学生还在用，任何清理都不得碰。🔴 网站类节点 API 删除返回 NOT_ALLOWED ⇒ 通道恢复前需用户在「资料空间」页面手动删；删完从本文件移除并把 protected-sites.json 改 DELETED。"
 }
