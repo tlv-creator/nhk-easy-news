@@ -276,3 +276,46 @@ rg -ao --no-ignore --hidden --binary '[a-z0-9A-Z]{4,}\.space\.mcode\.cn' repo | 
 🔴 **词汇学习站两个**：`iujsgx3ci73dp` / `zp67qm11jonui`
 （用户 2026-11-28 原话：「词汇和听力记录一定不要删除，学生还要用」）
 ⇒ 这 5 个站永远不进待删队列；清单里必须保持 ALIVE。
+
+---
+
+## 13. 最终收尾操作手册（自包含 · 不依赖任何会话的临时脚本）
+
+**触发条件**：待删队列里**最后一条**的节点被删掉（资料空间页面手动删）⇒ 占用应降到 **5/50**（只剩教学线 5 站）。
+
+### 第 1 步 · 实测占用（不要用减法）
+```
+space_list {type:"file", categories:["website"], limit:100}            # 根目录
+space_list {space_path:"/AI生成/", type:"file", categories:["website"], limit:100}
+```
+🔴 **按返回项里的 `website: true` 字段自己数**（`categories` 过滤实测会失效），两个目录都要数。
+
+### 第 2 步 · 逐个探活队列成员（必须带 cache-buster）
+```bash
+curl -s -o /dev/null -m 15 -w '%{http_code}' "https://<域名>.space.mcode.cn/?cb=$(date +%s%N)"
+```
+- **200** ⇒ 还活着，留在队列
+- **404** ⇒ 站已死；**再确认节点是否还在云盘**：
+  - 节点已不在 ⇒ 确认删除 ⇒ `status=DELETED` + 移出队列
+  - 节点还在 ⇒ **死站占位**（仍吃 1 位）⇒ **status 不写 DELETED**，留在队列 + reason 写明「仍需删节点」
+
+### 第 3 步 · 回写（一次提交 2 个文件，Git Data API）
+```
+GET  /repos/tlv-creator/nhk-easy-news/contents/protected-sites.json    # 源端读基线
+GET  /repos/tlv-creator/nhk-easy-news/contents/pending-deletes.json
+```
+- 清单：确认删除的 ⇒ `status:"DELETED"` + note 追加「主人手动删除，探活 404 + 节点已不在云盘」
+- 队列：移除确认删除的条目；死站占位的留在队列并加说明
+- `_quota_occupancy`：**用第 1 步的实测值**（`website_nodes` / `quota_limit:50` / `headroom` / `alive_nodes` / `pending_deletions` / `measured_at`）
+- 🔴 **KEEP 5 站一个字不改**（`irk7ibwekq8se` `xqrp2rqkvxqwf` `ul366v9i8nx0s` `iujsgx3ci73dp` `zp67qm11jonui`）
+
+### 第 4 步 · 断言（不全过就不许推）
+1. 清单状态分布 == **DELETED 55 / ALIVE 5 / SUPERSEDED 0**，清单仍 60 条
+2. 队列 **0 条**
+3. `_quota_occupancy.website_nodes == 5`、`headroom == 45`、`pending_deletions == 0`
+4. **双向一致性**：SUPERSEDED 集合 == 队列集合（两边都空）
+5. KEEP 5 站：`status=ALIVE` + `frozen=true` + **队列外**
+6. `python3 tools/check_sites_alive.py` ⇒ **exit 0**
+
+### 第 5 步 · 回读（只走源端 API）
+`GET /repos/.../contents/<file>` 读回，核对分布与队列长度 ⇒ **不要用 Pages URL**（缓存 10 分钟会读到旧值）。
