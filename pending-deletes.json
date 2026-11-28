@@ -29,8 +29,148 @@
       "domain": "q05319l7gi458",
       "node_id": "467179159363868",
       "reason": "多読 v1.3.1 交付站（95本 / 11638句 / 86本有音），2026-11-27 v1.4.0（zv03ebxy0ezq3，131本 / 15679句 / 86本有音）上线后被取代 ⇒ 该删（清配额）。取代链：ygqm1hz5djz1n → k4ebhgic0up64 → q05319l7gi458 → zv03ebxy0ezq3（现役）。2026-11-27 清理 cron 复核：四道闸门全过 —— ①status=SUPERSEDED（replaced_by=zv03ebxy0ezq3）；②引导页 tadoku.html（源端 Contents API + 渲染端 Pages 双读）已指向 zv03ebxy0ezq3，零指向本站；③现役多読 APK v1.4.0（tadoku-apk.zip → tadoku.apk，**解两层**后扫 dex+assets）零引用本站域名（assets/site.txt 仅 3 行注释无域名；音频走书数据绝对 URL 5 个域）；④新站自身 /data/eps/index.json、app.js、config.js 零引用。node_id 已从站内注入统计脚本 base64 反查独立复核，与清单登记一致。"
+    },
+    {
+      "domain": "0rbbjfw36hj66",
+      "node_id": "456086612078894",
+      "reason": "2026-11-28 用户决定删除：日语泛读 55本 · 更早版 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "qgozaeqvjc9l9",
+      "node_id": "456086619906648",
+      "reason": "2026-11-28 用户决定删除：日语泛读 55本 · 更早版 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "wzm2lkj4a7oo8",
+      "node_id": "456163311964307",
+      "reason": "2026-11-28 用户决定删除：日语泛读 55本 · 对轴修正版 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "irk7ibwekq8se",
+      "node_id": "455238580995124",
+      "reason": "2026-11-28 用户决定删除：每日听力记录 · v4 镜像 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "xqrp2rqkvxqwf",
+      "node_id": "455766114738892",
+      "reason": "2026-11-28 用户决定删除：每日听力记录 · 加速镜像 v2 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "ul366v9i8nx0s",
+      "node_id": "455781590155777",
+      "reason": "2026-11-28 用户决定删除：每日听力记录 · 加速镜像 v3 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "9qcq9q73zm4ql",
+      "node_id": "455145822027880",
+      "reason": "2026-11-28 用户决定删除：日語精読 hub v1.6 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "lbvlknqo9bzii",
+      "node_id": "456047215686178",
+      "reason": "2026-11-28 用户决定删除：日語精読 hub ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "4ehdjy9jmbw11",
+      "node_id": "454727771624180",
+      "reason": "2026-11-28 用户决定删除：魔卡少女樱 v2.11 · 内容站 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "f3rpiqeouy6c0",
+      "node_id": "454686917050664",
+      "reason": "2026-11-28 用户决定删除：魔卡 · 日配音频 A1 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "5wxizdpb9tyq8",
+      "node_id": "454687605055642",
+      "reason": "2026-11-28 用户决定删除：魔卡 · 日配音频 A2 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "bjyzdgmd6px91",
+      "node_id": "454687509713266",
+      "reason": "2026-11-28 用户决定删除：魔卡 · 日配音频 A3 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "clqvqp5j1qrqu",
+      "node_id": "454688103887134",
+      "reason": "2026-11-28 用户决定删除：魔卡 · 日配音频 A4 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "vi57vb0da33qp",
+      "node_id": "454688183763148",
+      "reason": "2026-11-28 用户决定删除：魔卡 · 日配音频 A5 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "aca28510fkpww",
+      "node_id": "454790608650680",
+      "reason": "2026-11-28 用户决定删除：若草物語 v2.6 · 内容站 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "4535p9s0wnpzs",
+      "node_id": "454745434538341",
+      "reason": "2026-11-28 用户决定删除：若草 · 音声 A(01-14) ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "lem5lvwy41rn9",
+      "node_id": "454745889964757",
+      "reason": "2026-11-28 用户决定删除：若草 · 音声 B(15-28) ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "wn1nwme4cg1hh",
+      "node_id": "454745748303977",
+      "reason": "2026-11-28 用户决定删除：若草 · 音声 C(29-40) ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "tcw0ti0k7p0hd",
+      "node_id": "454653279801781",
+      "reason": "2026-11-28 用户决定删除：あま精读 v3 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "x7b1kbbaa0kh0",
+      "node_id": "455239291732127",
+      "reason": "2026-11-28 用户决定删除：多読絵本 精读 · 内容站 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "zyksozpp1p7i0",
+      "node_id": "455132697190545",
+      "reason": "2026-11-28 用户决定删除：多読絵本 · 音頻CDN ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "awcv20k80ydfb",
+      "node_id": "455134323184676",
+      "reason": "2026-11-28 用户决定删除：やさしい日本語 · 简明日语精读 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "3pqlt9tq6lrij",
+      "node_id": "455702948626859",
+      "reason": "2026-11-28 用户决定删除：日常场景会话 v1.2 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "1max1cuqya9e5",
+      "node_id": "460423132464362",
+      "reason": "2026-11-28 用户决定删除：立命馆GS探路 · 手机App ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "ftu81k0abzbpn",
+      "node_id": "455223189745884",
+      "reason": "2026-11-28 用户决定删除：apk-tools v8.5 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "wcdo5rd2b9n8t",
+      "node_id": "455200236065778",
+      "reason": "2026-11-28 用户决定删除：墨水屏描边闸门 v4.4 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "xwi3hf93nlt4p",
+      "node_id": "455235349299548",
+      "reason": "2026-11-28 用户决定删除：hub-audio-config-deploy-v3 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
+    },
+    {
+      "domain": "zv03ebxy0ezq3",
+      "node_id": "467884757180516",
+      "reason": "多読 v1.4.0 交付站，2026-11-27 被 v1.4.1（sz3nsg0o9j83f）取代 ⇒ 该删（清配额）。四道闸门已过（引导页已切 v1.4.1、现役 APK 零引用、仓库零运行时指针、node_id base64 反查一致）。🔴 2026-11-28 盘点发现它已标 SUPERSEDED 却漏在本队列之外（双向一致性断言没过）⇒ 本次补入。"
     }
   ],
-  "updated": "2026-11-27 20:45",
-  "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。🔴 2026-11-27：通道（drive 组）连续第 5 天下线 ⇒ 本文件只进不出。🔴 **占用实测 49/50（资料空间里 49 个活着的网站节点），不是 35/50** ⇒ 只剩 1 个空位 ⇒ 通道不通期间每发一版就逼近上限；用户在资料空间页面手动删除是唯一合法腾位路径。"
+  "updated": "2026-11-28 10:55",
+  "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。🔴 2026-11-28：用户一次性决定弃用 27 个站（不再使用的 App 全组 + 旧版本 + 一次性工具站）+ 补录 1 条漏网（zv03ebxy0ezq3）⇒ 本队列现有 34 条。🔴 网站类节点 API 删除返回 NOT_ALLOWED ⇒ 通道恢复前需用户在「资料空间」页面手动删；删完从本文件移除并把 protected-sites.json 改 DELETED。"
 }
