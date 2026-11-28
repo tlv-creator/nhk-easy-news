@@ -6,26 +6,11 @@
       "reason": "2026-11-28 用户决定删除：立命馆GS探路 · 手机App ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
     },
     {
-      "domain": "ftu81k0abzbpn",
-      "node_id": "455223189745884",
-      "reason": "2026-11-28 用户决定删除：apk-tools v8.5 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
       "domain": "wcdo5rd2b9n8t",
       "node_id": "455200236065778",
       "reason": "2026-11-28 用户决定删除：墨水屏描边闸门 v4.4 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "sx8o1qb48f3l2",
-      "node_id": "467187291472584",
-      "reason": "Shun 内容站 v1.2.5（引导页 shun.json 的 site/apk） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ACTIVE、原 role=current_site。闸门：引导页 shun.json 的 site/apk + shun.html 仍指向它 ⇒ 删前须先切走。后果：Shun App 弃用 ⇒ 已装 App 的用户将无法打开新内容。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
-    },
-    {
-      "domain": "da4lxn2phccck",
-      "node_id": "455121652622047",
-      "reason": "Shun 音频源 v2 ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=audio。闸门：无公开引导页引用；写死在 shun.apk 的 dex+assets 里。后果：Shun App 音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
     }
   ],
-  "updated": "2026-11-28 16:38",
+  "updated": "2026-11-28 16:40",
   "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。🔴 2026-11-28：用户决定弃用 24 个站（不再使用的 App 全组 + 旧版本 + 一次性工具站）+ 补录 1 条漏网（zv03ebxy0ezq3）⇒ 本队列现有 31 条。🔴 **每日听力记录三个镜像（irk7ibwekq8se / xqrp2rqkvxqwf / ul366v9i8nx0s）与词汇站（iujsgx3ci73dp / zp67qm11jonui）明确不删**，学生还在用，任何清理都不得碰。🔴 网站类节点 API 删除返回 NOT_ALLOWED ⇒ 通道恢复前需用户在「资料空间」页面手动删；删完从本文件移除并把 protected-sites.json 改 DELETED。"
 }
