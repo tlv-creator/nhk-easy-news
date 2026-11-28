@@ -380,7 +380,7 @@
       "domain": "irk7ibwekq8se.space.mcode.cn",
       "name": "每日听力记录（主站 / Supabase 后端）",
       "project": "listening",
-      "status": "SUPERSEDED",
+      "status": "ALIVE",
       "role": "content",
       "reason": "每日听力记录的主站（tools/check_supabase_access.py 的 LISTEN_SITE）",
       "referenced_by": [
@@ -389,8 +389,8 @@
       ],
       "written_in": "check_supabase_access.py 的 LISTEN_SITE",
       "node_id": "455238580995124",
-      "frozen": false,
-      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（每日听力记录 · v4 镜像）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。"
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户明确：每日听力记录是学生还在用的站，**一律不删**（三个镜像全部保留，不做取舍）。"
     },
     {
       "domain": "lbvlknqo9bzii.space.mcode.cn",
@@ -445,7 +445,7 @@
       "domain": "ul366v9i8nx0s.space.mcode.cn",
       "name": "每日听力记录（国内加速通道 mirror）",
       "project": "listening",
-      "status": "SUPERSEDED",
+      "status": "ALIVE",
       "role": "content",
       "reason": "每日听力记录的国内加速镜像站（listening/version.json 的 mirror 字段）",
       "referenced_by": [
@@ -455,8 +455,8 @@
       ],
       "written_in": "listening/version.json 的 mirror 字段",
       "node_id": "455781590155777",
-      "frozen": false,
-      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（每日听力记录 · 加速镜像 v3）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。"
+      "frozen": true,
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户明确：每日听力记录是学生还在用的站，**一律不删**（三个镜像全部保留，不做取舍）。"
     },
     {
       "domain": "wn1nwme4cg1hh.space.mcode.cn",
@@ -665,12 +665,12 @@
       "domain": "xqrp2rqkvxqwf.space.mcode.cn",
       "name": "每日听力记录（国内加速镜像 v2）",
       "project": "listening",
-      "status": "SUPERSEDED",
+      "status": "ALIVE",
       "role": "content",
-      "frozen": false,
+      "frozen": true,
       "node_id": "455766114738892",
       "reason": "2026-11-27 清理 cron 补登（清单外存活站）：活着且占配额位，但此前从未登记进本清单（清单只登记我方项目 ⇒ 占用数被低估）",
-      "note": "🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。node_id 已用资料空间 space_stat 独立复核（返回的站点名后缀逐字等于域名）。🔴 role 未填 audio-source（避免 shun/scripts/check_audio_sites_alive.py 按 role 逐集取音频）。 🔴 2026-11-28 用户决定删除（每日听力记录 · 加速镜像 v2）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。"
+      "note": "🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。node_id 已用资料空间 space_stat 独立复核（返回的站点名后缀逐字等于域名）。🔴 role 未填 audio-source（避免 shun/scripts/check_audio_sites_alive.py 按 role 逐集取音频）。 🔴 2026-11-28 用户明确：每日听力记录是学生还在用的站，**一律不删**（三个镜像全部保留，不做取舍）。"
     },
     {
       "domain": "1max1cuqya9e5.space.mcode.cn",
@@ -702,7 +702,7 @@
     "headroom": 0,
     "alive_nodes": 49,
     "dead_nodes_still_holding_quota": 0,
-    "note": "🔴 **清单条目数 ≠ 配额占用数**：本清单只登记「我方项目」的站，别的 agent 的站与未登记的站照样占配额位。⇒ **发版前的余量判断一律按 `_quota_occupancy.website_nodes`（资料空间 API 实测）走**，不要用清单条数推算余量。🔴 2026-11-28 实测：根目录 42 + /AI生成/ 8 = **50/50，已满额**（比 11-27 的 49 多出的是 v1.4.1 sz3nsg0o9j83f，11-27 20:24 部署）。⇒ **在 pending-deletes 的 34 条真正删掉之前，余量 = 0，任何 website_deploy 都会 ENTITLEMENT_LIMIT_EXCEEDED。**",
-    "pending_deletions": 34
+    "note": "🔴 **清单条目数 ≠ 配额占用数** ⇒ 发版前余量判断一律按 `_quota_occupancy.website_nodes`（资料空间 API 实测）走。🔴 2026-11-28 实测：根目录 42 + /AI生成/ 8 = **50/50，已满额**。⇒ **在 pending-deletes 的 31 条真正删掉之前，余量 = 0，任何 website_deploy 都会 ENTITLEMENT_LIMIT_EXCEEDED。**🔴 每日听力记录三镜像 + 词汇两站属「学生还在用」，永不进入删除候选。",
+    "pending_deletions": 31
   }
 }
