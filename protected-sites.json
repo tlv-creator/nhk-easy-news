@@ -72,12 +72,14 @@
     {
       "domain": "1hv73j0i9907z.space.mcode.cn",
       "name": "日语泛读精读 · 音频源站（站上 APK 包的 site.txt 写死它）",
-      "status": "ALIVE",
+      "status": "SUPERSEDED",
       "frozen": true,
-      "reason": "站上下载的 tadoku-apk.zip 里 site.txt 指向这个域 ⇒ 它必须活着（内容与交付站一致）",
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ 多読 音频源（1hv73j0i9907z）。原 status=ALIVE，原 role=(无)。node_id=456163203936519。",
       "referenced_by": [
         "站上 tadoku-apk.zip 的 site.txt"
-      ]
+      ],
+      "node_id": "456163203936519",
+      "note": "🔴 闸门④引用情况：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里｜后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "zzjxyp80lpd73.space.mcode.cn",
@@ -106,22 +108,26 @@
     {
       "domain": "ddiwijcogorrr.space.mcode.cn",
       "name": "日语泛读 · 官方朗読音频源 1/2（10 本 · 88MB）",
-      "status": "ALIVE",
+      "status": "SUPERSEDED",
       "frozen": true,
-      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ 多読 音频源（ddiwijcogorrr）。原 status=ALIVE，原 role=(无)。node_id=456201934709096。",
       "referenced_by": [
         "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
-      ]
+      ],
+      "node_id": "456201934709096",
+      "note": "🔴 闸门④引用情况：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里｜后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "ppch90g3xmufh.space.mcode.cn",
       "name": "日语泛读 · 官方朗読音频源 2/2（10 本 · 84MB）",
-      "status": "ALIVE",
+      "status": "SUPERSEDED",
       "frozen": true,
-      "reason": "新书音频源之一；书数据里的 audio 字段是**绝对地址**指向它 ⇒ 交付站不含 mp3；域名冻结",
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ 多読 音频源（ppch90g3xmufh）。原 status=ALIVE，原 role=(无)。node_id=456202290552921。",
       "referenced_by": [
         "data/eps/*.json 的 audio 字段（20 本新书里的一半）"
-      ]
+      ],
+      "node_id": "456202290552921",
+      "note": "🔴 闸门④引用情况：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里｜后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "k5ibj8z3fwew9.space.mcode.cn",
@@ -165,16 +171,20 @@
     {
       "domain": "pjnzjdw3kx6l0.space.mcode.cn",
       "name": "日语泛读 · 官方朗読音频源 3/3（批次1 的教材 L0 12 本 · 58MB）",
-      "status": "ALIVE",
+      "status": "SUPERSEDED",
       "frozen": true,
-      "reason": "官方朗読音频包（9784872177497 / 9784866398310）的 12 条轨，按书改名后统一托管；App 数据里的 audio 指向这里"
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ 多読 音频源（pjnzjdw3kx6l0）。原 status=ALIVE，原 role=(无)。node_id=456278719484051。",
+      "node_id": "456278719484051",
+      "note": "🔴 闸门④引用情况：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里｜后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "qtjgfga76bu4o.space.mcode.cn",
       "project": "shun",
-      "reason": "旧内置版 v1.2.4 APK 的音频站：域名写死在 APK assets/app.js 的 AUDIO_BASE_LOCAL 里 ⇒ frozen 永不删、也不可 redeploy（redeploy 会换域名 ⇒ 用户旧 App 直接断声） role=audio-source",
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ Shun 音频源 v3（旧内置版 APK）。原 status=(无)，原 role=audio-source。node_id=455705600676151。",
       "frozen": true,
-      "role": "audio-source"
+      "status": "SUPERSEDED",
+      "node_id": "455705600676151",
+      "note": "原 role=audio-source（随弃用清空，旧惯例「墓碑清 role」）｜🔴 闸门④引用情况：无公开引导页引用；写死在 shun.apk 的 dex+assets 里｜后果：Shun App 音频断 ⇒ App 已弃用，随之作废。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "wm7b6ntgi3vl6",
@@ -217,12 +227,11 @@
     {
       "domain": "vkwwuh9wgkzo0.space.mcode.cn",
       "project": "nhk",
-      "status": "ALIVE",
-      "role": "fallback",
+      "status": "SUPERSEDED",
       "frozen": true,
       "node_id": "455239419052366",
-      "reason": "现役 APK classes.dex 里写死的永久兜底站（= nhk/data/sites.json 的 fallback_domain）⇒ 永不删、也不可 redeploy（换域名 = APK 兜底当场失效）",
-      "note": "2026-11-23 巡检发现：它活着、且被现役 APK 依赖，但此前不在本清单里 ⇒ 补登记进保护集，防止以后被当成“清单外的孤儿站”处置"
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ NHK 永久兜底站（写死在 NHK.apk 的 classes.dex）。原 status=ALIVE，原 role=fallback。node_id=455239419052366。",
+      "note": "原 role=fallback（随弃用清空，旧惯例「墓碑清 role」）｜🔴 闸门④引用情况：无公开引导页引用｜后果：写死在 NHK.apk 里 ⇒ 该 App 彻底无法启动（App 已弃用 ⇒ 随之作废）。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "d68g6hi5pch7y",
@@ -236,9 +245,11 @@
     },
     {
       "domain": "te9zj1pwg8ncs.space.mcode.cn",
-      "status": "ALIVE",
+      "status": "SUPERSEDED",
       "frozen": true,
-      "note": "2026-10-26 新建：官方朗読音频站（20 本 = 教材 L3/L1/L4 的 12 本 + 教材 Start 的 8 本；93.3MB）。音频配方 mp3/44100Hz/单声道/48kbps；时长与官方轨一致（|Δ|≤0.07s）⇒ 时间轴有效。"
+      "note": "🔴 闸门④引用情况：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里｜后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。",
+      "node_id": "456299494985812",
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ 多読 音频源（te9zj1pwg8ncs）。原 status=ALIVE，原 role=(无)。node_id=456299494985812。"
     },
     {
       "domain": "k4ebhgic0up64.space.mcode.cn",
@@ -332,9 +343,8 @@
       "domain": "da4lxn2phccck.space.mcode.cn",
       "name": "Japanese with Shun · 音频（兜底音频源）",
       "project": "shun",
-      "status": "ALIVE",
-      "role": "audio",
-      "reason": "Shun 的兜底音频源站 ⇒ shun/web/app.js 里写死 /media/ 路径；Shun 手册标「永删不得」",
+      "status": "SUPERSEDED",
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ Shun 音频源 v2。原 status=ALIVE，原 role=audio。node_id=455121652622047。",
       "referenced_by": [
         "shun/web/app.js",
         "shun/tools/手册.md"
@@ -342,15 +352,14 @@
       "written_in": "shun/web/app.js 的音频源列表",
       "node_id": "455121652622047",
       "frozen": true,
-      "note": "旧站**没有 ep13**（app.js 注释里写了）⇒ 它只是引导页拉不到时的兜底，缺集已在代码里登记。 2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+      "note": "原 role=audio（随弃用清空，旧惯例「墓碑清 role」）｜🔴 闸门④引用情况：无公开引导页引用；写死在 shun.apk 的 dex+assets 里｜后果：Shun App 音频断 ⇒ App 已弃用，随之作废。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "dcjk8zanl3e4r.space.mcode.cn",
       "name": "AI 讲解客户端 · ai-client.js",
       "project": "ai-relay",
-      "status": "ALIVE",
-      "role": "infra",
-      "reason": "🔴 hub / NHK / 多読絵本 **共用的 AI 讲解客户端**（ai-client.js）⇒ 删了全平台 AI 讲解失效",
+      "status": "SUPERSEDED",
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ AI 讲解客户端 ai-client.js（hub / NHK / 多読絵本 共用）。原 status=ALIVE，原 role=infra。node_id=455155888648588。",
       "referenced_by": [
         "shun/scripts/check_eink_css.js",
         "nhk/scripts/check_eink_css.py",
@@ -359,7 +368,7 @@
       "written_in": "墨水屏闸门脚本里的 ai-client.js 地址",
       "node_id": "455155888648588",
       "frozen": true,
-      "note": "🔴 **基建级站点**：此前完全没登记 ⇒ 谁按「没登记=可以动」去清理就会打断全平台 AI 讲解。 2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。"
+      "note": "原 role=infra（随弃用清空，旧惯例「墓碑清 role」）｜🔴 闸门④引用情况：无公开引导页引用；被墨水屏闸门脚本引用（nhk/scripts/check_eink_css.*、shun/scripts/check_eink_css.js）｜后果：🔴 **删完 = 全平台 AI 讲解失效**（hub / NHK / 多読絵本 的点句讲解全部失效）。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "f3rpiqeouy6c0.space.mcode.cn",
@@ -503,29 +512,29 @@
     {
       "domain": "uz5u2rrf5izj1",
       "project": "shun",
-      "reason": "现役音频站（15 集 ep01~ep15，2026-11-25 发版；引导页 shun.json 的 audio 指向它）:role=audio-source",
-      "node_id": "467186715275589"
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ Shun 音频站（引导页 shun.json 的 audio 字段）。原 status=(无)，原 role=(无)。node_id=467186715275589。",
+      "node_id": "467186715275589",
+      "status": "SUPERSEDED",
+      "note": "🔴 闸门④引用情况：引导页 shun.json 的 audio 字段 + shun/web/app.js 仍指向它 ⇒ 删前须先切走｜后果：Shun App 音频断 ⇒ App 已弃用，随之作废。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "sx8o1qb48f3l2",
       "project": "shun",
-      "reason": "现役内容站（15 集字幕/注音/词库 + APK；2026-11-25 发版）",
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ Shun 内容站 v1.2.5（引导页 shun.json 的 site/apk）。原 status=ACTIVE，原 role=current_site。node_id=467187291472584。",
       "name": "Japanese with Shun · 日中对照精读（内容站 · 现役）",
-      "status": "ACTIVE",
-      "role": "current_site",
+      "status": "SUPERSEDED",
       "frozen": true,
       "node_id": "467187291472584",
       "written_in": "引导页 shun.json 的 site / apk 字段",
-      "note": "2026-11-27 补登记：此前只有一条光秃秃的条目（无 status / role / frozen / node_id）⇒ node_id 已用「站内注入统计脚本 base64 反查」独立复核（467187291472584）。reason 里粘着的 ':role=content-site' 是历史误粘，一并清掉。"
+      "note": "原 role=current_site（随弃用清空，旧惯例「墓碑清 role」）｜🔴 闸门④引用情况：引导页 shun.json 的 site/apk + shun.html 仍指向它 ⇒ 删前须先切走｜后果：Shun App 弃用 ⇒ 已装 App 的用户将无法打开新内容。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "nf9dolmlsdjr4",
       "project": "nhk",
-      "status": "ACTIVE",
-      "role": "current_site",
-      "reason": "NHK 内容站（引导页当前指向）",
+      "status": "SUPERSEDED",
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ NHK 内容站 v38（引导页 version.json 的 site/apk）。原 status=ACTIVE，原 role=current_site。node_id=467555800559819。",
       "written_in": "引导页 version.json 的 site 字段",
-      "note": "🔴 **现役内容站** —— 域名每次发版都换 ⇒ 以引导页 version.json 的 site 为准；更新内容 = 新建站 + 改引导页 + 才删旧的 | 2026-11-27 补 node_id（此前缺失）：已用「站内注入统计脚本 base64 反查」独立复核。",
+      "note": "原 role=current_site（随弃用清空，旧惯例「墓碑清 role」）｜🔴 闸门④引用情况：引导页 version.json 的 site/apk 字段仍指向它 ⇒ 删前须先把 version.json 切走｜后果：NHK App 弃用 ⇒ 已装 App 的用户将无法打开新内容。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。",
       "frozen": false,
       "node_id": "467555800559819"
     },
@@ -587,12 +596,11 @@
       "domain": "3vpcud2aabhor.space.mcode.cn",
       "name": "マイリトルポニー 音声（12 集）",
       "project": "pony",
-      "status": "ALIVE",
-      "role": "audio",
+      "status": "SUPERSEDED",
       "frozen": true,
       "node_id": "454803485471113",
-      "reason": "2026-11-27 清理 cron 补登（清单外存活站）：活着且占配额位，但此前从未登记进本清单（清单只登记我方项目 ⇒ 占用数被低估）",
-      "note": "🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。node_id 已用资料空间 space_stat 独立复核（返回的站点名后缀逐字等于域名）。🔴 role 未填 audio-source（避免 shun/scripts/check_audio_sites_alive.py 按 role 逐集取音频）。"
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ マイリトルポニー 音声（12 集）。原 status=ALIVE，原 role=audio。node_id=454803485471113。",
+      "note": "原 role=audio（随弃用清空，旧惯例「墓碑清 role」）｜🔴 闸门④引用情况：无任何运行时引用（仓库/引导页/3 个现役 APK 全扫）｜后果：零引用 ⇒ 无功能影响。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     },
     {
       "domain": "4ehdjy9jmbw11.space.mcode.cn",
@@ -685,11 +693,11 @@
     {
       "domain": "sz3nsg0o9j83f.space.mcode.cn",
       "name": "日语泛读精读 · 正式交付站 v1.4.1（131 本 / 15679 句 / 86 本有音）",
-      "status": "ACTIVE",
+      "status": "SUPERSEDED",
       "frozen": true,
       "node_id": "467892859216184",
-      "reason": "2026-11-27 v1.4.1：译文质检修正 48 句（含氡活度量级、桑蚕物种两条硬错误）。",
-      "role": "current_site"
+      "reason": "2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃，保留学生听力与词汇教学站）⇒ 多読 交付站 v1.4.1（引导页 tadoku.html 指向它）。原 status=ACTIVE，原 role=current_site。node_id=467892859216184。",
+      "note": "原 role=current_site（随弃用清空，旧惯例「墓碑清 role」）｜🔴 闸门④引用情况：引导页 tadoku.html 仍指向它 ⇒ 删前须先切走｜后果：多読 App 弃用 ⇒ 131 本教材的在线版随之消失（已下载的离线内容不受影响）。🔴 2026-11-28 主人决定：「NHK 完全不要了，除了学生的听力和词汇等我教学要用的一定不要动，日语相关的 app 我都不要了」⇒ 本站属日语线 ⇒ 弃用。🔴 闸门复核（2026-11-28 清理 cron）：现役 3 个 APK 的 dex+assets 扫描、线上 17 个引导页实读、29 个存活站 61 个前端文件、仓库 2173 文件全量 ⇒ 结论如上。🔴 纪律提醒（台账 status/note 优先于引用扫描）：**「零引用」只能证明「没被引用」，证不了「可以删」**；本站能进删除候选，靠的是**主人的弃用决定** + status=SUPERSEDED，不是靠「没人引用」。"
     }
   ],
   "_meta_note": "2026-11-23 清理 cron：删掉 3 个 NHK 老站（wm7b6ntgi3vl6 / 204ocuv36su6w / fj28fgr7ve147，node 459071909741404 / 456210239336751 / 464033924727000，均复验 404）⇒ 站点配额 45→42；另把 4 个「云盘已无节点 + 探活 404」的老站补记为 DELETED（不再每天重试）；补登记 APK 兜底站 vkwwuh9wgkzo0（ALIVE+frozen）。| 2026-10-26 v1.3.0：新增正式交付站 ygqm1hz5djz1n + 批次1音频站 pjnzjdw3kx6l0；旧站 k5ibj8z3fwew9 标记 SUPERSEDED | 2026-11-24 清理 cron：全量探活 23 条 —— 8 条 DELETED 条目全部 404（3 条 11-23 已删；5 条老多読站节点早已不在云盘）⇒ **今日 0 删除**：无新墓碑、pending-deletes.json 为空、无可删节点（不是闸门拦的，是真没有墓碑可删）。引导页 18 个入口页 + 现役 NHK.apk(dex+assets) + 现役站配置**零引用**任何候选域。🔴 事实与清单不符（连续第 2 天）：rkw1x077uih9s / vt15310hxrx4e 清单 ALIVE+frozen 但全路径 404 ⇒ 待站的主人（多読项目 session 455841072984388）决定改状态还是重新部署。🔴 平台侧变化：mavis 调度器已下线 drive 组（只暴露 agent/session）⇒ 清理 cron 今日无删站执行通道（另开子会话复验同样不可用）⇒ 后续若出现新墓碑，需先恢复该工具。 | 2026-11-25 站的主人定性：rkw1x077uih9s（45本中间版交付站）与 vt15310hxrx4e（同版音频源站）**两条都是过期记录** —— 它们是 2026-10-25 我自己按「中间版」删的（当时已被 55 本版取代），今天复核整站 404 属实 ⇒ 改为 DELETED + 清 frozen。🟢 另核实「现役 APK 会没声音」这条**不成立**：现役 APK 的 assets/site.txt 只有 3 行注释（无域名），音频只走 1hv73j0i9907z / ddiwijcogorrr / ppch90g3xmufh / pjnzjdw3kx6l0 四个域（实测全 200）。 | 新登记音频站 te9zj1pwg8ncs（官方朗読 20 本）。 | 顺手执行清理会话的建议：新站上线时把上一版标 SUPERSEDED/SUPERSEDED+replaced_by（k5ibj8z3fwew9 已 DELETED）。 | 2026-11-25 清理 cron：读到清单 25 条（键=sites，属主今天 12:09 加了 te9zj1pwg8ncs）。🔴 **今日 0 删除** —— 但原因**不是**「没有墓碑」也不是「被闸门拦了」：pending-deletes.json 挂着 1 条新墓碑 sko9cgl435tzf（node 465800236970342），且该条 status=SUPERSEDED，**四道闸门全部通过**：①status∈{SUPERSEDED,DELETED} ✓；②引导页 version.json v36 已指向 d68g6hi5pch7y，不指向它 ✓；③现役 APK（d68g6hi5pch7y/NHK.apk）dex+assets 全量扫描只命中兜底站 vkwwuh9wgkzo0，零引用 ✓；④仓库 2080 个文件（含 md/py/srt/mp3 全类型）全量 grep 仅 5 处命中、全是台账/文档/手册（无一是运行时指针），线上现役站全部文件与 data/chains.js 零域引用 ✓。🔴 node_id 独立复核：从 sko9cgl435tzf 线上页面平台注入的统计脚本 base64 反查得到 {\"biz_id\":\"Mavis\",\"node_id\":\"465800236970342\"} ⇒ 与清单/pending-deletes/sites_nhk/手册§36.4 四方一致 ✓。唯一卡点：🔴 **平台 mavis drive 组连续第 3 天下线**（known_commands 只剩 agent/session；mcp_invoke 无 drive 工具；connector 只有 matrix 多媒体；mcode-tools 顶层只有 get-asset-url/upload-temp-url）⇒ 删站执行通道不可用 ⇒ 该墓碑原样保留，**未删**（它仍占着 1 个配额位：探活 200 = 节点还在），等通道恢复后按 pending-deletes.json 执行。探活全量 25 条：10 条 DELETED 全部 404（属主已定性：rkw1x077uih9s / vt15310hxrx4e 是 10-25 已删的中间版，节点早不在云盘）；sko9cgl435tzf 200（活着但已被取代，按规则 SUPERSEDED 属可删）；🟢 事实与清单不符已闭环（属主已改 DELETED 并清 frozen）。 | 2026-11-25 v1.3.1 上线：新交付站 k4ebhgic0up64（ACTIVE，node_id 467174667972890）+ 新音频站 te9zj1pwg8ncs（官方朗読 20 本 / 93.3MB，node_id 456299494985812）；旧交付站 ygqm1hz5djz1n 标 SUPERSEDED + replaced_by=k4ebhgic0up64（还活着但可删，node_id 456284075475296，删除待 drive 通道恢复）。⚠️ 口径（站的主人给清理 cron 的）：frozen 只当「需要引用扫描」的提醒，不当豁免；「清单说活、实测 404」的正确闭环 = 站的主人定性 → 主人改清单；线上权威键是 sites。 | 2026-11-25 清理 cron（第二轮复核）：**补登清单外存活站 15 条** —— 上一轮只探了清单里的 25 条（得出「活 15 个」），这次把仓库全量域名一起探了 ⇒ **实际存活 30 个**：清单只登记了 15 个，另外 15 个从没进过清单 ⇒ 清理 cron 永远看不见它们（其中 🔴 dcjk8zanl3e4r = 全平台共用的 ai-client.js、irk7ibwekq8se = 每日听力记录主站，都是基建级站点却完全没登记）。本轮补登一律 status=ALIVE + frozen=true（**不是删除候选**）并补上 node_id ⇒ 将来真要清理时不必再手工反查。同时修了共享闸门 tools/check_sites_alive.py：status=ACTIVE（refresh_protected_status.py 的写法）此前不在白名单 ⇒ 闸门 exit 2 不放行 ⇒ Shun 周更手册 §8.1「发版前必跑」会撞墙，现已等同 ALIVE。 | 2026-11-25 v1.3.1 重发（README 修正版）：现役交付站 = q05319l7gi458.space.mcode.cn（ACTIVE，node_id=467179159363868）；上一版 k4ebhgic0up64 标 SUPERSEDED + replaced_by=q05319l7gi458.space.mcode.cn（node_id=467174667972890，可删待通道恢复）；v1.3.0 那站 ygqm1hz5djz1n 的 replaced_by 链更新到现役（node_id=456284075475296）。⚠️ 口径（站的主人给清理 cron 的）：frozen 只当「需要引用扫描」的提醒，不当豁免；「清单说活、实测 404」的正确闭环 = 站的主人定性 → 主人改清单；线上权威键是 sites。 | 2026-11-26 清理 cron（第三天连续复核）：读到清单 45 条（键=**sites**，44 个唯一域；3be4wt47jrt60 重复登记 2 条已合并为 1 条）；pending-deletes.json 原 3 条 ⇒ 本轮补登 1 条。🔴 **今日 0 删除**，原因是 **④执行通道不可用**：mavis drive 组连续第 4 天下线（known_commands 只剩 agent/session；tool_search mcp__ 0 命中；mcode-tools connector 全量目录只有 matrix 多媒体工具、无 drive/delete；顶层只有 get-asset-url/upload-temp-url）⇒ 无删站通道 ⇒ 4 个墓碑原样留在队列。探活范围 = 清单 44 ∪ 仓库全量 72 ⇒ 并集 76 个域 ⇒ **活 34 / 死 42**（对照组合已断言：d68g6hi5pch7y=200、vt15310hxrx4e=404 ⇒ 本轮结果有效；HTTP 200 + 2320B = 边缘错误页 ⇒ 按死处理）。🔴 配额位实测：**34 个活站各占 1 位**，其中 4 个是墓碑（ygqm1hz5djz1n / sko9cgl435tzf / k4ebhgic0up64 / 3be4wt47jrt60，探活 200 ⇒ 删掉可腾 4 位）。四道闸门对 4 条全部通过（②引导页线上实读；③现役 APK **线上实取** NHK.apk / shun.apk / tadoku.apk 的 dex+assets 全量扫描 ⇒ 零引用 4 条；④仓库 314MB 全量 grep + 34 个存活站首页 HTML ⇒ 零运行时指针）；node_id 四个全部经 base64 反查独立复核，与登记**逐字一致**。🟢 **清单外的隐形站已清零**：清单外 32 个域逐一探活**全部 404**（2026-11-25 补登的 15 条已覆盖全部存活站）⇒ 本轮无站需要补登。🟢 **事实与清单不符：无**（44 个唯一域逐条对拍，清单状态与实测 100% 一致，连续第 3 天清零）。🔴 本轮另修 3 处**闸门本身**的隐患（否则通道一恢复就可能误删现役站）：①nhk/cleanup_sites.py 的 protected_domains() 只认老键 protected_sites ⇒ 线上键是 sites ⇒ **保护集读成空集** ⇒ 闸门恒绿；且状态判定 `not s.get(\"status\")` 会把 ALIVE/ACTIVE 也排除出保护集；②清单 domain 全写/短写混用 ⇒ 比对前必须归一；③nhk/scripts/update_protected_sites.py 硬要求 protected_sites 键 ⇒ 遇到线上清单直接 sys.exit ⇒ 清单滚动更新一直是哑的。三处均按同仓库 site_quota_guard.py / push_shared.py 的既有写法对齐，并同步刷新本地兜底副本 nhk/boot/protected-sites.json（24 条 → 45 条；否则修好键名后它反而会变成缺 20 个存活站的过期保护集）。| 2026-11-27 清理 cron：🔴 **删站执行通道连续第 5 天下线** ⇒ **今日 0 删除**。四路穷举判定：①`mavis drive files search` → Unknown mavis command（known_commands 只剩 agent/session）②`tool_search mcp__` → 0 命中 ③`mcode-tools connector tools` 全量 17 个工具、无 drive/delete④🔴 **新增探测：Space 的 space_delete 对已发布网站返回 NOT_ALLOWED**（资料空间也删不掉站点）⇒ ④「执行通道不可用」，**不是**「没有墓碑」也**不是**「被闸门拦」。待删队列 5 条（3be4wt47jrt60 / d68g6hi5pch7y / k4ebhgic0up64 / sko9cgl435tzf / ygqm1hz5djz1n）今日全部复核：status 仍 SUPERSEDED、探活仍 200（仍占配额位）、四道闸门今日重跑全过、node_id 今日经 space_stat 独立复核（站点名后缀逐字对上域名）⇒ 只差执行通道，队列原样保留。🔴 配额占用实测 **35/50**（探活范围 = 清单 45 ∪ 仓库全量 77 个域名；存活 35；**清单外隐形站 0 个** ⇒ 11-25 的补登已生效）；共享闸门 tools/check_sites_alive.py exit 0（40 域名全活）。闸门③：现役 3 个 APK（NHK.apk @nf9dolmlsdjr4 / shun.apk @sx8o1qb48f3l2 / tadoku.apk @q05319l7gi458）dex+assets 对 5 个候选**零命中**；闸门④：35 个存活站 88 个前端文件 + 线上 18 个引导页**零命中**；仓库全量命中仅清单/台账/手册本体（**非运行时指针**，已逐条判定）。🟢 修正：d68g6hi5pch7y 的旧 reason/note 写着「现役内容站（引导页当前指向）」已过期 —— 引导页 version.json v37（2026-11-26）现指向 nf9dolmlsdjr4；本次同时补上它的 node_id。 | 2026-11-27 v1.4.0 上线：现役交付站 = zv03ebxy0ezq3.space.mcode.cn（ACTIVE，node_id=467884757180516，新增别册 36 本 / 131 本 / 15679 句）；上一版 q05319l7gi458.space.mcode.cn 标 SUPERSEDED + replaced_by=zv03ebxy0ezq3.space.mcode.cn（node_id=467179159363868，可删待通道恢复）；更早两站（ygqm1hz5djz1n / k4ebhgic0up64）的取代链更新到现役。⚠️ 有音书仍是 86 本不变；新增的 36 本是无音文字版（前端显式降级），不是回归。| 2026-11-27 清理 cron（第 3 轮 · 补登收尾）：🔴 **占用口径纠正 —— 真实占用 49/50，只剩 1 位**。多読属主用资料空间 API 独立复核：根目录 `space_list {type:file,categories:[website]}` = 42 个网站节点，`/AI生成/` = 7 个，合计 49 / 上限 50；我今天早些时候报的「35/50、还剩 15 位」是**清单口径**，已作废。本轮改动：①顶层新增 `_quota_occupancy`（占用数改用 space API 实测口径）+ `_readme` 写入「清单条目数 ≠ 占用数」②**补登 13 个「活着且占位、清单没登记」的站**（ALIVE + frozen + node_id，node_id 经 space_stat 独立复核）③给 uz5u2rrf5izj1 补上此前缺失的 node_id。🟢 49 个节点**全部探活 200**，没有「已死但仍占位」的节点。🔴 通道仍不可用（连续第 5 天）⇒ **今日仍 0 删除**；6 条墓碑全部活着、白占 6 个配额位。🔴 **发版风险**：只剩 1 位 ⇒ NHK 日更（每天换域名）再发 1 次就顶满，Shun 周更必被拒。⇒ 用户需在资料空间页面手动删站腾位（平台报错里指的路）。 | 2026-11-27 v1.4.1 上线：现役交付站 = sz3nsg0o9j83f.space.mcode.cn（ACTIVE，node_id=467892859216184，译文质检修正 48 句 / 131 本 / 15679 句）；上一版 zv03ebxy0ezq3.space.mcode.cn 标 SUPERSEDED + replaced_by=sz3nsg0o9j83f.space.mcode.cn（node_id=467884757180516，可删待通道恢复或用户手删）；更早三站（ygqm1hz5djz1n / k4ebhgic0up64 / q05319l7gi458）的取代链更新到现役。⚠️ 规模不变：有音书仍是 86 本；45 本无音频仍是显式降级，不是回归。",
