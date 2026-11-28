@@ -27,7 +27,4 @@ window.CFG.AI_TITLE = 'NHKやさしいことばニュース';
  *    · 典型用途：静态站放 GitHub Pages（永久地址、地址永不失效），
  *      音频放 mcode 源站（60MB 音频塞不进 GitHub）
  *  · 本文件会公开 ⇒ 这里只能放公开可读的东西。 */
-window.CFG.MEDIA_BASE = [
-  'https://nf9dolmlsdjr4.space.mcode.cn/',
-  'https://vkwwuh9wgkzo0.space.mcode.cn/'
-];
+window.CFG.MEDIA_BASE = [];  // 🛑 2026-11-28：NHK 音频站已下线（服务器已清理）

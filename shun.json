@@ -1,9 +1,8 @@
 {
-  "ver": 26,
-  "verName": "已停止维护",
-  "site": "",
-  "audio": "",
-  "apk": "",
-  "updated": "2026-11-28",
-  "note": "Japanese with Shun 已停止维护（2026-11-28）：内容站与音频站已下线。"
+ "ver": 26,
+ "verName": "1.2.5",
+ "site": "https://tlv-creator.github.io/nhk-easy-news/shun.html",
+ "updated": "2026-11-28",
+ "note": "🛑 2026-11-28：Shun App 已下线，网页版与服务器已清理。此页仅作占位，不再更新。",
+ "offline": true
 }

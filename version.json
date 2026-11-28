@@ -1,8 +1,9 @@
 {
-  "ver": 38,
-  "verName": "已停止维护",
-  "site": "",
-  "apk": "",
-  "updated": "2026-11-28",
-  "note": "NHK やさしいことばニュース 已停止维护（2026-11-28）：内容站已下线，不再更新。"
+ "ver": 38,
+ "verName": "2.4",
+ "apkVer": 20,
+ "site": "https://tlv-creator.github.io/nhk-easy-news/index.html",
+ "note": "🛑 2026-11-28：NHK App 已下线，网页版与服务器已清理。此页仅作占位，不再更新。",
+ "updated": "2026-11-28",
+ "offline": true
 }

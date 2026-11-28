@@ -1,7 +1,7 @@
 {
-  "ver": "1.2",
-  "site": "",
-  "apk": "",
-  "updated": "2026-11-28",
-  "note": "日常场景会话 已停止维护（2026-11-28）：内容站已下线。"
+ "ver": "1.2",
+ "site": "https://tlv-creator.github.io/nhk-easy-news/scenes.html",
+ "updated": "2026-11-28",
+ "note": "🛑 2026-11-28：日常场景会话 App 已下线，网页版与服务器已清理。此页仅作占位，不再更新。",
+ "offline": true
 }
