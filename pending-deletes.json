@@ -1,79 +1,9 @@
 {
   "sites": [
     {
-      "domain": "3be4wt47jrt60",
-      "node_id": "455720425210289",
-      "reason": "Shun 周更的上一版内容站（v1.2.4）⇒ 2026-11-25 被新内容站 sx8o1qb48f3l2 取代 ⇒ 该删（清配额）。2026-11-26 清理 cron 复核：四道闸门全过 —— ①status=SUPERSEDED（superseded_by=sx8o1qb48f3l2）；②引导页线上实读 shun.json site → sx8o1qb48f3l2（不指向本站）、version.json → d68g6hi5pch7y；③现役 APK（线上实取 shun.apk @sx8o1qb48f3l2）dex+assets 全量扫描 ⇒ 零引用本站域名；④仓库 314MB 全量 grep + 34 个存活站首页 HTML ⇒ 零运行时指针（命中仅清单/台账/手册本体）。node_id 已从本站注入统计脚本 base64 反查独立复核 = 455720425210289，与清单登记逐字一致。🔴 2026-11-26 平台 mavis drive 组仍下线 ⇒ 删站通道不可用 ⇒ 本条原样留在队列，等通道恢复后执行。"
-    },
-    {
-      "domain": "d68g6hi5pch7y",
-      "node_id": "466840087143412",
-      "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
-    },
-    {
-      "domain": "k4ebhgic0up64",
-      "node_id": "467174667972890",
-      "reason": "多読 v1.3.1 第一版交付站（95 本 / 11638 句 / 86 本有音），2026-11-25 被 v1.3.1 重发版 q05319l7gi458 取代（该站上的 tadoku-apk.zip 里 README 仍是 v1.2.0 旧文案）⇒ 该删（清配额）。2026-11-25 清理 cron 第三轮复核：四道闸门全过 —— ①status=SUPERSEDED（replaced_by=q05319l7gi458）；②引导页 tadoku.html（源端 Contents API + 渲染端 Pages 双读）已指向 q05319l7gi458，不指向本站；③现役多読 APK（tadoku.apk，md5 df13416f31e355882229b1e1cb8b487d）dex+assets 全量扫描：**零引用本站域名**（assets/site.txt 只有 3 行注释无域名；音频走书数据绝对 URL）；④线上新站全部前端文件 + /data/eps/index.json 零引用；仓库改动文件仅清单/台账本身提及。node_id 已从站内注入统计脚本 base64 反查独立复核，与清单登记一致。"
-    },
-    {
-      "domain": "sko9cgl435tzf",
-      "node_id": "465800236970342",
-      "reason": "被新站取代 ⇒ 该删（清站 cron 删完请从本文件移除，并把 protected-sites.json 里 status 改成 DELETED）"
-    },
-    {
-      "domain": "ygqm1hz5djz1n",
-      "node_id": "456284075475296",
-      "reason": "多読 v1.3.0 交付站，2026-11-25 v1.3.1（k4ebhgic0up64）上线后被取代 ⇒ 该删（清配额）。2026-11-25 清理 cron 第二轮复核：四道闸门全过 —— ①status=SUPERSEDED；②引导页 tadoku.html（源文件 + Pages 渲染版均已核对）现指向 k4ebhgic0up64，不指向本站；③现役 APK（NHK.apk / shun-309ep-net-v1.4.0.apk）dex+assets 零引用；④仓库全类型引用扫描仅命中清单/台账本体，无运行时指针。node_id 已从站内注入统计脚本 base64 反查独立复核，与清单登记一致。⚠️ 通道恢复后由清理 cron 执行删除，并把它从本文件移除 + protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "q05319l7gi458",
-      "node_id": "467179159363868",
-      "reason": "多読 v1.3.1 交付站（95本 / 11638句 / 86本有音），2026-11-27 v1.4.0（zv03ebxy0ezq3，131本 / 15679句 / 86本有音）上线后被取代 ⇒ 该删（清配额）。取代链：ygqm1hz5djz1n → k4ebhgic0up64 → q05319l7gi458 → zv03ebxy0ezq3（现役）。2026-11-27 清理 cron 复核：四道闸门全过 —— ①status=SUPERSEDED（replaced_by=zv03ebxy0ezq3）；②引导页 tadoku.html（源端 Contents API + 渲染端 Pages 双读）已指向 zv03ebxy0ezq3，零指向本站；③现役多読 APK v1.4.0（tadoku-apk.zip → tadoku.apk，**解两层**后扫 dex+assets）零引用本站域名（assets/site.txt 仅 3 行注释无域名；音频走书数据绝对 URL 5 个域）；④新站自身 /data/eps/index.json、app.js、config.js 零引用。node_id 已从站内注入统计脚本 base64 反查独立复核，与清单登记一致。"
-    },
-    {
-      "domain": "0rbbjfw36hj66",
-      "node_id": "456086612078894",
-      "reason": "2026-11-28 用户决定删除：日语泛读 55本 · 更早版 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "qgozaeqvjc9l9",
-      "node_id": "456086619906648",
-      "reason": "2026-11-28 用户决定删除：日语泛读 55本 · 更早版 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "wzm2lkj4a7oo8",
-      "node_id": "456163311964307",
-      "reason": "2026-11-28 用户决定删除：日语泛读 55本 · 对轴修正版 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "9qcq9q73zm4ql",
-      "node_id": "455145822027880",
-      "reason": "2026-11-28 用户决定删除：日語精読 hub v1.6 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。 🔴 **闸门④命中：线上公共引导页仍指向它** —— pony.html 的「打开网页版」按钮 ⇒ 删了按钮即 404。**先撤引导页按钮（或把本站从队列撤出），再删。**"
-    },
-    {
-      "domain": "lbvlknqo9bzii",
-      "node_id": "456047215686178",
-      "reason": "2026-11-28 用户决定删除：日語精読 hub ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。 🔴 **闸门④命中：线上公共引导页仍指向它** —— hub.html 的「下载 App」按钮 + sakura.html / wakakusa.html 的「打开网页版」⇒ 删了按钮即 404。**先撤引导页按钮（或把本站从队列撤出），再删。**"
-    },
-    {
       "domain": "4ehdjy9jmbw11",
       "node_id": "454727771624180",
       "reason": "2026-11-28 用户决定删除：魔卡少女樱 v2.11 · 内容站 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "f3rpiqeouy6c0",
-      "node_id": "454686917050664",
-      "reason": "2026-11-28 用户决定删除：魔卡 · 日配音频 A1 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "5wxizdpb9tyq8",
-      "node_id": "454687605055642",
-      "reason": "2026-11-28 用户决定删除：魔卡 · 日配音频 A2 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "bjyzdgmd6px91",
-      "node_id": "454687509713266",
-      "reason": "2026-11-28 用户决定删除：魔卡 · 日配音频 A3 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
     },
     {
       "domain": "clqvqp5j1qrqu",
@@ -86,49 +16,9 @@
       "reason": "2026-11-28 用户决定删除：魔卡 · 日配音频 A5 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
     },
     {
-      "domain": "aca28510fkpww",
-      "node_id": "454790608650680",
-      "reason": "2026-11-28 用户决定删除：若草物語 v2.6 · 内容站 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "4535p9s0wnpzs",
-      "node_id": "454745434538341",
-      "reason": "2026-11-28 用户决定删除：若草 · 音声 A(01-14) ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "lem5lvwy41rn9",
-      "node_id": "454745889964757",
-      "reason": "2026-11-28 用户决定删除：若草 · 音声 B(15-28) ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "wn1nwme4cg1hh",
-      "node_id": "454745748303977",
-      "reason": "2026-11-28 用户决定删除：若草 · 音声 C(29-40) ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "tcw0ti0k7p0hd",
-      "node_id": "454653279801781",
-      "reason": "2026-11-28 用户决定删除：あま精读 v3 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
       "domain": "x7b1kbbaa0kh0",
       "node_id": "455239291732127",
       "reason": "2026-11-28 用户决定删除：多読絵本 精读 · 内容站 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "zyksozpp1p7i0",
-      "node_id": "455132697190545",
-      "reason": "2026-11-28 用户决定删除：多読絵本 · 音頻CDN ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "awcv20k80ydfb",
-      "node_id": "455134323184676",
-      "reason": "2026-11-28 用户决定删除：やさしい日本語 · 简明日语精读 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。 🔴 **闸门④命中：线上公共引导页仍指向它** —— ama.html 的「打开网页版」按钮 ⇒ 删了按钮即 404。**先撤引导页按钮（或把本站从队列撤出），再删。**"
-    },
-    {
-      "domain": "3pqlt9tq6lrij",
-      "node_id": "455702948626859",
-      "reason": "2026-11-28 用户决定删除：日常场景会话 v1.2 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。 🔴 **闸门④命中：线上公共引导页仍指向它** —— scenes.html 的「打开网页版」按钮 + scenes.json 的 site/apk 字段 ⇒ 删了引导页就是 404。**先撤引导页按钮（或把本站从队列撤出），再删。**"
     },
     {
       "domain": "1max1cuqya9e5",
@@ -151,54 +41,14 @@
       "reason": "2026-11-28 用户决定删除：hub-audio-config-deploy-v3 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。 🔴 **闸门④命中：线上公共引导页仍指向它** —— hub.html 与 guide/hub.html 的「换音频域名不用重装 App」下载按钮 ⇒ 删了按钮即 404。**先撤引导页按钮（或把本站从队列撤出），再删。**"
     },
     {
-      "domain": "zv03ebxy0ezq3",
-      "node_id": "467884757180516",
-      "reason": "多読 v1.4.0 交付站，2026-11-27 被 v1.4.1（sz3nsg0o9j83f）取代 ⇒ 该删（清配额）。四道闸门已过。🔴 2026-11-28 盘点发现它已标 SUPERSEDED 却漏在本队列之外 ⇒ 本次补入。"
-    },
-    {
-      "domain": "nf9dolmlsdjr4",
-      "node_id": "467555800559819",
-      "reason": "NHK 内容站 v38（引导页 version.json 的 site/apk） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ACTIVE、原 role=current_site。闸门：引导页 version.json 的 site/apk 字段仍指向它 ⇒ 删前须先把 version.json 切走。后果：NHK App 弃用 ⇒ 已装 App 的用户将无法打开新内容。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
-    },
-    {
       "domain": "sx8o1qb48f3l2",
       "node_id": "467187291472584",
       "reason": "Shun 内容站 v1.2.5（引导页 shun.json 的 site/apk） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ACTIVE、原 role=current_site。闸门：引导页 shun.json 的 site/apk + shun.html 仍指向它 ⇒ 删前须先切走。后果：Shun App 弃用 ⇒ 已装 App 的用户将无法打开新内容。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
     },
     {
-      "domain": "sz3nsg0o9j83f",
-      "node_id": "467892859216184",
-      "reason": "多読 交付站 v1.4.1（引导页 tadoku.html 指向它） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ACTIVE、原 role=current_site。闸门：引导页 tadoku.html 仍指向它 ⇒ 删前须先切走。后果：多読 App 弃用 ⇒ 131 本教材的在线版随之消失（已下载的离线内容不受影响）。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
-    },
-    {
       "domain": "vkwwuh9wgkzo0",
       "node_id": "455239419052366",
       "reason": "NHK 永久兜底站（写死在 NHK.apk 的 classes.dex） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=fallback。闸门：无公开引导页引用。后果：写死在 NHK.apk 里 ⇒ 该 App 彻底无法启动（App 已弃用 ⇒ 随之作废）。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。 🔴 **主人 2026-11-28 16:14 明确选择「一并删掉，日语线彻底清空」** ⇒ 删后已装 NHK APK 会白屏（兜底站没了），此为**已知并授权的后果**，不是误删。⇒ 留痕于此，免得以后有人看到这条又犹豫。"
-    },
-    {
-      "domain": "1hv73j0i9907z",
-      "node_id": "456163203936519",
-      "reason": "多読 音频源（1hv73j0i9907z） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=(无)。闸门：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里。后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
-    },
-    {
-      "domain": "ddiwijcogorrr",
-      "node_id": "456201934709096",
-      "reason": "多読 音频源（ddiwijcogorrr） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=(无)。闸门：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里。后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。 🔴 2026-11-28 补记：仓库 `tadoku/books56/` 的**书数据里还有 40 处 `audio` 绝对地址**指向本站（21 个文件，每域 20 处，形态如 `\"audio\": \"https://<本站>/media/level3-xxx.m4a\"`）⇒ 属主那句「全发布面 0 处引用」**不完全准确**。⇒ 但**不挡删除**：多読 App 与交付站整体退役、`tadoku.html` 已改墓碑页、**books56 已无任何入口页链接**（只剩 `source_coverage.json` / `books56c,d/asr_truth` / `batch1_decisions.json` 这些内部索引提到它）⇒ 这 40 个 URL 会变成**无人访问的内容副本里的死链**。⇒ 🔴 **将来若复活多読**：必须先重建 books56 书数据的 audio 地址，否则播放器会拉不到音频。⇒ 删前建议确认：多読确实不再需要在线播放这 56 本。"
-    },
-    {
-      "domain": "pjnzjdw3kx6l0",
-      "node_id": "456278719484051",
-      "reason": "多読 音频源（pjnzjdw3kx6l0） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=(无)。闸门：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里。后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
-    },
-    {
-      "domain": "ppch90g3xmufh",
-      "node_id": "456202290552921",
-      "reason": "多読 音频源（ppch90g3xmufh） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=(无)。闸门：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里。后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。 🔴 2026-11-28 补记：仓库 `tadoku/books56/` 的**书数据里还有 40 处 `audio` 绝对地址**指向本站（21 个文件，每域 20 处，形态如 `\"audio\": \"https://<本站>/media/level3-xxx.m4a\"`）⇒ 属主那句「全发布面 0 处引用」**不完全准确**。⇒ 但**不挡删除**：多読 App 与交付站整体退役、`tadoku.html` 已改墓碑页、**books56 已无任何入口页链接**（只剩 `source_coverage.json` / `books56c,d/asr_truth` / `batch1_decisions.json` 这些内部索引提到它）⇒ 这 40 个 URL 会变成**无人访问的内容副本里的死链**。⇒ 🔴 **将来若复活多読**：必须先重建 books56 书数据的 audio 地址，否则播放器会拉不到音频。⇒ 删前建议确认：多読确实不再需要在线播放这 56 本。"
-    },
-    {
-      "domain": "te9zj1pwg8ncs",
-      "node_id": "456299494985812",
-      "reason": "多読 音频源（te9zj1pwg8ncs） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=(无)。闸门：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里。后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
     },
     {
       "domain": "3vpcud2aabhor",
@@ -211,21 +61,11 @@
       "reason": "Shun 音频源 v2 ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=audio。闸门：无公开引导页引用；写死在 shun.apk 的 dex+assets 里。后果：Shun App 音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
     },
     {
-      "domain": "qtjgfga76bu4o",
-      "node_id": "455705600676151",
-      "reason": "Shun 音频源 v3（旧内置版 APK） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=(无)、原 role=audio-source。闸门：无公开引导页引用；写死在 shun.apk 的 dex+assets 里。后果：Shun App 音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
-    },
-    {
-      "domain": "uz5u2rrf5izj1",
-      "node_id": "467186715275589",
-      "reason": "Shun 音频站（引导页 shun.json 的 audio 字段） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=(无)、原 role=(无)。闸门：引导页 shun.json 的 audio 字段 + shun/web/app.js 仍指向它 ⇒ 删前须先切走。后果：Shun App 音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
-    },
-    {
       "domain": "dcjk8zanl3e4r",
       "node_id": "455155888648588",
-      "reason": "AI 讲解客户端 ai-client.js（hub / NHK / 多読絵本 共用） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=infra。闸门：无公开引导页引用；被墨水屏闸门脚本引用（nhk/scripts/check_eink_css.*、shun/scripts/check_eink_css.js）。后果：🔴 **删完 = 全平台 AI 讲解失效**（hub / NHK / 多読絵本 的点句讲解全部失效）。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
+      "reason": "AI 讲解客户端 ai-client.js（hub / NHK / 多読絵本 共用） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=infra。闸门：无公开引导页引用；被墨水屏闸门脚本引用（nhk/scripts/check_eink_css.*、shun/scripts/check_eink_css.js）。后果：🔴 **删完 = 全平台 AI 讲解失效**（hub / NHK / 多読絵本 的点句讲解全部失效）。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。 🔴 2026-11-28 探活 404（站已死）**但节点仍在云盘** ⇒ 仍占 1 个配额位 ⇒ **仍需在资料空间页面删除该节点**（node_id=455155888648588）；节点删掉前不得移出队列。"
     }
   ],
-  "updated": "2026-11-28 16:30",
+  "updated": "2026-11-28 16:35",
   "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。🔴 2026-11-28：用户决定弃用 24 个站（不再使用的 App 全组 + 旧版本 + 一次性工具站）+ 补录 1 条漏网（zv03ebxy0ezq3）⇒ 本队列现有 31 条。🔴 **每日听力记录三个镜像（irk7ibwekq8se / xqrp2rqkvxqwf / ul366v9i8nx0s）与词汇站（iujsgx3ci73dp / zp67qm11jonui）明确不删**，学生还在用，任何清理都不得碰。🔴 网站类节点 API 删除返回 NOT_ALLOWED ⇒ 通道恢复前需用户在「资料空间」页面手动删；删完从本文件移除并把 protected-sites.json 改 DELETED。"
 }
