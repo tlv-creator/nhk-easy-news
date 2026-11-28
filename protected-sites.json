@@ -279,7 +279,7 @@
       "written_in": "引导页 scenes.json 的 site 字段",
       "node_id": "455702948626859",
       "frozen": false,
-      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（日常场景会话 v1.2）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。"
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（日常场景会话 v1.2）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 **闸门④命中：线上公共引导页仍指向它** —— scenes.html 的「打开网页版」按钮 + scenes.json 的 site/apk 字段 ⇒ 删了引导页就是 404。**先撤引导页按钮（或把本站从队列撤出），再删。**（2026-11-28 清理 cron 闸门复核：现役 3 个 APK 的 dex+assets 对本站零命中；29 个存活站 61 个前端文件零命中。）"
     },
     {
       "domain": "4535p9s0wnpzs.space.mcode.cn",
@@ -311,7 +311,7 @@
       "written_in": "引导页 pony.html 的按钮链接",
       "node_id": "455145822027880",
       "frozen": false,
-      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（日語精読 hub v1.6）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。"
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（日語精読 hub v1.6）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 **闸门④命中：线上公共引导页仍指向它** —— pony.html 的「打开网页版」按钮 ⇒ 删了按钮即 404。**先撤引导页按钮（或把本站从队列撤出），再删。**（2026-11-28 清理 cron 闸门复核：现役 3 个 APK 的 dex+assets 对本站零命中；29 个存活站 61 个前端文件零命中。）"
     },
     {
       "domain": "awcv20k80ydfb.space.mcode.cn",
@@ -326,7 +326,7 @@
       "written_in": "引导页 ama.html 的按钮链接",
       "node_id": "455134323184676",
       "frozen": false,
-      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（やさしい日本語 · 简明日语精读）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。"
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（やさしい日本語 · 简明日语精读）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 **闸门④命中：线上公共引导页仍指向它** —— ama.html 的「打开网页版」按钮 ⇒ 删了按钮即 404。**先撤引导页按钮（或把本站从队列撤出），再删。**（2026-11-28 清理 cron 闸门复核：现役 3 个 APK 的 dex+assets 对本站零命中；29 个存活站 61 个前端文件零命中。）"
     },
     {
       "domain": "da4lxn2phccck.space.mcode.cn",
@@ -408,7 +408,7 @@
       "written_in": "引导页 hub.html / wakakusa.html / sakura.html",
       "node_id": "456047215686178",
       "frozen": false,
-      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（日語精読 hub）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。"
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（日語精読 hub）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 **闸门④命中：线上公共引导页仍指向它** —— hub.html 的「下载 App」按钮 + sakura.html / wakakusa.html 的「打开网页版」⇒ 删了按钮即 404。**先撤引导页按钮（或把本站从队列撤出），再删。**（2026-11-28 清理 cron 闸门复核：现役 3 个 APK 的 dex+assets 对本站零命中；29 个存活站 61 个前端文件零命中。）"
     },
     {
       "domain": "lem5lvwy41rn9.space.mcode.cn",
@@ -488,7 +488,7 @@
       "written_in": "引导页 hub.html 的下载按钮",
       "node_id": "455235349299548",
       "frozen": false,
-      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（hub-audio-config-deploy-v3）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。"
+      "note": "2026-11-25 清理 cron 补登（清单外存活站）：node_id 已从该站注入的统计脚本 base64 反查复核；🔴 登记为 ALIVE + frozen=true ⇒ **不是删除候选**，将来要清理必须重跑四道闸门。 🔴 2026-11-28 用户决定删除（hub-audio-config-deploy-v3）⇒ 已列入 pending-deletes.json。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 **闸门④命中：线上公共引导页仍指向它** —— hub.html 与 guide/hub.html 的「换音频域名不用重装 App」下载按钮 ⇒ 删了按钮即 404。**先撤引导页按钮（或把本站从队列撤出），再删。**（2026-11-28 清理 cron 闸门复核：现役 3 个 APK 的 dex+assets 对本站零命中；29 个存活站 61 个前端文件零命中。）"
     },
     {
       "domain": "q05319l7gi458.space.mcode.cn",
