@@ -183,7 +183,7 @@
     {
       "domain": "ddiwijcogorrr",
       "node_id": "456201934709096",
-      "reason": "多読 音频源（ddiwijcogorrr） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=(无)。闸门：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里。后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
+      "reason": "多読 音频源（ddiwijcogorrr） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=(无)。闸门：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里。后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。 🔴 2026-11-28 补记：仓库 `tadoku/books56/` 的**书数据里还有 40 处 `audio` 绝对地址**指向本站（21 个文件，每域 20 处，形态如 `\"audio\": \"https://<本站>/media/level3-xxx.m4a\"`）⇒ 属主那句「全发布面 0 处引用」**不完全准确**。⇒ 但**不挡删除**：多読 App 与交付站整体退役、`tadoku.html` 已改墓碑页、**books56 已无任何入口页链接**（只剩 `source_coverage.json` / `books56c,d/asr_truth` / `batch1_decisions.json` 这些内部索引提到它）⇒ 这 40 个 URL 会变成**无人访问的内容副本里的死链**。⇒ 🔴 **将来若复活多読**：必须先重建 books56 书数据的 audio 地址，否则播放器会拉不到音频。⇒ 删前建议确认：多読确实不再需要在线播放这 56 本。"
     },
     {
       "domain": "pjnzjdw3kx6l0",
@@ -193,7 +193,7 @@
     {
       "domain": "ppch90g3xmufh",
       "node_id": "456202290552921",
-      "reason": "多読 音频源（ppch90g3xmufh） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=(无)。闸门：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里。后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
+      "reason": "多読 音频源（ppch90g3xmufh） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=(无)。闸门：无公开引导页引用；写死在多読 v1.4.1 APK 的 dex+assets 里。后果：多読 App 的音频断 ⇒ App 已弃用，随之作废。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。 🔴 2026-11-28 补记：仓库 `tadoku/books56/` 的**书数据里还有 40 处 `audio` 绝对地址**指向本站（21 个文件，每域 20 处，形态如 `\"audio\": \"https://<本站>/media/level3-xxx.m4a\"`）⇒ 属主那句「全发布面 0 处引用」**不完全准确**。⇒ 但**不挡删除**：多読 App 与交付站整体退役、`tadoku.html` 已改墓碑页、**books56 已无任何入口页链接**（只剩 `source_coverage.json` / `books56c,d/asr_truth` / `batch1_decisions.json` 这些内部索引提到它）⇒ 这 40 个 URL 会变成**无人访问的内容副本里的死链**。⇒ 🔴 **将来若复活多読**：必须先重建 books56 书数据的 audio 地址，否则播放器会拉不到音频。⇒ 删前建议确认：多読确实不再需要在线播放这 56 本。"
     },
     {
       "domain": "te9zj1pwg8ncs",
@@ -226,6 +226,6 @@
       "reason": "AI 讲解客户端 ai-client.js（hub / NHK / 多読絵本 共用） ⇒ 2026-11-28 主人决定弃用（NHK / 日语相关 App 全弃）⇒ 该删（清配额）。原 status=ALIVE、原 role=infra。闸门：无公开引导页引用；被墨水屏闸门脚本引用（nhk/scripts/check_eink_css.*、shun/scripts/check_eink_css.js）。后果：🔴 **删完 = 全平台 AI 讲解失效**（hub / NHK / 多読絵本 的点句讲解全部失效）。🔴 「零引用」证不了「可以删」—— 本站能删靠的是主人的弃用决定 + status=SUPERSEDED。"
     }
   ],
-  "updated": "2026-11-28 16:21",
+  "updated": "2026-11-28 16:30",
   "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。🔴 2026-11-28：用户决定弃用 24 个站（不再使用的 App 全组 + 旧版本 + 一次性工具站）+ 补录 1 条漏网（zv03ebxy0ezq3）⇒ 本队列现有 31 条。🔴 **每日听力记录三个镜像（irk7ibwekq8se / xqrp2rqkvxqwf / ul366v9i8nx0s）与词汇站（iujsgx3ci73dp / zp67qm11jonui）明确不删**，学生还在用，任何清理都不得碰。🔴 网站类节点 API 删除返回 NOT_ALLOWED ⇒ 通道恢复前需用户在「资料空间」页面手动删；删完从本文件移除并把 protected-sites.json 改 DELETED。"
 }
