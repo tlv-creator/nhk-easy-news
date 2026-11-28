@@ -4,13 +4,8 @@
       "domain": "1max1cuqya9e5",
       "node_id": "460423132464362",
       "reason": "2026-11-28 用户决定删除：立命馆GS探路 · 手机App ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
-    },
-    {
-      "domain": "wcdo5rd2b9n8t",
-      "node_id": "455200236065778",
-      "reason": "2026-11-28 用户决定删除：墨水屏描边闸门 v4.4 ⇒ 不再使用，占配额位。删前复核：现役入口页（version.json/shun.json/tadoku.html）零引用；多読 v1.4.1 data/eps/index.json 只点名 1hv73j0i9907z/ddiwijcogorrr/pjnzjdw3kx6l0/ppch90g3xmufh/te9zj1pwg8ncs 五个音频站，均不在本组。 🔴 网站类节点 API 删不了（NOT_ALLOWED）⇒ 通道恢复或用户在资料空间页面手动删后，从本文件移除并把 protected-sites.json 改 DELETED。"
     }
   ],
-  "updated": "2026-11-28 16:40",
+  "updated": "2026-11-28 16:45",
   "note": "待删站清单（唯一权威）。发版 agent 写、清理 cron 删。字段：domain / node_id / reason。🔴 2026-11-28：用户决定弃用 24 个站（不再使用的 App 全组 + 旧版本 + 一次性工具站）+ 补录 1 条漏网（zv03ebxy0ezq3）⇒ 本队列现有 31 条。🔴 **每日听力记录三个镜像（irk7ibwekq8se / xqrp2rqkvxqwf / ul366v9i8nx0s）与词汇站（iujsgx3ci73dp / zp67qm11jonui）明确不删**，学生还在用，任何清理都不得碰。🔴 网站类节点 API 删除返回 NOT_ALLOWED ⇒ 通道恢复前需用户在「资料空间」页面手动删；删完从本文件移除并把 protected-sites.json 改 DELETED。"
 }
